@@ -4,7 +4,7 @@ import {
   Settings, Phone, Plus, Trash2, 
   Check, Image as ImageIcon, Copy,
   ChevronRight, CloudSun, Menu, X, ArrowRight, Upload, AlertCircle, Lock, Unlock,
-  Utensils, Heart, Compass, Coffee, Key, Car, Clock, ShieldCheck, Edit3, Mail, Globe, ExternalLink, QrCode, Download
+  Utensils, Heart, Compass, Coffee, Key, Car, Clock, ShieldCheck, Edit3, Mail, Globe, ExternalLink, QrCode, Printer
 } from 'lucide-react';
 
 const translations = {
@@ -26,9 +26,11 @@ const translations = {
     adminLockMode: "Ansichtsmodus (Geschützt)",
     adminBtnLock: "Sperren",
     adminBtnUnlock: "Entsperren",
-    qrTitle: "Ihr Hotel QR-Code",
-    qrSubtitle: "Drucken Sie diesen QR-Code für Ihre Zimmer & Rezeption aus.",
-    qrDownloadBtn: "QR-Code herunterladen",
+    qrTitle: "QR-Code & Print-Center (A4, A5, Visitenkarte)",
+    qrSubtitle: "Erstellen Sie professionelle Aufsteller für Ihre Zimmer und Rezeption.",
+    printA4: "Druckvorlage A4",
+    printA5: "Druckvorlage A5",
+    printCard: "Druckvorlage Visitenkarte",
     sec1Title: "1. Hotelinformationen & Kontaktdaten",
     sec2Title: "2. Logo hochladen (Max. 2 MB)",
     sec3Title: "3. Bilderverwaltung (Max. 5 Bilder, max. 5 MB pro Bild)",
@@ -88,19 +90,58 @@ export default function App() {
     ]
   });
 
-  // Dinamik Otel URL'i (QR Kod için)
+  // Dinamik Otel URL'i ve QR Kod
   const hotelSlug = hotel.name.toLowerCase().replace(/[^a-z0-9]/g, '-');
   const hotelUrl = `https://gastemappe24-pro.vercel.app/?hotel=${hotelSlug}`;
-  const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(hotelUrl)}`;
+  const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(hotelUrl)}`;
 
-  // QR Kodu İndirme Fonksiyonu
-  const downloadQrCode = () => {
-    const link = document.createElement('a');
-    link.href = qrCodeUrl;
-    link.download = `QR-Code-${hotelSlug}.png`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+  // Profesyonel Yazdırma / PDF Oluşturma Fonksiyonu
+  const handlePrint = (format) => {
+    const printWindow = window.open('', '_blank');
+    printWindow.document.write(`
+      <html>
+        <head>
+          <title>QR-Code ${format} - ${hotel.name}</title>
+          <style>
+            body { font-family: 'Helvetica Neue', Arial, sans-serif; text-align: center; color: #1e293b; margin: 0; padding: 40px; background: #fff; }
+            .container { max-width: ${format === 'A4' ? '600px' : format === 'A5' ? '450px' : '300px'}; margin: 0 auto; border: 2px solid #e2e8f0; border-radius: 24px; padding: 40px 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); }
+            .logo { width: 80px; height: 80px; object-fit: cover; border-radius: 16px; margin-bottom: 15px; border: 1px solid #cbd5e1; }
+            .hotel-name { font-size: 22px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; color: #0f172a; margin-bottom: 5px; }
+            .greeting { font-size: 16px; font-weight: 700; color: #b45309; margin-bottom: 5px; }
+            .guide-title { font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; color: #64748b; margin-bottom: 25px; }
+            .qr-box { background: #f8fafc; padding: 20px; border-radius: 20px; display: inline-block; border: 1px solid #e2e8f0; margin-bottom: 25px; }
+            .qr-img { width: 200px; height: 200px; display: block; }
+            .instructions { font-size: 13px; font-weight: 600; color: #334155; margin-bottom: 30px; }
+            .footer { border-top: 1px solid #e2e8f0; pt-3; margin-top: 20px; font-size: 11px; color: #64748b; line-height: 1.5; }
+            @media print { body { padding: 0; } .container { border: none; box-shadow: none; } }
+          </style>
+        </head>
+        <body>
+          <div class="container">
+            ${hotel.logoUrl ? `<img src="${hotel.logoUrl}" class="logo" />` : ''}
+            <div class="hotel-name">${hotel.name}</div>
+            <div class="greeting">${hotel.welcomeGreeting}</div>
+            <div class="guide-title">Digitaler Gästemappe</div>
+            
+            <div class="qr-box">
+              <img src="${qrCodeUrl}" class="qr-img" />
+            </div>
+
+            <div class="instructions">📱 Kamera öffnen & QR-Code scannen</div>
+
+            <div class="footer">
+              <b>${hotel.address}</b><br/>
+              Tel: ${hotel.phone} | E-Mail: ${hotel.email}<br/>
+              Web: ${hotel.website}
+            </div>
+          </div>
+          <script>
+            window.onload = function() { window.print(); }
+          </script>
+        </body>
+      </html>
+    `);
+    printWindow.document.close();
   };
 
   const [customQuickLinks, setCustomQuickLinks] = useState([]);
@@ -570,7 +611,7 @@ export default function App() {
                   </button>
                 </div>
 
-                {/* DYNAMIC QR CODE SECTION (ADMIN PANELİNİN TAM ALTINDA) */}
+                {/* PDF PRINT-CENTER & QR CODE SECTION */}
                 <div className="bg-white p-5 rounded-2xl shadow-sm border border-stone-200 text-center space-y-3">
                   <div className="flex items-center justify-center gap-2 text-amber-800 font-bold text-xs uppercase tracking-wider">
                     <QrCode className="w-4 h-4" />
@@ -580,25 +621,40 @@ export default function App() {
                     {t.qrSubtitle}
                   </p>
                   
-                  {/* QR Code Container */}
+                  {/* QR Code Preview Box */}
                   <div className="bg-stone-50 p-4 rounded-2xl inline-block border border-stone-200 shadow-inner my-2">
                     <img 
                       src={qrCodeUrl} 
                       alt="Hotel QR Code" 
-                      className="w-40 h-40 mx-auto rounded-lg shadow-sm"
+                      className="w-36 h-36 mx-auto rounded-lg shadow-sm"
                     />
                     <span className="block text-[10px] text-slate-400 font-mono mt-2 truncate max-w-[200px] mx-auto">
                       {hotelUrl}
                     </span>
                   </div>
 
-                  <div>
+                  {/* 3 Global Print Buttons (A4, A5, Kartvizit) */}
+                  <div className="grid grid-cols-3 gap-2 pt-2">
                     <button 
-                      onClick={downloadQrCode}
-                      className="bg-amber-800 hover:bg-amber-900 text-white px-4 py-2.5 rounded-xl text-xs font-bold shadow-md transition flex items-center justify-center gap-2 mx-auto active:scale-98"
+                      onClick={() => handlePrint('A4')}
+                      className="bg-stone-900 hover:bg-black text-white p-2.5 rounded-xl text-[11px] font-bold shadow transition flex flex-col items-center gap-1"
                     >
-                      <Download className="w-4 h-4" />
-                      <span>{t.qrDownloadBtn}</span>
+                      <Printer className="w-4 h-4 text-amber-400" />
+                      <span>{t.printA4}</span>
+                    </button>
+                    <button 
+                      onClick={() => handlePrint('A5')}
+                      className="bg-stone-900 hover:bg-black text-white p-2.5 rounded-xl text-[11px] font-bold shadow transition flex flex-col items-center gap-1"
+                    >
+                      <Printer className="w-4 h-4 text-amber-400" />
+                      <span>{t.printA5}</span>
+                    </button>
+                    <button 
+                      onClick={() => handlePrint('Visitenkarte')}
+                      className="bg-stone-900 hover:bg-black text-white p-2.5 rounded-xl text-[11px] font-bold shadow transition flex flex-col items-center gap-1"
+                    >
+                      <Printer className="w-4 h-4 text-amber-400" />
+                      <span>{t.printCard}</span>
                     </button>
                   </div>
                 </div>
@@ -697,7 +753,7 @@ export default function App() {
                   </div>
                 </div>
 
-                {/* STEP 3 & 4: Bilderverwaltung (Max. 5 Bilder, max. 5 MB pro Bild) */}
+                {/* STEP 3 & 4: Bilderverwaltung */}
                 <div className="bg-white p-5 rounded-2xl shadow-sm border border-stone-200 space-y-4">
                   <div>
                     <h3 className="font-bold text-xs text-slate-900 flex items-center gap-1.5">
@@ -746,7 +802,7 @@ export default function App() {
                   </div>
                 </div>
 
-                {/* STEP 5: Schnellzugriff (Standard & Max 2 Custom) */}
+                {/* STEP 5: Schnellzugriff */}
                 <div className="bg-white p-5 rounded-2xl shadow-sm border border-stone-200 space-y-4">
                   <h3 className="font-bold text-xs text-slate-900 flex items-center gap-1.5">
                     <Wifi className="w-4 h-4 text-amber-800" /> {t.sec5Title}
@@ -805,7 +861,7 @@ export default function App() {
                     </div>
                   </div>
 
-                  {/* Özel Schnellzugriff Yönetimi (Max 2) */}
+                  {/* Özel Schnellzugriff Yönetimi */}
                   <div className="pt-3 border-t border-stone-100 space-y-3">
                     <h4 className="font-bold text-[11px] text-amber-800 uppercase">Eigene Schnellzugriffe (Aktuell: {customQuickLinks.length}/2)</h4>
                     
@@ -977,7 +1033,7 @@ export default function App() {
         </button>
 
         <button 
-          onClick={() => { setActiveTab('admin'); setSelectedCategory(null); }}
+          onClick={() => { setActiveTab('admin'); setSelectedEntryId && setSelectedCategory(null); setActiveTab('admin'); }}
           className={`flex flex-col items-center gap-1 text-[10px] font-bold transition ${activeTab === 'admin' ? 'text-amber-800 font-extrabold' : 'text-stone-400'}`}
         >
           <Settings className="w-5 h-5" />
