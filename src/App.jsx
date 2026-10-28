@@ -1,46 +1,84 @@
 import React, { useState } from 'react';
 import { 
   Wifi, Info, MapPin, Calendar, MessageSquare, 
-  Settings, Globe, Phone, Plus, Trash2, 
-  QrCode, Check, Image as ImageIcon,
-  ChevronRight, CloudSun, Menu, X, ArrowRight, Upload, AlertCircle, Lock, Unlock
+  Settings, Phone, Plus, Trash2, 
+  Check, Image as ImageIcon,
+  ChevronRight, CloudSun, Menu, X, ArrowRight, Upload, AlertCircle, Lock, Unlock,
+  Utensils, Heart, Compass, Coffee, Clock, ShieldCheck, Send
 } from 'lucide-react';
 
 export default function App() {
   // Navigation & Screen States
-  const [activeTab, setActiveTab] = useState('home'); // 'home', 'services', 'admin'
+  const [activeTab, setActiveTab] = useState('home'); // 'home', 'services', 'subpage', 'admin'
+  const [selectedCategory, setSelectedCategory] = useState(null); // Detayları gösterilecek alt kategori
   const [showWelcomeScreen, setShowWelcomeScreen] = useState(true);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   
-  // Admin Görünür ama Düzenleme Kilitli (Default: false)
+  // Admin & Güvenlik (Şifre: Rina21091987)
   const [isEditUnlocked, setIsEditUnlocked] = useState(false);
   const [passwordInput, setPasswordInput] = useState('');
   const [passwordError, setPasswordError] = useState(false);
   const [showUnlockModal, setShowUnlockModal] = useState(false);
 
-  // Active Image Index for Slider
+  // Slider State
   const [currentSlide, setCurrentSlide] = useState(0);
 
-  // Fully Dynamic Hotel Data (No Hard-coded Names)
+  // Dinamik Otel Verileri
   const [hotel, setHotel] = useState({
     logoUrl: '', 
-    name: 'Ihre Unterkunft', 
+    name: 'Hotel & Café Ritter', 
     welcomeGreeting: 'Hallo, schön dass du da bist.',
-    wifiSsid: 'Hotel_Guest_WiFi',
-    wifiPass: 'welcome2026',
-    phone: '+49 123 456789',
+    wifiSsid: 'Ritter_Guest_WiFi',
+    wifiPass: 'ritter2026',
+    phone: '+49 6326 9720',
     weatherTemp: '19°C',
-    weatherDesc: 'Sonnig',
+    weatherDesc: 'Sonnig · Deidesheim',
     images: [
       'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1000&q=80',
       'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=1000&q=80'
     ]
   });
 
+  // Belturo Tarzı Kapsamlı Kategoriler ve Alt Sayfalar
+  const [categories, setCategories] = useState([
+    {
+      id: 'gastronomie',
+      title: 'Gastronomie & Bar',
+      subtitle: 'Speisekarten, Frühstück & Regionale Weine',
+      icon: 'Utensils',
+      image: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=800&q=80',
+      content: 'Genießen Sie unsere regionale Pfälzer Küche und erlesene Weine aus Deidesheim. Das Frühstück wird täglich von 07:00 bis 10:30 Uhr serviert.'
+    },
+    {
+      id: 'wellness',
+      title: 'Wellness & SPA',
+      subtitle: 'Sauna, Massagen & Entspannung',
+      icon: 'Heart',
+      image: 'https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=800&q=80',
+      content: 'Entspannen Sie in unserem modernen Wellnessbereich. Finnische Sauna, Ruheraum und Massageanwendungen stehen Ihnen von 10:00 bis 20:00 Uhr zur Verfügung.'
+    },
+    {
+      id: 'az_guide',
+      title: 'Wichtiges von A bis Z',
+      subtitle: 'Check-out, WLAN, Rezeption & Service',
+      icon: 'Info',
+      image: 'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=800&q=80',
+      content: 'Check-out ist bis 11:00 Uhr. Kostenfreies Highspeed-WLAN ist im gesamten Haus verfügbar. Die Rezeption erreichen Sie unter der Kurzwahl 100.'
+    },
+    {
+      id: 'umgebung',
+      title: 'Umgebung & Ausflüge',
+      subtitle: 'Weinstraße, Wandern & Sehenswürdigkeiten',
+      icon: 'Compass',
+      image: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80',
+      content: 'Entdecken Sie die malerische Deutsche Weinstraße. Zahlreiche Wanderwege, historische Burgen und Weingüter laden zu unvergesslichen Ausflügen ein.'
+    }
+  ]);
+
   const [uploadError, setUploadError] = useState('');
   const [uploadSuccess, setUploadSuccess] = useState('');
 
-  // Şifre ile Düzenleme Kilidini Açma
+  // Şifre Kilidi Kontrolü
   const handleUnlockSubmit = (e) => {
     e.preventDefault();
     if (passwordInput === 'Rina21091987') {
@@ -53,12 +91,9 @@ export default function App() {
     }
   };
 
-  // Fotoğraf Yükleme (Kilit Açıksa Çalışır)
+  // Fotoğraf Yükleme (Kilit Kontrollü)
   const handleImageUpload = (e) => {
-    if (!isEditUnlocked) {
-      setShowUnlockModal(true);
-      return;
-    }
+    if (!isEditUnlocked) { setShowUnlockModal(true); return; }
     setUploadError('');
     setUploadSuccess('');
     const files = Array.from(e.target.files);
@@ -76,10 +111,7 @@ export default function App() {
 
       const reader = new FileReader();
       reader.onloadend = () => {
-        setHotel((prev) => ({
-          ...prev,
-          images: [...prev.images, reader.result]
-        }));
+        setHotel((prev) => ({ ...prev, images: [...prev.images, reader.result] }));
         setUploadSuccess('Foto erfolgreich hinzugefügt!');
       };
       reader.readAsDataURL(file);
@@ -87,21 +119,12 @@ export default function App() {
   };
 
   const handleRemoveImage = (indexToRemove) => {
-    if (!isEditUnlocked) {
-      setShowUnlockModal(true);
-      return;
-    }
-    setHotel((prev) => ({
-      ...prev,
-      images: prev.images.filter((_, idx) => idx !== indexToRemove)
-    }));
+    if (!isEditUnlocked) { setShowUnlockModal(true); return; }
+    setHotel((prev) => ({ ...prev, images: prev.images.filter((_, idx) => idx !== indexToRemove) }));
   };
 
   const handleLogoUpload = (e) => {
-    if (!isEditUnlocked) {
-      setShowUnlockModal(true);
-      return;
-    }
+    if (!isEditUnlocked) { setShowUnlockModal(true); return; }
     const file = e.target.files[0];
     if (file) {
       if (file.size > 2 * 1024 * 1024) {
@@ -109,9 +132,7 @@ export default function App() {
         return;
       }
       const reader = new FileReader();
-      reader.onloadend = () => {
-        setHotel((prev) => ({ ...prev, logoUrl: reader.result }));
-      };
+      reader.onloadend = () => { setHotel((prev) => ({ ...prev, logoUrl: reader.result })); };
       reader.readAsDataURL(file);
     }
   };
@@ -175,12 +196,12 @@ export default function App() {
   }
 
   // -------------------------------------------------------------
-  // ANA MİSAFİR PANELİ & ADMIN PANELİ
+  // ANA MİSAFİR PANELİ & KATEGORİ DETAYLARI & ADMIN
   // -------------------------------------------------------------
   return (
     <div className="min-h-screen bg-stone-50 font-sans text-slate-800 pb-24 max-w-md mx-auto shadow-2xl relative border-x border-slate-200">
       
-      {/* ŞİFRE İSTEME MODALI (Yalnızca değişiklik yapılmak istendiğinde açılır) */}
+      {/* ŞİFRE İSTEME MODALI */}
       {showUnlockModal && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
           <div className="bg-white w-full max-w-sm p-6 rounded-3xl shadow-2xl space-y-4 animate-fade-in">
@@ -242,24 +263,24 @@ export default function App() {
         {isMenuOpen && (
           <div className="mt-3 p-3 bg-white rounded-2xl shadow-xl border border-stone-200 space-y-1 animate-fade-in">
             <button 
-              onClick={() => { setActiveTab('home'); setIsMenuOpen(false); }}
-              className={`w-full text-left px-3 py-2 rounded-xl text-xs font-bold transition flex items-center justify-between ${activeTab === 'home' ? 'bg-amber-50 text-amber-900' : 'text-slate-600 hover:bg-stone-50'}`}
+              onClick={() => { setActiveTab('home'); setSelectedCategory(null); setIsMenuOpen(false); }}
+              className={`w-full text-left px-3 py-2 rounded-xl text-xs font-bold transition flex items-center justify-between ${activeTab === 'home' && !selectedCategory ? 'bg-amber-50 text-amber-900' : 'text-slate-600 hover:bg-stone-50'}`}
             >
               <span>Home</span>
               <ChevronRight className="w-4 h-4 opacity-50" />
             </button>
             <button 
-              onClick={() => { setActiveTab('services'); setIsMenuOpen(false); }}
+              onClick={() => { setActiveTab('services'); setSelectedCategory(null); setIsMenuOpen(false); }}
               className={`w-full text-left px-3 py-2 rounded-xl text-xs font-bold transition flex items-center justify-between ${activeTab === 'services' ? 'bg-amber-50 text-amber-900' : 'text-slate-600 hover:bg-stone-50'}`}
             >
-              <span>Gästemappe & Services</span>
+              <span>Gästemappe & Kategorien</span>
               <ChevronRight className="w-4 h-4 opacity-50" />
             </button>
             <button 
-              onClick={() => { setActiveTab('admin'); setIsMenuOpen(false); }}
+              onClick={() => { setActiveTab('admin'); setSelectedCategory(null); setIsMenuOpen(false); }}
               className={`w-full text-left px-3 py-2 rounded-xl text-xs font-bold transition flex items-center justify-between ${activeTab === 'admin' ? 'bg-amber-800 text-white' : 'text-amber-800 bg-amber-50/50 hover:bg-amber-100/50'}`}
             >
-              <span>⚙️ Admin Panel (Ansicht)</span>
+              <span>⚙️ Admin Panel</span>
             </button>
           </div>
         )}
@@ -268,9 +289,36 @@ export default function App() {
       {/* İÇERİK ALANI */}
       <main className="p-5 space-y-5">
         
-        {/* HOME SEKMESI */}
-        {activeTab === 'home' && (
-          <div className="space-y-5">
+        {/* 1. KATEGORİ DETAY SAYFASI (ALT SAYFA GÖRÜNÜMÜ) */}
+        {selectedCategory ? (
+          <div className="space-y-4 animate-fade-in">
+            <button 
+              onClick={() => setSelectedCategory(null)}
+              className="text-xs font-bold text-amber-800 flex items-center gap-1 hover:underline mb-2"
+            >
+              &larr; Zurück zur Übersicht
+            </button>
+
+            <div className="relative rounded-2xl overflow-hidden h-48 shadow-md">
+              <img src={selectedCategory.image} alt={selectedCategory.title} className="w-full h-full object-cover" />
+              <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/20 to-transparent"></div>
+              <div className="absolute bottom-4 left-4 right-4 text-white">
+                <span className="text-[10px] bg-amber-500/80 px-2.5 py-0.5 rounded-full font-bold uppercase">Detailinfo</span>
+                <h2 className="text-xl font-black mt-1">{selectedCategory.title}</h2>
+              </div>
+            </div>
+
+            <div className="bg-white p-5 rounded-2xl shadow-sm border border-stone-200 space-y-3">
+              <h3 className="font-bold text-xs text-stone-400 uppercase tracking-wider">Informationen</h3>
+              <p className="text-xs text-slate-700 leading-relaxed">{selectedCategory.content}</p>
+            </div>
+          </div>
+        ) : null}
+
+        {/* 2. HOME SEKMESİ */}
+        {!selectedCategory && activeTab === 'home' && (
+          <div className="space-y-5 animate-fade-in">
+            {/* 5 Fotoğraflık Slider */}
             <div className="relative rounded-2xl overflow-hidden shadow-md h-52 bg-slate-900 group">
               <img 
                 src={hotel.images[currentSlide] || hotel.images[0]} 
@@ -296,6 +344,7 @@ export default function App() {
               </div>
             </div>
 
+            {/* Hava Durumu */}
             <div className="grid grid-cols-2 gap-3">
               <div className="bg-white p-3.5 rounded-2xl shadow-sm border border-stone-200/80 flex items-center gap-3">
                 <div className="p-2 bg-amber-50 text-amber-700 rounded-xl">
@@ -318,6 +367,7 @@ export default function App() {
               </div>
             </div>
 
+            {/* Gästemappe Hızlı Giriş Kartı */}
             <div 
               onClick={() => setActiveTab('services')}
               className="bg-amber-100/70 p-4 rounded-2xl border border-amber-200/80 flex justify-between items-center cursor-pointer hover:bg-amber-100 transition shadow-sm"
@@ -328,7 +378,7 @@ export default function App() {
                 </div>
                 <div>
                   <h4 className="font-bold text-xs text-amber-950">Gästemappe</h4>
-                  <p className="text-[11px] text-amber-900/80 mt-0.5">WLAN, Haus-Infos & Services</p>
+                  <p className="text-[11px] text-amber-900/80 mt-0.5">WLAN, Kategorien & Services</p>
                 </div>
               </div>
               <ChevronRight className="w-4 h-4 text-amber-900" />
@@ -336,10 +386,31 @@ export default function App() {
           </div>
         )}
 
-        {/* ------------------------------------------------------------- */}
-        {/* HERKESİN GÖREBİLDİĞİ AMA KİLİTLİ ADMIN PANELİ */}
-        {/* ------------------------------------------------------------- */}
-        {activeTab === 'admin' && (
+        {/* 3. KATEGORİLER & HİZMETLER SEKMESİ (BELTURO TARZI ALT SAYFALAR) */}
+        {!selectedCategory && activeTab === 'services' && (
+          <div className="space-y-4 animate-fade-in">
+            <h2 className="text-sm font-bold text-slate-900 uppercase tracking-wider">Gästemappe & Kategorien</h2>
+            <div className="grid grid-cols-1 gap-3">
+              {categories.map((cat) => (
+                <div 
+                  key={cat.id}
+                  onClick={() => setSelectedCategory(cat)}
+                  className="bg-white p-4 rounded-2xl shadow-sm border border-stone-200 flex items-center gap-4 cursor-pointer hover:border-amber-800 transition group"
+                >
+                  <img src={cat.image} alt={cat.title} className="w-16 h-16 rounded-xl object-cover shrink-0 shadow-sm" />
+                  <div className="flex-1 min-w-0">
+                    <h3 className="font-bold text-xs text-slate-900 group-hover:text-amber-800 transition truncate">{cat.title}</h3>
+                    <p className="text-[11px] text-slate-500 truncate mt-0.5">{cat.subtitle}</p>
+                  </div>
+                  <ChevronRight className="w-4 h-4 text-stone-400 group-hover:translate-x-1 transition" />
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* 4. ADMIN PANELİ */}
+        {!selectedCategory && activeTab === 'admin' && (
           <div className="space-y-5 animate-fade-in">
             <div className="bg-amber-800 text-white p-4 rounded-2xl shadow-md flex justify-between items-center">
               <div>
@@ -350,11 +421,8 @@ export default function App() {
               </div>
               <button 
                 onClick={() => {
-                  if (isEditUnlocked) {
-                    setIsEditUnlocked(false);
-                  } else {
-                    setShowUnlockModal(true);
-                  }
+                  if (isEditUnlocked) { setIsEditUnlocked(false); } 
+                  else { setShowUnlockModal(true); }
                 }}
                 className="bg-white/20 text-xs px-3 py-1.5 rounded-lg font-bold hover:bg-white/30 transition flex items-center gap-1.5"
               >
@@ -363,14 +431,7 @@ export default function App() {
               </button>
             </div>
 
-            {!isEditUnlocked && (
-              <div className="bg-amber-50 border border-amber-200 text-amber-900 p-3 rounded-xl text-xs flex items-center gap-2">
-                <Lock className="w-4 h-4 shrink-0 text-amber-800" />
-                <span>Dieses Admin-Panel ist im Nur-Lese-Modus. Klicken Sie oben auf "Entsperren", um Änderungen vorzunehmen.</span>
-              </div>
-            )}
-
-            {/* LOGO YÖNETİMİ */}
+            {/* LOGO & FOTOĞRAF YÖNETİMİ */}
             <div className="bg-white p-5 rounded-2xl shadow-sm border border-stone-200 space-y-3">
               <h3 className="font-bold text-xs text-slate-900 flex items-center gap-1.5">
                 <Upload className="w-4 h-4 text-amber-800" /> Otel Logosu (Max 2MB)
@@ -390,15 +451,12 @@ export default function App() {
               </div>
             </div>
 
-            {/* FOTOĞRAF YÖNETİMİ */}
             <div className="bg-white p-5 rounded-2xl shadow-sm border border-stone-200 space-y-4">
               <div>
                 <h3 className="font-bold text-xs text-slate-900 flex items-center gap-1.5">
                   <ImageIcon className="w-4 h-4 text-amber-800" /> Willkommen & Slider Fotos (Max 5 Fotos)
                 </h3>
-                <p className="text-[11px] text-slate-500 mt-1">
-                  Karşılama ekranı ve ana sayfa slider'ı ortak olarak bu fotoğrafları kullanır.
-                </p>
+                <p className="text-[11px] text-slate-500 mt-1">Karşılama ekranı ve ana sayfa slider'ı ortak veri kullanır.</p>
               </div>
 
               {uploadError && (
@@ -438,33 +496,6 @@ export default function App() {
                 )}
               </div>
             </div>
-
-            {/* OTEL BİLGİLERİ */}
-            <div className="bg-white p-5 rounded-2xl shadow-sm border border-stone-200 space-y-3">
-              <h3 className="font-bold text-xs text-slate-900">Hotel Details</h3>
-              
-              <div>
-                <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">Hotel Name</label>
-                <input 
-                  type="text" 
-                  value={hotel.name}
-                  disabled={!isEditUnlocked}
-                  onChange={(e) => setHotel({ ...hotel, name: e.target.value })}
-                  className={`w-full p-2.5 text-xs border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-800 ${!isEditUnlocked ? 'bg-stone-100 text-stone-500 cursor-not-allowed' : ''}`}
-                />
-              </div>
-
-              <div>
-                <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">Begrüßungstext</label>
-                <input 
-                  type="text" 
-                  value={hotel.welcomeGreeting}
-                  disabled={!isEditUnlocked}
-                  onChange={(e) => setHotel({ ...hotel, welcomeGreeting: e.target.value })}
-                  className={`w-full p-2.5 text-xs border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-800 ${!isEditUnlocked ? 'bg-stone-100 text-stone-500 cursor-not-allowed' : ''}`}
-                />
-              </div>
-            </div>
           </div>
         )}
 
@@ -473,23 +504,23 @@ export default function App() {
       {/* BOTTOM NAVIGATION */}
       <nav className="fixed bottom-0 left-0 right-0 max-w-md mx-auto bg-white/90 backdrop-blur-md border-t border-stone-200/80 px-6 py-2 flex justify-between items-center z-50 shadow-2xl">
         <button 
-          onClick={() => setActiveTab('home')}
-          className={`flex flex-col items-center gap-1 text-[10px] font-bold transition ${activeTab === 'home' ? 'text-amber-800' : 'text-stone-400'}`}
+          onClick={() => { setActiveTab('home'); setSelectedCategory(null); }}
+          className={`flex flex-col items-center gap-1 text-[10px] font-bold transition ${activeTab === 'home' && !selectedCategory ? 'text-amber-800' : 'text-stone-400'}`}
         >
           <Info className="w-5 h-5" />
           <span>Home</span>
         </button>
 
         <button 
-          onClick={() => setActiveTab('services')}
-          className={`flex flex-col items-center gap-1 text-[10px] font-bold transition ${activeTab === 'services' ? 'text-amber-800' : 'text-stone-400'}`}
+          onClick={() => { setActiveTab('services'); setSelectedCategory(null); }}
+          className={`flex flex-col items-center gap-1 text-[10px] font-bold transition ${activeTab === 'services' || selectedCategory ? 'text-amber-800' : 'text-stone-400'}`}
         >
-          <MessageSquare className="w-5 h-5" />
-          <span>Services</span>
+          <Compass className="w-5 h-5" />
+          <span>Gästemappe</span>
         </button>
 
         <button 
-          onClick={() => setActiveTab('admin')}
+          onClick={() => { setActiveTab('admin'); setSelectedCategory(null); }}
           className={`flex flex-col items-center gap-1 text-[10px] font-bold transition ${activeTab === 'admin' ? 'text-amber-800 font-extrabold' : 'text-stone-400'}`}
         >
           <Settings className="w-5 h-5" />
