@@ -4,7 +4,7 @@ import {
   Settings, Phone, Plus, Trash2, 
   Check, Image as ImageIcon, Copy,
   ChevronRight, CloudSun, Menu, X, ArrowRight, Upload, AlertCircle, Lock, Unlock,
-  Utensils, Heart, Compass, Coffee, Key, Car, Clock, ShieldCheck, Edit3, Mail, Globe, ExternalLink
+  Utensils, Heart, Compass, Coffee, Key, Car, Clock, ShieldCheck, Edit3, Mail, Globe, ExternalLink, QrCode, Download
 } from 'lucide-react';
 
 const translations = {
@@ -26,6 +26,9 @@ const translations = {
     adminLockMode: "Ansichtsmodus (Geschützt)",
     adminBtnLock: "Sperren",
     adminBtnUnlock: "Entsperren",
+    qrTitle: "Ihr Hotel QR-Code",
+    qrSubtitle: "Drucken Sie diesen QR-Code für Ihre Zimmer & Rezeption aus.",
+    qrDownloadBtn: "QR-Code herunterladen",
     sec1Title: "1. Hotelinformationen & Kontaktdaten",
     sec2Title: "2. Logo hochladen (Max. 2 MB)",
     sec3Title: "3. Bilderverwaltung (Max. 5 Bilder, max. 5 MB pro Bild)",
@@ -45,8 +48,7 @@ const translations = {
     lblParkingInfo: "Parkplatz Info",
     btnLogoUpload: "Logo Seç / Değiştir",
     btnAddCategory: "Neue Kategorie hinzufügen",
-    btnCatSubmit: "Kategorie Hinzufügen",
-    btnAddCustomQuick: "Eigenen Schnellzugriff hinzufügen (Max. 2)"
+    btnCatSubmit: "Kategorie Hinzufügen"
   }
 };
 
@@ -86,11 +88,24 @@ export default function App() {
     ]
   });
 
-  // Özel Schnellzugriff Listesi (En fazla 2 adet eklenebilir)
+  // Dinamik Otel URL'i (QR Kod için)
+  const hotelSlug = hotel.name.toLowerCase().replace(/[^a-z0-9]/g, '-');
+  const hotelUrl = `https://gastemappe24-pro.vercel.app/?hotel=${hotelSlug}`;
+  const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(hotelUrl)}`;
+
+  // QR Kodu İndirme Fonksiyonu
+  const downloadQrCode = () => {
+    const link = document.createElement('a');
+    link.href = qrCodeUrl;
+    link.download = `QR-Code-${hotelSlug}.png`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   const [customQuickLinks, setCustomQuickLinks] = useState([]);
   const [newQuick, setNewQuick] = useState({ title: '', description: '', iconName: 'Info' });
 
-  // Kategoriler
   const [categories, setCategories] = useState([
     {
       id: 'gastronomie',
@@ -137,7 +152,6 @@ export default function App() {
     }
   };
 
-  // Özel Schnellzugriff Ekleme (Max 2 adet kontrolü)
   const handleAddCustomQuick = (e) => {
     e.preventDefault();
     if (!newQuick.title.trim()) return;
@@ -533,9 +547,10 @@ export default function App() {
               </div>
             )}
 
-            {/* 3. ADMIN PANEL (STRICT 6-STEP STRUCTURE) */}
+            {/* 3. ADMIN PANEL */}
             {activeTab === 'admin' && (
               <div className="space-y-5 animate-fade-in">
+                {/* ADMIN HEADER */}
                 <div className="bg-amber-800 text-white p-4 rounded-2xl shadow-md flex justify-between items-center">
                   <div>
                     <h2 className="font-bold text-sm">{t.adminTitle}</h2>
@@ -553,6 +568,39 @@ export default function App() {
                     {isEditUnlocked ? <Unlock className="w-3.5 h-3.5" /> : <Lock className="w-3.5 h-3.5" />}
                     {isEditUnlocked ? t.adminBtnLock : t.adminBtnUnlock}
                   </button>
+                </div>
+
+                {/* DYNAMIC QR CODE SECTION (ADMIN PANELİNİN TAM ALTINDA) */}
+                <div className="bg-white p-5 rounded-2xl shadow-sm border border-stone-200 text-center space-y-3">
+                  <div className="flex items-center justify-center gap-2 text-amber-800 font-bold text-xs uppercase tracking-wider">
+                    <QrCode className="w-4 h-4" />
+                    <span>{t.qrTitle}</span>
+                  </div>
+                  <p className="text-[11px] text-slate-500 max-w-xs mx-auto">
+                    {t.qrSubtitle}
+                  </p>
+                  
+                  {/* QR Code Container */}
+                  <div className="bg-stone-50 p-4 rounded-2xl inline-block border border-stone-200 shadow-inner my-2">
+                    <img 
+                      src={qrCodeUrl} 
+                      alt="Hotel QR Code" 
+                      className="w-40 h-40 mx-auto rounded-lg shadow-sm"
+                    />
+                    <span className="block text-[10px] text-slate-400 font-mono mt-2 truncate max-w-[200px] mx-auto">
+                      {hotelUrl}
+                    </span>
+                  </div>
+
+                  <div>
+                    <button 
+                      onClick={downloadQrCode}
+                      className="bg-amber-800 hover:bg-amber-900 text-white px-4 py-2.5 rounded-xl text-xs font-bold shadow-md transition flex items-center justify-center gap-2 mx-auto active:scale-98"
+                    >
+                      <Download className="w-4 h-4" />
+                      <span>{t.qrDownloadBtn}</span>
+                    </button>
+                  </div>
                 </div>
 
                 {/* STEP 1: Hotelinformationen & Kontaktdaten */}
@@ -649,7 +697,7 @@ export default function App() {
                   </div>
                 </div>
 
-                {/* STEP 3 & 4: Bilderverwaltung (Max. 5 Bilder, max. 5 MB pro Bild) for Welcome Screen & Slider */}
+                {/* STEP 3 & 4: Bilderverwaltung (Max. 5 Bilder, max. 5 MB pro Bild) */}
                 <div className="bg-white p-5 rounded-2xl shadow-sm border border-stone-200 space-y-4">
                   <div>
                     <h3 className="font-bold text-xs text-slate-900 flex items-center gap-1.5">
@@ -921,7 +969,7 @@ export default function App() {
         </button>
 
         <button 
-          onClick={() => { setActiveTab('services'); setSelectedCategory, setSelectedCategory(null); }}
+          onClick={() => { setActiveTab('services'); setSelectedCategory(null); }}
           className={`flex flex-col items-center gap-1 text-[10px] font-bold transition ${activeTab === 'services' || selectedCategory ? 'text-amber-800' : 'text-stone-400'}`}
         >
           <Compass className="w-5 h-5" />
