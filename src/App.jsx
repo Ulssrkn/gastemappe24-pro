@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { 
   Wifi, Info, MapPin, Calendar, MessageSquare, 
   Settings, Phone, Plus, Trash2, 
@@ -77,9 +77,9 @@ export default function App() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [copiedWifi, setCopiedWifi] = useState(false);
 
-  // İstatistik Simülasyonu (Gerçek ortamda veritabanından çekilecek)
-  const [scanCount, setScanCount] = useState(142);
-  const [daysLeft] = useState(24); // 30 günlük trial'dan kalan gün
+  // Trial & QR İstatistik State'leri
+  const [scanCount] = useState(142);
+  const [daysLeft] = useState(24);
 
   // Otel Bilgileri
   const [hotel, setHotel] = useState({
@@ -104,7 +104,7 @@ export default function App() {
   const hotelUrl = `https://gastemappe24-pro.vercel.app/?hotel=${hotelSlug}`;
   const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(hotelUrl)}`;
 
-  // Profesyonel Yazdırma / PDF Baskı Merkezi
+  // PDF Baskı Fonksiyonu
   const handlePrint = (format) => {
     const printWindow = window.open('', '_blank');
     printWindow.document.write(`
@@ -620,10 +620,8 @@ export default function App() {
                   </button>
                 </div>
 
-                {/* ÖLÜMCÜL HAMLE: 30 GÜNLÜK TRIAL SAYAÇ & CANLI QR İSTATİSTİĞİ (QR KODUN ÜSTÜNDE) */}
+                {/* 30 GÜNLÜK TRIAL SAYAÇ & CANLI QR İSTATİSTİĞİ */}
                 <div className="bg-gradient-to-br from-slate-900 to-slate-950 text-white p-5 rounded-2xl shadow-xl border border-slate-800 space-y-4">
-                  
-                  {/* Üst Kısım: Trial Sayaç ve Rozet */}
                   <div className="flex items-center justify-between border-b border-slate-800 pb-3">
                     <div className="flex items-center gap-2">
                       <div className="p-2 bg-amber-500/20 text-amber-400 rounded-xl border border-amber-500/30">
@@ -643,7 +641,6 @@ export default function App() {
                     </button>
                   </div>
 
-                  {/* Alt Kısım: QR İstatistik Sayacı */}
                   <div className="grid grid-cols-2 gap-3 pt-1">
                     <div className="bg-white/5 border border-white/10 p-3 rounded-xl flex items-center gap-3">
                       <div className="p-2.5 bg-emerald-500/20 text-emerald-400 rounded-lg">
@@ -665,7 +662,6 @@ export default function App() {
                       </div>
                     </div>
                   </div>
-
                 </div>
 
                 {/* PDF PRINT-CENTER & QR CODE SECTION */}
@@ -678,7 +674,6 @@ export default function App() {
                     {t.qrSubtitle}
                   </p>
                   
-                  {/* QR Code Preview Box */}
                   <div className="bg-stone-50 p-4 rounded-2xl inline-block border border-stone-200 shadow-inner my-2">
                     <img 
                       src={qrCodeUrl} 
@@ -690,7 +685,6 @@ export default function App() {
                     </span>
                   </div>
 
-                  {/* 3 Global Print Buttons (A4, A5, Kartvizit) */}
                   <div className="grid grid-cols-3 gap-2 pt-2">
                     <button 
                       onClick={() => handlePrint('A4')}
@@ -1044,7 +1038,7 @@ export default function App() {
                         <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">Icon Auswählen</label>
                         <select 
                           value={newCat.iconName}
-                          onChange={(e) => setNewCat({ ...new, iconName: e.target.value })}
+                          onChange={(e) => setNewCat({ ...newCat, iconName: e.target.value })}
                           className="w-full p-2.5 text-xs border border-stone-200 rounded-xl bg-white"
                         >
                           <option value="Info">Info (Standard)</option>
