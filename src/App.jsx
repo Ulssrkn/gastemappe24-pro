@@ -7,13 +7,59 @@ import {
   Utensils, Heart, Compass, Coffee, Key, Car, Clock, ShieldCheck, Edit3, Mail, Globe
 } from 'lucide-react';
 
+// Dictionary / Translation Keys Dictionary
+const translations = {
+  de: {
+    welcomeBadge: "Digitale Gästemappe",
+    welcomeButton: "Los geht's",
+    navHome: "Home",
+    navGaestemappe: "Gästemappe",
+    navAdmin: "Admin",
+    schnellzugriffTitle: "Schnellzugriff",
+    wlanTitle: "WLAN",
+    parkingTitle: "Parkplatz",
+    breakfastTitle: "Frühstück",
+    checkInOutTitle: "Check-in / Out",
+    detailBack: "Zurück zur Übersicht",
+    detailLabel: "Detailinfo",
+    adminTitle: "Verwaltung (Admin Panel)",
+    adminUnlockMode: "Bearbeitungsmodus Aktiv",
+    adminLockMode: "Ansichtsmodus (Geschützt)",
+    adminBtnLock: "Sperren",
+    adminBtnUnlock: "Entsperren",
+    sec1Title: "1. Hotelinformationen & Kontaktdaten",
+    sec2Title: "2. Logo hochladen (Max. 2 MB)",
+    sec3Title: "3. Bilderverwaltung (Max. 5 Bilder, max. 5 MB pro Bild)",
+    sec4Title: "4. Bilder für den Willkommensbildschirm und den Startseiten-Slider",
+    sec5Title: "5. Schnellzugriff",
+    sec6Title: "6. Kategorien der Gästemappe",
+    lblHotelName: "Hotel Name",
+    lblGreeting: "Begrüßungstext",
+    lblPhone: "Telefon",
+    lblEmail: "E-Mail",
+    lblAddress: "Adresse",
+    lblWebsite: "Webseite",
+    lblWifiSsid: "WLAN SSID",
+    lblWifiPass: "WLAN Passwort",
+    lblBreakfastTime: "Frühstückszeiten",
+    lblCheckInOut: "Check-in / Check-out Infos",
+    lblParkingInfo: "Parkplatz Info",
+    btnLogoUpload: "Logo Seç / Değiştir",
+    btnAddCategory: "Neue Kategorie hinzufügen",
+    btnCatSubmit: "Kategorie Hinzufügen"
+  }
+};
+
 export default function App() {
-  const [activeTab, setActiveTab] = useState('home'); // 'home', 'services', 'admin'
+  const [lang] = useState('de'); // Future dynamic language setter
+  const t = translations[lang];
+
+  const [activeTab, setActiveTab] = useState('home');
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [showWelcomeScreen, setShowWelcomeScreen] = useState(true);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   
-  // Admin & Güvenlik (Şifre: Rina21091987)
+  // Security lock state
   const [isEditUnlocked, setIsEditUnlocked] = useState(false);
   const [passwordInput, setPasswordInput] = useState('');
   const [passwordError, setPasswordError] = useState(false);
@@ -22,7 +68,7 @@ export default function App() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [copiedWifi, setCopiedWifi] = useState(false);
 
-  // Dinamik Otel Verileri
+  // Hotel Dynamic State
   const [hotel, setHotel] = useState({
     logoUrl: '', 
     name: 'Mein Hotel', 
@@ -43,7 +89,7 @@ export default function App() {
     ]
   });
 
-  // Kategoriler
+  // Dynamic Categories State
   const [categories, setCategories] = useState([
     {
       id: 'gastronomie',
@@ -165,7 +211,7 @@ export default function App() {
     }
   };
 
-  // 1. WELCOME EKRANI
+  // 1. WELCOME SCREEN
   if (showWelcomeScreen) {
     return (
       <div className="min-h-screen bg-slate-950 max-w-md mx-auto shadow-2xl relative overflow-hidden flex flex-col justify-between font-sans">
@@ -202,7 +248,7 @@ export default function App() {
         <div className="relative z-10 p-6 space-y-4 text-white">
           <div className="space-y-1">
             <span className="text-[10px] tracking-widest font-extrabold uppercase bg-amber-500/20 text-amber-300 border border-amber-500/30 px-3 py-1 rounded-full">
-              Digitale Gästemappe
+              {t.welcomeBadge}
             </span>
             <h1 className="text-3xl font-black tracking-tight pt-2 drop-shadow-md">
               {hotel.welcomeGreeting}
@@ -213,7 +259,7 @@ export default function App() {
             onClick={() => setShowWelcomeScreen(false)}
             className="w-full bg-white text-slate-900 py-4 rounded-2xl font-bold text-sm shadow-2xl hover:bg-slate-100 transition flex items-center justify-center gap-2 active:scale-98"
           >
-            <span>Los geht's</span>
+            <span>{t.welcomeButton}</span>
             <ArrowRight className="w-4 h-4" />
           </button>
         </div>
@@ -224,7 +270,7 @@ export default function App() {
   return (
     <div className="min-h-screen bg-stone-50 font-sans text-slate-800 pb-24 max-w-md mx-auto shadow-2xl relative border-x border-slate-200">
       
-      {/* ŞİFRE MODALI */}
+      {/* UNLOCK MODAL */}
       {showUnlockModal && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
           <div className="bg-white w-full max-w-sm p-6 rounded-3xl shadow-2xl space-y-4 animate-fade-in">
@@ -289,21 +335,21 @@ export default function App() {
               onClick={() => { setActiveTab('home'); setSelectedCategory(null); setIsMenuOpen(false); }}
               className={`w-full text-left px-3 py-2 rounded-xl text-xs font-bold transition flex items-center justify-between ${activeTab === 'home' && !selectedCategory ? 'bg-amber-50 text-amber-900' : 'text-slate-600 hover:bg-stone-50'}`}
             >
-              <span>Home</span>
+              <span>{t.navHome}</span>
               <ChevronRight className="w-4 h-4 opacity-50" />
             </button>
             <button 
               onClick={() => { setActiveTab('services'); setSelectedCategory(null); setIsMenuOpen(false); }}
               className={`w-full text-left px-3 py-2 rounded-xl text-xs font-bold transition flex items-center justify-between ${activeTab === 'services' ? 'bg-amber-50 text-amber-900' : 'text-slate-600 hover:bg-stone-50'}`}
             >
-              <span>Gästemappe & Kategorien</span>
+              <span>{t.navGaestemappe}</span>
               <ChevronRight className="w-4 h-4 opacity-50" />
             </button>
             <button 
               onClick={() => { setActiveTab('admin'); setSelectedCategory(null); setIsMenuOpen(false); }}
               className={`w-full text-left px-3 py-2 rounded-xl text-xs font-bold transition flex items-center justify-between ${activeTab === 'admin' ? 'bg-amber-800 text-white' : 'text-amber-800 bg-amber-50/50 hover:bg-amber-100/50'}`}
             >
-              <span>⚙️ Admin Panel</span>
+              <span>⚙️ {t.navAdmin}</span>
             </button>
           </div>
         )}
@@ -312,14 +358,14 @@ export default function App() {
       {/* MAIN CONTENT */}
       <main className="p-5 space-y-5">
         
-        {/* KATEGORİ DETAYI */}
+        {/* CATEGORY DETAILS */}
         {selectedCategory ? (
           <div className="space-y-4 animate-fade-in">
             <button 
               onClick={() => setSelectedCategory(null)}
               className="text-xs font-bold text-amber-800 flex items-center gap-1 hover:underline mb-2"
             >
-              &larr; Zurück zur Übersicht
+              &larr; {t.detailBack}
             </button>
 
             <div className="bg-white p-6 rounded-2xl shadow-sm border border-stone-200 space-y-4">
@@ -328,7 +374,7 @@ export default function App() {
                   {renderCategoryIcon(selectedCategory.iconName)}
                 </div>
                 <div>
-                  <span className="text-[10px] bg-amber-100 text-amber-900 px-2 py-0.5 rounded-full font-bold uppercase">Detailinfo</span>
+                  <span className="text-[10px] bg-amber-100 text-amber-900 px-2 py-0.5 rounded-full font-bold uppercase">{t.detailLabel}</span>
                   <h2 className="text-lg font-black mt-1 text-slate-900">{selectedCategory.title}</h2>
                 </div>
               </div>
@@ -337,7 +383,7 @@ export default function App() {
           </div>
         ) : (
           <>
-            {/* 1. HOME SEKMESİ */}
+            {/* 1. HOME TAB */}
             {activeTab === 'home' && (
               <div className="space-y-5 animate-fade-in">
                 {/* Slider */}
@@ -366,16 +412,16 @@ export default function App() {
                   </div>
                 </div>
 
-                {/* SCHNELLZUGRIFF KARTLARI */}
+                {/* SCHNELLZUGRIFF CARDS */}
                 <div className="space-y-3">
-                  <h3 className="text-xs font-bold text-stone-500 uppercase tracking-wider">Schnellzugriff</h3>
+                  <h3 className="text-xs font-bold text-stone-500 uppercase tracking-wider">{t.schnellzugriffTitle}</h3>
                   
                   <div className="grid grid-cols-2 gap-3">
-                    {/* WLAN KARTI */}
+                    {/* WLAN */}
                     <div className="bg-white p-4 rounded-2xl shadow-sm border border-stone-200/80 space-y-2 flex flex-col justify-between">
                       <div className="flex items-center gap-2 text-amber-800">
                         <Wifi className="w-5 h-5" />
-                        <span className="font-bold text-xs text-slate-900">WLAN</span>
+                        <span className="font-bold text-xs text-slate-900">{t.wlanTitle}</span>
                       </div>
                       <div className="text-[11px] text-slate-500 font-mono bg-stone-50 p-2 rounded-lg border">
                         <div>SSID: <b>{hotel.wifiSsid}</b></div>
@@ -391,29 +437,29 @@ export default function App() {
                       </div>
                     </div>
 
-                    {/* PARKPLATZ KARTI */}
+                    {/* PARKPLATZ */}
                     <div className="bg-white p-4 rounded-2xl shadow-sm border border-stone-200/80 space-y-2 flex flex-col justify-between">
                       <div className="flex items-center gap-2 text-amber-800">
                         <Car className="w-5 h-5" />
-                        <span className="font-bold text-xs text-slate-900">Parkplatz</span>
+                        <span className="font-bold text-xs text-slate-900">{t.parkingTitle}</span>
                       </div>
                       <p className="text-[11px] text-slate-600 leading-snug">{hotel.parkingInfo}</p>
                     </div>
 
-                    {/* FRÜHSTÜCK KARTI */}
+                    {/* FRÜHSTÜCK */}
                     <div className="bg-white p-4 rounded-2xl shadow-sm border border-stone-200/80 space-y-2 flex flex-col justify-between">
                       <div className="flex items-center gap-2 text-amber-800">
                         <Coffee className="w-5 h-5" />
-                        <span className="font-bold text-xs text-slate-900">Frühstück</span>
+                        <span className="font-bold text-xs text-slate-900">{t.breakfastTitle}</span>
                       </div>
                       <p className="text-[11px] text-slate-600 font-medium">{hotel.breakfastTime}</p>
                     </div>
 
-                    {/* CHECK-IN / OUT KARTI */}
+                    {/* CHECK-IN / OUT */}
                     <div className="bg-white p-4 rounded-2xl shadow-sm border border-stone-200/80 space-y-2 flex flex-col justify-between">
                       <div className="flex items-center gap-2 text-amber-800">
                         <Clock className="w-5 h-5" />
-                        <span className="font-bold text-xs text-slate-900">Check-in / Out</span>
+                        <span className="font-bold text-xs text-slate-900">{t.checkInOutTitle}</span>
                       </div>
                       <p className="text-[10px] text-slate-600 leading-snug">{hotel.checkInOut}</p>
                     </div>
@@ -422,10 +468,10 @@ export default function App() {
               </div>
             )}
 
-            {/* 2. GÄSTEMAPPE KATEGORİLERİ */}
+            {/* 2. GÄSTEMAPPE CATEGORIES */}
             {activeTab === 'services' && (
               <div className="space-y-4 animate-fade-in">
-                <h2 className="text-sm font-bold text-slate-900 uppercase tracking-wider">Gästemappe & Kategorien</h2>
+                <h2 className="text-sm font-bold text-slate-900 uppercase tracking-wider">{t.navGaestemappe}</h2>
                 <div className="grid grid-cols-1 gap-2.5">
                   {categories.map((cat) => (
                     <div 
@@ -449,14 +495,14 @@ export default function App() {
               </div>
             )}
 
-            {/* 3. ADMIN PANELİ (TAM İSTEDİĞİN SIRALAMADA) */}
+            {/* 3. ADMIN PANEL (STRICT 6-STEP STRUCTURE) */}
             {activeTab === 'admin' && (
               <div className="space-y-5 animate-fade-in">
                 <div className="bg-amber-800 text-white p-4 rounded-2xl shadow-md flex justify-between items-center">
                   <div>
-                    <h2 className="font-bold text-sm">Verwaltung (Admin Panel)</h2>
+                    <h2 className="font-bold text-sm">{t.adminTitle}</h2>
                     <p className="text-[10px] text-amber-200">
-                      {isEditUnlocked ? '🔓 Bearbeitungsmodus Aktiv' : '🔒 Ansichtsmodus (Geschützt)'}
+                      {isEditUnlocked ? `🔓 ${t.adminUnlockMode}` : `🔒 ${t.adminLockMode}`}
                     </p>
                   </div>
                   <button 
@@ -467,18 +513,18 @@ export default function App() {
                     className="bg-white/20 text-xs px-3 py-1.5 rounded-lg font-bold hover:bg-white/30 transition flex items-center gap-1.5"
                   >
                     {isEditUnlocked ? <Unlock className="w-3.5 h-3.5" /> : <Lock className="w-3.5 h-3.5" />}
-                    {isEditUnlocked ? 'Sperren' : 'Entsperren'}
+                    {isEditUnlocked ? t.adminBtnLock : t.adminBtnUnlock}
                   </button>
                 </div>
 
-                {/* 1. HOTEL DETAILS & KONTAKT */}
+                {/* STEP 1: Hotelinformationen & Kontaktdaten */}
                 <div className="bg-white p-5 rounded-2xl shadow-sm border border-stone-200 space-y-3">
                   <h3 className="font-bold text-xs text-slate-900 flex items-center gap-1.5">
-                    <Edit3 className="w-4 h-4 text-amber-800" /> 1. Hotel Details & Kontakt
+                    <Edit3 className="w-4 h-4 text-amber-800" /> {t.sec1Title}
                   </h3>
 
                   <div>
-                    <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">Hotel Name</label>
+                    <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">{t.lblHotelName}</label>
                     <input 
                       type="text" 
                       value={hotel.name}
@@ -489,7 +535,7 @@ export default function App() {
                   </div>
 
                   <div>
-                    <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">Begrüßungstext</label>
+                    <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">{t.lblGreeting}</label>
                     <input 
                       type="text" 
                       value={hotel.welcomeGreeting}
@@ -501,7 +547,7 @@ export default function App() {
 
                   <div className="grid grid-cols-2 gap-2">
                     <div>
-                      <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">Telefon</label>
+                      <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">{t.lblPhone}</label>
                       <input 
                         type="text" 
                         value={hotel.phone}
@@ -511,7 +557,7 @@ export default function App() {
                       />
                     </div>
                     <div>
-                      <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">E-Mail</label>
+                      <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">{t.lblEmail}</label>
                       <input 
                         type="text" 
                         value={hotel.email}
@@ -523,7 +569,7 @@ export default function App() {
                   </div>
 
                   <div>
-                    <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">Adresse</label>
+                    <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">{t.lblAddress}</label>
                     <input 
                       type="text" 
                       value={hotel.address}
@@ -534,7 +580,7 @@ export default function App() {
                   </div>
 
                   <div>
-                    <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">Webseite</label>
+                    <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">{t.lblWebsite}</label>
                     <input 
                       type="text" 
                       value={hotel.website}
@@ -545,10 +591,10 @@ export default function App() {
                   </div>
                 </div>
 
-                {/* 2. OTEL LOGOSU (MAX 2MB) */}
+                {/* STEP 2: Logo hochladen (Max. 2 MB) */}
                 <div className="bg-white p-5 rounded-2xl shadow-sm border border-stone-200 space-y-3">
                   <h3 className="font-bold text-xs text-slate-900 flex items-center gap-1.5">
-                    <Upload className="w-4 h-4 text-amber-800" /> 2. Otel Logosu (Max 2MB)
+                    <Upload className="w-4 h-4 text-amber-800" /> {t.sec2Title}
                   </h3>
                   <div className="flex items-center gap-4">
                     {hotel.logoUrl ? (
@@ -559,19 +605,21 @@ export default function App() {
                       </div>
                     )}
                     <label className={`px-3 py-2 rounded-xl text-xs font-bold transition ${isEditUnlocked ? 'bg-stone-100 hover:bg-stone-200 text-slate-700 cursor-pointer' : 'bg-stone-100 text-stone-400 cursor-not-allowed'}`}>
-                      Logo Seç / Değiştir
+                      {t.btnLogoUpload}
                       <input type="file" accept="image/*" onChange={handleLogoUpload} className="hidden" />
                     </label>
                   </div>
                 </div>
 
-                {/* 3. BİLDER YÜKLEME (SLIDER FOTOS - MAX 5) */}
+                {/* STEP 3 & 4: Bilderverwaltung (Max. 5 Bilder, max. 5 MB pro Bild) for Welcome Screen & Slider */}
                 <div className="bg-white p-5 rounded-2xl shadow-sm border border-stone-200 space-y-4">
                   <div>
                     <h3 className="font-bold text-xs text-slate-900 flex items-center gap-1.5">
-                      <ImageIcon className="w-4 h-4 text-amber-800" /> 3. Bilder yükleme (Max 5 Fotos, max 5MB)
+                      <ImageIcon className="w-4 h-4 text-amber-800" /> {t.sec3Title}
                     </h3>
-                    <p className="text-[11px] text-slate-500 mt-1">Karşılama ekranı ve ana sayfa slider görselleridir.</p>
+                    <p className="text-[11px] text-slate-500 mt-1 font-medium text-amber-800">
+                      {t.sec4Title}
+                    </p>
                   </div>
 
                   {uploadError && (
@@ -612,15 +660,15 @@ export default function App() {
                   </div>
                 </div>
 
-                {/* 4. HIZLI ERİŞİM (SCHNELLZUGRIFF) */}
+                {/* STEP 5: Schnellzugriff */}
                 <div className="bg-white p-5 rounded-2xl shadow-sm border border-stone-200 space-y-3">
                   <h3 className="font-bold text-xs text-slate-900 flex items-center gap-1.5">
-                    <Wifi className="w-4 h-4 text-amber-800" /> 4. Hızlı Erişim (Schnellzugriff-Daten)
+                    <Wifi className="w-4 h-4 text-amber-800" /> {t.sec5Title}
                   </h3>
 
                   <div className="grid grid-cols-2 gap-2">
                     <div>
-                      <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">WLAN SSID</label>
+                      <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">{t.lblWifiSsid}</label>
                       <input 
                         type="text" 
                         value={hotel.wifiSsid}
@@ -630,7 +678,7 @@ export default function App() {
                       />
                     </div>
                     <div>
-                      <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">WLAN Passwort</label>
+                      <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">{t.lblWifiPass}</label>
                       <input 
                         type="text" 
                         value={hotel.wifiPass}
@@ -642,7 +690,7 @@ export default function App() {
                   </div>
 
                   <div>
-                    <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">Frühstückszeiten</label>
+                    <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">{t.lblBreakfastTime}</label>
                     <input 
                       type="text" 
                       value={hotel.breakfastTime}
@@ -653,7 +701,7 @@ export default function App() {
                   </div>
 
                   <div>
-                    <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">Check-in / Check-out Infos</label>
+                    <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">{t.lblCheckInOut}</label>
                     <input 
                       type="text" 
                       value={hotel.checkInOut}
@@ -664,7 +712,7 @@ export default function App() {
                   </div>
 
                   <div>
-                    <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">Parkplatz Info</label>
+                    <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">{t.lblParkingInfo}</label>
                     <input 
                       type="text" 
                       value={hotel.parkingInfo}
@@ -675,10 +723,10 @@ export default function App() {
                   </div>
                 </div>
 
-                {/* 5. KATEGORİ YÖNETİMİ (KATEGORIE) */}
+                {/* STEP 6: Kategorien der Gästemappe */}
                 <div className="bg-white p-5 rounded-2xl shadow-sm border border-stone-200 space-y-4">
                   <h3 className="font-bold text-xs text-slate-900 flex items-center gap-1.5">
-                    <Compass className="w-4 h-4 text-amber-800" /> 5. Kategorie (Gästemappe verwalten)
+                    <Compass className="w-4 h-4 text-amber-800" /> {t.sec6Title}
                   </h3>
 
                   <div className="space-y-2">
@@ -706,7 +754,7 @@ export default function App() {
 
                   {isEditUnlocked ? (
                     <form onSubmit={handleAddCategory} className="pt-3 border-t border-stone-100 space-y-3">
-                      <h4 className="font-bold text-[11px] text-amber-800 uppercase">Neue Kategorie hinzufügen</h4>
+                      <h4 className="font-bold text-[11px] text-amber-800 uppercase">{t.btnAddCategory}</h4>
                       <div>
                         <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">Titel</label>
                         <input 
@@ -753,7 +801,7 @@ export default function App() {
                         </select>
                       </div>
                       <button type="submit" className="w-full bg-amber-800 text-white py-2.5 rounded-xl text-xs font-bold shadow-md hover:bg-amber-900 transition flex items-center justify-center gap-1">
-                        <Plus className="w-4 h-4" /> Kategorie Hinzufügen
+                        <Plus className="w-4 h-4" /> {t.btnCatSubmit}
                       </button>
                     </form>
                   ) : (
@@ -775,7 +823,7 @@ export default function App() {
           className={`flex flex-col items-center gap-1 text-[10px] font-bold transition ${activeTab === 'home' && !selectedCategory ? 'text-amber-800' : 'text-stone-400'}`}
         >
           <Info className="w-5 h-5" />
-          <span>Home</span>
+          <span>{t.navHome}</span>
         </button>
 
         <button 
@@ -783,7 +831,7 @@ export default function App() {
           className={`flex flex-col items-center gap-1 text-[10px] font-bold transition ${activeTab === 'services' || selectedCategory ? 'text-amber-800' : 'text-stone-400'}`}
         >
           <Compass className="w-5 h-5" />
-          <span>Gästemappe</span>
+          <span>{t.navGaestemappe}</span>
         </button>
 
         <button 
@@ -791,7 +839,7 @@ export default function App() {
           className={`flex flex-col items-center gap-1 text-[10px] font-bold transition ${activeTab === 'admin' ? 'text-amber-800 font-extrabold' : 'text-stone-400'}`}
         >
           <Settings className="w-5 h-5" />
-          <span>Admin</span>
+          <span>{t.navAdmin}</span>
         </button>
       </nav>
 
