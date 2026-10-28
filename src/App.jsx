@@ -4,7 +4,7 @@ import {
   Settings, Phone, Plus, Trash2, 
   Check, Image as ImageIcon, Copy,
   ChevronRight, CloudSun, Menu, X, ArrowRight, Upload, AlertCircle, Lock, Unlock,
-  Utensils, Heart, Compass, Coffee, Key, Car, Clock, ShieldCheck, Edit3, Mail, Globe, Sparkles
+  Utensils, Heart, Compass, Coffee, Key, Car, Clock, ShieldCheck, Edit3, Mail, Globe
 } from 'lucide-react';
 
 export default function App() {
@@ -43,7 +43,7 @@ export default function App() {
     ]
   });
 
-  // Admin Tarafından Tamamen Yönetilebilen Dinamik Kategoriler
+  // Kategoriler
   const [categories, setCategories] = useState([
     {
       id: 'gastronomie',
@@ -68,9 +68,7 @@ export default function App() {
     }
   ]);
 
-  // Yeni Kategori Ekleme State'leri
   const [newCat, setNewCat] = useState({ title: '', subtitle: '', content: '', iconName: 'Info' });
-
   const [uploadError, setUploadError] = useState('');
   const [uploadSuccess, setUploadSuccess] = useState('');
 
@@ -92,7 +90,6 @@ export default function App() {
     }
   };
 
-  // Yeni Kategori Ekleme Fonksiyonu
   const handleAddCategory = (e) => {
     e.preventDefault();
     if (!newCat.title.trim()) return;
@@ -109,12 +106,10 @@ export default function App() {
     setNewCat({ title: '', subtitle: '', content: '', iconName: 'Info' });
   };
 
-  // Kategori Silme Fonksiyonu
   const handleDeleteCategory = (id) => {
     setCategories(categories.filter(cat => cat.id !== id));
   };
 
-  // İkon Seçici Yardımcı Fonksiyon
   const renderCategoryIcon = (iconName) => {
     switch (iconName) {
       case 'Utensils': return <Utensils className="w-5 h-5 text-amber-800" />;
@@ -427,7 +422,7 @@ export default function App() {
               </div>
             )}
 
-            {/* 2. GÄSTEMAPPE KATEGORİLERİ (DİNAMİK LİSTE) */}
+            {/* 2. GÄSTEMAPPE KATEGORİLERİ */}
             {activeTab === 'services' && (
               <div className="space-y-4 animate-fade-in">
                 <h2 className="text-sm font-bold text-slate-900 uppercase tracking-wider">Gästemappe & Kategorien</h2>
@@ -454,7 +449,7 @@ export default function App() {
               </div>
             )}
 
-            {/* 3. ADMIN PANELİ (KATEGORİ YÖNETİMİ EKLENDİ) */}
+            {/* 3. ADMIN PANELİ (TAM İSTEDİĞİN SIRALAMADA) */}
             {activeTab === 'admin' && (
               <div className="space-y-5 animate-fade-in">
                 <div className="bg-amber-800 text-white p-4 rounded-2xl shadow-md flex justify-between items-center">
@@ -476,98 +471,10 @@ export default function App() {
                   </button>
                 </div>
 
-                {/* GÄSTEMAPPE KATEGORİLERİNİ YÖNETME & YENİ EKLEME */}
-                <div className="bg-white p-5 rounded-2xl shadow-sm border border-stone-200 space-y-4">
-                  <h3 className="font-bold text-xs text-slate-900 flex items-center gap-1.5">
-                    <Compass className="w-4 h-4 text-amber-800" /> Gästemappe Kategorien verwalten
-                  </h3>
-
-                  {/* Mevcut Kategoriler Listesi ve Silme */}
-                  <div className="space-y-2">
-                    {categories.map((cat) => (
-                      <div key={cat.id} className="flex items-center justify-between p-3 bg-stone-50 rounded-xl border border-stone-200 text-xs">
-                        <div className="flex items-center gap-2">
-                          {renderCategoryIcon(cat.iconName)}
-                          <div>
-                            <span className="font-bold text-slate-900 block">{cat.title}</span>
-                            <span className="text-[10px] text-slate-500">{cat.subtitle}</span>
-                          </div>
-                        </div>
-                        {isEditUnlocked && (
-                          <button 
-                            onClick={() => handleDeleteCategory(cat.id)}
-                            className="bg-rose-50 text-rose-600 hover:bg-rose-100 p-1.5 rounded-lg transition"
-                            title="Löschen"
-                          >
-                            <Trash2 className="w-3.5 h-3.5" />
-                          </button>
-                        )}
-                      </div>
-                    ))}
-                  </div>
-
-                  {/* Yeni Kategori Ekleme Formu */}
-                  {isEditUnlocked ? (
-                    <form onSubmit={handleAddCategory} className="pt-3 border-t border-stone-100 space-y-3">
-                      <h4 className="font-bold text-[11px] text-amber-800 uppercase">Neue Kategorie hinzufügen</h4>
-                      <div>
-                        <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">Titel</label>
-                        <input 
-                          type="text" 
-                          placeholder="z.B. Pool & Wellness"
-                          value={newCat.title}
-                          onChange={(e) => setNewCat({ ...newCat, title: e.target.value })}
-                          className="w-full p-2.5 text-xs border border-stone-200 rounded-xl"
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">Untertitel</label>
-                        <input 
-                          type="text" 
-                          placeholder="z.B. Öffnungszeiten & Regeln"
-                          value={newCat.subtitle}
-                          onChange={(e) => setNewCat({ ...newCat, subtitle: e.target.value })}
-                          className="w-full p-2.5 text-xs border border-stone-200 rounded-xl"
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">Inhalt / Details</label>
-                        <textarea 
-                          rows="2"
-                          placeholder="Ausführliche Beschreibung..."
-                          value={newCat.content}
-                          onChange={(e) => setNewCat({ ...newCat, content: e.target.value })}
-                          className="w-full p-2.5 text-xs border border-stone-200 rounded-xl"
-                        ></textarea>
-                      </div>
-                      <div>
-                        <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">Icon Auswählen</label>
-                        <select 
-                          value={newCat.iconName}
-                          onChange={(e) => setNewCat({ ...newCat, iconName: e.target.value })}
-                          className="w-full p-2.5 text-xs border border-stone-200 rounded-xl bg-white"
-                        >
-                          <option value="Info">Info (Standard)</option>
-                          <option value="Utensils">Gastronomie (Utensils)</option>
-                          <option value="Heart">Wellness (Heart)</option>
-                          <option value="Compass">Umgebung (Compass)</option>
-                          <option value="Coffee">Frühstück (Coffee)</option>
-                          <option value="Car">Parken (Car)</option>
-                        </select>
-                      </div>
-                      <button type="submit" className="w-full bg-amber-800 text-white py-2.5 rounded-xl text-xs font-bold shadow-md hover:bg-amber-900 transition flex items-center justify-center gap-1">
-                        <Plus className="w-4 h-4" /> Kategorie Hinzufügen
-                      </button>
-                    </form>
-                  ) : (
-                    <p className="text-[10px] text-stone-400 italic text-center pt-2">Neue Kategorien hinzufügen und löschen gesperrt. Bitte zuerst oben "Entsperren".</p>
-                  )}
-                </div>
-
-                {/* OTEL BİLGİLERİ VE İLETİŞİM */}
+                {/* 1. HOTEL DETAILS & KONTAKT */}
                 <div className="bg-white p-5 rounded-2xl shadow-sm border border-stone-200 space-y-3">
                   <h3 className="font-bold text-xs text-slate-900 flex items-center gap-1.5">
-                    <Edit3 className="w-4 h-4 text-amber-800" /> Hotel Details & Kontakt
+                    <Edit3 className="w-4 h-4 text-amber-800" /> 1. Hotel Details & Kontakt
                   </h3>
 
                   <div>
@@ -638,10 +545,77 @@ export default function App() {
                   </div>
                 </div>
 
-                {/* SCHNELLZUGRIFF VERİLERİ */}
+                {/* 2. OTEL LOGOSU (MAX 2MB) */}
                 <div className="bg-white p-5 rounded-2xl shadow-sm border border-stone-200 space-y-3">
                   <h3 className="font-bold text-xs text-slate-900 flex items-center gap-1.5">
-                    <Wifi className="w-4 h-4 text-amber-800" /> Schnellzugriff-Daten
+                    <Upload className="w-4 h-4 text-amber-800" /> 2. Otel Logosu (Max 2MB)
+                  </h3>
+                  <div className="flex items-center gap-4">
+                    {hotel.logoUrl ? (
+                      <img src={hotel.logoUrl} alt="Logo Prev" className="w-12 h-12 rounded-xl object-cover border" />
+                    ) : (
+                      <div className="w-12 h-12 rounded-xl bg-stone-100 border border-dashed flex items-center justify-center text-[10px] text-stone-400">
+                        No Logo
+                      </div>
+                    )}
+                    <label className={`px-3 py-2 rounded-xl text-xs font-bold transition ${isEditUnlocked ? 'bg-stone-100 hover:bg-stone-200 text-slate-700 cursor-pointer' : 'bg-stone-100 text-stone-400 cursor-not-allowed'}`}>
+                      Logo Seç / Değiştir
+                      <input type="file" accept="image/*" onChange={handleLogoUpload} className="hidden" />
+                    </label>
+                  </div>
+                </div>
+
+                {/* 3. BİLDER YÜKLEME (SLIDER FOTOS - MAX 5) */}
+                <div className="bg-white p-5 rounded-2xl shadow-sm border border-stone-200 space-y-4">
+                  <div>
+                    <h3 className="font-bold text-xs text-slate-900 flex items-center gap-1.5">
+                      <ImageIcon className="w-4 h-4 text-amber-800" /> 3. Bilder yükleme (Max 5 Fotos, max 5MB)
+                    </h3>
+                    <p className="text-[11px] text-slate-500 mt-1">Karşılama ekranı ve ana sayfa slider görselleridir.</p>
+                  </div>
+
+                  {uploadError && (
+                    <div className="bg-rose-50 border border-rose-200 text-rose-700 p-3 rounded-xl text-xs flex items-center gap-2">
+                      <AlertCircle className="w-4 h-4 shrink-0" />
+                      <span>{uploadError}</span>
+                    </div>
+                  )}
+                  {uploadSuccess && (
+                    <div className="bg-emerald-50 border border-emerald-200 text-emerald-700 p-3 rounded-xl text-xs flex items-center gap-2">
+                      <Check className="w-4 h-4 shrink-0" />
+                      <span>{uploadSuccess}</span>
+                    </div>
+                  )}
+
+                  <div className="grid grid-cols-3 gap-2">
+                    {hotel.images.map((img, index) => (
+                      <div key={index} className="relative rounded-xl overflow-hidden h-20 group border border-slate-200">
+                        <img src={img} alt={`Upload ${index}`} className="w-full h-full object-cover" />
+                        {isEditUnlocked && (
+                          <button 
+                            onClick={() => handleRemoveImage(index)}
+                            className="absolute top-1 right-1 bg-rose-600 text-white p-1 rounded-full shadow-md hover:bg-rose-700 transition"
+                          >
+                            <Trash2 className="w-3 h-3" />
+                          </button>
+                        )}
+                      </div>
+                    ))}
+
+                    {hotel.images.length < 5 && (
+                      <label className={`border-2 border-dashed border-stone-300 rounded-xl h-20 flex flex-col items-center justify-center transition ${isEditUnlocked ? 'cursor-pointer hover:border-amber-800 hover:bg-amber-50/50' : 'cursor-not-allowed opacity-60'}`}>
+                        <Plus className="w-5 h-5 text-stone-400" />
+                        <span className="text-[10px] text-stone-500 font-medium mt-1">Foto hinzufügen</span>
+                        <input type="file" accept="image/*" multiple onChange={handleImageUpload} className="hidden" disabled={!isEditUnlocked} />
+                      </label>
+                    )}
+                  </div>
+                </div>
+
+                {/* 4. HIZLI ERİŞİM (SCHNELLZUGRIFF) */}
+                <div className="bg-white p-5 rounded-2xl shadow-sm border border-stone-200 space-y-3">
+                  <h3 className="font-bold text-xs text-slate-900 flex items-center gap-1.5">
+                    <Wifi className="w-4 h-4 text-amber-800" /> 4. Hızlı Erişim (Schnellzugriff-Daten)
                   </h3>
 
                   <div className="grid grid-cols-2 gap-2">
@@ -701,72 +675,92 @@ export default function App() {
                   </div>
                 </div>
 
-                {/* LOGO YÖNETİMİ */}
-                <div className="bg-white p-5 rounded-2xl shadow-sm border border-stone-200 space-y-3">
-                  <h3 className="font-bold text-xs text-slate-900 flex items-center gap-1.5">
-                    <Upload className="w-4 h-4 text-amber-800" /> Otel Logosu (Max 2MB)
-                  </h3>
-                  <div className="flex items-center gap-4">
-                    {hotel.logoUrl ? (
-                      <img src={hotel.logoUrl} alt="Logo Prev" className="w-12 h-12 rounded-xl object-cover border" />
-                    ) : (
-                      <div className="w-12 h-12 rounded-xl bg-stone-100 border border-dashed flex items-center justify-center text-[10px] text-stone-400">
-                        No Logo
-                      </div>
-                    )}
-                    <label className={`px-3 py-2 rounded-xl text-xs font-bold transition ${isEditUnlocked ? 'bg-stone-100 hover:bg-stone-200 text-slate-700 cursor-pointer' : 'bg-stone-100 text-stone-400 cursor-not-allowed'}`}>
-                      Logo Seç / Değiştir
-                      <input type="file" accept="image/*" onChange={handleLogoUpload} className="hidden" />
-                    </label>
-                  </div>
-                </div>
-
-                {/* FOTOĞRAF YÖNETİMİ */}
+                {/* 5. KATEGORİ YÖNETİMİ (KATEGORIE) */}
                 <div className="bg-white p-5 rounded-2xl shadow-sm border border-stone-200 space-y-4">
-                  <div>
-                    <h3 className="font-bold text-xs text-slate-900 flex items-center gap-1.5">
-                      <ImageIcon className="w-4 h-4 text-amber-800" /> Slider Fotos (Max 5 Fotos)
-                    </h3>
-                    <p className="text-[11px] text-slate-500 mt-1">Sadece ana sayfa slider görselleridir.</p>
-                  </div>
+                  <h3 className="font-bold text-xs text-slate-900 flex items-center gap-1.5">
+                    <Compass className="w-4 h-4 text-amber-800" /> 5. Kategorie (Gästemappe verwalten)
+                  </h3>
 
-                  {uploadError && (
-                    <div className="bg-rose-50 border border-rose-200 text-rose-700 p-3 rounded-xl text-xs flex items-center gap-2">
-                      <AlertCircle className="w-4 h-4 shrink-0" />
-                      <span>{uploadError}</span>
-                    </div>
-                  )}
-                  {uploadSuccess && (
-                    <div className="bg-emerald-50 border border-emerald-200 text-emerald-700 p-3 rounded-xl text-xs flex items-center gap-2">
-                      <Check className="w-4 h-4 shrink-0" />
-                      <span>{uploadSuccess}</span>
-                    </div>
-                  )}
-
-                  <div className="grid grid-cols-3 gap-2">
-                    {hotel.images.map((img, index) => (
-                      <div key={index} className="relative rounded-xl overflow-hidden h-20 group border border-slate-200">
-                        <img src={img} alt={`Upload ${index}`} className="w-full h-full object-cover" />
+                  <div className="space-y-2">
+                    {categories.map((cat) => (
+                      <div key={cat.id} className="flex items-center justify-between p-3 bg-stone-50 rounded-xl border border-stone-200 text-xs">
+                        <div className="flex items-center gap-2">
+                          {renderCategoryIcon(cat.iconName)}
+                          <div>
+                            <span className="font-bold text-slate-900 block">{cat.title}</span>
+                            <span className="text-[10px] text-slate-500">{cat.subtitle}</span>
+                          </div>
+                        </div>
                         {isEditUnlocked && (
                           <button 
-                            onClick={() => handleRemoveImage(index)}
-                            className="absolute top-1 right-1 bg-rose-600 text-white p-1 rounded-full shadow-md hover:bg-rose-700 transition"
+                            onClick={() => handleDeleteCategory(cat.id)}
+                            className="bg-rose-50 text-rose-600 hover:bg-rose-100 p-1.5 rounded-lg transition"
+                            title="Löschen"
                           >
-                            <Trash2 className="w-3 h-3" />
+                            <Trash2 className="w-3.5 h-3.5" />
                           </button>
                         )}
                       </div>
                     ))}
-
-                    {hotel.images.length < 5 && (
-                      <label className={`border-2 border-dashed border-stone-300 rounded-xl h-20 flex flex-col items-center justify-center transition ${isEditUnlocked ? 'cursor-pointer hover:border-amber-800 hover:bg-amber-50/50' : 'cursor-not-allowed opacity-60'}`}>
-                        <Plus className="w-5 h-5 text-stone-400" />
-                        <span className="text-[10px] text-stone-500 font-medium mt-1">Foto hinzufügen</span>
-                        <input type="file" accept="image/*" multiple onChange={handleImageUpload} className="hidden" disabled={!isEditUnlocked} />
-                      </label>
-                    )}
                   </div>
+
+                  {isEditUnlocked ? (
+                    <form onSubmit={handleAddCategory} className="pt-3 border-t border-stone-100 space-y-3">
+                      <h4 className="font-bold text-[11px] text-amber-800 uppercase">Neue Kategorie hinzufügen</h4>
+                      <div>
+                        <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">Titel</label>
+                        <input 
+                          type="text" 
+                          placeholder="z.B. Pool & Wellness"
+                          value={newCat.title}
+                          onChange={(e) => setNewCat({ ...newCat, title: e.target.value })}
+                          className="w-full p-2.5 text-xs border border-stone-200 rounded-xl"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">Untertitel</label>
+                        <input 
+                          type="text" 
+                          placeholder="z.B. Öffnungszeiten & Regeln"
+                          value={newCat.subtitle}
+                          onChange={(e) => setNewCat({ ...newCat, subtitle: e.target.value })}
+                          className="w-full p-2.5 text-xs border border-stone-200 rounded-xl"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">Inhalt / Details</label>
+                        <textarea 
+                          rows="2"
+                          placeholder="Ausführliche Beschreibung..."
+                          value={newCat.content}
+                          onChange={(e) => setNewCat({ ...newCat, content: e.target.value })}
+                          className="w-full p-2.5 text-xs border border-stone-200 rounded-xl"
+                        ></textarea>
+                      </div>
+                      <div>
+                        <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">Icon Auswählen</label>
+                        <select 
+                          value={newCat.iconName}
+                          onChange={(e) => setNewCat({ ...newCat, iconName: e.target.value })}
+                          className="w-full p-2.5 text-xs border border-stone-200 rounded-xl bg-white"
+                        >
+                          <option value="Info">Info (Standard)</option>
+                          <option value="Utensils">Gastronomie (Utensils)</option>
+                          <option value="Heart">Wellness (Heart)</option>
+                          <option value="Compass">Umgebung (Compass)</option>
+                          <option value="Coffee">Frühstück (Coffee)</option>
+                          <option value="Car">Parken (Car)</option>
+                        </select>
+                      </div>
+                      <button type="submit" className="w-full bg-amber-800 text-white py-2.5 rounded-xl text-xs font-bold shadow-md hover:bg-amber-900 transition flex items-center justify-center gap-1">
+                        <Plus className="w-4 h-4" /> Kategorie Hinzufügen
+                      </button>
+                    </form>
+                  ) : (
+                    <p className="text-[10px] text-stone-400 italic text-center pt-2">Kategorien bearbeiten gesperrt. Bitte zuerst oben "Entsperren".</p>
+                  )}
                 </div>
+
               </div>
             )}
           </>
