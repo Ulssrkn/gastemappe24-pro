@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import { 
   Wifi, Info, MapPin, Calendar, MessageSquare, 
   Settings, Phone, Plus, Trash2, 
-  Check, Image as ImageIcon,
+  Check, Image as ImageIcon, Copy,
   ChevronRight, CloudSun, Menu, X, ArrowRight, Upload, AlertCircle, Lock, Unlock,
-  Utensils, Heart, Compass, Coffee
+  Utensils, Heart, Compass, Coffee, Key, Car, Clock, ShieldCheck
 } from 'lucide-react';
 
 export default function App() {
@@ -20,7 +20,9 @@ export default function App() {
   const [showUnlockModal, setShowUnlockModal] = useState(false);
 
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [copiedWifi, setCopiedWifi] = useState(false);
 
+  // Dinamik Otel Verileri
   const [hotel, setHotel] = useState({
     logoUrl: '', 
     name: 'Hotel & Café Ritter', 
@@ -28,6 +30,9 @@ export default function App() {
     wifiSsid: 'Ritter_Guest_WiFi',
     wifiPass: 'ritter2026',
     phone: '+49 6326 9720',
+    breakfastTime: '07:00 - 10:30 Uhr',
+    checkInOut: 'Check-in: ab 15:00 | Check-out: bis 11:00',
+    parkingInfo: 'Kostenfreie Parkplätze am Haus verfügbar.',
     weatherTemp: '19°C',
     weatherDesc: 'Sonnig · Deidesheim',
     images: [
@@ -36,40 +41,47 @@ export default function App() {
     ]
   });
 
-  // Kategoriler (Belturo Tarzı)
+  // Resimsiz, Hafif ve Sunucu Dostu İkon Bazlı Kategoriler
   const categories = [
     {
       id: 'gastronomie',
       title: 'Gastronomie & Bar',
       subtitle: 'Speisekarten, Frühstück & Regionale Weine',
-      image: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=800&q=80',
+      icon: <Utensils className="w-5 h-5 text-amber-800" />,
       content: 'Genießen Sie unsere regionale Pfälzer Küche und erlesene Weine aus Deidesheim. Das Frühstück wird täglich von 07:00 bis 10:30 Uhr serviert.'
     },
     {
       id: 'wellness',
       title: 'Wellness & SPA',
       subtitle: 'Sauna, Massagen & Entspannung',
-      image: 'https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=800&q=80',
+      icon: <Heart className="w-5 h-5 text-amber-800" />,
       content: 'Entspannen Sie in unserem modernen Wellnessbereich. Finnische Sauna, Ruheraum und Massageanwendungen stehen Ihnen von 10:00 bis 20:00 Uhr zur Verfügung.'
     },
     {
       id: 'az_guide',
       title: 'Wichtiges von A bis Z',
       subtitle: 'Check-out, WLAN, Rezeption & Service',
-      image: 'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=800&q=80',
+      icon: <Info className="w-5 h-5 text-amber-800" />,
       content: 'Check-out ist bis 11:00 Uhr. Kostenfreies Highspeed-WLAN ist im gesamten Haus verfügbar. Die Rezeption erreichen Sie unter der Kurzwahl 100.'
     },
     {
       id: 'umgebung',
       title: 'Umgebung & Ausflüge',
       subtitle: 'Weinstraße, Wandern & Sehenswürdigkeiten',
-      image: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80',
+      icon: <Compass className="w-5 h-5 text-amber-800" />,
       content: 'Entdecken Sie die malerische Deutsche Weinstraße. Zahlreiche Wanderwege, historische Burgen und Weingüter laden zu unvergesslichen Ausflügen ein.'
     }
   ];
 
   const [uploadError, setUploadError] = useState('');
   const [uploadSuccess, setUploadSuccess] = useState('');
+
+  // WLAN Şifresini Panoya Kopyalama Fonksiyonu
+  const copyWifiPassword = () => {
+    navigator.clipboard.writeText(hotel.wifiPass);
+    setCopiedWifi(true);
+    setTimeout(() => setCopiedWifi(false), 2500);
+  };
 
   const handleUnlockSubmit = (e) => {
     e.preventDefault();
@@ -284,26 +296,26 @@ export default function App() {
               &larr; Zurück zur Übersicht
             </button>
 
-            <div className="relative rounded-2xl overflow-hidden h-48 shadow-md">
-              <img src={selectedCategory.image} alt={selectedCategory.title} className="w-full h-full object-cover" />
-              <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/20 to-transparent"></div>
-              <div className="absolute bottom-4 left-4 right-4 text-white">
-                <span className="text-[10px] bg-amber-500/80 px-2.5 py-0.5 rounded-full font-bold uppercase">Detailinfo</span>
-                <h2 className="text-xl font-black mt-1">{selectedCategory.title}</h2>
+            <div className="bg-white p-6 rounded-2xl shadow-sm border border-stone-200 space-y-4">
+              <div className="flex items-center gap-3 border-b pb-4">
+                <div className="p-3 bg-amber-50 rounded-xl">
+                  {selectedCategory.icon}
+                </div>
+                <div>
+                  <span className="text-[10px] bg-amber-100 text-amber-900 px-2 py-0.5 rounded-full font-bold uppercase">Detailinfo</span>
+                  <h2 className="text-lg font-black mt-1 text-slate-900">{selectedCategory.title}</h2>
+                </div>
               </div>
-            </div>
-
-            <div className="bg-white p-5 rounded-2xl shadow-sm border border-stone-200 space-y-3">
-              <h3 className="font-bold text-xs text-stone-400 uppercase tracking-wider">Informationen</h3>
               <p className="text-xs text-slate-700 leading-relaxed">{selectedCategory.content}</p>
             </div>
           </div>
         ) : (
           <>
-            {/* HOME SEKMESİ */}
+            {/* HOME SEKMESİ & SCHNELLZUGRIFF (HIZLI ERİŞİM) */}
             {activeTab === 'home' && (
               <div className="space-y-5 animate-fade-in">
-                <div className="relative rounded-2xl overflow-hidden shadow-md h-52 bg-slate-900 group">
+                {/* Slider */}
+                <div className="relative rounded-2xl overflow-hidden shadow-md h-48 bg-slate-900 group">
                   <img 
                     src={hotel.images[currentSlide] || hotel.images[0]} 
                     alt={`Slide ${currentSlide}`} 
@@ -328,61 +340,82 @@ export default function App() {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-2 gap-3">
-                  <div className="bg-white p-3.5 rounded-2xl shadow-sm border border-stone-200/80 flex items-center gap-3">
-                    <div className="p-2 bg-amber-50 text-amber-700 rounded-xl">
-                      <CloudSun className="w-5 h-5" />
+                {/* SCHNELLZUGRIFF (HIZLI ERİŞİM KARTLARI - İKONLU & ÖZELLİKLİ) */}
+                <div className="space-y-3">
+                  <h3 className="text-xs font-bold text-stone-500 uppercase tracking-wider">Schnellzugriff</h3>
+                  
+                  <div className="grid grid-cols-2 gap-3">
+                    {/* 1. WLAN KARTI (Kopyalanabilir Şifre) */}
+                    <div className="bg-white p-4 rounded-2xl shadow-sm border border-stone-200/80 space-y-2 flex flex-col justify-between">
+                      <div className="flex items-center gap-2 text-amber-800">
+                        <Wifi className="w-5 h-5" />
+                        <span className="font-bold text-xs text-slate-900">WLAN</span>
+                      </div>
+                      <div className="text-[11px] text-slate-500 font-mono bg-stone-50 p-2 rounded-lg border">
+                        <div>SSID: <b>{hotel.wifiSsid}</b></div>
+                        <div className="flex justify-between items-center mt-1">
+                          <span>Pass: {hotel.wifiPass}</span>
+                          <button 
+                            onClick={copyWifiPassword}
+                            className="bg-amber-100 hover:bg-amber-200 text-amber-900 p-1 rounded transition"
+                            title="Passwort kopieren"
+                          >
+                            {copiedWifi ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
+                          </button>
+                        </div>
+                      </div>
                     </div>
-                    <div>
-                      <span className="block text-xs font-bold text-slate-900">{hotel.weatherTemp}</span>
-                      <span className="text-[10px] text-slate-500 font-medium">{hotel.weatherDesc}</span>
-                    </div>
-                  </div>
 
-                  <div className="bg-white p-3.5 rounded-2xl shadow-sm border border-stone-200/80 flex items-center gap-3">
-                    <div className="p-2 bg-amber-50 text-amber-700 rounded-xl">
-                      <Calendar className="w-5 h-5" />
+                    {/* 2. PARKPLATZ KARTI */}
+                    <div className="bg-white p-4 rounded-2xl shadow-sm border border-stone-200/80 space-y-2 flex flex-col justify-between">
+                      <div className="flex items-center gap-2 text-amber-800">
+                        <Car className="w-5 h-5" />
+                        <span className="font-bold text-xs text-slate-900">Parkplatz</span>
+                      </div>
+                      <p className="text-[11px] text-slate-600 leading-snug">{hotel.parkingInfo}</p>
                     </div>
-                    <div>
-                      <span className="block text-xs font-bold text-slate-900">Vorhersage</span>
-                      <span className="text-[10px] text-slate-500 font-medium">7 Tage Details</span>
-                    </div>
-                  </div>
-                </div>
 
-                <div 
-                  onClick={() => setActiveTab('services')}
-                  className="bg-amber-100/70 p-4 rounded-2xl border border-amber-200/80 flex justify-between items-center cursor-pointer hover:bg-amber-100 transition shadow-sm"
-                >
-                  <div className="flex items-center gap-3">
-                    <div className="p-2.5 bg-amber-800 text-white rounded-xl shadow-sm">
-                      <Info className="w-5 h-5" />
+                    {/* 3. FRÜHSTÜCK KARTI */}
+                    <div className="bg-white p-4 rounded-2xl shadow-sm border border-stone-200/80 space-y-2 flex flex-col justify-between">
+                      <div className="flex items-center gap-2 text-amber-800">
+                        <Coffee className="w-5 h-5" />
+                        <span className="font-bold text-xs text-slate-900">Frühstück</span>
+                      </div>
+                      <p className="text-[11px] text-slate-600 font-medium">{hotel.breakfastTime}</p>
                     </div>
-                    <div>
-                      <h4 className="font-bold text-xs text-amber-950">Gästemappe</h4>
-                      <p className="text-[11px] text-amber-900/80 mt-0.5">WLAN, Kategorien & Services</p>
+
+                    {/* 4. CHECK-IN / CHECK-OUT KARTI */}
+                    <div className="bg-white p-4 rounded-2xl shadow-sm border border-stone-200/80 space-y-2 flex flex-col justify-between">
+                      <div className="flex items-center gap-2 text-amber-800">
+                        <Clock className="w-5 h-5" />
+                        <span className="font-bold text-xs text-slate-900">Check-in / Out</span>
+                      </div>
+                      <p className="text-[10px] text-slate-600 leading-snug">{hotel.checkInOut}</p>
                     </div>
                   </div>
-                  <ChevronRight className="w-4 h-4 text-amber-900" />
                 </div>
               </div>
             )}
 
-            {/* KATEGORİLER LİSTESİ (GÄSTEMAPPE SEKMESİ) */}
+            {/* KATEGORİLER LİSTESİ (GÄSTEMAPPE SEKMESİ - RESİMSİZ, HAFİF VE SUNUCU DOSTU) */}
             {activeTab === 'services' && (
               <div className="space-y-4 animate-fade-in">
                 <h2 className="text-sm font-bold text-slate-900 uppercase tracking-wider">Gästemappe & Kategorien</h2>
-                <div className="grid grid-cols-1 gap-3">
+                <div className="grid grid-cols-1 gap-2.5">
                   {categories.map((cat) => (
                     <div 
                       key={cat.id}
                       onClick={() => setSelectedCategory(cat)}
-                      className="bg-white p-4 rounded-2xl shadow-sm border border-stone-200 flex items-center gap-4 cursor-pointer hover:border-amber-800 transition group"
+                      className="bg-white p-4 rounded-2xl shadow-sm border border-stone-200 flex items-center justify-between cursor-pointer hover:border-amber-800 transition group"
                     >
-                      <img src={cat.image} alt={cat.title} className="w-16 h-16 rounded-xl object-cover shrink-0 shadow-sm" />
-                      <div className="flex-1 min-w-0">
-                        <h3 className="font-bold text-xs text-slate-900 group-hover:text-amber-800 transition truncate">{cat.title}</h3>
-                        <p className="text-[11px] text-slate-500 truncate mt-0.5">{cat.subtitle}</p>
+                      <div className="flex items-center gap-3.5">
+                        <div className="p-2.5 bg-amber-50 rounded-xl group-hover:bg-amber-100 transition">
+                          {cat.icon}
+                        </div>
+                        <div>
+                          <h3 className="font-bold text-xs text-slate-900 group-hover:text-amber-800 transition">{cat.title}</h3>
+                          <p className="text-[11px] text-slate-500 mt-0.5">{cat.subtitle}</p>
+                        </div>
                       </div>
                       <ChevronRight className="w-4 h-4 text-stone-400 group-hover:translate-x-1 transition" />
                     </div>
@@ -435,9 +468,9 @@ export default function App() {
                 <div className="bg-white p-5 rounded-2xl shadow-sm border border-stone-200 space-y-4">
                   <div>
                     <h3 className="font-bold text-xs text-slate-900 flex items-center gap-1.5">
-                      <ImageIcon className="w-4 h-4 text-amber-800" /> Willkommen & Slider Fotos (Max 5 Fotos)
+                      <ImageIcon className="w-4 h-4 text-amber-800" /> Slider Fotos (Max 5 Fotos)
                     </h3>
-                    <p className="text-[11px] text-slate-500 mt-1">Karşılama ekranı ve ana sayfa slider'ı ortak veri kullanır.</p>
+                    <p className="text-[11px] text-slate-500 mt-1">Sadece ana sayfa slider görselleridir.</p>
                   </div>
 
                   {uploadError && (
