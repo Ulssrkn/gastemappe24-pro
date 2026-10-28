@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   Wifi, Info, MapPin, Calendar, MessageSquare, 
   Settings, Phone, Plus, Trash2, 
   Check, Image as ImageIcon, Copy,
   ChevronRight, CloudSun, Menu, X, ArrowRight, Upload, AlertCircle, Lock, Unlock,
-  Utensils, Heart, Compass, Coffee, Key, Car, Clock, ShieldCheck, Edit3, Mail, Globe, ExternalLink, QrCode, Printer
+  Utensils, Heart, Compass, Coffee, Key, Car, Clock, ShieldCheck, Edit3, Mail, Globe, ExternalLink, QrCode, Printer, Timer, BarChart3, Zap
 } from 'lucide-react';
 
 const translations = {
@@ -26,6 +26,12 @@ const translations = {
     adminLockMode: "Ansichtsmodus (Geschützt)",
     adminBtnLock: "Sperren",
     adminBtnUnlock: "Entsperren",
+    trialTitle: "30-Tage Testversion (PRO)",
+    trialDaysLeft: "Tage verbleibend",
+    trialUpgradeBtn: "Jetzt PRO Lizenz sichern",
+    statsTitle: "Nutzungsstatistik",
+    statsScans: "QR-Code Scans (Gäste-Aufrufe)",
+    statsActiveRooms: "Aktive Zimmer-Zugriffe",
     qrTitle: "QR-Code & Print-Center (A4, A5, Visitenkarte)",
     qrSubtitle: "Erstellen Sie professionelle Aufsteller für Ihre Zimmer und Rezeption.",
     printA4: "Druckvorlage A4",
@@ -71,6 +77,10 @@ export default function App() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [copiedWifi, setCopiedWifi] = useState(false);
 
+  // İstatistik Simülasyonu (Gerçek ortamda veritabanından çekilecek)
+  const [scanCount, setScanCount] = useState(142);
+  const [daysLeft] = useState(24); // 30 günlük trial'dan kalan gün
+
   // Otel Bilgileri
   const [hotel, setHotel] = useState({
     logoUrl: '', 
@@ -90,12 +100,11 @@ export default function App() {
     ]
   });
 
-  // Dinamik Otel URL'i ve QR Kod
   const hotelSlug = hotel.name.toLowerCase().replace(/[^a-z0-9]/g, '-');
   const hotelUrl = `https://gastemappe24-pro.vercel.app/?hotel=${hotelSlug}`;
   const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(hotelUrl)}`;
 
-  // Profesyonel Yazdırma / PDF Oluşturma Fonksiyonu
+  // Profesyonel Yazdırma / PDF Baskı Merkezi
   const handlePrint = (format) => {
     const printWindow = window.open('', '_blank');
     printWindow.document.write(`
@@ -611,6 +620,54 @@ export default function App() {
                   </button>
                 </div>
 
+                {/* ÖLÜMCÜL HAMLE: 30 GÜNLÜK TRIAL SAYAÇ & CANLI QR İSTATİSTİĞİ (QR KODUN ÜSTÜNDE) */}
+                <div className="bg-gradient-to-br from-slate-900 to-slate-950 text-white p-5 rounded-2xl shadow-xl border border-slate-800 space-y-4">
+                  
+                  {/* Üst Kısım: Trial Sayaç ve Rozet */}
+                  <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+                    <div className="flex items-center gap-2">
+                      <div className="p-2 bg-amber-500/20 text-amber-400 rounded-xl border border-amber-500/30">
+                        <Timer className="w-4 h-4 animate-pulse" />
+                      </div>
+                      <div>
+                        <span className="text-[10px] text-amber-400 font-extrabold uppercase tracking-wider block">{t.trialTitle}</span>
+                        <span className="text-sm font-black text-white">{daysLeft} {t.trialDaysLeft}</span>
+                      </div>
+                    </div>
+                    <button 
+                      onClick={() => alert('PRO Lizenz Upgrade-Prozess wird geöffnet...')}
+                      className="bg-amber-500 hover:bg-amber-600 text-slate-950 px-3 py-2 rounded-xl text-[11px] font-black shadow-lg transition flex items-center gap-1 active:scale-98"
+                    >
+                      <Zap className="w-3.5 h-3.5 fill-current" />
+                      <span>PRO</span>
+                    </button>
+                  </div>
+
+                  {/* Alt Kısım: QR İstatistik Sayacı */}
+                  <div className="grid grid-cols-2 gap-3 pt-1">
+                    <div className="bg-white/5 border border-white/10 p-3 rounded-xl flex items-center gap-3">
+                      <div className="p-2.5 bg-emerald-500/20 text-emerald-400 rounded-lg">
+                        <BarChart3 className="w-4 h-4" />
+                      </div>
+                      <div>
+                        <span className="text-[10px] text-stone-400 font-medium block">{t.statsScans}</span>
+                        <span className="text-base font-black text-emerald-400">{scanCount}</span>
+                      </div>
+                    </div>
+
+                    <div className="bg-white/5 border border-white/10 p-3 rounded-xl flex items-center gap-3">
+                      <div className="p-2.5 bg-sky-500/20 text-sky-400 rounded-lg">
+                        <QrCode className="w-4 h-4" />
+                      </div>
+                      <div>
+                        <span className="text-[10px] text-stone-400 font-medium block">{t.statsActiveRooms}</span>
+                        <span className="text-base font-black text-sky-400">100% aktiv</span>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+
                 {/* PDF PRINT-CENTER & QR CODE SECTION */}
                 <div className="bg-white p-5 rounded-2xl shadow-sm border border-stone-200 text-center space-y-3">
                   <div className="flex items-center justify-center gap-2 text-amber-800 font-bold text-xs uppercase tracking-wider">
@@ -987,7 +1044,7 @@ export default function App() {
                         <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">Icon Auswählen</label>
                         <select 
                           value={newCat.iconName}
-                          onChange={(e) => setNewCat({ ...newCat, iconName: e.target.value })}
+                          onChange={(e) => setNewCat({ ...new, iconName: e.target.value })}
                           className="w-full p-2.5 text-xs border border-stone-200 rounded-xl bg-white"
                         >
                           <option value="Info">Info (Standard)</option>
@@ -1033,7 +1090,7 @@ export default function App() {
         </button>
 
         <button 
-          onClick={() => { setActiveTab('admin'); setSelectedEntryId && setSelectedCategory(null); setActiveTab('admin'); }}
+          onClick={() => { setActiveTab('admin'); setSelectedCategory(null); }}
           className={`flex flex-col items-center gap-1 text-[10px] font-bold transition ${activeTab === 'admin' ? 'text-amber-800 font-extrabold' : 'text-stone-400'}`}
         >
           <Settings className="w-5 h-5" />
