@@ -4,13 +4,12 @@ import {
   Settings, Phone, Plus, Trash2, 
   Check, Image as ImageIcon,
   ChevronRight, CloudSun, Menu, X, ArrowRight, Upload, AlertCircle, Lock, Unlock,
-  Utensils, Heart, Compass, Coffee, Clock, ShieldCheck, Send
+  Utensils, Heart, Compass, Coffee
 } from 'lucide-react';
 
 export default function App() {
-  // Navigation & Screen States
-  const [activeTab, setActiveTab] = useState('home'); // 'home', 'services', 'subpage', 'admin'
-  const [selectedCategory, setSelectedCategory] = useState(null); // Detayları gösterilecek alt kategori
+  const [activeTab, setActiveTab] = useState('home'); // 'home', 'services', 'admin'
+  const [selectedCategory, setSelectedCategory] = useState(null);
   const [showWelcomeScreen, setShowWelcomeScreen] = useState(true);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   
@@ -20,10 +19,8 @@ export default function App() {
   const [passwordError, setPasswordError] = useState(false);
   const [showUnlockModal, setShowUnlockModal] = useState(false);
 
-  // Slider State
   const [currentSlide, setCurrentSlide] = useState(0);
 
-  // Dinamik Otel Verileri
   const [hotel, setHotel] = useState({
     logoUrl: '', 
     name: 'Hotel & Café Ritter', 
@@ -39,13 +36,12 @@ export default function App() {
     ]
   });
 
-  // Belturo Tarzı Kapsamlı Kategoriler ve Alt Sayfalar
-  const [categories, setCategories] = useState([
+  // Kategoriler (Belturo Tarzı)
+  const categories = [
     {
       id: 'gastronomie',
       title: 'Gastronomie & Bar',
       subtitle: 'Speisekarten, Frühstück & Regionale Weine',
-      icon: 'Utensils',
       image: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=800&q=80',
       content: 'Genießen Sie unsere regionale Pfälzer Küche und erlesene Weine aus Deidesheim. Das Frühstück wird täglich von 07:00 bis 10:30 Uhr serviert.'
     },
@@ -53,7 +49,6 @@ export default function App() {
       id: 'wellness',
       title: 'Wellness & SPA',
       subtitle: 'Sauna, Massagen & Entspannung',
-      icon: 'Heart',
       image: 'https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=800&q=80',
       content: 'Entspannen Sie in unserem modernen Wellnessbereich. Finnische Sauna, Ruheraum und Massageanwendungen stehen Ihnen von 10:00 bis 20:00 Uhr zur Verfügung.'
     },
@@ -61,7 +56,6 @@ export default function App() {
       id: 'az_guide',
       title: 'Wichtiges von A bis Z',
       subtitle: 'Check-out, WLAN, Rezeption & Service',
-      icon: 'Info',
       image: 'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=800&q=80',
       content: 'Check-out ist bis 11:00 Uhr. Kostenfreies Highspeed-WLAN ist im gesamten Haus verfügbar. Die Rezeption erreichen Sie unter der Kurzwahl 100.'
     },
@@ -69,16 +63,14 @@ export default function App() {
       id: 'umgebung',
       title: 'Umgebung & Ausflüge',
       subtitle: 'Weinstraße, Wandern & Sehenswürdigkeiten',
-      icon: 'Compass',
       image: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80',
       content: 'Entdecken Sie die malerische Deutsche Weinstraße. Zahlreiche Wanderwege, historische Burgen und Weingüter laden zu unvergesslichen Ausflügen ein.'
     }
-  ]);
+  ];
 
   const [uploadError, setUploadError] = useState('');
   const [uploadSuccess, setUploadSuccess] = useState('');
 
-  // Şifre Kilidi Kontrolü
   const handleUnlockSubmit = (e) => {
     e.preventDefault();
     if (passwordInput === 'Rina21091987') {
@@ -91,7 +83,6 @@ export default function App() {
     }
   };
 
-  // Fotoğraf Yükleme (Kilit Kontrollü)
   const handleImageUpload = (e) => {
     if (!isEditUnlocked) { setShowUnlockModal(true); return; }
     setUploadError('');
@@ -108,7 +99,6 @@ export default function App() {
         setUploadError(`Die Datei "${file.name}" überschreitet 5MB!`);
         return;
       }
-
       const reader = new FileReader();
       reader.onloadend = () => {
         setHotel((prev) => ({ ...prev, images: [...prev.images, reader.result] }));
@@ -137,9 +127,7 @@ export default function App() {
     }
   };
 
-  // -------------------------------------------------------------
-  // KARŞILAMA (WELCOME / LANDING) EKRANI
-  // -------------------------------------------------------------
+  // 1. KARŞILAMA EKRANI
   if (showWelcomeScreen) {
     return (
       <div className="min-h-screen bg-slate-950 max-w-md mx-auto shadow-2xl relative overflow-hidden flex flex-col justify-between font-sans">
@@ -165,7 +153,7 @@ export default function App() {
           </div>
 
           <button 
-            onClick={() => { setShowWelcomeScreen(false); setActiveTab('admin'); }}
+            onClick={() => { setShowWelcomeScreen(false); setActiveTab('admin'); setSelectedCategory(null); }}
             className="p-2 bg-white/10 hover:bg-white/20 rounded-full backdrop-blur-md transition text-white"
             title="Admin Panel"
           >
@@ -195,13 +183,10 @@ export default function App() {
     );
   }
 
-  // -------------------------------------------------------------
-  // ANA MİSAFİR PANELİ & KATEGORİ DETAYLARI & ADMIN
-  // -------------------------------------------------------------
   return (
     <div className="min-h-screen bg-stone-50 font-sans text-slate-800 pb-24 max-w-md mx-auto shadow-2xl relative border-x border-slate-200">
       
-      {/* ŞİFRE İSTEME MODALI */}
+      {/* ŞİFRE MODALI */}
       {showUnlockModal && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
           <div className="bg-white w-full max-w-sm p-6 rounded-3xl shadow-2xl space-y-4 animate-fade-in">
@@ -286,10 +271,10 @@ export default function App() {
         )}
       </header>
 
-      {/* İÇERİK ALANI */}
+      {/* ANA İÇERİK */}
       <main className="p-5 space-y-5">
         
-        {/* 1. KATEGORİ DETAY SAYFASI (ALT SAYFA GÖRÜNÜMÜ) */}
+        {/* KATEGORİ DETAY SAYFASI */}
         {selectedCategory ? (
           <div className="space-y-4 animate-fade-in">
             <button 
@@ -313,190 +298,188 @@ export default function App() {
               <p className="text-xs text-slate-700 leading-relaxed">{selectedCategory.content}</p>
             </div>
           </div>
-        ) : null}
+        ) : (
+          <>
+            {/* HOME SEKMESİ */}
+            {activeTab === 'home' && (
+              <div className="space-y-5 animate-fade-in">
+                <div className="relative rounded-2xl overflow-hidden shadow-md h-52 bg-slate-900 group">
+                  <img 
+                    src={hotel.images[currentSlide] || hotel.images[0]} 
+                    alt={`Slide ${currentSlide}`} 
+                    className="w-full h-full object-cover transition-all duration-500"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
 
-        {/* 2. HOME SEKMESİ */}
-        {!selectedCategory && activeTab === 'home' && (
-          <div className="space-y-5 animate-fade-in">
-            {/* 5 Fotoğraflık Slider */}
-            <div className="relative rounded-2xl overflow-hidden shadow-md h-52 bg-slate-900 group">
-              <img 
-                src={hotel.images[currentSlide] || hotel.images[0]} 
-                alt={`Slide ${currentSlide}`} 
-                className="w-full h-full object-cover transition-all duration-500"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+                  {hotel.images.length > 1 && (
+                    <div className="absolute bottom-3 left-0 right-0 flex justify-center gap-1.5 z-10">
+                      {hotel.images.map((_, idx) => (
+                        <button 
+                          key={idx}
+                          onClick={() => setCurrentSlide(idx)}
+                          className={`h-1.5 rounded-full transition-all ${currentSlide === idx ? 'w-6 bg-white' : 'w-1.5 bg-white/50'}`}
+                        />
+                      ))}
+                    </div>
+                  )}
 
-              {hotel.images.length > 1 && (
-                <div className="absolute bottom-3 left-0 right-0 flex justify-center gap-1.5 z-10">
-                  {hotel.images.map((_, idx) => (
-                    <button 
-                      key={idx}
-                      onClick={() => setCurrentSlide(idx)}
-                      className={`h-1.5 rounded-full transition-all ${currentSlide === idx ? 'w-6 bg-white' : 'w-1.5 bg-white/50'}`}
-                    />
+                  <div className="absolute top-3 right-3 bg-black/50 backdrop-blur-md text-white text-[10px] font-bold px-2.5 py-1 rounded-full flex items-center gap-1">
+                    <ImageIcon className="w-3 h-3" /> {currentSlide + 1}/{hotel.images.length}
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="bg-white p-3.5 rounded-2xl shadow-sm border border-stone-200/80 flex items-center gap-3">
+                    <div className="p-2 bg-amber-50 text-amber-700 rounded-xl">
+                      <CloudSun className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <span className="block text-xs font-bold text-slate-900">{hotel.weatherTemp}</span>
+                      <span className="text-[10px] text-slate-500 font-medium">{hotel.weatherDesc}</span>
+                    </div>
+                  </div>
+
+                  <div className="bg-white p-3.5 rounded-2xl shadow-sm border border-stone-200/80 flex items-center gap-3">
+                    <div className="p-2 bg-amber-50 text-amber-700 rounded-xl">
+                      <Calendar className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <span className="block text-xs font-bold text-slate-900">Vorhersage</span>
+                      <span className="text-[10px] text-slate-500 font-medium">7 Tage Details</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div 
+                  onClick={() => setActiveTab('services')}
+                  className="bg-amber-100/70 p-4 rounded-2xl border border-amber-200/80 flex justify-between items-center cursor-pointer hover:bg-amber-100 transition shadow-sm"
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="p-2.5 bg-amber-800 text-white rounded-xl shadow-sm">
+                      <Info className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <h4 className="font-bold text-xs text-amber-950">Gästemappe</h4>
+                      <p className="text-[11px] text-amber-900/80 mt-0.5">WLAN, Kategorien & Services</p>
+                    </div>
+                  </div>
+                  <ChevronRight className="w-4 h-4 text-amber-900" />
+                </div>
+              </div>
+            )}
+
+            {/* KATEGORİLER LİSTESİ (GÄSTEMAPPE SEKMESİ) */}
+            {activeTab === 'services' && (
+              <div className="space-y-4 animate-fade-in">
+                <h2 className="text-sm font-bold text-slate-900 uppercase tracking-wider">Gästemappe & Kategorien</h2>
+                <div className="grid grid-cols-1 gap-3">
+                  {categories.map((cat) => (
+                    <div 
+                      key={cat.id}
+                      onClick={() => setSelectedCategory(cat)}
+                      className="bg-white p-4 rounded-2xl shadow-sm border border-stone-200 flex items-center gap-4 cursor-pointer hover:border-amber-800 transition group"
+                    >
+                      <img src={cat.image} alt={cat.title} className="w-16 h-16 rounded-xl object-cover shrink-0 shadow-sm" />
+                      <div className="flex-1 min-w-0">
+                        <h3 className="font-bold text-xs text-slate-900 group-hover:text-amber-800 transition truncate">{cat.title}</h3>
+                        <p className="text-[11px] text-slate-500 truncate mt-0.5">{cat.subtitle}</p>
+                      </div>
+                      <ChevronRight className="w-4 h-4 text-stone-400 group-hover:translate-x-1 transition" />
+                    </div>
                   ))}
                 </div>
-              )}
-
-              <div className="absolute top-3 right-3 bg-black/50 backdrop-blur-md text-white text-[10px] font-bold px-2.5 py-1 rounded-full flex items-center gap-1">
-                <ImageIcon className="w-3 h-3" /> {currentSlide + 1}/{hotel.images.length}
               </div>
-            </div>
+            )}
 
-            {/* Hava Durumu */}
-            <div className="grid grid-cols-2 gap-3">
-              <div className="bg-white p-3.5 rounded-2xl shadow-sm border border-stone-200/80 flex items-center gap-3">
-                <div className="p-2 bg-amber-50 text-amber-700 rounded-xl">
-                  <CloudSun className="w-5 h-5" />
-                </div>
-                <div>
-                  <span className="block text-xs font-bold text-slate-900">{hotel.weatherTemp}</span>
-                  <span className="text-[10px] text-slate-500 font-medium">{hotel.weatherDesc}</span>
-                </div>
-              </div>
-
-              <div className="bg-white p-3.5 rounded-2xl shadow-sm border border-stone-200/80 flex items-center gap-3">
-                <div className="p-2 bg-amber-50 text-amber-700 rounded-xl">
-                  <Calendar className="w-5 h-5" />
-                </div>
-                <div>
-                  <span className="block text-xs font-bold text-slate-900">Vorhersage</span>
-                  <span className="text-[10px] text-slate-500 font-medium">7 Tage Details</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Gästemappe Hızlı Giriş Kartı */}
-            <div 
-              onClick={() => setActiveTab('services')}
-              className="bg-amber-100/70 p-4 rounded-2xl border border-amber-200/80 flex justify-between items-center cursor-pointer hover:bg-amber-100 transition shadow-sm"
-            >
-              <div className="flex items-center gap-3">
-                <div className="p-2.5 bg-amber-800 text-white rounded-xl shadow-sm">
-                  <Info className="w-5 h-5" />
-                </div>
-                <div>
-                  <h4 className="font-bold text-xs text-amber-950">Gästemappe</h4>
-                  <p className="text-[11px] text-amber-900/80 mt-0.5">WLAN, Kategorien & Services</p>
-                </div>
-              </div>
-              <ChevronRight className="w-4 h-4 text-amber-900" />
-            </div>
-          </div>
-        )}
-
-        {/* 3. KATEGORİLER & HİZMETLER SEKMESİ (BELTURO TARZI ALT SAYFALAR) */}
-        {!selectedCategory && activeTab === 'services' && (
-          <div className="space-y-4 animate-fade-in">
-            <h2 className="text-sm font-bold text-slate-900 uppercase tracking-wider">Gästemappe & Kategorien</h2>
-            <div className="grid grid-cols-1 gap-3">
-              {categories.map((cat) => (
-                <div 
-                  key={cat.id}
-                  onClick={() => setSelectedCategory(cat)}
-                  className="bg-white p-4 rounded-2xl shadow-sm border border-stone-200 flex items-center gap-4 cursor-pointer hover:border-amber-800 transition group"
-                >
-                  <img src={cat.image} alt={cat.title} className="w-16 h-16 rounded-xl object-cover shrink-0 shadow-sm" />
-                  <div className="flex-1 min-w-0">
-                    <h3 className="font-bold text-xs text-slate-900 group-hover:text-amber-800 transition truncate">{cat.title}</h3>
-                    <p className="text-[11px] text-slate-500 truncate mt-0.5">{cat.subtitle}</p>
+            {/* ADMIN PANELİ */}
+            {activeTab === 'admin' && (
+              <div className="space-y-5 animate-fade-in">
+                <div className="bg-amber-800 text-white p-4 rounded-2xl shadow-md flex justify-between items-center">
+                  <div>
+                    <h2 className="font-bold text-sm">Verwaltung (Admin Panel)</h2>
+                    <p className="text-[10px] text-amber-200">
+                      {isEditUnlocked ? '🔓 Bearbeitungsmodus Aktiv' : '🔒 Ansichtsmodus (Geschützt)'}
+                    </p>
                   </div>
-                  <ChevronRight className="w-4 h-4 text-stone-400 group-hover:translate-x-1 transition" />
+                  <button 
+                    onClick={() => {
+                      if (isEditUnlocked) { setIsEditUnlocked(false); } 
+                      else { setShowUnlockModal(true); }
+                    }}
+                    className="bg-white/20 text-xs px-3 py-1.5 rounded-lg font-bold hover:bg-white/30 transition flex items-center gap-1.5"
+                  >
+                    {isEditUnlocked ? <Unlock className="w-3.5 h-3.5" /> : <Lock className="w-3.5 h-3.5" />}
+                    {isEditUnlocked ? 'Sperren' : 'Entsperren'}
+                  </button>
                 </div>
-              ))}
-            </div>
-          </div>
-        )}
 
-        {/* 4. ADMIN PANELİ */}
-        {!selectedCategory && activeTab === 'admin' && (
-          <div className="space-y-5 animate-fade-in">
-            <div className="bg-amber-800 text-white p-4 rounded-2xl shadow-md flex justify-between items-center">
-              <div>
-                <h2 className="font-bold text-sm">Verwaltung (Admin Panel)</h2>
-                <p className="text-[10px] text-amber-200">
-                  {isEditUnlocked ? '🔓 Bearbeitungsmodus Aktiv' : '🔒 Ansichtsmodus (Geschützt)'}
-                </p>
-              </div>
-              <button 
-                onClick={() => {
-                  if (isEditUnlocked) { setIsEditUnlocked(false); } 
-                  else { setShowUnlockModal(true); }
-                }}
-                className="bg-white/20 text-xs px-3 py-1.5 rounded-lg font-bold hover:bg-white/30 transition flex items-center gap-1.5"
-              >
-                {isEditUnlocked ? <Unlock className="w-3.5 h-3.5" /> : <Lock className="w-3.5 h-3.5" />}
-                {isEditUnlocked ? 'Sperren' : 'Entsperren'}
-              </button>
-            </div>
-
-            {/* LOGO & FOTOĞRAF YÖNETİMİ */}
-            <div className="bg-white p-5 rounded-2xl shadow-sm border border-stone-200 space-y-3">
-              <h3 className="font-bold text-xs text-slate-900 flex items-center gap-1.5">
-                <Upload className="w-4 h-4 text-amber-800" /> Otel Logosu (Max 2MB)
-              </h3>
-              <div className="flex items-center gap-4">
-                {hotel.logoUrl ? (
-                  <img src={hotel.logoUrl} alt="Logo Prev" className="w-12 h-12 rounded-xl object-cover border" />
-                ) : (
-                  <div className="w-12 h-12 rounded-xl bg-stone-100 border border-dashed flex items-center justify-center text-[10px] text-stone-400">
-                    No Logo
+                <div className="bg-white p-5 rounded-2xl shadow-sm border border-stone-200 space-y-3">
+                  <h3 className="font-bold text-xs text-slate-900 flex items-center gap-1.5">
+                    <Upload className="w-4 h-4 text-amber-800" /> Otel Logosu (Max 2MB)
+                  </h3>
+                  <div className="flex items-center gap-4">
+                    {hotel.logoUrl ? (
+                      <img src={hotel.logoUrl} alt="Logo Prev" className="w-12 h-12 rounded-xl object-cover border" />
+                    ) : (
+                      <div className="w-12 h-12 rounded-xl bg-stone-100 border border-dashed flex items-center justify-center text-[10px] text-stone-400">
+                        No Logo
+                      </div>
+                    )}
+                    <label className={`px-3 py-2 rounded-xl text-xs font-bold transition ${isEditUnlocked ? 'bg-stone-100 hover:bg-stone-200 text-slate-700 cursor-pointer' : 'bg-stone-100 text-stone-400 cursor-not-allowed'}`}>
+                      Logo Seç / Değiştir
+                      <input type="file" accept="image/*" onChange={handleLogoUpload} className="hidden" />
+                    </label>
                   </div>
-                )}
-                <label className={`px-3 py-2 rounded-xl text-xs font-bold transition ${isEditUnlocked ? 'bg-stone-100 hover:bg-stone-200 text-slate-700 cursor-pointer' : 'bg-stone-100 text-stone-400 cursor-not-allowed'}`}>
-                  Logo Seç / Değiştir
-                  <input type="file" accept="image/*" onChange={handleLogoUpload} className="hidden" />
-                </label>
-              </div>
-            </div>
-
-            <div className="bg-white p-5 rounded-2xl shadow-sm border border-stone-200 space-y-4">
-              <div>
-                <h3 className="font-bold text-xs text-slate-900 flex items-center gap-1.5">
-                  <ImageIcon className="w-4 h-4 text-amber-800" /> Willkommen & Slider Fotos (Max 5 Fotos)
-                </h3>
-                <p className="text-[11px] text-slate-500 mt-1">Karşılama ekranı ve ana sayfa slider'ı ortak veri kullanır.</p>
-              </div>
-
-              {uploadError && (
-                <div className="bg-rose-50 border border-rose-200 text-rose-700 p-3 rounded-xl text-xs flex items-center gap-2">
-                  <AlertCircle className="w-4 h-4 shrink-0" />
-                  <span>{uploadError}</span>
                 </div>
-              )}
-              {uploadSuccess && (
-                <div className="bg-emerald-50 border border-emerald-200 text-emerald-700 p-3 rounded-xl text-xs flex items-center gap-2">
-                  <Check className="w-4 h-4 shrink-0" />
-                  <span>{uploadSuccess}</span>
-                </div>
-              )}
 
-              <div className="grid grid-cols-3 gap-2">
-                {hotel.images.map((img, index) => (
-                  <div key={index} className="relative rounded-xl overflow-hidden h-20 group border border-slate-200">
-                    <img src={img} alt={`Upload ${index}`} className="w-full h-full object-cover" />
-                    {isEditUnlocked && (
-                      <button 
-                        onClick={() => handleRemoveImage(index)}
-                        className="absolute top-1 right-1 bg-rose-600 text-white p-1 rounded-full shadow-md hover:bg-rose-700 transition"
-                      >
-                        <Trash2 className="w-3 h-3" />
-                      </button>
+                <div className="bg-white p-5 rounded-2xl shadow-sm border border-stone-200 space-y-4">
+                  <div>
+                    <h3 className="font-bold text-xs text-slate-900 flex items-center gap-1.5">
+                      <ImageIcon className="w-4 h-4 text-amber-800" /> Willkommen & Slider Fotos (Max 5 Fotos)
+                    </h3>
+                    <p className="text-[11px] text-slate-500 mt-1">Karşılama ekranı ve ana sayfa slider'ı ortak veri kullanır.</p>
+                  </div>
+
+                  {uploadError && (
+                    <div className="bg-rose-50 border border-rose-200 text-rose-700 p-3 rounded-xl text-xs flex items-center gap-2">
+                      <AlertCircle className="w-4 h-4 shrink-0" />
+                      <span>{uploadError}</span>
+                    </div>
+                  )}
+                  {uploadSuccess && (
+                    <div className="bg-emerald-50 border border-emerald-200 text-emerald-700 p-3 rounded-xl text-xs flex items-center gap-2">
+                      <Check className="w-4 h-4 shrink-0" />
+                      <span>{uploadSuccess}</span>
+                    </div>
+                  )}
+
+                  <div className="grid grid-cols-3 gap-2">
+                    {hotel.images.map((img, index) => (
+                      <div key={index} className="relative rounded-xl overflow-hidden h-20 group border border-slate-200">
+                        <img src={img} alt={`Upload ${index}`} className="w-full h-full object-cover" />
+                        {isEditUnlocked && (
+                          <button 
+                            onClick={() => handleRemoveImage(index)}
+                            className="absolute top-1 right-1 bg-rose-600 text-white p-1 rounded-full shadow-md hover:bg-rose-700 transition"
+                          >
+                            <Trash2 className="w-3 h-3" />
+                          </button>
+                        )}
+                      </div>
+                    ))}
+
+                    {hotel.images.length < 5 && (
+                      <label className={`border-2 border-dashed border-stone-300 rounded-xl h-20 flex flex-col items-center justify-center transition ${isEditUnlocked ? 'cursor-pointer hover:border-amber-800 hover:bg-amber-50/50' : 'cursor-not-allowed opacity-60'}`}>
+                        <Plus className="w-5 h-5 text-stone-400" />
+                        <span className="text-[10px] text-stone-500 font-medium mt-1">Foto hinzufügen</span>
+                        <input type="file" accept="image/*" multiple onChange={handleImageUpload} className="hidden" disabled={!isEditUnlocked} />
+                      </label>
                     )}
                   </div>
-                ))}
-
-                {hotel.images.length < 5 && (
-                  <label className={`border-2 border-dashed border-stone-300 rounded-xl h-20 flex flex-col items-center justify-center transition ${isEditUnlocked ? 'cursor-pointer hover:border-amber-800 hover:bg-amber-50/50' : 'cursor-not-allowed opacity-60'}`}>
-                    <Plus className="w-5 h-5 text-stone-400" />
-                    <span className="text-[10px] text-stone-500 font-medium mt-1">Foto hinzufügen</span>
-                    <input type="file" accept="image/*" multiple onChange={handleImageUpload} className="hidden" disabled={!isEditUnlocked} />
-                  </label>
-                )}
+                </div>
               </div>
-            </div>
-          </div>
+            )}
+          </>
         )}
 
       </main>
