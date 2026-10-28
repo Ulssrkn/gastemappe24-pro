@@ -4,7 +4,7 @@ import {
   Settings, Phone, Plus, Trash2, 
   Check, Image as ImageIcon, Copy,
   ChevronRight, CloudSun, Menu, X, ArrowRight, Upload, AlertCircle, Lock, Unlock,
-  Utensils, Heart, Compass, Coffee, Key, Car, Clock, ShieldCheck, Edit3, Mail, Globe
+  Utensils, Heart, Compass, Coffee, Key, Car, Clock, ShieldCheck, Edit3, Mail, Globe, Sparkles
 } from 'lucide-react';
 
 export default function App() {
@@ -22,7 +22,7 @@ export default function App() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [copiedWifi, setCopiedWifi] = useState(false);
 
-  // Dinamik Otel Verileri (Telefon, E-posta, Adres ve Web Sitesi eklendi)
+  // Dinamik Otel Verileri
   const [hotel, setHotel] = useState({
     logoUrl: '', 
     name: 'Mein Hotel', 
@@ -43,26 +43,33 @@ export default function App() {
     ]
   });
 
-  const categories = [
+  // Admin Tarafından Tamamen Yönetilebilen Dinamik Kategoriler
+  const [categories, setCategories] = useState([
     {
       id: 'gastronomie',
       title: 'Gastronomie & Bar',
       subtitle: 'Speisekarten & Öffnungszeiten',
-      content: 'Hier können Sie Details zu Ihrem Restaurant und den Speisekarten eingeben.'
+      content: 'Genießen Sie unsere regionale Küche und erlesene Weine.',
+      iconName: 'Utensils'
     },
     {
       id: 'wellness',
       title: 'Wellness & SPA',
       subtitle: 'Sauna & Massagen',
-      content: 'Hier können Sie Öffnungszeiten und Angebote für den Wellnessbereich eingeben.'
+      content: 'Entspannen Sie in unserem modernen Wellnessbereich.',
+      iconName: 'Heart'
     },
     {
       id: 'az_guide',
       title: 'Wichtiges von A bis Z',
       subtitle: 'Rezeption, Wäsche & Infos',
-      content: 'Wichtige Informationen für Ihre Gäste auf einen Blick.'
+      content: 'Wichtige Informationen für Ihren Aufenthalt auf einen Blick.',
+      iconName: 'Info'
     }
-  ];
+  ]);
+
+  // Yeni Kategori Ekleme State'leri
+  const [newCat, setNewCat] = useState({ title: '', subtitle: '', content: '', iconName: 'Info' });
 
   const [uploadError, setUploadError] = useState('');
   const [uploadSuccess, setUploadSuccess] = useState('');
@@ -82,6 +89,40 @@ export default function App() {
       setPasswordError(false);
     } else {
       setPasswordError(true);
+    }
+  };
+
+  // Yeni Kategori Ekleme Fonksiyonu
+  const handleAddCategory = (e) => {
+    e.preventDefault();
+    if (!newCat.title.trim()) return;
+
+    const newItem = {
+      id: Date.now().toString(),
+      title: newCat.title,
+      subtitle: newCat.subtitle || 'Informationen',
+      content: newCat.content || 'Details folgen in Kürze.',
+      iconName: newCat.iconName
+    };
+
+    setCategories([...categories, newItem]);
+    setNewCat({ title: '', subtitle: '', content: '', iconName: 'Info' });
+  };
+
+  // Kategori Silme Fonksiyonu
+  const handleDeleteCategory = (id) => {
+    setCategories(categories.filter(cat => cat.id !== id));
+  };
+
+  // İkon Seçici Yardımcı Fonksiyon
+  const renderCategoryIcon = (iconName) => {
+    switch (iconName) {
+      case 'Utensils': return <Utensils className="w-5 h-5 text-amber-800" />;
+      case 'Heart': return <Heart className="w-5 h-5 text-amber-800" />;
+      case 'Compass': return <Compass className="w-5 h-5 text-amber-800" />;
+      case 'Coffee': return <Coffee className="w-5 h-5 text-amber-800" />;
+      case 'Car': return <Car className="w-5 h-5 text-amber-800" />;
+      default: return <Info className="w-5 h-5 text-amber-800" />;
     }
   };
 
@@ -129,7 +170,7 @@ export default function App() {
     }
   };
 
-  // 1. WELCOME EKRANI (İletişim Bilgileri Hariç - Temiz ve Şık Tasarım)
+  // 1. WELCOME EKRANI
   if (showWelcomeScreen) {
     return (
       <div className="min-h-screen bg-slate-950 max-w-md mx-auto shadow-2xl relative overflow-hidden flex flex-col justify-between font-sans">
@@ -289,7 +330,7 @@ export default function App() {
             <div className="bg-white p-6 rounded-2xl shadow-sm border border-stone-200 space-y-4">
               <div className="flex items-center gap-3 border-b pb-4">
                 <div className="p-3 bg-amber-50 rounded-xl text-amber-800 font-bold">
-                  <Info className="w-5 h-5" />
+                  {renderCategoryIcon(selectedCategory.iconName)}
                 </div>
                 <div>
                   <span className="text-[10px] bg-amber-100 text-amber-900 px-2 py-0.5 rounded-full font-bold uppercase">Detailinfo</span>
@@ -386,7 +427,7 @@ export default function App() {
               </div>
             )}
 
-            {/* 2. GÄSTEMAPPE KATEGORİLERİ */}
+            {/* 2. GÄSTEMAPPE KATEGORİLERİ (DİNAMİK LİSTE) */}
             {activeTab === 'services' && (
               <div className="space-y-4 animate-fade-in">
                 <h2 className="text-sm font-bold text-slate-900 uppercase tracking-wider">Gästemappe & Kategorien</h2>
@@ -398,8 +439,8 @@ export default function App() {
                       className="bg-white p-4 rounded-2xl shadow-sm border border-stone-200 flex items-center justify-between cursor-pointer hover:border-amber-800 transition group"
                     >
                       <div className="flex items-center gap-3.5">
-                        <div className="p-2.5 bg-amber-50 rounded-xl text-amber-800 group-hover:bg-amber-100 transition">
-                          <Info className="w-5 h-5" />
+                        <div className="p-2.5 bg-amber-50 rounded-xl group-hover:bg-amber-100 transition">
+                          {renderCategoryIcon(cat.iconName)}
                         </div>
                         <div>
                           <h3 className="font-bold text-xs text-slate-900 group-hover:text-amber-800 transition">{cat.title}</h3>
@@ -413,7 +454,7 @@ export default function App() {
               </div>
             )}
 
-            {/* 3. ADMIN PANELİ (TEL, E-POSTA, ADRES, WEB SİTESİ EKLENDİ) */}
+            {/* 3. ADMIN PANELİ (KATEGORİ YÖNETİMİ EKLENDİ) */}
             {activeTab === 'admin' && (
               <div className="space-y-5 animate-fade-in">
                 <div className="bg-amber-800 text-white p-4 rounded-2xl shadow-md flex justify-between items-center">
@@ -435,7 +476,95 @@ export default function App() {
                   </button>
                 </div>
 
-                {/* OTEL BİLGİLERİ VE İLETİŞİM (TEL, E-POSTA, ADRES, WEB) */}
+                {/* GÄSTEMAPPE KATEGORİLERİNİ YÖNETME & YENİ EKLEME */}
+                <div className="bg-white p-5 rounded-2xl shadow-sm border border-stone-200 space-y-4">
+                  <h3 className="font-bold text-xs text-slate-900 flex items-center gap-1.5">
+                    <Compass className="w-4 h-4 text-amber-800" /> Gästemappe Kategorien verwalten
+                  </h3>
+
+                  {/* Mevcut Kategoriler Listesi ve Silme */}
+                  <div className="space-y-2">
+                    {categories.map((cat) => (
+                      <div key={cat.id} className="flex items-center justify-between p-3 bg-stone-50 rounded-xl border border-stone-200 text-xs">
+                        <div className="flex items-center gap-2">
+                          {renderCategoryIcon(cat.iconName)}
+                          <div>
+                            <span className="font-bold text-slate-900 block">{cat.title}</span>
+                            <span className="text-[10px] text-slate-500">{cat.subtitle}</span>
+                          </div>
+                        </div>
+                        {isEditUnlocked && (
+                          <button 
+                            onClick={() => handleDeleteCategory(cat.id)}
+                            className="bg-rose-50 text-rose-600 hover:bg-rose-100 p-1.5 rounded-lg transition"
+                            title="Löschen"
+                          >
+                            <Trash2 className="w-3.5 h-3.5" />
+                          </button>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Yeni Kategori Ekleme Formu */}
+                  {isEditUnlocked ? (
+                    <form onSubmit={handleAddCategory} className="pt-3 border-t border-stone-100 space-y-3">
+                      <h4 className="font-bold text-[11px] text-amber-800 uppercase">Neue Kategorie hinzufügen</h4>
+                      <div>
+                        <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">Titel</label>
+                        <input 
+                          type="text" 
+                          placeholder="z.B. Pool & Wellness"
+                          value={newCat.title}
+                          onChange={(e) => setNewCat({ ...newCat, title: e.target.value })}
+                          className="w-full p-2.5 text-xs border border-stone-200 rounded-xl"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">Untertitel</label>
+                        <input 
+                          type="text" 
+                          placeholder="z.B. Öffnungszeiten & Regeln"
+                          value={newCat.subtitle}
+                          onChange={(e) => setNewCat({ ...newCat, subtitle: e.target.value })}
+                          className="w-full p-2.5 text-xs border border-stone-200 rounded-xl"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">Inhalt / Details</label>
+                        <textarea 
+                          rows="2"
+                          placeholder="Ausführliche Beschreibung..."
+                          value={newCat.content}
+                          onChange={(e) => setNewCat({ ...newCat, content: e.target.value })}
+                          className="w-full p-2.5 text-xs border border-stone-200 rounded-xl"
+                        ></textarea>
+                      </div>
+                      <div>
+                        <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">Icon Auswählen</label>
+                        <select 
+                          value={newCat.iconName}
+                          onChange={(e) => setNewCat({ ...newCat, iconName: e.target.value })}
+                          className="w-full p-2.5 text-xs border border-stone-200 rounded-xl bg-white"
+                        >
+                          <option value="Info">Info (Standard)</option>
+                          <option value="Utensils">Gastronomie (Utensils)</option>
+                          <option value="Heart">Wellness (Heart)</option>
+                          <option value="Compass">Umgebung (Compass)</option>
+                          <option value="Coffee">Frühstück (Coffee)</option>
+                          <option value="Car">Parken (Car)</option>
+                        </select>
+                      </div>
+                      <button type="submit" className="w-full bg-amber-800 text-white py-2.5 rounded-xl text-xs font-bold shadow-md hover:bg-amber-900 transition flex items-center justify-center gap-1">
+                        <Plus className="w-4 h-4" /> Kategorie Hinzufügen
+                      </button>
+                    </form>
+                  ) : (
+                    <p className="text-[10px] text-stone-400 italic text-center pt-2">Neue Kategorien hinzufügen und löschen gesperrt. Bitte zuerst oben "Entsperren".</p>
+                  )}
+                </div>
+
+                {/* OTEL BİLGİLERİ VE İLETİŞİM */}
                 <div className="bg-white p-5 rounded-2xl shadow-sm border border-stone-200 space-y-3">
                   <h3 className="font-bold text-xs text-slate-900 flex items-center gap-1.5">
                     <Edit3 className="w-4 h-4 text-amber-800" /> Hotel Details & Kontakt
@@ -448,7 +577,7 @@ export default function App() {
                       value={hotel.name}
                       disabled={!isEditUnlocked}
                       onChange={(e) => setHotel({ ...hotel, name: e.target.value })}
-                      className={`w-full p-2.5 text-xs border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-800 ${!isEditUnlocked ? 'bg-stone-100 text-stone-500 cursor-not-allowed' : ''}`}
+                      className={`w-full p-2.5 text-xs border border-stone-200 rounded-xl ${!isEditUnlocked ? 'bg-stone-100 text-stone-500 cursor-not-allowed' : ''}`}
                     />
                   </div>
 
@@ -459,7 +588,7 @@ export default function App() {
                       value={hotel.welcomeGreeting}
                       disabled={!isEditUnlocked}
                       onChange={(e) => setHotel({ ...hotel, welcomeGreeting: e.target.value })}
-                      className={`w-full p-2.5 text-xs border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-800 ${!isEditUnlocked ? 'bg-stone-100 text-stone-500 cursor-not-allowed' : ''}`}
+                      className={`w-full p-2.5 text-xs border border-stone-200 rounded-xl ${!isEditUnlocked ? 'bg-stone-100 text-stone-500 cursor-not-allowed' : ''}`}
                     />
                   </div>
 
@@ -512,7 +641,7 @@ export default function App() {
                 {/* SCHNELLZUGRIFF VERİLERİ */}
                 <div className="bg-white p-5 rounded-2xl shadow-sm border border-stone-200 space-y-3">
                   <h3 className="font-bold text-xs text-slate-900 flex items-center gap-1.5">
-                    <Wifi className="w-4 h-4 text-amber-800" /> Schnellzugriff-Daten (Hızlı Erişim Bilgileri)
+                    <Wifi className="w-4 h-4 text-amber-800" /> Schnellzugriff-Daten
                   </h3>
 
                   <div className="grid grid-cols-2 gap-2">
