@@ -4,10 +4,9 @@ import {
   Settings, Phone, Plus, Trash2, 
   Check, Image as ImageIcon, Copy,
   ChevronRight, CloudSun, Menu, X, ArrowRight, Upload, AlertCircle, Lock, Unlock,
-  Utensils, Heart, Compass, Coffee, Key, Car, Clock, ShieldCheck, Edit3, Mail, Globe
+  Utensils, Heart, Compass, Coffee, Key, Car, Clock, ShieldCheck, Edit3, Mail, Globe, ExternalLink
 } from 'lucide-react';
 
-// Dictionary / Translation Keys Dictionary
 const translations = {
   de: {
     welcomeBadge: "Digitale Gästemappe",
@@ -31,7 +30,7 @@ const translations = {
     sec2Title: "2. Logo hochladen (Max. 2 MB)",
     sec3Title: "3. Bilderverwaltung (Max. 5 Bilder, max. 5 MB pro Bild)",
     sec4Title: "4. Bilder für den Willkommensbildschirm und den Startseiten-Slider",
-    sec5Title: "5. Schnellzugriff",
+    sec5Title: "5. Schnellzugriff (Standard & Max. 2 Custom)",
     sec6Title: "6. Kategorien der Gästemappe",
     lblHotelName: "Hotel Name",
     lblGreeting: "Begrüßungstext",
@@ -46,12 +45,13 @@ const translations = {
     lblParkingInfo: "Parkplatz Info",
     btnLogoUpload: "Logo Seç / Değiştir",
     btnAddCategory: "Neue Kategorie hinzufügen",
-    btnCatSubmit: "Kategorie Hinzufügen"
+    btnCatSubmit: "Kategorie Hinzufügen",
+    btnAddCustomQuick: "Eigenen Schnellzugriff hinzufügen (Max. 2)"
   }
 };
 
 export default function App() {
-  const [lang] = useState('de'); // Future dynamic language setter
+  const [lang] = useState('de');
   const t = translations[lang];
 
   const [activeTab, setActiveTab] = useState('home');
@@ -59,7 +59,6 @@ export default function App() {
   const [showWelcomeScreen, setShowWelcomeScreen] = useState(true);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   
-  // Security lock state
   const [isEditUnlocked, setIsEditUnlocked] = useState(false);
   const [passwordInput, setPasswordInput] = useState('');
   const [passwordError, setPasswordError] = useState(false);
@@ -68,7 +67,7 @@ export default function App() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [copiedWifi, setCopiedWifi] = useState(false);
 
-  // Hotel Dynamic State
+  // Otel Bilgileri
   const [hotel, setHotel] = useState({
     logoUrl: '', 
     name: 'Mein Hotel', 
@@ -82,14 +81,16 @@ export default function App() {
     breakfastTime: '07:00 - 10:30 Uhr',
     checkInOut: 'Check-in: ab 15:00 | Check-out: bis 11:00',
     parkingInfo: 'Kostenfreie Parkplätze am Haus verfügbar.',
-    weatherTemp: '20°C',
-    weatherDesc: 'Sonnig',
     images: [
       'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1000&q=80'
     ]
   });
 
-  // Dynamic Categories State
+  // Özel Schnellzugriff Listesi (En fazla 2 adet eklenebilir)
+  const [customQuickLinks, setCustomQuickLinks] = useState([]);
+  const [newQuick, setNewQuick] = useState({ title: '', description: '', iconName: 'Info' });
+
+  // Kategoriler
   const [categories, setCategories] = useState([
     {
       id: 'gastronomie',
@@ -136,6 +137,30 @@ export default function App() {
     }
   };
 
+  // Özel Schnellzugriff Ekleme (Max 2 adet kontrolü)
+  const handleAddCustomQuick = (e) => {
+    e.preventDefault();
+    if (!newQuick.title.trim()) return;
+    if (customQuickLinks.length >= 2) {
+      alert('Sie können maximal 2 eigene Schnellzugriffe hinzufügen.');
+      return;
+    }
+
+    const newItem = {
+      id: Date.now().toString(),
+      title: newQuick.title,
+      description: newQuick.description || 'Details',
+      iconName: newQuick.iconName
+    };
+
+    setCustomQuickLinks([...customQuickLinks, newItem]);
+    setNewQuick({ title: '', description: '', iconName: 'Info' });
+  };
+
+  const handleDeleteCustomQuick = (id) => {
+    setCustomQuickLinks(customQuickLinks.filter(item => item.id !== id));
+  };
+
   const handleAddCategory = (e) => {
     e.preventDefault();
     if (!newCat.title.trim()) return;
@@ -163,6 +188,8 @@ export default function App() {
       case 'Compass': return <Compass className="w-5 h-5 text-amber-800" />;
       case 'Coffee': return <Coffee className="w-5 h-5 text-amber-800" />;
       case 'Car': return <Car className="w-5 h-5 text-amber-800" />;
+      case 'Phone': return <Phone className="w-5 h-5 text-amber-800" />;
+      case 'Globe': return <Globe className="w-5 h-5 text-amber-800" />;
       default: return <Info className="w-5 h-5 text-amber-800" />;
     }
   };
@@ -463,6 +490,17 @@ export default function App() {
                       </div>
                       <p className="text-[10px] text-slate-600 leading-snug">{hotel.checkInOut}</p>
                     </div>
+
+                    {/* CUSTOM QUICK LINKS (Max 2) */}
+                    {customQuickLinks.map((item) => (
+                      <div key={item.id} className="bg-white p-4 rounded-2xl shadow-sm border border-stone-200/80 space-y-2 flex flex-col justify-between">
+                        <div className="flex items-center gap-2 text-amber-800">
+                          {renderCategoryIcon(item.iconName)}
+                          <span className="font-bold text-xs text-slate-900">{item.title}</span>
+                        </div>
+                        <p className="text-[11px] text-slate-600 leading-snug">{item.description}</p>
+                      </div>
+                    ))}
                   </div>
                 </div>
               </div>
@@ -660,13 +698,13 @@ export default function App() {
                   </div>
                 </div>
 
-                {/* STEP 5: Schnellzugriff */}
-                <div className="bg-white p-5 rounded-2xl shadow-sm border border-stone-200 space-y-3">
+                {/* STEP 5: Schnellzugriff (Standard & Max 2 Custom) */}
+                <div className="bg-white p-5 rounded-2xl shadow-sm border border-stone-200 space-y-4">
                   <h3 className="font-bold text-xs text-slate-900 flex items-center gap-1.5">
                     <Wifi className="w-4 h-4 text-amber-800" /> {t.sec5Title}
                   </h3>
 
-                  <div className="grid grid-cols-2 gap-2">
+                  <div className="space-y-3">
                     <div>
                       <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">{t.lblWifiSsid}</label>
                       <input 
@@ -687,39 +725,95 @@ export default function App() {
                         className={`w-full p-2.5 text-xs border border-stone-200 rounded-xl ${!isEditUnlocked ? 'bg-stone-100 cursor-not-allowed' : ''}`}
                       />
                     </div>
+                    <div>
+                      <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">{t.lblBreakfastTime}</label>
+                      <input 
+                        type="text" 
+                        value={hotel.breakfastTime}
+                        disabled={!isEditUnlocked}
+                        onChange={(e) => setHotel({ ...hotel, breakfastTime: e.target.value })}
+                        className={`w-full p-2.5 text-xs border border-stone-200 rounded-xl ${!isEditUnlocked ? 'bg-stone-100 cursor-not-allowed' : ''}`}
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">{t.lblCheckInOut}</label>
+                      <input 
+                        type="text" 
+                        value={hotel.checkInOut}
+                        disabled={!isEditUnlocked}
+                        onChange={(e) => setHotel({ ...hotel, checkInOut: e.target.value })}
+                        className={`w-full p-2.5 text-xs border border-stone-200 rounded-xl ${!isEditUnlocked ? 'bg-stone-100 cursor-not-allowed' : ''}`}
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">{t.lblParkingInfo}</label>
+                      <input 
+                        type="text" 
+                        value={hotel.parkingInfo}
+                        disabled={!isEditUnlocked}
+                        onChange={(e) => setHotel({ ...hotel, parkingInfo: e.target.value })}
+                        className={`w-full p-2.5 text-xs border border-stone-200 rounded-xl ${!isEditUnlocked ? 'bg-stone-100 cursor-not-allowed' : ''}`}
+                      />
+                    </div>
                   </div>
 
-                  <div>
-                    <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">{t.lblBreakfastTime}</label>
-                    <input 
-                      type="text" 
-                      value={hotel.breakfastTime}
-                      disabled={!isEditUnlocked}
-                      onChange={(e) => setHotel({ ...hotel, breakfastTime: e.target.value })}
-                      className={`w-full p-2.5 text-xs border border-stone-200 rounded-xl ${!isEditUnlocked ? 'bg-stone-100 cursor-not-allowed' : ''}`}
-                    />
-                  </div>
+                  {/* Özel Schnellzugriff Yönetimi (Max 2) */}
+                  <div className="pt-3 border-t border-stone-100 space-y-3">
+                    <h4 className="font-bold text-[11px] text-amber-800 uppercase">Eigene Schnellzugriffe (Aktuell: {customQuickLinks.length}/2)</h4>
+                    
+                    <div className="space-y-2">
+                      {customQuickLinks.map((item) => (
+                        <div key={item.id} className="flex items-center justify-between p-2.5 bg-stone-50 rounded-xl border border-stone-200 text-xs">
+                          <div className="flex items-center gap-2">
+                            {renderCategoryIcon(item.iconName)}
+                            <div>
+                              <span className="font-bold text-slate-900 block">{item.title}</span>
+                              <span className="text-[10px] text-slate-500">{item.description}</span>
+                            </div>
+                          </div>
+                          {isEditUnlocked && (
+                            <button 
+                              onClick={() => handleDeleteCustomQuick(item.id)}
+                              className="bg-rose-50 text-rose-600 hover:bg-rose-100 p-1.5 rounded-lg transition"
+                            >
+                              <Trash2 className="w-3.5 h-3.5" />
+                            </button>
+                          )}
+                        </div>
+                      ))}
+                    </div>
 
-                  <div>
-                    <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">{t.lblCheckInOut}</label>
-                    <input 
-                      type="text" 
-                      value={hotel.checkInOut}
-                      disabled={!isEditUnlocked}
-                      onChange={(e) => setHotel({ ...hotel, checkInOut: e.target.value })}
-                      className={`w-full p-2.5 text-xs border border-stone-200 rounded-xl ${!isEditUnlocked ? 'bg-stone-100 cursor-not-allowed' : ''}`}
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">{t.lblParkingInfo}</label>
-                    <input 
-                      type="text" 
-                      value={hotel.parkingInfo}
-                      disabled={!isEditUnlocked}
-                      onChange={(e) => setHotel({ ...hotel, parkingInfo: e.target.value })}
-                      className={`w-full p-2.5 text-xs border border-stone-200 rounded-xl ${!isEditUnlocked ? 'bg-stone-100 cursor-not-allowed' : ''}`}
-                    />
+                    {isEditUnlocked && customQuickLinks.length < 2 && (
+                      <form onSubmit={handleAddCustomQuick} className="space-y-2 pt-2">
+                        <input 
+                          type="text" 
+                          placeholder="Titel (z.B. Fahrradverleih)"
+                          value={newQuick.title}
+                          onChange={(e) => setNewQuick({ ...newQuick, title: e.target.value })}
+                          className="w-full p-2 text-xs border border-stone-200 rounded-xl"
+                        />
+                        <input 
+                          type="text" 
+                          placeholder="Beschreibung (z.B. An der Rezeption)"
+                          value={newQuick.description}
+                          onChange={(e) => setNewQuick({ ...newQuick, description: e.target.value })}
+                          className="w-full p-2 text-xs border border-stone-200 rounded-xl"
+                        />
+                        <select 
+                          value={newQuick.iconName}
+                          onChange={(e) => setNewQuick({ ...newQuick, iconName: e.target.value })}
+                          className="w-full p-2 text-xs border border-stone-200 rounded-xl bg-white"
+                        >
+                          <option value="Info">Info</option>
+                          <option value="Phone">Telefon</option>
+                          <option value="Globe">Webseite</option>
+                          <option value="Coffee">Coffee</option>
+                        </select>
+                        <button type="submit" className="w-full bg-amber-800 text-white py-2 rounded-xl text-xs font-bold shadow-md hover:bg-amber-900 transition flex items-center justify-center gap-1">
+                          <Plus className="w-3.5 h-3.5" /> Schnellzugriff hinzufügen
+                        </button>
+                      </form>
+                    )}
                   </div>
                 </div>
 
@@ -827,7 +921,7 @@ export default function App() {
         </button>
 
         <button 
-          onClick={() => { setActiveTab('services'); setSelectedCategory(null); }}
+          onClick={() => { setActiveTab('services'); setSelectedCategory, setSelectedCategory(null); }}
           className={`flex flex-col items-center gap-1 text-[10px] font-bold transition ${activeTab === 'services' || selectedCategory ? 'text-amber-800' : 'text-stone-400'}`}
         >
           <Compass className="w-5 h-5" />
