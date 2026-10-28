@@ -4,7 +4,7 @@ import {
   Settings, Phone, Plus, Trash2, 
   Check, Image as ImageIcon, Copy,
   ChevronRight, CloudSun, Menu, X, ArrowRight, Upload, AlertCircle, Lock, Unlock,
-  Utensils, Heart, Compass, Coffee, Key, Car, Clock, ShieldCheck, Edit3
+  Utensils, Heart, Compass, Coffee, Key, Car, Clock, ShieldCheck, Edit3, Mail, Globe
 } from 'lucide-react';
 
 export default function App() {
@@ -22,14 +22,17 @@ export default function App() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [copiedWifi, setCopiedWifi] = useState(false);
 
-  // Dinamik Otel Verileri
+  // Dinamik Otel Verileri (Telefon, E-posta, Adres ve Web Sitesi eklendi)
   const [hotel, setHotel] = useState({
     logoUrl: '', 
     name: 'Mein Hotel', 
     welcomeGreeting: 'Herzlich Willkommen!',
+    phone: '+49 123 456789',
+    email: 'info@mein-hotel.de',
+    address: 'Hauptstraße 1, 67150 Deidesheim',
+    website: 'www.mein-hotel.de',
     wifiSsid: 'Guest_WiFi',
     wifiPass: 'pass2026',
-    phone: '+49 000 000000',
     breakfastTime: '07:00 - 10:30 Uhr',
     checkInOut: 'Check-in: ab 15:00 | Check-out: bis 11:00',
     parkingInfo: 'Kostenfreie Parkplätze am Haus verfügbar.',
@@ -126,7 +129,7 @@ export default function App() {
     }
   };
 
-  // 1. WELCOME EKRANI
+  // 1. WELCOME EKRANI (İletişim Bilgileri Hariç - Temiz ve Şık Tasarım)
   if (showWelcomeScreen) {
     return (
       <div className="min-h-screen bg-slate-950 max-w-md mx-auto shadow-2xl relative overflow-hidden flex flex-col justify-between font-sans">
@@ -410,7 +413,7 @@ export default function App() {
               </div>
             )}
 
-            {/* 3. ADMIN PANELİ (TÜM AYARLAR VE FORM ALANLARI EKSİKSİZ BURADA) */}
+            {/* 3. ADMIN PANELİ (TEL, E-POSTA, ADRES, WEB SİTESİ EKLENDİ) */}
             {activeTab === 'admin' && (
               <div className="space-y-5 animate-fade-in">
                 <div className="bg-amber-800 text-white p-4 rounded-2xl shadow-md flex justify-between items-center">
@@ -432,10 +435,10 @@ export default function App() {
                   </button>
                 </div>
 
-                {/* OTEL BİLGİLERİ */}
+                {/* OTEL BİLGİLERİ VE İLETİŞİM (TEL, E-POSTA, ADRES, WEB) */}
                 <div className="bg-white p-5 rounded-2xl shadow-sm border border-stone-200 space-y-3">
                   <h3 className="font-bold text-xs text-slate-900 flex items-center gap-1.5">
-                    <Edit3 className="w-4 h-4 text-amber-800" /> Hotel Details
+                    <Edit3 className="w-4 h-4 text-amber-800" /> Hotel Details & Kontakt
                   </h3>
 
                   <div>
@@ -457,6 +460,51 @@ export default function App() {
                       disabled={!isEditUnlocked}
                       onChange={(e) => setHotel({ ...hotel, welcomeGreeting: e.target.value })}
                       className={`w-full p-2.5 text-xs border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-800 ${!isEditUnlocked ? 'bg-stone-100 text-stone-500 cursor-not-allowed' : ''}`}
+                    />
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-2">
+                    <div>
+                      <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">Telefon</label>
+                      <input 
+                        type="text" 
+                        value={hotel.phone}
+                        disabled={!isEditUnlocked}
+                        onChange={(e) => setHotel({ ...hotel, phone: e.target.value })}
+                        className={`w-full p-2.5 text-xs border border-stone-200 rounded-xl ${!isEditUnlocked ? 'bg-stone-100 cursor-not-allowed' : ''}`}
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">E-Mail</label>
+                      <input 
+                        type="text" 
+                        value={hotel.email}
+                        disabled={!isEditUnlocked}
+                        onChange={(e) => setHotel({ ...hotel, email: e.target.value })}
+                        className={`w-full p-2.5 text-xs border border-stone-200 rounded-xl ${!isEditUnlocked ? 'bg-stone-100 cursor-not-allowed' : ''}`}
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">Adresse</label>
+                    <input 
+                      type="text" 
+                      value={hotel.address}
+                      disabled={!isEditUnlocked}
+                      onChange={(e) => setHotel({ ...hotel, address: e.target.value })}
+                      className={`w-full p-2.5 text-xs border border-stone-200 rounded-xl ${!isEditUnlocked ? 'bg-stone-100 cursor-not-allowed' : ''}`}
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">Webseite</label>
+                    <input 
+                      type="text" 
+                      value={hotel.website}
+                      disabled={!isEditUnlocked}
+                      onChange={(e) => setHotel({ ...hotel, website: e.target.value })}
+                      className={`w-full p-2.5 text-xs border border-stone-200 rounded-xl ${!isEditUnlocked ? 'bg-stone-100 cursor-not-allowed' : ''}`}
                     />
                   </div>
                 </div>
