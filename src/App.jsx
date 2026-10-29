@@ -664,7 +664,7 @@ export default function App() {
                   </div>
                 </div>
 
-                {/* EDIT FORM (HOTEL DETAILS) */}
+                {/* 1. EDIT FORM (HOTEL DETAILS) */}
                 <div className="bg-white p-5 rounded-2xl shadow-sm border border-stone-200 space-y-4">
                   <h3 className="font-bold text-xs text-slate-900 uppercase tracking-wider border-b pb-2">{t.sec1Title}</h3>
                   
@@ -676,114 +676,4 @@ export default function App() {
                         disabled={!isEditUnlocked}
                         value={hotel.name} 
                         onChange={(e) => setHotel({...hotel, name: e.target.value})}
-                        className="w-full p-2.5 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-800 disabled:opacity-60"
-                      />
-                    </div>
-
-                    <div>
-                      <label className="block text-slate-500 font-medium mb-1">{t.lblGreeting}</label>
-                      <input 
-                        type="text" 
-                        disabled={!isEditUnlocked}
-                        value={hotel.welcomeGreeting} 
-                        onChange={(e) => setHotel({...hotel, welcomeGreeting: e.target.value})}
-                        className="w-full p-2.5 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-800 disabled:opacity-60"
-                      />
-                    </div>
-
-                    <div className="grid grid-cols-2 gap-2">
-                      <div>
-                        <label className="block text-slate-500 font-medium mb-1">{t.lblWifiSsid}</label>
-                        <input 
-                          type="text" 
-                          disabled={!isEditUnlocked}
-                          value={hotel.wifiSsid} 
-                          onChange={(e) => setHotel({...hotel, wifiSsid: e.target.value})}
-                          className="w-full p-2.5 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-800 disabled:opacity-60 font-mono"
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-slate-500 font-medium mb-1">{t.lblWifiPass}</label>
-                        <input 
-                          type="text" 
-                          disabled={!isEditUnlocked}
-                          value={hotel.wifiPass} 
-                          onChange={(e) => setHotel({...hotel, wifiPass: e.target.value})}
-                          className="w-full p-2.5 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-800 disabled:opacity-60 font-mono"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* LOGO UPLOAD SECTION */}
-                <div className="bg-white p-5 rounded-2xl shadow-sm border border-stone-200 space-y-3">
-                  <h3 className="font-bold text-xs text-slate-900 uppercase tracking-wider border-b pb-2">{t.sec2Title}</h3>
-                  <div className="flex items-center gap-3">
-                    {hotel.logoUrl && <img src={hotel.logoUrl} alt="Logo" className="w-12 h-12 rounded-xl object-cover border" />}
-                    <label className={`cursor-pointer bg-amber-50 hover:bg-amber-100 text-amber-900 px-4 py-2.5 rounded-xl text-xs font-bold border border-amber-200 transition flex items-center gap-2 ${!isEditUnlocked ? 'opacity-60 cursor-not-allowed' : ''}`}>
-                      <Upload className="w-4 h-4" />
-                      <span>{t.btnLogoUpload}</span>
-                      <input type="file" accept="image/*" onChange={handleLogoUpload} disabled={!isEditUnlocked} className="hidden" />
-                    </label>
-                  </div>
-                </div>
-
-                {/* CATEGORY MANAGEMENT SECTION */}
-                <div className="bg-white p-5 rounded-2xl shadow-sm border border-stone-200 space-y-4">
-                  <h3 className="font-bold text-xs text-slate-900 uppercase tracking-wider border-b pb-2">{t.sec6Title}</h3>
-                  
-                  {isEditUnlocked ? (
-                    <form onSubmit={handleAddCategory} className="space-y-3 bg-stone-50 p-4 rounded-xl border">
-                      <h4 className="font-bold text-xs text-amber-900">{t.btnAddCategory}</h4>
-                      <input 
-                        type="text" 
-                        placeholder="Kategori Başlığı..." 
-                        value={newCat.title}
-                        onChange={(e) => setNewCat({...newCat, title: e.target.value})}
-                        className="w-full p-2.5 text-xs bg-white border border-stone-200 rounded-xl focus:ring-2 focus:ring-amber-800"
-                      />
-                      <input 
-                        type="text" 
-                        placeholder="Alt Başlık / Açıklama..." 
-                        value={newCat.subtitle}
-                        onChange={(e) => setNewCat({...newCat, subtitle: e.target.value})}
-                        className="w-full p-2.5 text-xs bg-white border border-stone-200 rounded-xl focus:ring-2 focus:ring-amber-800"
-                      />
-                      <textarea 
-                        placeholder="Detaylı içerik..." 
-                        value={newCat.content}
-                        onChange={(e) => setNewCat({...newCat, content: e.target.value})}
-                        className="w-full p-2.5 text-xs bg-white border border-stone-200 rounded-xl focus:ring-2 focus:ring-amber-800"
-                        rows="2"
-                      />
-                      <button type="submit" className="w-full bg-amber-800 text-white py-2.5 rounded-xl text-xs font-bold">
-                        {t.btnCatSubmit}
-                      </button>
-                    </form>
-                  ) : (
-                    <p className="text-[11px] text-stone-400 italic">Kategori eklemek için admin panelini üstten kilidini açarak entegre edin.</p>
-                  )}
-
-                  <div className="space-y-2">
-                    {categories.map((cat) => (
-                      <div key={cat.id} className="flex items-center justify-between p-3 bg-stone-50 rounded-xl border border-stone-200 text-xs">
-                        <span className="font-bold text-slate-800">{cat.title}</span>
-                        {isEditUnlocked && (
-                          <button onClick={() => handleDeleteCategory(cat.id)} className="text-rose-600 hover:text-rose-800 p-1">
-                            <Trash2 className="w-4 h-4" />
-                          </button>
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-              </div>
-            )}
-          </>
-        )}
-      </main>
-    </div>
-  );
-}
+                        className="w-full p-2.5 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-800 disabled:opacity-6
