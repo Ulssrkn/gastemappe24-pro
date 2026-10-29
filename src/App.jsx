@@ -294,12 +294,12 @@ export default function App() {
             </h1>
           </div>
 
-          <button 
-            onClick={() => setShowWelcomeScreen(false)}
-            className="w-full bg-white text-slate-900 py-4 rounded-2xl font-bold text-sm shadow-2xl hover:bg-slate-100 transition flex items-center justify-center gap-2 active:scale-98"
+        <button 
+            onClick={() => { setShowWelcomeScreen(false); setActiveTab('admin'); setSelectedCategory(null); }}
+            className="p-2 bg-white/10 hover:bg-white/20 rounded-full backdrop-blur-md transition text-white"
+            title="Admin Panel"
           >
-            <span>{t.welcomeButton}</span>
-            <ArrowRight className="w-4 h-4" />
+            <Settings className="w-4 h-4" />
           </button>
         </div>
       </div>
