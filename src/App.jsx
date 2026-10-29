@@ -7,62 +7,10 @@ import {
   ChevronRight, CloudSun, Menu, X, ArrowRight, Upload, AlertCircle, Lock, Unlock,
   Utensils, Heart, Compass, Coffee, Key, Car, Clock, ShieldCheck, Edit3, Mail, Globe, ExternalLink, QrCode, Printer, Timer, BarChart3, Zap
 } from 'lucide-react';
-const translations = {
-  de: {
-    welcomeBadge: "Digitale Gästemappe",
-    welcomeButton: "Los geht's",
-    navHome: "Home",
-    navGaestemappe: "Gästemappe",
-    navAdmin: "Admin",
-    schnellzugriffTitle: "Schnellzugriff",
-    wlanTitle: "WLAN",
-    parkingTitle: "Parkplatz",
-    breakfastTitle: "Frühstück",
-    checkInOutTitle: "Check-in / Out",
-    detailBack: "Zurück zur Übersicht",
-    detailLabel: "Detailinfo",
-    adminTitle: "Verwaltung (Admin Panel)",
-    adminUnlockMode: "Bearbeitungsmodus Aktiv",
-    adminLockMode: "Ansichtsmodus (Geschützt)",
-    adminBtnLock: "Sperren",
-    adminBtnUnlock: "Entsperren",
-    trialTitle: "30-Tage Testversion (PRO)",
-    trialDaysLeft: "Tage verbleibend",
-    trialUpgradeBtn: "Jetzt PRO Lizenz sichern",
-    statsTitle: "Nutzungsstatistik",
-    statsScans: "QR-Code Scans (Gäste-Aufrufe)",
-    statsActiveRooms: "Aktive Zimmer-Zugriffe",
-    qrTitle: "QR-Code & Print-Center (A4, A5, Visitenkarte)",
-    qrSubtitle: "Erstellen Sie professionelle Aufsteller für Ihre Zimmer und Rezeption.",
-    printA4: "Druckvorlage A4",
-    printA5: "Druckvorlage A5",
-    printCard: "Druckvorlage Visitenkarte",
-    sec1Title: "1. Hotelinformationen & Kontaktdaten",
-    sec2Title: "2. Logo hochladen (Max. 2 MB)",
-    sec3Title: "3. Bilderverwaltung (Max. 5 Bilder, max. 5 MB pro Bild)",
-    sec4Title: "4. Bilder für den Willkommensbildschirm und den Startseiten-Slider",
-    sec5Title: "5. Schnellzugriff (Standard & Max. 2 Custom)",
-    sec6Title: "6. Kategorien der Gästemappe",
-    lblHotelName: "Hotel Name",
-    lblGreeting: "Begrüßungstext",
-    lblPhone: "Telefon",
-    lblEmail: "E-Mail",
-    lblAddress: "Adresse",
-    lblWebsite: "Webseite",
-    lblWifiSsid: "WLAN SSID",
-    lblWifiPass: "WLAN Passwort",
-    lblBreakfastTime: "Frühstückszeiten",
-    lblCheckInOut: "Check-in / Check-out Infos",
-    lblParkingInfo: "Parkplatz Info",
-    btnLogoUpload: "Logo Seç / Değiştir",
-    btnAddCategory: "Neue Kategorie hinzufügen",
-    btnCatSubmit: "Kategorie Hinzufügen"
-  }
-};
 
 export default function App() {
   const [lang, setLang] = useState('de');
-const t = translations[lang] || translations.de;
+  const t = translations[lang] || translations.de;
 
   const [activeTab, setActiveTab] = useState('home');
   const [selectedCategory, setSelectedCategory] = useState(null);
@@ -107,6 +55,7 @@ const t = translations[lang] || translations.de;
   // PDF Baskı Fonksiyonu
   const handlePrint = (format) => {
     const printWindow = window.open('', '_blank');
+    if (!printWindow) return;
     printWindow.document.write(`
       <html>
         <head>
@@ -121,7 +70,7 @@ const t = translations[lang] || translations.de;
             .qr-box { background: #f8fafc; padding: 20px; border-radius: 20px; display: inline-block; border: 1px solid #e2e8f0; margin-bottom: 25px; }
             .qr-img { width: 200px; height: 200px; display: block; }
             .instructions { font-size: 13px; font-weight: 600; color: #334155; margin-bottom: 30px; }
-            .footer { border-top: 1px solid #e2e8f0; pt-3; margin-top: 20px; font-size: 11px; color: #64748b; line-height: 1.5; }
+            .footer { border-top: 1px solid #e2e8f0; padding-top: 15px; margin-top: 20px; font-size: 11px; color: #64748b; line-height: 1.5; }
             @media print { body { padding: 0; } .container { border: none; box-shadow: none; } }
           </style>
         </head>
@@ -302,100 +251,10 @@ const t = translations[lang] || translations.de;
     }
   };
 
-  // 1. WELCOME SCREEN
-  if (showWelcomeScreen) {
-    return (
-      <div className="min-h-screen bg-slate-950 max-w-md mx-auto shadow-2xl relative overflow-hidden flex flex-col justify-between font-sans">
-        <div className="absolute inset-0 z-0">
-          <img 
-            src={hotel.images[0] || 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1000&q=80'} 
-            alt="Welcome Background" 
-            className="w-full h-full object-cover object-center brightness-75 transition-all duration-700"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-slate-950/20"></div>
-        </div>
-
-        <div className="relative z-10 p-6 flex justify-between items-center text-white">
-          <div className="flex items-center gap-2">
-            {hotel.logoUrl ? (
-              <img src={hotel.logoUrl} alt="Hotel Logo" className="w-8 h-8 rounded-lg object-cover bg-white/10 backdrop-blur-md p-1 border border-white/20" />
-            ) : (
-              <div className="w-8 h-8 rounded-lg bg-white/20 backdrop-blur-md flex items-center justify-center font-bold text-xs border border-white/20">
-                {hotel.name.charAt(0)}
-              </div>
-            )}
-            <span className="text-xs font-bold tracking-wider uppercase opacity-90">{hotel.name}</span>
-          </div>
-
-          <button 
-            onClick={() => { setShowWelcomeScreen(false); setActiveTab('admin'); setSelectedCategory(null); }}
-            className="p-2 bg-white/10 hover:bg-white/20 rounded-full backdrop-blur-md transition text-white"
-            title="Admin Panel"
-          >
-            <Settings className="w-4 h-4" />
-          </button>
-        </div>
-
-        <div className="relative z-10 p-6 space-y-4 text-white">
-          <div className="space-y-1">
-            <span className="text-[10px] tracking-widest font-extrabold uppercase bg-amber-500/20 text-amber-300 border border-amber-500/30 px-3 py-1 rounded-full">
-              {t.welcomeBadge}
-            </span>
-            <h1 className="text-3xl font-black tracking-tight pt-2 drop-shadow-md">
-              {hotel.welcomeGreeting}
-            </h1>
-          </div>
-
-          <button 
-            onClick={() => setShowWelcomeScreen(false)}
-            className="w-full bg-white text-slate-900 py-4 rounded-2xl font-bold text-sm shadow-2xl hover:bg-slate-100 transition flex items-center justify-center gap-2 active:scale-98"
-          >
-            <span>{t.welcomeButton}</span>
-            <ArrowRight className="w-4 h-4" />
-          </button>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="min-h-screen bg-stone-50 font-sans text-slate-800 pb-24 max-w-md mx-auto shadow-2xl relative border-x border-slate-200">
       
-      {/* UNLOCK MODAL */}
-      {showUnlockModal && (
-        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-white w-full max-w-sm p-6 rounded-3xl shadow-2xl space-y-4 animate-fade-in">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2 text-amber-800">
-                <Lock className="w-5 h-5" />
-                <h2 className="font-bold text-base text-slate-900">Bearbeiten entsperren</h2>
-              </div>
-              <button onClick={() => setShowUnlockModal(false)} className="text-stone-400 font-bold">✕</button>
-            </div>
-            <p className="text-xs text-stone-500">
-              Bitte geben Sie das Entwickler-Passwort ein (Rina21091987), um Änderungen vorzunehmen.
-            </p>
-            <form onSubmit={handleUnlockSubmit} className="space-y-3">
-              <input 
-                type="password" 
-                placeholder="Passwort..."
-                value={passwordInput}
-                onChange={(e) => setPasswordInput(e.target.value)}
-                className="w-full p-3 text-xs border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-800 font-mono"
-                autoFocus
-              />
-              {passwordError && (
-                <p className="text-[11px] text-rose-600 font-bold">Falsches Passwort!</p>
-              )}
-              <button type="submit" className="w-full bg-amber-800 text-white py-3 rounded-xl text-xs font-bold shadow-md">
-                Entsperren
-              </button>
-            </form>
-          </div>
-        </div>
-      )}
-
-      {/* HEADER */}
+      {/* HEADER WITH LANGUAGE SELECTOR */}
       <header className="p-5 pt-7 pb-3 bg-stone-50 border-b border-stone-200/60 sticky top-0 z-40 backdrop-blur-md bg-stone-50/90">
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-3">
@@ -439,31 +298,6 @@ const t = translations[lang] || translations.de;
             </button>
           </div>
         </div>
-
-        {isMenuOpen && (
-          <div className="mt-3 p-3 bg-white rounded-2xl shadow-xl border border-stone-200 space-y-1 animate-fade-in">
-            <button 
-              onClick={() => { setActiveTab('home'); setSelectedCategory(null); setIsMenuOpen(false); }}
-              className={`w-full text-left px-3 py-2 rounded-xl text-xs font-bold transition flex items-center justify-between ${activeTab === 'home' && !selectedCategory ? 'bg-amber-50 text-amber-900' : 'text-slate-600 hover:bg-stone-50'}`}
-            >
-              <span>{t.navHome}</span>
-              <ChevronRight className="w-4 h-4 opacity-50" />
-            </button>
-            <button 
-              onClick={() => { setActiveTab('services'); setSelectedCategory(null); setIsMenuOpen(false); }}
-              className={`w-full text-left px-3 py-2 rounded-xl text-xs font-bold transition flex items-center justify-between ${activeTab === 'services' ? 'bg-amber-50 text-amber-900' : 'text-slate-600 hover:bg-stone-50'}`}
-            >
-              <span>{t.navGaestemappe}</span>
-              <ChevronRight className="w-4 h-4 opacity-50" />
-            </button>
-            <button 
-              onClick={() => { setActiveTab('admin'); setSelectedCategory(null); setIsMenuOpen(false); }}
-              className={`w-full text-left px-3 py-2 rounded-xl text-xs font-bold transition flex items-center justify-between ${activeTab === 'admin' ? 'bg-amber-800 text-white' : 'text-amber-800 bg-amber-50/50 hover:bg-amber-100/50'}`}
-            >
-              <span>⚙️ {t.navAdmin}</span>
-            </button>
-          </div>
-        )}
       </header>
 
       {/* MAIN CONTENT */}
