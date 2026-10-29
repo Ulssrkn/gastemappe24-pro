@@ -353,6 +353,58 @@ export default function App() {
           </div>
         </div>
       </header>
+      {/* ŞİFRE GİRİŞ PENCERESİ (MODAL) */}
+      {showUnlockModal && (
+        <div className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-white rounded-3xl p-6 w-full max-w-sm shadow-2xl space-y-4 border border-stone-200">
+            <div className="flex justify-between items-center">
+              <h3 className="text-base font-extrabold text-slate-900">Admin-Zugriff</h3>
+              <button 
+                onClick={() => { setShowUnlockModal(false); setPasswordInput(''); setPasswordError(false); }}
+                className="p-1.5 text-slate-400 hover:text-slate-600 rounded-full"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+            
+            <form onSubmit={(e) => {
+              e.preventDefault();
+              if (passwordInput === 'Rina21091987') {
+                setIsEditUnlocked(true);
+                setShowUnlockModal(false);
+                setShowWelcomeScreen(false);
+                setActiveTab('admin');
+                setPasswordInput('');
+                setPasswordError(false);
+              } else {
+                setPasswordError(true);
+              }
+            }} className="space-y-3">
+              <div>
+                <label className="block text-xs font-bold text-slate-600 mb-1">Passwort eingeben</label>
+                <input 
+                  type="password" 
+                  value={passwordInput}
+                  onChange={(e) => setPasswordInput(e.target.value)}
+                  placeholder="••••••••••••"
+                  className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-amber-800"
+                  autoFocus
+                />
+                {passwordError && (
+                  <p className="text-xs text-rose-600 font-semibold mt-1">Falsches Passwort!</p>
+                )}
+              </div>
+
+              <button 
+                type="submit"
+                className="w-full bg-amber-800 text-white py-3 rounded-xl font-bold text-sm shadow-md hover:bg-amber-900 transition"
+              >
+                Entsperren & Einloggen
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
 
       {/* MAIN CONTENT */}
       <main className="p-5 space-y-5">
