@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
 import { translations } from './translations';
 import { 
-  Wifi, Info, MapPin, Calendar, MessageSquare, 
-  Settings, Phone, Plus, Trash2, 
-  Check, Image as ImageIcon, Copy,
-  ChevronRight, CloudSun, X, ArrowRight, Upload, AlertCircle, Lock, Unlock,
-  Utensils, Heart, Compass, Coffee, Car, Clock, ShieldCheck, Edit3, Mail, Globe, ExternalLink, QrCode, Printer, Timer, BarChart3, Zap
+  Wifi, Info, Settings, Phone, 
+  Check, Copy,
+  ChevronRight, X, ArrowRight, ShieldCheck, 
+  Utensils, Heart, Compass, Coffee, Car, Printer, Lock
 } from 'lucide-react';
 
 export default function App() {
@@ -21,12 +20,7 @@ export default function App() {
   const [passwordError, setPasswordError] = useState(false);
   const [showUnlockModal, setShowUnlockModal] = useState(false);
 
-  const [currentSlide, setCurrentSlide] = useState(0);
   const [copiedWifi, setCopiedWifi] = useState(false);
-
-  // Trial & QR İstatistik State'leri
-  const [scanCount] = useState(142);
-  const [daysLeft] = useState(24);
 
   // Otel Bilgileri
   const [hotel, setHotel] = useState({
@@ -39,9 +33,6 @@ export default function App() {
     website: 'www.mein-hotel.de',
     wifiSsid: 'Guest_WiFi',
     wifiPass: 'pass2026',
-    breakfastTime: '07:00 - 10:30 Uhr',
-    checkInOut: 'Check-in: ab 15:00 | Check-out: bis 11:00',
-    parkingInfo: 'Kostenfreie Parkplätze am Haus verfügbar.',
     images: [
       'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1000&q=80'
     ]
@@ -101,9 +92,6 @@ export default function App() {
     printWindow.document.close();
   };
 
-  const [customQuickLinks, setCustomQuickLinks] = useState([]);
-  const [newQuick, setNewQuick] = useState({ title: '', description: '', iconName: 'Info' });
-
   const [categories, setCategories] = useState([
     {
       id: 'gastronomie',
@@ -128,10 +116,6 @@ export default function App() {
     }
   ]);
 
-  const [newCat, setNewCat] = useState({ title: '', subtitle: '', content: '', iconName: 'Info' });
-  const [uploadError, setUploadError] = useState('');
-  const [uploadSuccess, setUploadSuccess] = useState('');
-
   const copyWifiPassword = () => {
     navigator.clipboard.writeText(hotel.wifiPass);
     setCopiedWifi(true);
@@ -152,49 +136,6 @@ export default function App() {
     }
   };
 
-  const handleAddCustomQuick = (e) => {
-    e.preventDefault();
-    if (!newQuick.title.trim()) return;
-    if (customQuickLinks.length >= 2) {
-      alert('Sie können maximal 2 eigene Schnellzugriffe hinzufügen.');
-      return;
-    }
-
-    const newItem = {
-      id: Date.now().toString(),
-      title: newQuick.title,
-      description: newQuick.description || 'Details',
-      iconName: newQuick.iconName
-    };
-
-    setCustomQuickLinks([...customQuickLinks, newItem]);
-    setNewQuick({ title: '', description: '', iconName: 'Info' });
-  };
-
-  const handleDeleteCustomQuick = (id) => {
-    setCustomQuickLinks(customQuickLinks.filter(item => item.id !== id));
-  };
-
-  const handleAddCategory = (e) => {
-    e.preventDefault();
-    if (!newCat.title.trim()) return;
-
-    const newItem = {
-      id: Date.now().toString(),
-      title: newCat.title,
-      subtitle: newCat.subtitle || 'Informationen',
-      content: newCat.content || 'Details folgen in Kürze.',
-      iconName: newCat.iconName
-    };
-
-    setCategories([...categories, newItem]);
-    setNewCat({ title: '', subtitle: '', content: '', iconName: 'Info' });
-  };
-
-  const handleDeleteCategory = (id) => {
-    setCategories(categories.filter(cat => cat.id !== id));
-  };
-
   const renderCategoryIcon = (iconName) => {
     switch (iconName) {
       case 'Utensils': return <Utensils className="w-5 h-5 text-amber-800" />;
@@ -203,52 +144,7 @@ export default function App() {
       case 'Coffee': return <Coffee className="w-5 h-5 text-amber-800" />;
       case 'Car': return <Car className="w-5 h-5 text-amber-800" />;
       case 'Phone': return <Phone className="w-5 h-5 text-amber-800" />;
-      case 'Globe': return <Globe className="w-5 h-5 text-amber-800" />;
       default: return <Info className="w-5 h-5 text-amber-800" />;
-    }
-  };
-
-  const handleImageUpload = (e) => {
-    if (!isEditUnlocked) { setShowUnlockModal(true); return; }
-    setUploadError('');
-    setUploadSuccess('');
-    const files = Array.from(e.target.files);
-
-    if (hotel.images.length + files.length > 5) {
-      setUploadError('Maximale Anzahl von 5 Fotos erreicht!');
-      return;
-    }
-
-    files.forEach((file) => {
-      if (file.size > 5 * 1024 * 1024) {
-        setUploadError(`Die Datei "${file.name}" überschreitet 5MB!`);
-        return;
-      }
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setHotel((prev) => ({ ...prev, images: [...prev.images, reader.result] }));
-        setUploadSuccess('Foto erfolgreich hinzugefügt!');
-      };
-      reader.readAsDataURL(file);
-    });
-  };
-
-  const handleRemoveImage = (indexToRemove) => {
-    if (!isEditUnlocked) { setShowUnlockModal(true); return; }
-    setHotel((prev) => ({ ...prev, images: prev.images.filter((_, idx) => idx !== indexToRemove) }));
-  };
-
-  const handleLogoUpload = (e) => {
-    if (!isEditUnlocked) { setShowUnlockModal(true); return; }
-    const file = e.target.files[0];
-    if (file) {
-      if (file.size > 2 * 1024 * 1024) {
-        setUploadError('Das Logo darf maximal 2MB groß sein.');
-        return;
-      }
-      const reader = new FileReader();
-      reader.onloadend = () => { setHotel((prev) => ({ ...prev, logoUrl: reader.result })); };
-      reader.readAsDataURL(file);
     }
   };
 
@@ -323,7 +219,7 @@ export default function App() {
 
           <button 
             onClick={() => setShowUnlockModal(true)}
-            className="p-2 bg-white/10 hover:bg-white/20 rounded-full backdrop-blur-md transition text-white"
+            className="p-2 bg-white/10 hover:bg-white/20 rounded-full backdrop-blur-md transition text-white cursor-pointer"
             title="Admin Panel"
           >
             <Settings className="w-4 h-4" />
@@ -342,7 +238,7 @@ export default function App() {
 
           <button 
             onClick={() => setShowWelcomeScreen(false)}
-            className="w-full bg-white text-slate-900 py-4 rounded-2xl font-bold text-sm shadow-2xl hover:bg-slate-100 transition flex items-center justify-center gap-2 active:scale-98"
+            className="w-full bg-white text-slate-900 py-4 rounded-2xl font-bold text-sm shadow-2xl hover:bg-slate-100 transition flex items-center justify-center gap-2 active:scale-98 cursor-pointer"
           >
             <span>{t.welcomeButton}</span>
             <ArrowRight className="w-4 h-4" />
@@ -357,7 +253,7 @@ export default function App() {
   return (
     <div className="min-h-screen bg-stone-50 font-sans text-slate-800 pb-24 max-w-md mx-auto shadow-2xl relative border-x border-slate-200">
       
-      {/* SADELEŞTİRİLMİŞ HEADER (Yalnızca Otel İsmi ve Dil Seçici - Hayalet Buton Yok) */}
+      {/* SADELEŞTİRİLMİŞ HEADER (Yalnızca Otel İsmi ve Dil Seçici - Hayalet Buton Tamamen Silindi) */}
       <header className="p-5 pt-7 pb-3 bg-stone-50 border-b border-stone-200/60 sticky top-0 z-40 backdrop-blur-md bg-stone-50/90">
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-3">
@@ -385,7 +281,7 @@ export default function App() {
             <option value="it">🇮🇹 IT</option>
             <option value="fr">🇫🇷 FR</option>
             <option value="es">🇪🇸 ES</option>
-            <option value="tr">🇹🇷 TR</option>
+            <option value="tr">🇩🇪 TR</option>
             <option value="sv">🇸🇪 SV</option>
             <option value="no">🇳🇴 NO</option>
             <option value="hr">🇭🇷 HR</option>
@@ -418,14 +314,14 @@ export default function App() {
             <div className="flex justify-between items-center">
               <div className="flex items-center gap-2">
                 <Wifi className="w-5 h-5 text-amber-300" />
-                <span className="text-xs font-bold uppercase tracking-wider">{t.wifiTitle || 'WLAN / Wi-Fi'}</span>
+                <span className="text-xs font-bold uppercase tracking-wider">WLAN / Wi-Fi</span>
               </div>
               <button 
                 onClick={copyWifiPassword}
-                className="bg-white/10 hover:bg-white/20 px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 backdrop-blur-md"
+                className="bg-white/10 hover:bg-white/20 px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 backdrop-blur-md cursor-pointer"
               >
                 {copiedWifi ? <Check className="w-3.5 h-3.5 text-emerald-300" /> : <Copy className="w-3.5 h-3.5" />}
-                <span>{copiedWifi ? (t.wifiCopied || 'Kopiert!') : (t.wifiCopy || 'Passwort kopieren')}</span>
+                <span>{copiedWifi ? 'Kopiert!' : 'Passwort kopieren'}</span>
               </button>
             </div>
             <div className="bg-white/10 p-3 rounded-2xl backdrop-blur-md flex justify-between items-center text-xs">
@@ -442,13 +338,13 @@ export default function App() {
 
           {/* Kategoriler Listesi */}
           <div className="space-y-3">
-            <h3 className="text-xs font-extrabold text-slate-400 uppercase tracking-wider px-1">{t.navGaestemappe || 'Gästemappe'}</h3>
+            <h3 className="text-xs font-extrabold text-slate-400 uppercase tracking-wider px-1">Gästemappe</h3>
             <div className="grid grid-cols-1 gap-2.5">
               {categories.map((cat) => (
                 <button
                   key={cat.id}
                   onClick={() => setSelectedCategory(cat)}
-                  className="w-full bg-white p-4 rounded-2xl border border-stone-200 shadow-sm hover:border-amber-800/40 transition flex items-center justify-between text-left group"
+                  className="w-full bg-white p-4 rounded-2xl border border-stone-200 shadow-sm hover:border-amber-800/40 transition flex items-center justify-between text-left group cursor-pointer"
                 >
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-xl bg-amber-50 flex items-center justify-center group-hover:scale-105 transition">
@@ -472,7 +368,7 @@ export default function App() {
         <div className="p-5 space-y-5">
           <button 
             onClick={() => setSelectedCategory(null)}
-            className="text-xs font-bold text-amber-800 hover:underline flex items-center gap-1"
+            className="text-xs font-bold text-amber-800 hover:underline flex items-center gap-1 cursor-pointer"
           >
             ← Zurück zur Übersicht
           </button>
@@ -491,7 +387,7 @@ export default function App() {
               <h2 className="text-lg font-extrabold text-slate-900">⚙️ Admin Dashboard</h2>
               <button 
                 onClick={() => { setShowWelcomeScreen(true); setActiveTab('home'); }}
-                className="text-xs font-bold text-slate-500 bg-stone-100 px-3 py-1.5 rounded-xl hover:bg-stone-200 transition"
+                className="text-xs font-bold text-slate-500 bg-stone-100 px-3 py-1.5 rounded-xl hover:bg-stone-200 transition cursor-pointer"
               >
                 Zur Startseite
               </button>
@@ -501,7 +397,7 @@ export default function App() {
               <div className="space-y-4 pt-2 border-t border-stone-100">
                 <div className="p-3 bg-emerald-50 border border-emerald-200 rounded-2xl flex items-center justify-between text-xs text-emerald-800">
                   <span className="font-bold flex items-center gap-1.5"><ShieldCheck className="w-4 h-4" /> Bearbeitungsmodus Aktiv</span>
-                  <button onClick={() => setIsEditUnlocked(false)} className="underline font-semibold">Sperren</button>
+                  <button onClick={() => setIsEditUnlocked(false)} className="underline font-semibold cursor-pointer">Sperren</button>
                 </div>
 
                 <div className="space-y-3">
@@ -538,10 +434,10 @@ export default function App() {
                 <div className="pt-3 border-t border-stone-100 space-y-3">
                   <h4 className="text-xs font-bold text-slate-700 uppercase tracking-wider">QR-Code Vorlagen (Druck)</h4>
                   <div className="flex gap-2">
-                    <button onClick={() => handlePrint('A4')} className="flex-1 bg-stone-900 text-white py-2.5 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 hover:bg-slate-800 transition">
+                    <button onClick={() => handlePrint('A4')} className="flex-1 bg-stone-900 text-white py-2.5 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 hover:bg-slate-800 transition cursor-pointer">
                       <Printer className="w-3.5 h-3.5" /> A4 Druck
                     </button>
-                    <button onClick={() => handlePrint('A5')} className="flex-1 bg-stone-900 text-white py-2.5 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 hover:bg-slate-800 transition">
+                    <button onClick={() => handlePrint('A5')} className="flex-1 bg-stone-900 text-white py-2.5 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 hover:bg-slate-800 transition cursor-pointer">
                       <Printer className="w-3.5 h-3.5" /> A5 Druck
                     </button>
                   </div>
@@ -552,7 +448,7 @@ export default function App() {
                 <p className="text-xs text-slate-500">Bu alan korumalıdır. Düzenleme yapmak için kilit açın.</p>
                 <button 
                   onClick={() => setShowUnlockModal(true)}
-                  className="bg-amber-800 text-white px-5 py-2.5 rounded-xl text-xs font-bold shadow-md hover:bg-amber-900 transition inline-flex items-center gap-2"
+                  className="bg-amber-800 text-white px-5 py-2.5 rounded-xl text-xs font-bold shadow-md hover:bg-amber-900 transition inline-flex items-center gap-2 cursor-pointer"
                 >
                   <Lock className="w-3.5 h-3.5" /> Admin Paneli Aç
                 </button>
