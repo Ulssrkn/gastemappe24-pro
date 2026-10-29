@@ -7,7 +7,6 @@ import {
   ChevronRight, CloudSun, Menu, X, ArrowRight, Upload, AlertCircle, Lock, Unlock,
   Utensils, Heart, Compass, Coffee, Key, Car, Clock, ShieldCheck, Edit3, Mail, Globe, ExternalLink, QrCode, Printer, Timer, BarChart3, Zap
 } from 'lucide-react';
-
 const translations = {
   de: {
     welcomeBadge: "Digitale Gästemappe",
