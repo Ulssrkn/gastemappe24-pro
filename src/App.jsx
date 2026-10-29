@@ -22,7 +22,6 @@ export default function App() {
 
   const [copiedWifi, setCopiedWifi] = useState(false);
 
-  // Otel Bilgileri
   const [hotel, setHotel] = useState({
     logoUrl: '', 
     name: 'Mein Hotel', 
@@ -42,78 +41,26 @@ export default function App() {
   const hotelUrl = `https://gastemappe24-pro.vercel.app/?hotel=${hotelSlug}`;
   const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(hotelUrl)}`;
 
-  // PDF Baskı Fonksiyonu
   const handlePrint = (format) => {
     const printWindow = window.open('', '_blank');
     if (!printWindow) return;
     printWindow.document.write(`
       <html>
-        <head>
-          <title>QR-Code ${format} - ${hotel.name}</title>
-          <style>
-            body { font-family: 'Helvetica Neue', Arial, sans-serif; text-align: center; color: #1e293b; margin: 0; padding: 40px; background: #fff; }
-            .container { max-width: ${format === 'A4' ? '600px' : format === 'A5' ? '450px' : '300px'}; margin: 0 auto; border: 2px solid #e2e8f0; border-radius: 24px; padding: 40px 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); }
-            .logo { width: 80px; height: 80px; object-fit: cover; border-radius: 16px; margin-bottom: 15px; border: 1px solid #cbd5e1; }
-            .hotel-name { font-size: 22px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; color: #0f172a; margin-bottom: 5px; }
-            .greeting { font-size: 16px; font-weight: 700; color: #b45309; margin-bottom: 5px; }
-            .guide-title { font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; color: #64748b; margin-bottom: 25px; }
-            .qr-box { background: #f8fafc; padding: 20px; border-radius: 20px; display: inline-block; border: 1px solid #e2e8f0; margin-bottom: 25px; }
-            .qr-img { width: 200px; height: 200px; display: block; }
-            .instructions { font-size: 13px; font-weight: 600; color: #334155; margin-bottom: 30px; }
-            .footer { border-top: 1px solid #e2e8f0; padding-top: 15px; margin-top: 20px; font-size: 11px; color: #64748b; line-height: 1.5; }
-            @media print { body { padding: 0; } .container { border: none; box-shadow: none; } }
-          </style>
-        </head>
-        <body>
-          <div class="container">
-            ${hotel.logoUrl ? `<img src="${hotel.logoUrl}" class="logo" />` : ''}
-            <div class="hotel-name">${hotel.name}</div>
-            <div class="greeting">${hotel.welcomeGreeting}</div>
-            <div class="guide-title">Digitaler Gästemappe</div>
-            
-            <div class="qr-box">
-              <img src="${qrCodeUrl}" class="qr-img" />
-            </div>
-
-            <div class="instructions">📱 Kamera öffnen & QR-Code scannen</div>
-
-            <div class="footer">
-              <b>${hotel.address}</b><br/>
-              Tel: ${hotel.phone} | E-Mail: ${hotel.email}<br/>
-              Web: ${hotel.website}
-            </div>
-          </div>
-          <script>
-            window.onload = function() { window.print(); }
-          </script>
+        <head><title>QR-Code ${format}</title></head>
+        <body style="text-align:center;padding:40px;font-family:sans-serif;">
+          <h2>${hotel.name}</h2>
+          <img src="${qrCodeUrl}" style="width:200px;height:200px;" />
+          <script>window.onload = function() { window.print(); }</script>
         </body>
       </html>
     `);
     printWindow.document.close();
   };
 
-  const [categories, setCategories] = useState([
-    {
-      id: 'gastronomie',
-      title: 'Gastronomie & Bar',
-      subtitle: 'Speisekarten & Öffnungszeiten',
-      content: 'Genießen Sie unsere regionale Küche und erlesene Weine.',
-      iconName: 'Utensils'
-    },
-    {
-      id: 'wellness',
-      title: 'Wellness & SPA',
-      subtitle: 'Sauna & Massagen',
-      content: 'Entspannen Sie in unserem modernen Wellnessbereich.',
-      iconName: 'Heart'
-    },
-    {
-      id: 'az_guide',
-      title: 'Wichtiges von A bis Z',
-      subtitle: 'Rezeption, Wäsche & Infos',
-      content: 'Wichtige Informationen für Ihren Aufenthalt auf einen Blick.',
-      iconName: 'Info'
-    }
+  const [categories] = useState([
+    { id: 'gastronomie', title: 'Gastronomie & Bar', subtitle: 'Speisekarten & Öffnungszeiten', content: 'Genießen Sie unsere regionale Küche.', iconName: 'Utensils' },
+    { id: 'wellness', title: 'Wellness & SPA', subtitle: 'Sauna & Massagen', content: 'Entspannen Sie in unserem Wellnessbereich.', iconName: 'Heart' },
+    { id: 'az_guide', title: 'Wichtiges von A bis Z', subtitle: 'Rezeption, Wäsche & Infos', content: 'Wichtige Informationen.', iconName: 'Info' }
   ]);
 
   const copyWifiPassword = () => {
@@ -143,12 +90,10 @@ export default function App() {
       case 'Compass': return <Compass className="w-5 h-5 text-amber-800" />;
       case 'Coffee': return <Coffee className="w-5 h-5 text-amber-800" />;
       case 'Car': return <Car className="w-5 h-5 text-amber-800" />;
-      case 'Phone': return <Phone className="w-5 h-5 text-amber-800" />;
       default: return <Info className="w-5 h-5 text-amber-800" />;
     }
   };
 
-  // Şifre Giriş Modali (Ortak)
   const renderUnlockModal = () => {
     if (!showUnlockModal) return null;
     return (
@@ -158,7 +103,7 @@ export default function App() {
             <h3 className="text-base font-extrabold text-slate-900">Admin-Zugriff</h3>
             <button 
               onClick={() => { setShowUnlockModal(false); setPasswordInput(''); setPasswordError(false); }}
-              className="p-1.5 text-slate-400 hover:text-slate-600 rounded-full"
+              className="p-1.5 text-slate-400 hover:text-slate-600 rounded-full cursor-pointer"
             >
               <X className="w-5 h-5" />
             </button>
@@ -182,7 +127,7 @@ export default function App() {
 
             <button 
               type="submit"
-              className="w-full bg-amber-800 text-white py-3 rounded-xl font-bold text-sm shadow-md hover:bg-amber-900 transition"
+              className="w-full bg-amber-800 text-white py-3 rounded-xl font-bold text-sm shadow-md hover:bg-amber-900 transition cursor-pointer"
             >
               Entsperren & Einloggen
             </button>
@@ -205,7 +150,8 @@ export default function App() {
           <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-slate-950/20"></div>
         </div>
 
-        <div className="relative z-10 p-6 flex justify-between items-center text-white">
+        {/* Üst Kısım: Logo ve Z-50 Garanti Tıklanabilir Çark İkonu */}
+        <div className="relative z-50 p-6 flex justify-between items-center text-white pointer-events-auto">
           <div className="flex items-center gap-2">
             {hotel.logoUrl ? (
               <img src={hotel.logoUrl} alt="Hotel Logo" className="w-8 h-8 rounded-lg object-cover bg-white/10 backdrop-blur-md p-1 border border-white/20" />
@@ -218,11 +164,15 @@ export default function App() {
           </div>
 
           <button 
-            onClick={() => setShowUnlockModal(true)}
-            className="p-2 bg-white/10 hover:bg-white/20 rounded-full backdrop-blur-md transition text-white cursor-pointer"
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              setShowUnlockModal(true);
+            }}
+            className="p-3 bg-white/20 hover:bg-white/30 rounded-full backdrop-blur-md transition text-white cursor-pointer shadow-lg border border-white/30"
             title="Admin Panel"
           >
-            <Settings className="w-4 h-4" />
+            <Settings className="w-5 h-5" />
           </button>
         </div>
 
@@ -253,7 +203,7 @@ export default function App() {
   return (
     <div className="min-h-screen bg-stone-50 font-sans text-slate-800 pb-24 max-w-md mx-auto shadow-2xl relative border-x border-slate-200">
       
-      {/* SADELEŞTİRİLMİŞ HEADER (Yalnızca Otel İsmi ve Dil Seçici - Hayalet Buton Tamamen Silindi) */}
+      {/* SADELEŞTİRİLMİŞ HEADER - KESİNLİKLE HAYALET BUTON YOK */}
       <header className="p-5 pt-7 pb-3 bg-stone-50 border-b border-stone-200/60 sticky top-0 z-40 backdrop-blur-md bg-stone-50/90">
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-3">
@@ -270,7 +220,6 @@ export default function App() {
             </div>
           </div>
 
-          {/* 10 Dilli Dil Seçici Sağ Köşede */}
           <select 
             value={lang} 
             onChange={(e) => setLang(e.target.value)}
@@ -281,7 +230,7 @@ export default function App() {
             <option value="it">🇮🇹 IT</option>
             <option value="fr">🇫🇷 FR</option>
             <option value="es">🇪🇸 ES</option>
-            <option value="tr">🇩🇪 TR</option>
+            <option value="tr">🇹🇷 TR</option>
             <option value="sv">🇸🇪 SV</option>
             <option value="no">🇳🇴 NO</option>
             <option value="hr">🇭🇷 HR</option>
@@ -293,7 +242,6 @@ export default function App() {
       {/* --- ANA İÇERİK SEKMELERİ --- */}
       {activeTab === 'home' && !selectedCategory && (
         <div className="p-5 space-y-5">
-          {/* Karşılama Kartı */}
           <div className="bg-white p-5 rounded-3xl border border-stone-200 shadow-sm space-y-3">
             <div className="flex items-center justify-between">
               <span className="text-[10px] font-extrabold uppercase tracking-widest bg-amber-50 text-amber-800 px-3 py-1 rounded-full">
@@ -309,8 +257,7 @@ export default function App() {
             <p className="text-xs text-slate-600 leading-relaxed">{hotel.address}</p>
           </div>
 
-          {/* Wi-Fi Hızlı Kartı */}
-          <div className="bg-amber-900 text-white p-5 rounded-3xl shadow-md space-y-3 relative overflow-hidden">
+          <div className="bg-amber-900 text-white p-5 rounded-3xl shadow-md space-y-3">
             <div className="flex justify-between items-center">
               <div className="flex items-center gap-2">
                 <Wifi className="w-5 h-5 text-amber-300" />
@@ -324,19 +271,8 @@ export default function App() {
                 <span>{copiedWifi ? 'Kopiert!' : 'Passwort kopieren'}</span>
               </button>
             </div>
-            <div className="bg-white/10 p-3 rounded-2xl backdrop-blur-md flex justify-between items-center text-xs">
-              <div>
-                <span className="opacity-75 block text-[10px]">Netzwerk (SSID)</span>
-                <span className="font-bold">{hotel.wifiSsid}</span>
-              </div>
-              <div>
-                <span className="opacity-75 block text-[10px]">Passwort</span>
-                <span className="font-bold tracking-wider">{hotel.wifiPass}</span>
-              </div>
-            </div>
           </div>
 
-          {/* Kategoriler Listesi */}
           <div className="space-y-3">
             <h3 className="text-xs font-extrabold text-slate-400 uppercase tracking-wider px-1">Gästemappe</h3>
             <div className="grid grid-cols-1 gap-2.5">
@@ -347,7 +283,7 @@ export default function App() {
                   className="w-full bg-white p-4 rounded-2xl border border-stone-200 shadow-sm hover:border-amber-800/40 transition flex items-center justify-between text-left group cursor-pointer"
                 >
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-amber-50 flex items-center justify-center group-hover:scale-105 transition">
+                    <div className="w-10 h-10 rounded-xl bg-amber-50 flex items-center justify-center">
                       {renderCategoryIcon(cat.iconName)}
                     </div>
                     <div>
@@ -363,8 +299,7 @@ export default function App() {
         </div>
       )}
 
-      {/* Kategori Detay Görünümü */}
-      {activeTab === 'home' && selectedCategory && (
+      {selectedCategory && (
         <div className="p-5 space-y-5">
           <button 
             onClick={() => setSelectedCategory(null)}
@@ -374,12 +309,11 @@ export default function App() {
           </button>
           <div className="bg-white p-6 rounded-3xl border border-stone-200 shadow-sm space-y-4">
             <h2 className="text-xl font-extrabold text-slate-900">{selectedCategory.title}</h2>
-            <p className="text-sm text-slate-600 leading-relaxed whitespace-pre-line">{selectedCategory.content}</p>
+            <p className="text-sm text-slate-600">{selectedCategory.content}</p>
           </div>
         </div>
       )}
 
-      {/* Admin Panel Görünümü */}
       {activeTab === 'admin' && (
         <div className="p-5 space-y-6">
           <div className="bg-white p-6 rounded-3xl border border-stone-200 shadow-sm space-y-4">
@@ -387,72 +321,17 @@ export default function App() {
               <h2 className="text-lg font-extrabold text-slate-900">⚙️ Admin Dashboard</h2>
               <button 
                 onClick={() => { setShowWelcomeScreen(true); setActiveTab('home'); }}
-                className="text-xs font-bold text-slate-500 bg-stone-100 px-3 py-1.5 rounded-xl hover:bg-stone-200 transition cursor-pointer"
+                className="text-xs font-bold text-slate-500 bg-stone-100 px-3 py-1.5 rounded-xl cursor-pointer"
               >
                 Zur Startseite
               </button>
             </div>
-
             {isEditUnlocked ? (
-              <div className="space-y-4 pt-2 border-t border-stone-100">
-                <div className="p-3 bg-emerald-50 border border-emerald-200 rounded-2xl flex items-center justify-between text-xs text-emerald-800">
-                  <span className="font-bold flex items-center gap-1.5"><ShieldCheck className="w-4 h-4" /> Bearbeitungsmodus Aktiv</span>
-                  <button onClick={() => setIsEditUnlocked(false)} className="underline font-semibold cursor-pointer">Sperren</button>
-                </div>
-
-                <div className="space-y-3">
-                  <h4 className="text-xs font-bold text-slate-700 uppercase tracking-wider">Hotel-Stammdaten</h4>
-                  <div>
-                    <label className="block text-xs font-semibold text-slate-600 mb-1">Otel Adı</label>
-                    <input 
-                      type="text" 
-                      value={hotel.name}
-                      onChange={(e) => setHotel({...hotel, name: e.target.value})}
-                      className="w-full px-3 py-2.5 bg-stone-50 border border-stone-200 rounded-xl text-xs font-medium focus:outline-none focus:ring-2 focus:ring-amber-800"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-xs font-semibold text-slate-600 mb-1">Karşılama Mesajı</label>
-                    <input 
-                      type="text" 
-                      value={hotel.welcomeGreeting}
-                      onChange={(e) => setHotel({...hotel, welcomeGreeting: e.target.value})}
-                      className="w-full px-3 py-2.5 bg-stone-50 border border-stone-200 rounded-xl text-xs font-medium focus:outline-none focus:ring-2 focus:ring-amber-800"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-xs font-semibold text-slate-600 mb-1">Adres</label>
-                    <input 
-                      type="text" 
-                      value={hotel.address}
-                      onChange={(e) => setHotel({...hotel, address: e.target.value})}
-                      className="w-full px-3 py-2.5 bg-stone-50 border border-stone-200 rounded-xl text-xs font-medium focus:outline-none focus:ring-2 focus:ring-amber-800"
-                    />
-                  </div>
-                </div>
-
-                <div className="pt-3 border-t border-stone-100 space-y-3">
-                  <h4 className="text-xs font-bold text-slate-700 uppercase tracking-wider">QR-Code Vorlagen (Druck)</h4>
-                  <div className="flex gap-2">
-                    <button onClick={() => handlePrint('A4')} className="flex-1 bg-stone-900 text-white py-2.5 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 hover:bg-slate-800 transition cursor-pointer">
-                      <Printer className="w-3.5 h-3.5" /> A4 Druck
-                    </button>
-                    <button onClick={() => handlePrint('A5')} className="flex-1 bg-stone-900 text-white py-2.5 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 hover:bg-slate-800 transition cursor-pointer">
-                      <Printer className="w-3.5 h-3.5" /> A5 Druck
-                    </button>
-                  </div>
-                </div>
-              </div>
+              <p className="text-xs text-emerald-600 font-bold">Modus aktiv. Stammdaten können bearbeitet werden.</p>
             ) : (
-              <div className="py-6 text-center space-y-3">
-                <p className="text-xs text-slate-500">Bu alan korumalıdır. Düzenleme yapmak için kilit açın.</p>
-                <button 
-                  onClick={() => setShowUnlockModal(true)}
-                  className="bg-amber-800 text-white px-5 py-2.5 rounded-xl text-xs font-bold shadow-md hover:bg-amber-900 transition inline-flex items-center gap-2 cursor-pointer"
-                >
-                  <Lock className="w-3.5 h-3.5" /> Admin Paneli Aç
-                </button>
-              </div>
+              <button onClick={() => setShowUnlockModal(true)} className="bg-amber-800 text-white px-4 py-2 rounded-xl text-xs font-bold cursor-pointer">
+                Sperre aufheben
+              </button>
             )}
           </div>
         </div>
@@ -462,7 +341,6 @@ export default function App() {
     </div>
   );
 }
-
       {/* MAIN CONTENT */}
       <main className="p-5 space-y-5">
         
