@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { 
+import { import { translations } from './translations';
   Wifi, Info, MapPin, Calendar, MessageSquare, 
   Settings, Phone, Plus, Trash2, 
   Check, Image as ImageIcon, Copy,
@@ -61,8 +61,8 @@ const translations = {
 };
 
 export default function App() {
-  const [lang] = useState('de');
-  const t = translations[lang];
+  const [lang, setLang] = useState('de');
+const t = translations[lang] || translations.de;
 
   const [activeTab, setActiveTab] = useState('home');
   const [selectedCategory, setSelectedCategory] = useState(null);
@@ -412,12 +412,32 @@ export default function App() {
             </div>
           </div>
 
-          <button 
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="p-2.5 bg-white border border-stone-200 text-slate-700 rounded-xl shadow-sm hover:bg-stone-100 transition"
-          >
-            {isMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-          </button>
+          <div className="flex items-center gap-2">
+            {/* 10 Dilli Dil Seçici */}
+            <select 
+              value={lang} 
+              onChange={(e) => setLang(e.target.value)}
+              className="bg-white border border-stone-200 text-slate-700 text-xs font-semibold rounded-xl px-2 py-2 focus:outline-none focus:ring-2 focus:ring-amber-800 cursor-pointer shadow-sm"
+            >
+              <option value="de">🇩🇪 DE</option>
+              <option value="en">🇬🇧 EN</option>
+              <option value="it">🇮🇹 IT</option>
+              <option value="fr">🇫🇷 FR</option>
+              <option value="es">🇪🇸 ES</option>
+              <option value="tr">🇹🇷 TR</option>
+              <option value="sv">🇸🇪 SV</option>
+              <option value="no">🇳🇴 NO</option>
+              <option value="hr">🇭🇷 HR</option>
+              <option value="sq">🇦🇱 SQ</option>
+            </select>
+
+            <button 
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              className="p-2.5 bg-white border border-stone-200 text-slate-700 rounded-xl shadow-sm hover:bg-stone-100 transition"
+            >
+              {isMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            </button>
+          </div>
         </div>
 
         {isMenuOpen && (
