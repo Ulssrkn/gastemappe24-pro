@@ -4,8 +4,8 @@ import {
   Wifi, Info, MapPin, Calendar, MessageSquare, 
   Settings, Phone, Plus, Trash2, 
   Check, Image as ImageIcon, Copy,
-  ChevronRight, CloudSun, Menu, X, ArrowRight, Upload, AlertCircle, Lock, Unlock,
-  Utensils, Heart, Compass, Coffee, Key, Car, Clock, ShieldCheck, Edit3, Mail, Globe, ExternalLink, QrCode, Printer, Timer, BarChart3, Zap
+  ChevronRight, CloudSun, X, ArrowRight, Upload, AlertCircle, Lock, Unlock,
+  Utensils, Heart, Compass, Coffee, Car, Clock, ShieldCheck, Edit3, Mail, Globe, ExternalLink, QrCode, Printer, Timer, BarChart3, Zap
 } from 'lucide-react';
 
 export default function App() {
@@ -252,7 +252,7 @@ export default function App() {
     }
   };
 
-  // Modal Komponenti (Hem Welcome Screen hem de ana sayfa için ortak)
+  // Şifre Giriş Modali (Ortak)
   const renderUnlockModal = () => {
     if (!showUnlockModal) return null;
     return (
@@ -322,7 +322,7 @@ export default function App() {
           </div>
 
           <button 
-            onClick={() => { setShowUnlockModal(true); }}
+            onClick={() => setShowUnlockModal(true)}
             className="p-2 bg-white/10 hover:bg-white/20 rounded-full backdrop-blur-md transition text-white"
             title="Admin Panel"
           >
@@ -357,7 +357,7 @@ export default function App() {
   return (
     <div className="min-h-screen bg-stone-50 font-sans text-slate-800 pb-24 max-w-md mx-auto shadow-2xl relative border-x border-slate-200">
       
-      {/* SADELEŞTİRİLMİŞ HEADER */}
+      {/* SADELEŞTİRİLMİŞ HEADER (Yalnızca Otel İsmi ve Dil Seçici - Hayalet Buton Yok) */}
       <header className="p-5 pt-7 pb-3 bg-stone-50 border-b border-stone-200/60 sticky top-0 z-40 backdrop-blur-md bg-stone-50/90">
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-3">
@@ -374,7 +374,7 @@ export default function App() {
             </div>
           </div>
 
-          {/* Sadece 10 Dilli Dil Seçici Sağ Köşede */}
+          {/* 10 Dilli Dil Seçici Sağ Köşede */}
           <select 
             value={lang} 
             onChange={(e) => setLang(e.target.value)}
@@ -393,6 +393,174 @@ export default function App() {
           </select>
         </div>
       </header>
+
+      {/* --- ANA İÇERİK SEKMELERİ --- */}
+      {activeTab === 'home' && !selectedCategory && (
+        <div className="p-5 space-y-5">
+          {/* Karşılama Kartı */}
+          <div className="bg-white p-5 rounded-3xl border border-stone-200 shadow-sm space-y-3">
+            <div className="flex items-center justify-between">
+              <span className="text-[10px] font-extrabold uppercase tracking-widest bg-amber-50 text-amber-800 px-3 py-1 rounded-full">
+                {t.welcomeBadge}
+              </span>
+              {isEditUnlocked && (
+                <span className="text-[10px] font-bold bg-emerald-50 text-emerald-700 px-2.5 py-1 rounded-full flex items-center gap-1">
+                  <ShieldCheck className="w-3 h-3" /> Admin Modus Aktiv
+                </span>
+              )}
+            </div>
+            <h1 className="text-xl font-extrabold text-slate-900">{hotel.welcomeGreeting}</h1>
+            <p className="text-xs text-slate-600 leading-relaxed">{hotel.address}</p>
+          </div>
+
+          {/* Wi-Fi Hızlı Kartı */}
+          <div className="bg-amber-900 text-white p-5 rounded-3xl shadow-md space-y-3 relative overflow-hidden">
+            <div className="flex justify-between items-center">
+              <div className="flex items-center gap-2">
+                <Wifi className="w-5 h-5 text-amber-300" />
+                <span className="text-xs font-bold uppercase tracking-wider">{t.wifiTitle || 'WLAN / Wi-Fi'}</span>
+              </div>
+              <button 
+                onClick={copyWifiPassword}
+                className="bg-white/10 hover:bg-white/20 px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 backdrop-blur-md"
+              >
+                {copiedWifi ? <Check className="w-3.5 h-3.5 text-emerald-300" /> : <Copy className="w-3.5 h-3.5" />}
+                <span>{copiedWifi ? (t.wifiCopied || 'Kopiert!') : (t.wifiCopy || 'Passwort kopieren')}</span>
+              </button>
+            </div>
+            <div className="bg-white/10 p-3 rounded-2xl backdrop-blur-md flex justify-between items-center text-xs">
+              <div>
+                <span className="opacity-75 block text-[10px]">Netzwerk (SSID)</span>
+                <span className="font-bold">{hotel.wifiSsid}</span>
+              </div>
+              <div>
+                <span className="opacity-75 block text-[10px]">Passwort</span>
+                <span className="font-bold tracking-wider">{hotel.wifiPass}</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Kategoriler Listesi */}
+          <div className="space-y-3">
+            <h3 className="text-xs font-extrabold text-slate-400 uppercase tracking-wider px-1">{t.navGaestemappe || 'Gästemappe'}</h3>
+            <div className="grid grid-cols-1 gap-2.5">
+              {categories.map((cat) => (
+                <button
+                  key={cat.id}
+                  onClick={() => setSelectedCategory(cat)}
+                  className="w-full bg-white p-4 rounded-2xl border border-stone-200 shadow-sm hover:border-amber-800/40 transition flex items-center justify-between text-left group"
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-xl bg-amber-50 flex items-center justify-center group-hover:scale-105 transition">
+                      {renderCategoryIcon(cat.iconName)}
+                    </div>
+                    <div>
+                      <h4 className="text-sm font-extrabold text-slate-900">{cat.title}</h4>
+                      <p className="text-xs text-slate-500">{cat.subtitle}</p>
+                    </div>
+                  </div>
+                  <ChevronRight className="w-4 h-4 text-slate-400 group-hover:translate-x-1 transition" />
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Kategori Detay Görünümü */}
+      {activeTab === 'home' && selectedCategory && (
+        <div className="p-5 space-y-5">
+          <button 
+            onClick={() => setSelectedCategory(null)}
+            className="text-xs font-bold text-amber-800 hover:underline flex items-center gap-1"
+          >
+            ← Zurück zur Übersicht
+          </button>
+          <div className="bg-white p-6 rounded-3xl border border-stone-200 shadow-sm space-y-4">
+            <h2 className="text-xl font-extrabold text-slate-900">{selectedCategory.title}</h2>
+            <p className="text-sm text-slate-600 leading-relaxed whitespace-pre-line">{selectedCategory.content}</p>
+          </div>
+        </div>
+      )}
+
+      {/* Admin Panel Görünümü */}
+      {activeTab === 'admin' && (
+        <div className="p-5 space-y-6">
+          <div className="bg-white p-6 rounded-3xl border border-stone-200 shadow-sm space-y-4">
+            <div className="flex justify-between items-center">
+              <h2 className="text-lg font-extrabold text-slate-900">⚙️ Admin Dashboard</h2>
+              <button 
+                onClick={() => { setShowWelcomeScreen(true); setActiveTab('home'); }}
+                className="text-xs font-bold text-slate-500 bg-stone-100 px-3 py-1.5 rounded-xl hover:bg-stone-200 transition"
+              >
+                Zur Startseite
+              </button>
+            </div>
+
+            {isEditUnlocked ? (
+              <div className="space-y-4 pt-2 border-t border-stone-100">
+                <div className="p-3 bg-emerald-50 border border-emerald-200 rounded-2xl flex items-center justify-between text-xs text-emerald-800">
+                  <span className="font-bold flex items-center gap-1.5"><ShieldCheck className="w-4 h-4" /> Bearbeitungsmodus Aktiv</span>
+                  <button onClick={() => setIsEditUnlocked(false)} className="underline font-semibold">Sperren</button>
+                </div>
+
+                <div className="space-y-3">
+                  <h4 className="text-xs font-bold text-slate-700 uppercase tracking-wider">Hotel-Stammdaten</h4>
+                  <div>
+                    <label className="block text-xs font-semibold text-slate-600 mb-1">Otel Adı</label>
+                    <input 
+                      type="text" 
+                      value={hotel.name}
+                      onChange={(e) => setHotel({...hotel, name: e.target.value})}
+                      className="w-full px-3 py-2.5 bg-stone-50 border border-stone-200 rounded-xl text-xs font-medium focus:outline-none focus:ring-2 focus:ring-amber-800"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-semibold text-slate-600 mb-1">Karşılama Mesajı</label>
+                    <input 
+                      type="text" 
+                      value={hotel.welcomeGreeting}
+                      onChange={(e) => setHotel({...hotel, welcomeGreeting: e.target.value})}
+                      className="w-full px-3 py-2.5 bg-stone-50 border border-stone-200 rounded-xl text-xs font-medium focus:outline-none focus:ring-2 focus:ring-amber-800"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-semibold text-slate-600 mb-1">Adres</label>
+                    <input 
+                      type="text" 
+                      value={hotel.address}
+                      onChange={(e) => setHotel({...hotel, address: e.target.value})}
+                      className="w-full px-3 py-2.5 bg-stone-50 border border-stone-200 rounded-xl text-xs font-medium focus:outline-none focus:ring-2 focus:ring-amber-800"
+                    />
+                  </div>
+                </div>
+
+                <div className="pt-3 border-t border-stone-100 space-y-3">
+                  <h4 className="text-xs font-bold text-slate-700 uppercase tracking-wider">QR-Code Vorlagen (Druck)</h4>
+                  <div className="flex gap-2">
+                    <button onClick={() => handlePrint('A4')} className="flex-1 bg-stone-900 text-white py-2.5 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 hover:bg-slate-800 transition">
+                      <Printer className="w-3.5 h-3.5" /> A4 Druck
+                    </button>
+                    <button onClick={() => handlePrint('A5')} className="flex-1 bg-stone-900 text-white py-2.5 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 hover:bg-slate-800 transition">
+                      <Printer className="w-3.5 h-3.5" /> A5 Druck
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <div className="py-6 text-center space-y-3">
+                <p className="text-xs text-slate-500">Bu alan korumalıdır. Düzenleme yapmak için kilit açın.</p>
+                <button 
+                  onClick={() => setShowUnlockModal(true)}
+                  className="bg-amber-800 text-white px-5 py-2.5 rounded-xl text-xs font-bold shadow-md hover:bg-amber-900 transition inline-flex items-center gap-2"
+                >
+                  <Lock className="w-3.5 h-3.5" /> Admin Paneli Aç
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
 
       {renderUnlockModal()}
     </div>
