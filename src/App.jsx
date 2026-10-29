@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { import { translations } from './translations';
+import { translations } from './translations';
+import { 
   Wifi, Info, MapPin, Calendar, MessageSquare, 
   Settings, Phone, Plus, Trash2, 
   Check, Image as ImageIcon, Copy,
