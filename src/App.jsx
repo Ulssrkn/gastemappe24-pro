@@ -15,7 +15,6 @@ export default function App() {
   const [activeTab, setActiveTab] = useState('home');
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [showWelcomeScreen, setShowWelcomeScreen] = useState(true);
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
   
   const [isEditUnlocked, setIsEditUnlocked] = useState(false);
   const [passwordInput, setPasswordInput] = useState('');
@@ -144,6 +143,8 @@ export default function App() {
     if (passwordInput === 'Rina21091987') {
       setIsEditUnlocked(true);
       setShowUnlockModal(false);
+      setShowWelcomeScreen(false);
+      setActiveTab('admin');
       setPasswordInput('');
       setPasswordError(false);
     } else {
@@ -250,7 +251,52 @@ export default function App() {
       reader.readAsDataURL(file);
     }
   };
-// 1. WELCOME SCREEN
+
+  // Modal Komponenti (Hem Welcome Screen hem de ana sayfa için ortak)
+  const renderUnlockModal = () => {
+    if (!showUnlockModal) return null;
+    return (
+      <div className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4">
+        <div className="bg-white rounded-3xl p-6 w-full max-w-sm shadow-2xl space-y-4 border border-stone-200">
+          <div className="flex justify-between items-center">
+            <h3 className="text-base font-extrabold text-slate-900">Admin-Zugriff</h3>
+            <button 
+              onClick={() => { setShowUnlockModal(false); setPasswordInput(''); setPasswordError(false); }}
+              className="p-1.5 text-slate-400 hover:text-slate-600 rounded-full"
+            >
+              <X className="w-5 h-5" />
+            </button>
+          </div>
+          
+          <form onSubmit={handleUnlockSubmit} className="space-y-3">
+            <div>
+              <label className="block text-xs font-bold text-slate-600 mb-1">Passwort eingeben</label>
+              <input 
+                type="password" 
+                value={passwordInput}
+                onChange={(e) => setPasswordInput(e.target.value)}
+                placeholder="••••••••••••"
+                className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-amber-800"
+                autoFocus
+              />
+              {passwordError && (
+                <p className="text-xs text-rose-600 font-semibold mt-1">Falsches Passwort!</p>
+              )}
+            </div>
+
+            <button 
+              type="submit"
+              className="w-full bg-amber-800 text-white py-3 rounded-xl font-bold text-sm shadow-md hover:bg-amber-900 transition"
+            >
+              Entsperren & Einloggen
+            </button>
+          </form>
+        </div>
+      </div>
+    );
+  };
+
+  // 1. WELCOME SCREEN
   if (showWelcomeScreen) {
     return (
       <div className="min-h-screen bg-slate-950 max-w-md mx-auto shadow-2xl relative overflow-hidden flex flex-col justify-between font-sans">
@@ -302,13 +348,16 @@ export default function App() {
             <ArrowRight className="w-4 h-4" />
           </button>
         </div>
+
+        {renderUnlockModal()}
       </div>
     );
   }
+
   return (
     <div className="min-h-screen bg-stone-50 font-sans text-slate-800 pb-24 max-w-md mx-auto shadow-2xl relative border-x border-slate-200">
       
-      {/* HEADER WITH LANGUAGE SELECTOR */}
+      {/* SADELEŞTİRİLMİŞ HEADER */}
       <header className="p-5 pt-7 pb-3 bg-stone-50 border-b border-stone-200/60 sticky top-0 z-40 backdrop-blur-md bg-stone-50/90">
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-3">
@@ -325,86 +374,30 @@ export default function App() {
             </div>
           </div>
 
-          <div className="flex items-center gap-2">
-            {/* 10 Dilli Dil Seçici */}
-            <select 
-              value={lang} 
-              onChange={(e) => setLang(e.target.value)}
-              className="bg-white border border-stone-200 text-slate-700 text-xs font-semibold rounded-xl px-2 py-2 focus:outline-none focus:ring-2 focus:ring-amber-800 cursor-pointer shadow-sm"
-            >
-              <option value="de">🇩🇪 DE</option>
-              <option value="en">🇬🇧 EN</option>
-              <option value="it">🇮🇹 IT</option>
-              <option value="fr">🇫🇷 FR</option>
-              <option value="es">🇪🇸 ES</option>
-              <option value="tr">🇹🇷 TR</option>
-              <option value="sv">🇸🇪 SV</option>
-              <option value="no">🇳🇴 NO</option>
-              <option value="hr">🇭🇷 HR</option>
-              <option value="sq">🇦🇱 SQ</option>
-            </select>
-
-            <button 
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="p-2.5 bg-white border border-stone-200 text-slate-700 rounded-xl shadow-sm hover:bg-stone-100 transition"
-            >
-              {isMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-            </button>
-          </div>
+          {/* Sadece 10 Dilli Dil Seçici Sağ Köşede */}
+          <select 
+            value={lang} 
+            onChange={(e) => setLang(e.target.value)}
+            className="bg-white border border-stone-200 text-slate-700 text-xs font-semibold rounded-xl px-2.5 py-2 focus:outline-none focus:ring-2 focus:ring-amber-800 cursor-pointer shadow-sm"
+          >
+            <option value="de">🇩🇪 DE</option>
+            <option value="en">🇬🇧 EN</option>
+            <option value="it">🇮🇹 IT</option>
+            <option value="fr">🇫🇷 FR</option>
+            <option value="es">🇪🇸 ES</option>
+            <option value="tr">🇹🇷 TR</option>
+            <option value="sv">🇸🇪 SV</option>
+            <option value="no">🇳🇴 NO</option>
+            <option value="hr">🇭🇷 HR</option>
+            <option value="sq">🇦🇱 SQ</option>
+          </select>
         </div>
       </header>
-      {/* ŞİFRE GİRİŞ PENCERESİ (MODAL) */}
-      {showUnlockModal && (
-        <div className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-white rounded-3xl p-6 w-full max-w-sm shadow-2xl space-y-4 border border-stone-200">
-            <div className="flex justify-between items-center">
-              <h3 className="text-base font-extrabold text-slate-900">Admin-Zugriff</h3>
-              <button 
-                onClick={() => { setShowUnlockModal(false); setPasswordInput(''); setPasswordError(false); }}
-                className="p-1.5 text-slate-400 hover:text-slate-600 rounded-full"
-              >
-                <X className="w-5 h-5" />
-              </button>
-            </div>
-            
-            <form onSubmit={(e) => {
-              e.preventDefault();
-              if (passwordInput === 'Rina21091987') {
-                setIsEditUnlocked(true);
-                setShowUnlockModal(false);
-                setShowWelcomeScreen(false);
-                setActiveTab('admin');
-                setPasswordInput('');
-                setPasswordError(false);
-              } else {
-                setPasswordError(true);
-              }
-            }} className="space-y-3">
-              <div>
-                <label className="block text-xs font-bold text-slate-600 mb-1">Passwort eingeben</label>
-                <input 
-                  type="password" 
-                  value={passwordInput}
-                  onChange={(e) => setPasswordInput(e.target.value)}
-                  placeholder="••••••••••••"
-                  className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-amber-800"
-                  autoFocus
-                />
-                {passwordError && (
-                  <p className="text-xs text-rose-600 font-semibold mt-1">Falsches Passwort!</p>
-                )}
-              </div>
 
-              <button 
-                type="submit"
-                className="w-full bg-amber-800 text-white py-3 rounded-xl font-bold text-sm shadow-md hover:bg-amber-900 transition"
-              >
-                Entsperren & Einloggen
-              </button>
-            </form>
-          </div>
-        </div>
-      )}
+      {renderUnlockModal()}
+    </div>
+  );
+}
 
       {/* MAIN CONTENT */}
       <main className="p-5 space-y-5">
