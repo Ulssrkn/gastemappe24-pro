@@ -276,7 +276,7 @@ export default function App() {
           </div>
 
           <button 
-            onClick={() => { setShowWelcomeScreen(false); setActiveTab('admin'); setSelectedCategory(null); }}
+            onClick={() => { setShowUnlockModal(true); }}
             className="p-2 bg-white/10 hover:bg-white/20 rounded-full backdrop-blur-md transition text-white"
             title="Admin Panel"
           >
