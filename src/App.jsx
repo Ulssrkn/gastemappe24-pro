@@ -250,7 +250,61 @@ export default function App() {
       reader.readAsDataURL(file);
     }
   };
+// 1. WELCOME SCREEN
+  if (showWelcomeScreen) {
+    return (
+      <div className="min-h-screen bg-slate-950 max-w-md mx-auto shadow-2xl relative overflow-hidden flex flex-col justify-between font-sans">
+        <div className="absolute inset-0 z-0">
+          <img 
+            src={hotel.images[0] || 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1000&q=80'} 
+            alt="Welcome Background" 
+            className="w-full h-full object-cover object-center brightness-75 transition-all duration-700"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-slate-950/20"></div>
+        </div>
 
+        <div className="relative z-10 p-6 flex justify-between items-center text-white">
+          <div className="flex items-center gap-2">
+            {hotel.logoUrl ? (
+              <img src={hotel.logoUrl} alt="Hotel Logo" className="w-8 h-8 rounded-lg object-cover bg-white/10 backdrop-blur-md p-1 border border-white/20" />
+            ) : (
+              <div className="w-8 h-8 rounded-lg bg-white/20 backdrop-blur-md flex items-center justify-center font-bold text-xs border border-white/20">
+                {hotel.name.charAt(0)}
+              </div>
+            )}
+            <span className="text-xs font-bold tracking-wider uppercase opacity-90">{hotel.name}</span>
+          </div>
+
+          <button 
+            onClick={() => { setShowWelcomeScreen(false); setActiveTab('admin'); setSelectedCategory(null); }}
+            className="p-2 bg-white/10 hover:bg-white/20 rounded-full backdrop-blur-md transition text-white"
+            title="Admin Panel"
+          >
+            <Settings className="w-4 h-4" />
+          </button>
+        </div>
+
+        <div className="relative z-10 p-6 space-y-4 text-white">
+          <div className="space-y-1">
+            <span className="text-[10px] tracking-widest font-extrabold uppercase bg-amber-500/20 text-amber-300 border border-amber-500/30 px-3 py-1 rounded-full">
+              {t.welcomeBadge}
+            </span>
+            <h1 className="text-3xl font-black tracking-tight pt-2 drop-shadow-md">
+              {hotel.welcomeGreeting}
+            </h1>
+          </div>
+
+          <button 
+            onClick={() => setShowWelcomeScreen(false)}
+            className="w-full bg-white text-slate-900 py-4 rounded-2xl font-bold text-sm shadow-2xl hover:bg-slate-100 transition flex items-center justify-center gap-2 active:scale-98"
+          >
+            <span>{t.welcomeButton}</span>
+            <ArrowRight className="w-4 h-4" />
+          </button>
+        </div>
+      </div>
+    );
+  }
   return (
     <div className="min-h-screen bg-stone-50 font-sans text-slate-800 pb-24 max-w-md mx-auto shadow-2xl relative border-x border-slate-200">
       
