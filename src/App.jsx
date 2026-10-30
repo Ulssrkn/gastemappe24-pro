@@ -805,7 +805,6 @@ export default function App() {
           <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-slate-950/20"></div>
         </div>
 
-        {/* Karşılama Ekranı Üst Kısım: Logo ve Dil Seçici */}
         <div className="relative z-10 p-6 flex justify-between items-center text-white">
           <div className="flex items-center gap-2">
             {hotel.logoUrl ? (
@@ -848,7 +847,7 @@ export default function App() {
 
           <button 
             onClick={() => setShowWelcomeScreen(false)}
-            className={`w-full bg-white text-slate-900 py-4 rounded-2xl font-bold text-sm shadow-2xl hover:bg-slate-100 transition flex items-center justify-center gap-2 active:scale-98 cursor-pointer`}
+            className="w-full bg-white text-slate-900 py-4 rounded-2xl font-bold text-sm shadow-2xl hover:bg-slate-100 transition flex items-center justify-center gap-2 active:scale-98 cursor-pointer"
           >
             <span>{t.welcomeButton}</span>
             <ArrowRight className="w-4 h-4" />
@@ -1039,6 +1038,17 @@ export default function App() {
                       </div>
                       <p className="text-[11px] text-slate-600 leading-snug">{hotel.checkInOut}</p>
                     </div>
+
+                    {/* ÖZEL EKLENEN KULLANICI HIZLI ERİŞİMLERİ (Custom Quick Links) */}
+                    {customQuickLinks.map((item) => (
+                      <div key={item.id} className="bg-white p-4 rounded-2xl shadow-sm border border-stone-200/80 space-y-2 flex flex-col justify-between">
+                        <div className={`flex items-center gap-2 ${currentTheme.primary}`}>
+                          {renderCategoryIcon(item.iconName)}
+                          <span className="font-bold text-xs text-slate-900">{item.title}</span>
+                        </div>
+                        <p className="text-[11px] text-slate-600 leading-snug">{item.description}</p>
+                      </div>
+                    ))}
                   </div>
                 </div>
 
@@ -1067,6 +1077,33 @@ export default function App() {
                   </div>
                 </div>
 
+              </div>
+            )}
+
+            {/* REHBER TAB (Services / Gästemappe Listesi) */}
+            {activeTab === 'services' && (
+              <div className="space-y-4 animate-fade-in">
+                <h3 className="text-xs font-bold text-stone-500 uppercase tracking-wider">{t.navGaestemappe}</h3>
+                <div className="grid grid-cols-1 gap-2.5">
+                  {categories.map((cat) => (
+                    <button
+                      key={cat.id}
+                      onClick={() => setSelectedCategory(cat)}
+                      className={`w-full bg-white p-4 rounded-2xl border border-stone-200 shadow-sm hover:${currentTheme.border} transition flex items-center justify-between text-left group cursor-pointer`}
+                    >
+                      <div className="flex items-center gap-3">
+                        <div className={`w-10 h-10 rounded-xl ${currentTheme.bgLight} flex items-center justify-center group-hover:scale-105 transition`}>
+                          {renderCategoryIcon(cat.iconName)}
+                        </div>
+                        <div>
+                          <h4 className="text-sm font-extrabold text-slate-900">{cat.title}</h4>
+                          <p className="text-xs text-slate-500">{cat.subtitle}</p>
+                        </div>
+                      </div>
+                      <ChevronRight className="w-4 h-4 text-slate-400 group-hover:translate-x-1 transition" />
+                    </button>
+                  ))}
+                </div>
               </div>
             )}
 
@@ -1366,7 +1403,7 @@ export default function App() {
                   </div>
                 </div>
 
-                {/* STEP 5: Schnellzugriff */}
+                {/* STEP 5: Schnellzugriff (Standard & Max 2 Custom) */}
                 <div className="bg-white p-5 rounded-2xl shadow-sm border border-stone-200 space-y-4">
                   <h3 className="font-bold text-xs text-slate-900 flex items-center gap-1.5">
                     <Wifi className={`w-4 h-4 ${currentTheme.primary}`} /> {t.sec5Title}
@@ -1423,6 +1460,65 @@ export default function App() {
                         className={`w-full p-2.5 text-xs border border-stone-200 rounded-xl ${!isEditUnlocked ? 'bg-stone-100 cursor-not-allowed' : ''}`}
                       />
                     </div>
+                  </div>
+
+                  {/* Özel Schnellzugriff Yönetim Alanı */}
+                  <div className="pt-3 border-t border-stone-100 space-y-3">
+                    <h4 className={`font-bold text-[11px] ${currentTheme.primary} uppercase`}>Eigene Schnellzugriffe (Aktuell: {customQuickLinks.length}/2)</h4>
+                    
+                    <div className="space-y-2">
+                      {customQuickLinks.map((item) => (
+                        <div key={item.id} className="flex items-center justify-between p-2.5 bg-stone-50 rounded-xl border border-stone-200 text-xs">
+                          <div className="flex items-center gap-2">
+                            {renderCategoryIcon(item.iconName)}
+                            <div>
+                              <span className="font-bold text-slate-900 block">{item.title}</span>
+                              <span className="text-[10px] text-slate-500">{item.description}</span>
+                            </div>
+                          </div>
+                          {isEditUnlocked && (
+                            <button 
+                              onClick={() => handleDeleteCustomQuick(item.id)}
+                              className="bg-rose-50 text-rose-600 hover:bg-rose-100 p-1.5 rounded-lg transition cursor-pointer"
+                            >
+                              <Trash2 className="w-3.5 h-3.5" />
+                            </button>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+
+                    {isEditUnlocked && customQuickLinks.length < 2 && (
+                      <form onSubmit={handleAddCustomQuick} className="space-y-2 pt-2">
+                        <input 
+                          type="text" 
+                          placeholder="Titel (z.B. Fahrradverleih)"
+                          value={newQuick.title}
+                          onChange={(e) => setNewQuick({ ...newQuick, title: e.target.value })}
+                          className="w-full p-2 text-xs border border-stone-200 rounded-xl"
+                        />
+                        <input 
+                          type="text" 
+                          placeholder="Beschreibung (z.B. An der Rezeption)"
+                          value={newQuick.description}
+                          onChange={(e) => setNewQuick({ ...newQuick, description: e.target.value })}
+                          className="w-full p-2 text-xs border border-stone-200 rounded-xl"
+                        />
+                        <select 
+                          value={newQuick.iconName}
+                          onChange={(e) => setNewQuick({ ...newQuick, iconName: e.target.value })}
+                          className="w-full p-2 text-xs border border-stone-200 rounded-xl bg-white cursor-pointer"
+                        >
+                          <option value="Info">Info</option>
+                          <option value="Phone">Telefon</option>
+                          <option value="Globe">Webseite</option>
+                          <option value="Coffee">Coffee</option>
+                        </select>
+                        <button type="submit" className={`w-full ${currentTheme.bgPrimary} ${currentTheme.bgHover} text-white py-2 rounded-xl text-xs font-bold shadow-md transition flex items-center justify-center gap-1 cursor-pointer`}>
+                          <Plus className="w-3.5 h-3.5" /> Schnellzugriff hinzufügen
+                        </button>
+                      </form>
+                    )}
                   </div>
                 </div>
 
@@ -1538,7 +1634,7 @@ export default function App() {
             <span>{t.navGaestemappe}</span>
           </button>
 
-          {/* GOOGLE REVIEW (Doğrudan Link) */}
+          {/* GOOGLE REVIEW */}
           {hotel.googleReviewUrl && (
             <a 
               href={hotel.googleReviewUrl} 
@@ -1551,7 +1647,7 @@ export default function App() {
             </a>
           )}
 
-          {/* ROUTENPLANER (Doğrudan Harita Linki) */}
+          {/* ROUTENPLANER */}
           <a 
             href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(hotel.address)}`} 
             target="_blank" 
