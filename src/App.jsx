@@ -28,7 +28,6 @@ const translations = {
     adminBtnUnlock: "Entsperren",
     trialTitle: "30-Tage Testversion (PRO)",
     trialDaysLeft: "Tage verbleibend",
-    trialUpgradeBtn: "Jetzt PRO Lizenz sichern",
     statsTitle: "Nutzungsstatistik",
     statsScans: "QR-Code Scans (Gäste-Aufrufe)",
     statsActiveRooms: "Aktive Zimmer-Zugriffe",
@@ -121,7 +120,7 @@ export default function App() {
             .qr-box { background: #f8fafc; padding: 20px; border-radius: 20px; display: inline-block; border: 1px solid #e2e8f0; margin-bottom: 25px; }
             .qr-img { width: 200px; height: 200px; display: block; }
             .instructions { font-size: 13px; font-weight: 600; color: #334155; margin-bottom: 30px; }
-            .footer { border-top: 1px solid #e2e8f0; pt-3; margin-top: 20px; font-size: 11px; color: #64748b; line-height: 1.5; }
+            .footer { border-top: 1px solid #e2e8f0; padding-top: 15px; margin-top: 20px; font-size: 11px; color: #64748b; line-height: 1.5; }
             @media print { body { padding: 0; } .container { border: none; box-shadow: none; } }
           </style>
         </head>
@@ -317,10 +316,11 @@ export default function App() {
           <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-slate-950/20"></div>
         </div>
 
+        {/* Karşılama Ekranı Üst Kısmı (Tertemiz Logo - Hayalet Buton Yok) */}
         <div className="relative z-10 p-6 flex justify-between items-center text-white">
           <div className="flex items-center gap-2">
             {hotel.logoUrl ? (
-              <img src={hotel.logoUrl} alt="Hotel Logo" className="w-8 h-8 rounded-lg object-cover bg-white/10 backdrop-blur-md p-1 border border-white/20" />
+              <img src={hotel.logoUrl} alt="Hotel Logo" className="w-8 h-8 rounded-lg object-cover bg-white/15 backdrop-blur-md p-1 border border-white/20" />
             ) : (
               <div className="w-8 h-8 rounded-lg bg-white/20 backdrop-blur-md flex items-center justify-center font-bold text-xs border border-white/20">
                 {hotel.name.charAt(0)}
@@ -328,15 +328,6 @@ export default function App() {
             )}
             <span className="text-xs font-bold tracking-wider uppercase opacity-90">{hotel.name}</span>
           </div>
-
-          <button 
-            type="button"
-            onClick={() => setShowUnlockModal(true)}
-            className="p-2 bg-white/10 hover:bg-white/20 rounded-full backdrop-blur-md transition text-white cursor-pointer"
-            title="Admin Panel"
-          >
-            <Settings className="w-4 h-4" />
-          </button>
         </div>
 
         <div className="relative z-10 p-6 space-y-4 text-white">
@@ -357,40 +348,6 @@ export default function App() {
             <ArrowRight className="w-4 h-4" />
           </button>
         </div>
-
-        {/* WELCOME SCREEN IÇINDEKI UNLOCK MODAL */}
-        {showUnlockModal && (
-          <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-            <div className="bg-white w-full max-w-sm p-6 rounded-3xl shadow-2xl space-y-4 animate-fade-in text-slate-800">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2 text-amber-800">
-                  <Lock className="w-5 h-5" />
-                  <h2 className="font-bold text-base text-slate-900">Bearbeiten entsperren</h2>
-                </div>
-                <button onClick={() => setShowUnlockModal(false)} className="text-stone-400 font-bold p-1">✕</button>
-              </div>
-              <p className="text-xs text-stone-500">
-                Bitte geben Sie das Entwickler-Passwort ein (Rina21091987), um Änderungen vorzunehmen.
-              </p>
-              <form onSubmit={handleUnlockSubmit} className="space-y-3">
-                <input 
-                  type="password" 
-                  placeholder="Passwort..."
-                  value={passwordInput}
-                  onChange={(e) => setPasswordInput(e.target.value)}
-                  className="w-full p-3 text-xs border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-800 font-mono"
-                  autoFocus
-                />
-                {passwordError && (
-                  <p className="text-[11px] text-rose-600 font-bold">Falsches Passwort!</p>
-                )}
-                <button type="submit" className="w-full bg-amber-800 text-white py-3 rounded-xl text-xs font-bold shadow-md">
-                  Entsperren
-                </button>
-              </form>
-            </div>
-          </div>
-        )}
       </div>
     );
   }
@@ -398,16 +355,16 @@ export default function App() {
   return (
     <div className="min-h-screen bg-stone-50 font-sans text-slate-800 pb-24 max-w-md mx-auto shadow-2xl relative border-x border-slate-200">
       
-      {/* UNLOCK MODAL (ANA EKRAN) */}
+      {/* UNLOCK MODAL (Şifre Ekranı) */}
       {showUnlockModal && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-white w-full max-w-sm p-6 rounded-3xl shadow-2xl space-y-4 animate-fade-in">
+          <div className="bg-white w-full max-w-sm p-6 rounded-3xl shadow-2xl space-y-4 animate-fade-in text-slate-800">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2 text-amber-800">
                 <Lock className="w-5 h-5" />
                 <h2 className="font-bold text-base text-slate-900">Bearbeiten entsperren</h2>
               </div>
-              <button onClick={() => setShowUnlockModal(false)} className="text-stone-400 font-bold p-1">✕</button>
+              <button onClick={() => { setShowUnlockModal(false); setPasswordInput(''); setPasswordError(false); }} className="text-stone-400 font-bold p-1 cursor-pointer">✕</button>
             </div>
             <p className="text-xs text-stone-500">
               Bitte geben Sie das Entwickler-Passwort ein (Rina21091987), um Änderungen vorzunehmen.
@@ -424,7 +381,7 @@ export default function App() {
               {passwordError && (
                 <p className="text-[11px] text-rose-600 font-bold">Falsches Passwort!</p>
               )}
-              <button type="submit" className="w-full bg-amber-800 text-white py-3 rounded-xl text-xs font-bold shadow-md">
+              <button type="submit" className="w-full bg-amber-800 text-white py-3 rounded-xl text-xs font-bold shadow-md cursor-pointer">
                 Entsperren
               </button>
             </form>
@@ -432,7 +389,7 @@ export default function App() {
         </div>
       )}
 
-      {/* SADELEŞTİRİLMİŞ HEADER (HAYALET BUTON TAMAMEN TEMİZLENDİ) */}
+      {/* HEADER (Hayalet Buton Tamamen Yok, Sadece Otel İsmi) */}
       <header className="p-5 pt-7 pb-3 bg-stone-50 border-b border-stone-200/60 sticky top-0 z-40 backdrop-blur-md bg-stone-50/90">
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-3">
@@ -459,7 +416,7 @@ export default function App() {
           <div className="space-y-4 animate-fade-in">
             <button 
               onClick={() => setSelectedCategory(null)}
-              className="text-xs font-bold text-amber-800 flex items-center gap-1 hover:underline mb-2"
+              className="text-xs font-bold text-amber-800 flex items-center gap-1 hover:underline mb-2 cursor-pointer"
             >
               &larr; {t.detailBack}
             </button>
@@ -497,7 +454,7 @@ export default function App() {
                         <button 
                           key={idx}
                           onClick={() => setCurrentSlide(idx)}
-                          className={`h-1.5 rounded-full transition-all ${currentSlide === idx ? 'w-6 bg-white' : 'w-1.5 bg-white/50'}`}
+                          className={`h-1.5 rounded-full transition-all cursor-pointer ${currentSlide === idx ? 'w-6 bg-white' : 'w-1.5 bg-white/50'}`}
                         />
                       ))}
                     </div>
@@ -525,7 +482,7 @@ export default function App() {
                           <span>Pass: {hotel.wifiPass}</span>
                           <button 
                             onClick={copyWifiPassword}
-                            className="bg-amber-100 hover:bg-amber-200 text-amber-900 p-1 rounded transition"
+                            className="bg-amber-100 hover:bg-amber-200 text-amber-900 p-1 rounded transition cursor-pointer"
                           >
                             {copiedWifi ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
                           </button>
@@ -549,7 +506,9 @@ export default function App() {
                         <span className="font-bold text-xs text-slate-900">{t.breakfastTitle}</span>
                       </div>
                       <p className="text-[11px] text-slate-600 font-medium">{hotel.breakfastTime}</p>
-       {/* CHECK-IN / CHECK-OUT */}
+                    </div>
+
+                    {/* CHECK-IN / CHECK-OUT */}
                     <div className="bg-white p-4 rounded-2xl shadow-sm border border-stone-200/80 space-y-2 flex flex-col justify-between">
                       <div className="flex items-center gap-2 text-amber-800">
                         <Clock className="w-5 h-5" />
@@ -568,7 +527,7 @@ export default function App() {
                       <button
                         key={cat.id}
                         onClick={() => setSelectedCategory(cat)}
-                        className="w-full bg-white p-4 rounded-2xl border border-stone-200 shadow-sm hover:border-amber-800/40 transition flex items-center justify-between text-left group"
+                        className="w-full bg-white p-4 rounded-2xl border border-stone-200 shadow-sm hover:border-amber-800/40 transition flex items-center justify-between text-left group cursor-pointer"
                       >
                         <div className="flex items-center gap-3">
                           <div className="w-10 h-10 rounded-xl bg-amber-50 flex items-center justify-center group-hover:scale-105 transition">
@@ -604,14 +563,14 @@ export default function App() {
                   {isEditUnlocked ? (
                     <button 
                       onClick={() => setIsEditUnlocked(false)}
-                      className="bg-stone-100 hover:bg-stone-200 text-stone-700 px-3 py-1.5 rounded-xl text-xs font-bold transition"
+                      className="bg-stone-100 hover:bg-stone-200 text-stone-700 px-3 py-1.5 rounded-xl text-xs font-bold transition cursor-pointer"
                     >
                       {t.adminBtnLock}
                     </button>
                   ) : (
                     <button 
                       onClick={() => setShowUnlockModal(true)}
-                      className="bg-amber-800 hover:bg-amber-900 text-white px-3 py-1.5 rounded-xl text-xs font-bold shadow transition"
+                      className="bg-amber-800 hover:bg-amber-900 text-white px-3 py-1.5 rounded-xl text-xs font-bold shadow transition cursor-pointer"
                     >
                       {t.adminBtnUnlock}
                     </button>
@@ -674,21 +633,21 @@ export default function App() {
                   <div className="grid grid-cols-3 gap-2 pt-2">
                     <button 
                       onClick={() => handlePrint('A4')}
-                      className="bg-stone-900 hover:bg-black text-white p-2.5 rounded-xl text-[11px] font-bold shadow transition flex flex-col items-center gap-1"
+                      className="bg-stone-900 hover:bg-black text-white p-2.5 rounded-xl text-[11px] font-bold shadow transition flex flex-col items-center gap-1 cursor-pointer"
                     >
                       <Printer className="w-4 h-4 text-amber-400" />
                       <span>{t.printA4}</span>
                     </button>
                     <button 
                       onClick={() => handlePrint('A5')}
-                      className="bg-stone-900 hover:bg-black text-white p-2.5 rounded-xl text-[11px] font-bold shadow transition flex flex-col items-center gap-1"
+                      className="bg-stone-900 hover:bg-black text-white p-2.5 rounded-xl text-[11px] font-bold shadow transition flex flex-col items-center gap-1 cursor-pointer"
                     >
                       <Printer className="w-4 h-4 text-amber-400" />
                       <span>{t.printA5}</span>
                     </button>
                     <button 
                       onClick={() => handlePrint('Visitenkarte')}
-                      className="bg-stone-900 hover:bg-black text-white p-2.5 rounded-xl text-[11px] font-bold shadow transition flex flex-col items-center gap-1"
+                      className="bg-stone-900 hover:bg-black text-white p-2.5 rounded-xl text-[11px] font-bold shadow transition flex flex-col items-center gap-1 cursor-pointer"
                     >
                       <Printer className="w-4 h-4 text-amber-400" />
                       <span>{t.printCard}</span>
@@ -821,7 +780,7 @@ export default function App() {
                         {isEditUnlocked && (
                           <button 
                             onClick={() => handleRemoveImage(index)}
-                            className="absolute top-1 right-1 bg-rose-600 text-white p-1 rounded-full shadow-md hover:bg-rose-700 transition"
+                            className="absolute top-1 right-1 bg-rose-600 text-white p-1 rounded-full shadow-md hover:bg-rose-700 transition cursor-pointer"
                           >
                             <Trash2 className="w-3 h-3" />
                           </button>
@@ -915,7 +874,7 @@ export default function App() {
                           {isEditUnlocked && (
                             <button 
                               onClick={() => handleDeleteCustomQuick(item.id)}
-                              className="bg-rose-50 text-rose-600 hover:bg-rose-100 p-1.5 rounded-lg transition"
+                              className="bg-rose-50 text-rose-600 hover:bg-rose-100 p-1.5 rounded-lg transition cursor-pointer"
                             >
                               <Trash2 className="w-3.5 h-3.5" />
                             </button>
@@ -943,14 +902,14 @@ export default function App() {
                         <select 
                           value={newQuick.iconName}
                           onChange={(e) => setNewQuick({ ...newQuick, iconName: e.target.value })}
-                          className="w-full p-2 text-xs border border-stone-200 rounded-xl bg-white"
+                          className="w-full p-2 text-xs border border-stone-200 rounded-xl bg-white cursor-pointer"
                         >
                           <option value="Info">Info</option>
                           <option value="Phone">Telefon</option>
                           <option value="Globe">Webseite</option>
                           <option value="Coffee">Coffee</option>
                         </select>
-                        <button type="submit" className="w-full bg-amber-800 text-white py-2 rounded-xl text-xs font-bold shadow-md hover:bg-amber-900 transition flex items-center justify-center gap-1">
+                        <button type="submit" className="w-full bg-amber-800 text-white py-2 rounded-xl text-xs font-bold shadow-md hover:bg-amber-900 transition flex items-center justify-center gap-1 cursor-pointer">
                           <Plus className="w-3.5 h-3.5" /> Schnellzugriff hinzufügen
                         </button>
                       </form>
@@ -977,7 +936,7 @@ export default function App() {
                         {isEditUnlocked && (
                           <button 
                             onClick={() => handleDeleteCategory(cat.id)}
-                            className="bg-rose-50 text-rose-600 hover:bg-rose-100 p-1.5 rounded-lg transition"
+                            className="bg-rose-50 text-rose-600 hover:bg-rose-100 p-1.5 rounded-lg transition cursor-pointer"
                             title="Löschen"
                           >
                             <Trash2 className="w-3.5 h-3.5" />
@@ -1025,7 +984,7 @@ export default function App() {
                         <select 
                           value={newCat.iconName}
                           onChange={(e) => setNewCat({ ...newCat, iconName: e.target.value })}
-                          className="w-full p-2.5 text-xs border border-stone-200 rounded-xl bg-white"
+                          className="w-full p-2.5 text-xs border border-stone-200 rounded-xl bg-white cursor-pointer"
                         >
                           <option value="Info">Info (Standard)</option>
                           <option value="Utensils">Gastronomie (Utensils)</option>
@@ -1035,7 +994,7 @@ export default function App() {
                           <option value="Car">Parken (Car)</option>
                         </select>
                       </div>
-                      <button type="submit" className="w-full bg-amber-800 text-white py-2.5 rounded-xl text-xs font-bold shadow-md hover:bg-amber-900 transition flex items-center justify-center gap-1">
+                      <button type="submit" className="w-full bg-amber-800 text-white py-2.5 rounded-xl text-xs font-bold shadow-md hover:bg-amber-900 transition flex items-center justify-center gap-1 cursor-pointer">
                         <Plus className="w-4 h-4" /> {t.btnCatSubmit}
                       </button>
                     </form>
@@ -1051,11 +1010,11 @@ export default function App() {
 
       </main>
 
-      {/* BOTTOM NAVIGATION */}
+      {/* BOTTOM NAVIGATION (Admin Butonu Doğrudan Burada - Şifre Korumalı) */}
       <nav className="fixed bottom-0 left-0 right-0 max-w-md mx-auto bg-white/90 backdrop-blur-md border-t border-stone-200/80 px-6 py-2 flex justify-between items-center z-50 shadow-2xl">
         <button 
           onClick={() => { setActiveTab('home'); setSelectedCategory(null); }}
-          className={`flex flex-col items-center gap-1 text-[10px] font-bold transition ${activeTab === 'home' && !selectedCategory ? 'text-amber-800' : 'text-stone-400'}`}
+          className={`flex flex-col items-center gap-1 text-[10px] font-bold transition cursor-pointer ${activeTab === 'home' && !selectedCategory ? 'text-amber-800' : 'text-stone-400'}`}
         >
           <Info className="w-5 h-5" />
           <span>{t.navHome}</span>
@@ -1063,15 +1022,22 @@ export default function App() {
 
         <button 
           onClick={() => { setActiveTab('services'); setSelectedCategory(null); }}
-          className={`flex flex-col items-center gap-1 text-[10px] font-bold transition ${activeTab === 'services' || selectedCategory ? 'text-amber-800' : 'text-stone-400'}`}
+          className={`flex flex-col items-center gap-1 text-[10px] font-bold transition cursor-pointer ${activeTab === 'services' || selectedCategory ? 'text-amber-800' : 'text-stone-400'}`}
         >
           <Compass className="w-5 h-5" />
           <span>{t.navGaestemappe}</span>
         </button>
 
         <button 
-          onClick={() => { setActiveTab('admin'); setSelectedCategory(null); }}
-          className={`flex flex-col items-center gap-1 text-[10px] font-bold transition ${activeTab === 'admin' ? 'text-amber-800 font-extrabold' : 'text-stone-400'}`}
+          onClick={() => {
+            if (isEditUnlocked) {
+              setActiveTab('admin');
+              setSelectedCategory(null);
+            } else {
+              setShowUnlockModal(true);
+            }
+          }}
+          className={`flex flex-col items-center gap-1 text-[10px] font-bold transition cursor-pointer ${activeTab === 'admin' ? 'text-amber-800 font-extrabold' : 'text-stone-400'}`}
         >
           <Settings className="w-5 h-5" />
           <span>{t.navAdmin}</span>
