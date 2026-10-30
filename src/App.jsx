@@ -14,6 +14,8 @@ const translations = {
     navHome: "Home",
     navGaestemappe: "Gästemappe",
     navAdmin: "Admin",
+    navReview: "Bewerten",
+    navRoute: "Anfahrt",
     schnellzugriffTitle: "Schnellzugriff",
     wlanTitle: "WLAN",
     parkingTitle: "Parkplatz",
@@ -49,7 +51,7 @@ const translations = {
     lblEmail: "E-Mail",
     lblAddress: "Adresse",
     lblWebsite: "Webseite",
-    lblGoogleReview: "Google Review Link (Yorum Linki)",
+    lblGoogleReview: "Google Review Link",
     lblWifiSsid: "WLAN SSID",
     lblWifiPass: "WLAN Passwort",
     lblBreakfastTime: "Frühstückszeiten",
@@ -58,12 +60,489 @@ const translations = {
     btnLogoUpload: "Logo Seç / Değiştir",
     btnAddCategory: "Neue Kategorie hinzufügen",
     btnCatSubmit: "Kategorie Hinzufügen"
+  },
+  en: {
+    welcomeBadge: "Digital Guest Directory",
+    welcomeButton: "Let's go",
+    navHome: "Home",
+    navGaestemappe: "Directory",
+    navAdmin: "Admin",
+    navReview: "Review",
+    navRoute: "Route",
+    schnellzugriffTitle: "Quick Access",
+    wlanTitle: "WiFi",
+    parkingTitle: "Parking",
+    breakfastTitle: "Breakfast",
+    checkInOutTitle: "Check-in / Out",
+    detailBack: "Back to Overview",
+    detailLabel: "Details",
+    adminTitle: "Management (Admin Panel)",
+    adminUnlockMode: "Edit Mode Active",
+    adminLockMode: "View Mode (Protected)",
+    adminBtnLock: "Lock",
+    adminBtnUnlock: "Unlock",
+    trialTitle: "30-Day Trial (PRO)",
+    trialDaysLeft: "Days remaining",
+    statsTitle: "Usage Statistics",
+    statsScans: "QR Code Scans",
+    statsActiveRooms: "Active Room Access",
+    qrTitle: "QR Code & Print Center",
+    qrSubtitle: "Create professional displays for your rooms and reception.",
+    printA4: "Print Template A4",
+    printA5: "Print Template A5",
+    printCard: "Print Template Business Card",
+    sec1Title: "1. Hotel Information & Contacts",
+    sec2Title: "2. Upload Logo (Max. 2 MB)",
+    sec3Title: "3. Image Management (Max. 5 images)",
+    sec4Title: "4. Welcome Screen & Slider Images",
+    sec5Title: "5. Quick Access",
+    sec6Title: "6. Directory Categories",
+    themeTitle: "7. White-Label Design & Colors",
+    lblHotelName: "Hotel Name",
+    lblGreeting: "Welcome Message",
+    lblPhone: "Phone",
+    lblEmail: "E-Mail",
+    lblAddress: "Address",
+    lblWebsite: "Website",
+    lblGoogleReview: "Google Review Link",
+    lblWifiSsid: "WiFi SSID",
+    lblWifiPass: "WiFi Password",
+    lblBreakfastTime: "Breakfast Hours",
+    lblCheckInOut: "Check-in / Check-out Info",
+    lblParkingInfo: "Parking Info",
+    btnLogoUpload: "Select / Change Logo",
+    btnAddCategory: "Add New Category",
+    btnCatSubmit: "Add Category"
+  },
+  it: {
+    welcomeBadge: "Guida Digitale",
+    welcomeButton: "Inizia",
+    navHome: "Home",
+    navGaestemappe: "Guida",
+    navAdmin: "Admin",
+    navReview: "Recensione",
+    navRoute: "Mappa",
+    schnellzugriffTitle: "Accesso Rapido",
+    wlanTitle: "WiFi",
+    parkingTitle: "Parcheggio",
+    breakfastTitle: "Colazione",
+    checkInOutTitle: "Check-in / Out",
+    detailBack: "Torna alla Panoramica",
+    detailLabel: "Dettagli",
+    adminTitle: "Gestione",
+    adminUnlockMode: "Modifica Attiva",
+    adminLockMode: "Protetto",
+    adminBtnLock: "Blocca",
+    adminBtnUnlock: "Sblocca",
+    trialTitle: "Prova di 30 Giorni",
+    trialDaysLeft: "Giorni rimanenti",
+    statsTitle: "Statistiche",
+    statsScans: "Scansioni QR",
+    statsActiveRooms: "Accessi Attivi",
+    qrTitle: "Centro Stampa QR",
+    qrSubtitle: "Crea espositori professionali.",
+    printA4: "Stampa A4",
+    printA5: "Stampa A5",
+    printCard: "Stampa Biglietto",
+    sec1Title: "1. Info Hotel",
+    sec2Title: "2. Logo",
+    sec3Title: "3. Immagini",
+    sec4Title: "4. Immagini Schermata",
+    sec5Title: "5. Accesso Rapido",
+    sec6Title: "6. Categorie",
+    themeTitle: "7. Design & Colori",
+    lblHotelName: "Nome Hotel",
+    lblGreeting: "Messaggio di Benvenuto",
+    lblPhone: "Telefono",
+    lblEmail: "E-Mail",
+    lblAddress: "Indirizzo",
+    lblWebsite: "Sito Web",
+    lblGoogleReview: "Link Recensione Google",
+    lblWifiSsid: "WiFi SSID",
+    lblWifiPass: "Password WiFi",
+    lblBreakfastTime: "Orari Colazione",
+    lblCheckInOut: "Info Check-in",
+    lblParkingInfo: "Info Parcheggio",
+    btnLogoUpload: "Carica Logo",
+    btnAddCategory: "Aggiungi Categoria",
+    btnCatSubmit: "Salva Categoria"
+  },
+  fr: {
+    welcomeBadge: "Livret d'Accueil Numérique",
+    welcomeButton: "C'est parti",
+    navHome: "Accueil",
+    navGaestemappe: "Guide",
+    navAdmin: "Admin",
+    navReview: "Avis",
+    navRoute: "Itinéraire",
+    schnellzugriffTitle: "Accès Rapide",
+    wlanTitle: "WiFi",
+    parkingTitle: "Parking",
+    breakfastTitle: "Petit-déjeuner",
+    checkInOutTitle: "Check-in / Out",
+    detailBack: "Retour",
+    detailLabel: "Détails",
+    adminTitle: "Gestion",
+    adminUnlockMode: "Mode Édition Actif",
+    adminLockMode: "Mode Lecture",
+    adminBtnLock: "Verrouiller",
+    adminBtnUnlock: "Déverrouiller",
+    trialTitle: "Essai 30 Jours",
+    trialDaysLeft: "Jours restants",
+    statsTitle: "Statistiques",
+    statsScans: "Scans QR",
+    statsActiveRooms: "Chambres Actives",
+    qrTitle: "Centre d'Impression QR",
+    qrSubtitle: "Créez des présentoirs professionnels.",
+    printA4: "Impression A4",
+    printA5: "Impression A5",
+    printCard: "Carte de visite",
+    sec1Title: "1. Infos Hôtel",
+    sec2Title: "2. Logo",
+    sec3Title: "3. Images",
+    sec4Title: "4. Slider",
+    sec5Title: "5. Accès Rapide",
+    sec6Title: "6. Catégories",
+    themeTitle: "7. Thème & Couleurs",
+    lblHotelName: "Nom de l'Hôtel",
+    lblGreeting: "Message de Bienvenue",
+    lblPhone: "Téléphone",
+    lblEmail: "E-Mail",
+    lblAddress: "Adresse",
+    lblWebsite: "Site Web",
+    lblGoogleReview: "Lien Avis Google",
+    lblWifiSsid: "WiFi SSID",
+    lblWifiPass: "Mot de passe WiFi",
+    lblBreakfastTime: "Horaires du petit-déjeuner",
+    lblCheckInOut: "Infos Check-in",
+    lblParkingInfo: "Infos Parking",
+    btnLogoUpload: "Télécharger le logo",
+    btnAddCategory: "Ajouter une catégorie",
+    btnCatSubmit: "Ajouter"
+  },
+  es: {
+    welcomeBadge: "Carpeta Digital",
+    welcomeButton: "Empezar",
+    navHome: "Inicio",
+    navGaestemappe: "Guía",
+    navAdmin: "Admin",
+    navReview: "Opinión",
+    navRoute: "Ruta",
+    schnellzugriffTitle: "Acceso Rápido",
+    wlanTitle: "WiFi",
+    parkingTitle: "Aparcamiento",
+    breakfastTitle: "Desayuno",
+    checkInOutTitle: "Check-in / Out",
+    detailBack: "Volver",
+    detailLabel: "Detalles",
+    adminTitle: "Gestión",
+    adminUnlockMode: "Modo Edición Activo",
+    adminLockMode: "Protegido",
+    adminBtnLock: "Bloquear",
+    adminBtnUnlock: "Desbloquear",
+    trialTitle: "Prueba de 30 Días",
+    trialDaysLeft: "Días restantes",
+    statsTitle: "Estadísticas",
+    statsScans: "Scaneos QR",
+    statsActiveRooms: "Activo",
+    qrTitle: "Centro de Impresión QR",
+    qrSubtitle: "Cree pantallas profesionales.",
+    printA4: "Imprimir A4",
+    printA5: "Imprimir A5",
+    printCard: "Tarjeta",
+    sec1Title: "1. Info del Hotel",
+    sec2Title: "2. Logo",
+    sec3Title: "3. Imágenes",
+    sec4Title: "4. Slider",
+    sec5Title: "5. Acceso",
+    sec6Title: "6. Categorías",
+    themeTitle: "7. Tema y Colores",
+    lblHotelName: "Nombre del Hotel",
+    lblGreeting: "Mensaje de Bienvenida",
+    lblPhone: "Teléfono",
+    lblEmail: "E-Mail",
+    lblAddress: "Dirección",
+    lblWebsite: "Sitio Web",
+    lblGoogleReview: "Enlace Reseñas Google",
+    lblWifiSsid: "WiFi SSID",
+    lblWifiPass: "Contraseña WiFi",
+    lblBreakfastTime: "Horario de Desayuno",
+    lblCheckInOut: "Info Check-in",
+    lblParkingInfo: "Info Parking",
+    btnLogoUpload: "Subir Logo",
+    btnAddCategory: "Añadir Categoría",
+    btnCatSubmit: "Guardar"
+  },
+  tr: {
+    welcomeBadge: "Dijital Misafir Rehberi",
+    welcomeButton: "Başlayalım",
+    navHome: "Ana Sayfa",
+    navGaestemappe: "Rehber",
+    navAdmin: "Admin",
+    navReview: "Değerlendir",
+    navRoute: "Yol Tarifi",
+    schnellzugriffTitle: "Hızlı Erişim",
+    wlanTitle: "WLAN",
+    parkingTitle: "Otopark",
+    breakfastTitle: "Kahvaltı",
+    checkInOutTitle: "Giriş / Çıkış",
+    detailBack: "Geri Dön",
+    detailLabel: "Detay",
+    adminTitle: "Yönetim Paneli",
+    adminUnlockMode: "Düzenleme Modu Aktif",
+    adminLockMode: "Korumalı Mod",
+    adminBtnLock: "Kilitle",
+    adminBtnUnlock: "Kilidi Aç",
+    trialTitle: "30 Günlük Deneme (PRO)",
+    trialDaysLeft: "Gün kaldı",
+    statsTitle: "Kullanım İstatistikleri",
+    statsScans: "QR Kod Taramaları",
+    statsActiveRooms: "Aktif Oda Erişimi",
+    qrTitle: "QR Kod & Baskı Merkezi",
+    qrSubtitle: "Odalar ve resepsiyon için profesyonel tasarımlar oluşturun.",
+    printA4: "A4 Baskı Şablonu",
+    printA5: "A5 Baskı Şablonu",
+    printCard: "Kartvizit Şablonu",
+    sec1Title: "1. Otel Bilgileri & İletişim",
+    sec2Title: "2. Logo Yükleme (Maks. 2 MB)",
+    sec3Title: "3. Resim Yönetimi (Maks. 5 Resim)",
+    sec4Title: "4. Karşılama ve Slider Görselleri",
+    sec5Title: "5. Hızlı Erişim",
+    sec6Title: "6. Rehber Kategorileri",
+    themeTitle: "7. Tema & Renk Seçimi",
+    lblHotelName: "Otel Adı",
+    lblGreeting: "Karşılama Mesajı",
+    lblPhone: "Telefon",
+    lblEmail: "E-Posta",
+    lblAddress: "Adres",
+    lblWebsite: "Web Sitesi",
+    lblGoogleReview: "Google Yorum Linki",
+    lblWifiSsid: "WiFi Ağ Adı (SSID)",
+    lblWifiPass: "WiFi Şifresi",
+    lblBreakfastTime: "Kahvaltı Saatleri",
+    lblCheckInOut: "Giriş / Çıkış Bilgileri",
+    lblParkingInfo: "Otopark Bilgisi",
+    btnLogoUpload: "Logo Seç / Değiştir",
+    btnAddCategory: "Yeni Kategori Ekle",
+    btnCatSubmit: "Kategori Ekle"
+  },
+  sv: {
+    welcomeBadge: "Digital Gästmapp",
+    welcomeButton: "Nu kör vi",
+    navHome: "Hem",
+    navGaestemappe: "Mapp",
+    navAdmin: "Admin",
+    navReview: "Betygsätt",
+    navRoute: "Vägvisning",
+    schnellzugriffTitle: "Snabbåtkomst",
+    wlanTitle: "WiFi",
+    parkingTitle: "Parkering",
+    breakfastTitle: "Frukost",
+    checkInOutTitle: "Check-in / Out",
+    detailBack: "Tillbaka",
+    detailLabel: "Detaljer",
+    adminTitle: "Administration",
+    adminUnlockMode: "Redigeringsläge Aktivt",
+    adminLockMode: "Skyddat Läge",
+    adminBtnLock: "Lås",
+    adminBtnUnlock: "Lås Upp",
+    trialTitle: "30-Dagars Provperiod",
+    trialDaysLeft: "Dagar kvar",
+    statsTitle: "Statistik",
+    statsScans: "QR-skanningar",
+    statsActiveRooms: "Aktiva rum",
+    qrTitle: "QR & Utskriftscenter",
+    qrSubtitle: "Skapa professionella skyltar.",
+    printA4: "Utskrift A4",
+    printA5: "Utskrift A5",
+    printCard: "Visiteffekt",
+    sec1Title: "1. Hotellinfo",
+    sec2Title: "2. Logo",
+    sec3Title: "3. Bilder",
+    sec4Title: "4. Slider",
+    sec5Title: "5. Snabbåtkomst",
+    sec6Title: "6. Kategorier",
+    themeTitle: "7. Tema & Färger",
+    lblHotelName: "Hotellnamn",
+    lblGreeting: "Välkomnande",
+    lblPhone: "Telefon",
+    lblEmail: "E-post",
+    lblAddress: "Adress",
+    lblWebsite: "Webbplats",
+    lblGoogleReview: "Google Recension Länk",
+    lblWifiSsid: "WiFi SSID",
+    lblWifiPass: "WiFi-lösenord",
+    lblBreakfastTime: "Frukosttider",
+    lblCheckInOut: "Check-in info",
+    lblParkingInfo: "Parkeringsinfo",
+    btnLogoUpload: "Välj Logo",
+    btnAddCategory: "Lägg till kategori",
+    btnCatSubmit: "Lägg till"
+  },
+  no: {
+    welcomeBadge: "Digital Gjestemappe",
+    welcomeButton: "La oss gå",
+    navHome: "Hjem",
+    navGaestemappe: "Mappe",
+    navAdmin: "Admin",
+    navReview: "Vurder",
+    navRoute: "Rute",
+    schnellzugriffTitle: "Hurtigtilgang",
+    wlanTitle: "WiFi",
+    parkingTitle: "Parkering",
+    breakfastTitle: "Frokost",
+    checkInOutTitle: "Check-in / Out",
+    detailBack: "Tilbake",
+    detailLabel: "Detaljer",
+    adminTitle: "Administrasjon",
+    adminUnlockMode: "Redigeringsmodus Aktiv",
+    adminLockMode: "Beskyttet",
+    adminBtnLock: "Lås",
+    adminBtnUnlock: "Lås opp",
+    trialTitle: "30-Dagers Prøveperiode",
+    trialDaysLeft: "Dager igjen",
+    statsTitle: "Statistikk",
+    statsScans: "QR-skanningar",
+    statsActiveRooms: "Aktive rom",
+    qrTitle: "QR & Utskriftssenter",
+    qrSubtitle: "Lag profesjonelle skilt.",
+    printA4: "Utskrift A4",
+    printA5: "Utskrift A5",
+    printCard: "Visittkort",
+    sec1Title: "1. Hotellinfo",
+    sec2Title: "2. Logo",
+    sec3Title: "3. Bilder",
+    sec4Title: "4. Slider",
+    sec5Title: "5. Hurtigtilgang",
+    sec6Title: "6. Kategorier",
+    themeTitle: "7. Tema & Farger",
+    lblHotelName: "Hotellnavn",
+    lblGreeting: "Velkomstmelding",
+    lblPhone: "Telefon",
+    lblEmail: "E-post",
+    lblAddress: "Adresse",
+    lblWebsite: "Nettsted",
+    lblGoogleReview: "Google Anmeldelse Lenke",
+    lblWifiSsid: "WiFi SSID",
+    lblWifiPass: "WiFi Passord",
+    lblBreakfastTime: "Frokosttider",
+    lblCheckInOut: "Check-in info",
+    lblParkingInfo: "Parkeringsinfo",
+    btnLogoUpload: "Velg Logo",
+    btnAddCategory: "Legg til kategori",
+    btnCatSubmit: "Legg til"
+  },
+  hr: {
+    welcomeBadge: "Digitalni Mapa",
+    welcomeButton: "Kreni",
+    navHome: "Početna",
+    navGaestemappe: "Mapa",
+    navAdmin: "Admin",
+    navReview: "Ocijeni",
+    navRoute: "Ruta",
+    schnellzugriffTitle: "Brzi Pristup",
+    wlanTitle: "WiFi",
+    parkingTitle: "Parking",
+    breakfastTitle: "Doručak",
+    checkInOutTitle: "Prijava / Odjava",
+    detailBack: "Natrag",
+    detailLabel: "Detalji",
+    adminTitle: "Upravljanje",
+    adminUnlockMode: "Uređivanje Aktivno",
+    adminLockMode: "Zaštićeno",
+    adminBtnLock: "Zaključaj",
+    adminBtnUnlock: "Otključaj",
+    trialTitle: "30 Dana Probno",
+    trialDaysLeft: "Dana preostalo",
+    statsTitle: "Statistika",
+    statsScans: "QR Skeniranja",
+    statsActiveRooms: "Aktivno",
+    qrTitle: "QR Centar",
+    qrSubtitle: "Izradite profesionalne materijale.",
+    printA4: "Ispiši A4",
+    printA5: "Ispiši A5",
+    printCard: "Kartica",
+    sec1Title: "1. Info Hotela",
+    sec2Title: "2. Logo",
+    sec3Title: "3. Slike",
+    sec4Title: "4. Slider",
+    sec5Title: "5. Pristup",
+    sec6Title: "6. Kategorije",
+    themeTitle: "7. Dizajn i Boje",
+    lblHotelName: "Naziv Hotela",
+    lblGreeting: "Pozdravna Poruka",
+    lblPhone: "Telefon",
+    lblEmail: "E-Mail",
+    lblAddress: "Adresa",
+    lblWebsite: "Web stranica",
+    lblGoogleReview: "Google Recenzija Link",
+    lblWifiSsid: "WiFi SSID",
+    lblWifiPass: "WiFi Lozinka",
+    lblBreakfastTime: "Vrijeme Doručka",
+    lblCheckInOut: "Info Prijava",
+    lblParkingInfo: "Info Parking",
+    btnLogoUpload: "Učitaj Logo",
+    btnAddCategory: "Dodaj Kategoriju",
+    btnCatSubmit: "Spremi"
+  },
+  sq: {
+    welcomeBadge: "Dosja Digjitale",
+    welcomeButton: "Le të fillojmë",
+    navHome: "Kryefaqja",
+    navGaestemappe: "Udhëzuesi",
+    navAdmin: "Admin",
+    navReview: "Vlerëso",
+    navRoute: "Rruga",
+    schnellzugriffTitle: "Qasja e Shpejtë",
+    wlanTitle: "WiFi",
+    parkingTitle: "Parkimi",
+    breakfastTitle: "Mëngjesi",
+    checkInOutTitle: "Check-in / Out",
+    detailBack: "Kthehu",
+    detailLabel: "Detaje",
+    adminTitle: "Menaxhimi",
+    adminUnlockMode: "Modi i Editimit Aktiv",
+    adminLockMode: "I Mbrojtur",
+    adminBtnLock: "Mbyll",
+    adminBtnUnlock: "Hap",
+    trialTitle: "Prova 30 Ditë",
+    trialDaysLeft: "Ditë të mbetura",
+    statsTitle: "Statistikat",
+    statsScans: "Skanime QR",
+    statsActiveRooms: "Aktiv",
+    qrTitle: "Qendra e Printimit QR",
+    qrSubtitle: "Krijoni materiale profesionale.",
+    printA4: "Printo A4",
+    printA5: "Printo A5",
+    printCard: "Kartë vizite",
+    sec1Title: "1. Info e Hotelit",
+    sec2Title: "2. Logo",
+    sec3Title: "3. Imazhet",
+    sec4Title: "4. Slider",
+    sec5Title: "5. Qasja e Shpejtë",
+    sec6Title: "6. Kategoritë",
+    themeTitle: "7. Tema & Ngjyrat",
+    lblHotelName: "Emri i Hotelit",
+    lblGreeting: "Mesazhi i Mirëseardhjes",
+    lblPhone: "Telefoni",
+    lblEmail: "E-Mail",
+    lblAddress: "Adresa",
+    lblWebsite: "Faqja Web",
+    lblGoogleReview: "Linku i Vlerësimit në Google",
+    lblWifiSsid: "WiFi SSID",
+    lblWifiPass: "Fjalëkalimi WiFi",
+    lblBreakfastTime: "Orari i Mëngjesit",
+    lblCheckInOut: "Info Check-in",
+    lblParkingInfo: "Info Parkimi",
+    btnLogoUpload: "Ngarko Logo",
+    btnAddCategory: "Shto Kategori",
+    btnCatSubmit: "Ruaj"
   }
 };
 
 export default function App() {
-  const [lang] = useState('de');
-  const t = translations[lang];
+  const [lang, setLang] = useState('de');
+  const t = translations[lang] || translations.de;
 
   const [activeTab, setActiveTab] = useState('home');
   const [selectedCategory, setSelectedCategory] = useState(null);
@@ -77,11 +556,9 @@ export default function App() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [copiedWifi, setCopiedWifi] = useState(false);
 
-  // Trial & QR İstatistik State'leri
   const [scanCount] = useState(142);
   const [daysLeft] = useState(24);
 
-  // Otel Bilgileri & White-Label Tema Rengi ('amber' | 'emerald' | 'slate' | 'navy')
   const [hotel, setHotel] = useState({
     logoUrl: '', 
     name: 'Mein Hotel', 
@@ -96,13 +573,12 @@ export default function App() {
     breakfastTime: '07:00 - 10:30 Uhr',
     checkInOut: 'Check-in: ab 15:00 | Check-out: bis 11:00',
     parkingInfo: 'Kostenfreie Parkplätze am Haus verfügbar.',
-    themeColor: 'amber', // Varsayılan şık kahve tonu
+    themeColor: 'amber',
     images: [
       'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1000&q=80'
     ]
   });
 
-  // Tema Renk Konfigürasyonları
   const themes = {
     amber: { primary: 'text-amber-800', bgPrimary: 'bg-amber-800', bgHover: 'hover:bg-amber-900', bgLight: 'bg-amber-50', border: 'border-amber-800/40', badgeBg: 'bg-amber-50 text-amber-800' },
     emerald: { primary: 'text-emerald-800', bgPrimary: 'bg-emerald-800', bgHover: 'hover:bg-emerald-900', bgLight: 'bg-emerald-50', border: 'border-emerald-800/40', badgeBg: 'bg-emerald-50 text-emerald-800' },
@@ -116,7 +592,6 @@ export default function App() {
   const hotelUrl = `https://gastemappe24-pro.vercel.app/?hotel=${hotelSlug}`;
   const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(hotelUrl)}`;
 
-  // PDF Baskı Fonksiyonu
   const handlePrint = (format) => {
     const printWindow = window.open('', '_blank');
     if (!printWindow) return;
@@ -317,7 +792,7 @@ export default function App() {
     }
   };
 
-  // 1. WELCOME SCREEN
+  // 1. WELCOME SCREEN (Dil Seçici Sağ Üstte)
   if (showWelcomeScreen) {
     return (
       <div className="min-h-screen bg-slate-950 max-w-md mx-auto shadow-2xl relative overflow-hidden flex flex-col justify-between font-sans">
@@ -330,6 +805,7 @@ export default function App() {
           <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-slate-950/20"></div>
         </div>
 
+        {/* Karşılama Ekranı Üst Kısım: Logo ve Dil Seçici */}
         <div className="relative z-10 p-6 flex justify-between items-center text-white">
           <div className="flex items-center gap-2">
             {hotel.logoUrl ? (
@@ -341,6 +817,23 @@ export default function App() {
             )}
             <span className="text-xs font-bold tracking-wider uppercase opacity-90">{hotel.name}</span>
           </div>
+
+          <select 
+            value={lang} 
+            onChange={(e) => setLang(e.target.value)}
+            className="bg-black/40 border border-white/30 text-white text-xs font-semibold rounded-xl px-2.5 py-1.5 focus:outline-none backdrop-blur-md cursor-pointer shadow-sm"
+          >
+            <option value="de" className="bg-slate-900 text-white">🇩🇪 DE</option>
+            <option value="en" className="bg-slate-900 text-white">🇬🇧 EN</option>
+            <option value="it" className="bg-slate-900 text-white">🇮🇹 IT</option>
+            <option value="fr" className="bg-slate-900 text-white">🇫🇷 FR</option>
+            <option value="es" className="bg-slate-900 text-white">🇪🇸 ES</option>
+            <option value="tr" className="bg-slate-900 text-white">🇹🇷 TR</option>
+            <option value="sv" className="bg-slate-900 text-white">🇸🇪 SV</option>
+            <option value="no" className="bg-slate-900 text-white">🇳🇴 NO</option>
+            <option value="hr" className="bg-slate-900 text-white">🇭🇷 HR</option>
+            <option value="sq" className="bg-slate-900 text-white">🇦🇱 SQ</option>
+          </select>
         </div>
 
         <div className="relative z-10 p-6 space-y-4 text-white">
@@ -366,7 +859,7 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen bg-stone-50 font-sans text-slate-800 pb-28 max-w-md mx-auto shadow-2xl relative border-x border-slate-200">
+    <div className="min-h-screen bg-stone-50 font-sans text-slate-800 pb-32 max-w-md mx-auto shadow-2xl relative border-x border-slate-200">
       
       {/* UNLOCK MODAL */}
       {showUnlockModal && (
@@ -402,7 +895,7 @@ export default function App() {
         </div>
       )}
 
-      {/* HEADER */}
+      {/* HEADER (Dil Seçici Sağ Üstte) */}
       <header className="p-5 pt-7 pb-3 bg-stone-50 border-b border-stone-200/60 sticky top-0 z-40 backdrop-blur-md bg-stone-50/90">
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-3">
@@ -418,6 +911,23 @@ export default function App() {
               <h2 className="text-sm font-extrabold text-slate-900 leading-tight">{hotel.name}</h2>
             </div>
           </div>
+
+          <select 
+            value={lang} 
+            onChange={(e) => setLang(e.target.value)}
+            className="bg-white border border-stone-200 text-slate-700 text-xs font-semibold rounded-xl px-2.5 py-2 focus:outline-none focus:ring-2 focus:ring-amber-800 cursor-pointer shadow-sm"
+          >
+            <option value="de">🇩🇪 DE</option>
+            <option value="en">🇬🇧 EN</option>
+            <option value="it">🇮🇹 IT</option>
+            <option value="fr">🇫🇷 FR</option>
+            <option value="es">🇪🇸 ES</option>
+            <option value="tr">🇹🇷 TR</option>
+            <option value="sv">🇸🇪 SV</option>
+            <option value="no">🇳🇴 NO</option>
+            <option value="hr">🇭🇷 HR</option>
+            <option value="sq">🇦🇱 SQ</option>
+          </select>
         </div>
       </header>
 
@@ -554,39 +1064,6 @@ export default function App() {
                         <ChevronRight className="w-4 h-4 text-slate-400 group-hover:translate-x-1 transition" />
                       </button>
                     ))}
-                  </div>
-                </div>
-
-                {/* ESTETİK ALT İLETİŞİM & GOOGLE REVIEW FOOTER */}
-                <div className="pt-6 border-t border-stone-200 space-y-4 text-center">
-                  <div className="flex justify-center gap-3">
-                    {hotel.googleReviewUrl && (
-                      <a 
-                        href={hotel.googleReviewUrl} 
-                        target="_blank" 
-                        rel="noreferrer"
-                        className="bg-white border border-stone-200 hover:border-amber-500 text-slate-700 px-4 py-2.5 rounded-xl text-xs font-bold flex items-center gap-2 shadow-sm transition cursor-pointer"
-                      >
-                        <Star className="w-4 h-4 text-amber-500 fill-amber-500" />
-                        <span>Google Review</span>
-                      </a>
-                    )}
-                    <a 
-                      href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(hotel.address)}`} 
-                      target="_blank" 
-                      rel="noreferrer"
-                      className="bg-white border border-stone-200 hover:border-amber-500 text-slate-700 px-4 py-2.5 rounded-xl text-xs font-bold flex items-center gap-2 shadow-sm transition cursor-pointer"
-                    >
-                      <Navigation className="w-4 h-4 text-sky-600" />
-                      <span>Routenplaner</span>
-                    </a>
-                  </div>
-
-                  <div className="text-[11px] text-stone-400 space-y-1">
-                    <p>{hotel.name} • {hotel.address}</p>
-                    <p className="font-semibold text-stone-500">
-                      Powered by <span className="font-bold text-slate-700">gastemappe24-pro</span>
-                    </p>
                   </div>
                 </div>
 
@@ -1042,39 +1519,70 @@ export default function App() {
 
       </main>
 
-      {/* BOTTOM NAVIGATION */}
-      <nav className="fixed bottom-0 left-0 right-0 max-w-md mx-auto bg-white/90 backdrop-blur-md border-t border-stone-200/80 px-6 py-2.5 flex justify-between items-center z-50 shadow-2xl">
-        <button 
-          onClick={() => { setActiveTab('home'); setSelectedCategory(null); }}
-          className={`flex flex-col items-center gap-1 text-[10px] font-bold transition cursor-pointer ${activeTab === 'home' && !selectedCategory ? currentTheme.primary : 'text-stone-400'}`}
-        >
-          <Info className="w-5 h-5" />
-          <span>{t.navHome}</span>
-        </button>
+      {/* FIXED BOTTOM NAVIGATION BAR & POWERED BY FOOTER */}
+      <div className="fixed bottom-0 left-0 right-0 max-w-md mx-auto bg-white/95 backdrop-blur-md border-t border-stone-200/80 z-50 shadow-2xl">
+        <nav className="px-3 py-2 flex justify-around items-center">
+          <button 
+            onClick={() => { setActiveTab('home'); setSelectedCategory(null); }}
+            className={`flex flex-col items-center gap-1 text-[10px] font-bold transition cursor-pointer ${activeTab === 'home' && !selectedCategory ? currentTheme.primary : 'text-stone-400'}`}
+          >
+            <Info className="w-5 h-5" />
+            <span>{t.navHome}</span>
+          </button>
 
-        <button 
-          onClick={() => { setActiveTab('services'); setSelectedCategory(null); }}
-          className={`flex flex-col items-center gap-1 text-[10px] font-bold transition cursor-pointer ${activeTab === 'services' || selectedCategory ? currentTheme.primary : 'text-stone-400'}`}
-        >
-          <Compass className="w-5 h-5" />
-          <span>{t.navGaestemappe}</span>
-        </button>
+          <button 
+            onClick={() => { setActiveTab('services'); setSelectedCategory(null); }}
+            className={`flex flex-col items-center gap-1 text-[10px] font-bold transition cursor-pointer ${activeTab === 'services' || selectedCategory ? currentTheme.primary : 'text-stone-400'}`}
+          >
+            <Compass className="w-5 h-5" />
+            <span>{t.navGaestemappe}</span>
+          </button>
 
-        <button 
-          onClick={() => {
-            if (isEditUnlocked) {
-              setActiveTab('admin');
-              setSelectedCategory(null);
-            } else {
-              setShowUnlockModal(true);
-            }
-          }}
-          className={`flex flex-col items-center gap-1 text-[10px] font-bold transition cursor-pointer ${activeTab === 'admin' ? `${currentTheme.primary} font-extrabold` : 'text-stone-400'}`}
-        >
-          <Settings className="w-5 h-5" />
-          <span>{t.navAdmin}</span>
-        </button>
-      </nav>
+          {/* GOOGLE REVIEW (Doğrudan Link) */}
+          {hotel.googleReviewUrl && (
+            <a 
+              href={hotel.googleReviewUrl} 
+              target="_blank" 
+              rel="noreferrer"
+              className="flex flex-col items-center gap-1 text-[10px] font-bold text-stone-400 hover:text-amber-500 transition cursor-pointer"
+            >
+              <Star className="w-5 h-5 text-amber-500 fill-amber-500" />
+              <span>{t.navReview}</span>
+            </a>
+          )}
+
+          {/* ROUTENPLANER (Doğrudan Harita Linki) */}
+          <a 
+            href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(hotel.address)}`} 
+            target="_blank" 
+            rel="noreferrer"
+            className="flex flex-col items-center gap-1 text-[10px] font-bold text-stone-400 hover:text-sky-600 transition cursor-pointer"
+          >
+            <Navigation className="w-5 h-5 text-sky-600" />
+            <span>{t.navRoute}</span>
+          </a>
+
+          <button 
+            onClick={() => {
+              if (isEditUnlocked) {
+                setActiveTab('admin');
+                setSelectedCategory(null);
+              } else {
+                setShowUnlockModal(true);
+              }
+            }}
+            className={`flex flex-col items-center gap-1 text-[10px] font-bold transition cursor-pointer ${activeTab === 'admin' ? `${currentTheme.primary} font-extrabold` : 'text-stone-400'}`}
+          >
+            <Settings className="w-5 h-5" />
+            <span>{t.navAdmin}</span>
+          </button>
+        </nav>
+
+        {/* Powered By İmzası En Altta */}
+        <div className="bg-stone-100 border-t border-stone-200/50 py-1 text-center text-[9px] text-stone-400 font-medium">
+          Powered by <span className="font-bold text-slate-700">gastemappe24-pro</span>
+        </div>
+      </div>
 
     </div>
   );
