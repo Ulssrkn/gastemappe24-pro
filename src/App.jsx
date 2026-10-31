@@ -4,18 +4,24 @@ import {
   Settings, Phone, Plus, Trash2, 
   Check, Image as ImageIcon, Copy,
   ChevronRight, ArrowRight, Upload, AlertCircle, Lock, Unlock,
-  Utensils, Heart, Compass, Coffee, Car, Clock, ShieldCheck, Edit3, Mail, Globe, ExternalLink, QrCode, Printer, BarChart3, Star, Navigation
+  Utensils, Heart, Compass, Coffee, Car, Clock, ShieldCheck, Edit3, Mail, Globe, ExternalLink, QrCode, Printer, BarChart3, Star, Navigation, Sun, CloudRain
 } from 'lucide-react';
 
 const translations = {
   de: {
     welcomeBadge: "Digitale Gästemappe",
     welcomeButton: "Los geht's",
+    greetingHello: "Hallo,",
+    greetingWelcome: "schön dass du da bist.",
     navHome: "Home",
     navGaestemappe: "Gästemappe",
     navAdmin: "Admin",
     navReview: "Bewerten",
     navRoute: "Anfahrt",
+    weatherTitle: "Heiter",
+    weatherSub: "Aktuelles Wetter",
+    forecastTitle: "Vorhersage",
+    forecastSub: "7 Tage & Details",
     schnellzugriffTitle: "Schnellzugriff",
     wlanTitle: "WLAN",
     parkingTitle: "Parkplatz",
@@ -64,11 +70,17 @@ const translations = {
   en: {
     welcomeBadge: "Digital Guest Directory",
     welcomeButton: "Let's go",
+    greetingHello: "Hello,",
+    greetingWelcome: "glad you're here.",
     navHome: "Home",
     navGaestemappe: "Directory",
     navAdmin: "Admin",
     navReview: "Review",
     navRoute: "Route",
+    weatherTitle: "Sunny",
+    weatherSub: "Current Weather",
+    forecastTitle: "Forecast",
+    forecastSub: "7 Days & Details",
     schnellzugriffTitle: "Quick Access",
     wlanTitle: "WiFi",
     parkingTitle: "Parking",
@@ -117,11 +129,17 @@ const translations = {
   it: {
     welcomeBadge: "Guida Digitale",
     welcomeButton: "Inizia",
+    greetingHello: "Ciao,",
+    greetingWelcome: "benvenuto.",
     navHome: "Home",
     navGaestemappe: "Guida",
     navAdmin: "Admin",
     navReview: "Recensione",
     navRoute: "Mappa",
+    weatherTitle: "Sereno",
+    weatherSub: "Meteo attuale",
+    forecastTitle: "Previsioni",
+    forecastSub: "7 Giorni",
     schnellzugriffTitle: "Accesso Rapido",
     wlanTitle: "WiFi",
     parkingTitle: "Parcheggio",
@@ -170,11 +188,17 @@ const translations = {
   fr: {
     welcomeBadge: "Livret d'Accueil Numérique",
     welcomeButton: "C'est parti",
+    greetingHello: "Bonjour,",
+    greetingWelcome: "ravi de vous voir.",
     navHome: "Accueil",
     navGaestemappe: "Guide",
     navAdmin: "Admin",
     navReview: "Avis",
     navRoute: "Itinéraire",
+    weatherTitle: "Ensoleillé",
+    weatherSub: "Météo actuelle",
+    forecastTitle: "Prévisions",
+    forecastSub: "7 Jours",
     schnellzugriffTitle: "Accès Rapide",
     wlanTitle: "WiFi",
     parkingTitle: "Parking",
@@ -223,11 +247,17 @@ const translations = {
   es: {
     welcomeBadge: "Carpeta Digital",
     welcomeButton: "Empezar",
+    greetingHello: "Hola,",
+    greetingWelcome: "qué bueno que estás aquí.",
     navHome: "Inicio",
     navGaestemappe: "Guía",
     navAdmin: "Admin",
     navReview: "Opinión",
     navRoute: "Ruta",
+    weatherTitle: "Soleado",
+    weatherSub: "Clima actual",
+    forecastTitle: "Pronóstico",
+    forecastSub: "7 Días",
     schnellzugriffTitle: "Acceso Rápido",
     wlanTitle: "WiFi",
     parkingTitle: "Aparcamiento",
@@ -276,11 +306,17 @@ const translations = {
   tr: {
     welcomeBadge: "Dijital Misafir Rehberi",
     welcomeButton: "Başlayalım",
+    greetingHello: "Merhaba,",
+    greetingWelcome: "hoş geldin, iyi ki buradasın.",
     navHome: "Ana Sayfa",
     navGaestemappe: "Rehber",
     navAdmin: "Admin",
     navReview: "Değerlendir",
     navRoute: "Yol Tarifi",
+    weatherTitle: "Güneşli",
+    weatherSub: "Güncel Hava",
+    forecastTitle: "Tahmin",
+    forecastSub: "7 Günlük",
     schnellzugriffTitle: "Hızlı Erişim",
     wlanTitle: "WLAN",
     parkingTitle: "Otopark",
@@ -329,11 +365,17 @@ const translations = {
   sv: {
     welcomeBadge: "Digital Gästmapp",
     welcomeButton: "Nu kör vi",
+    greetingHello: "Hej,",
+    greetingWelcome: "kul att du är här.",
     navHome: "Hem",
     navGaestemappe: "Mapp",
     navAdmin: "Admin",
     navReview: "Betygsätt",
     navRoute: "Vägvisning",
+    weatherTitle: "Soligt",
+    weatherSub: "Aktuellt väder",
+    forecastTitle: "Prognos",
+    forecastSub: "7 Dagar",
     schnellzugriffTitle: "Snabbåtkomst",
     wlanTitle: "WiFi",
     parkingTitle: "Parkering",
@@ -382,11 +424,17 @@ const translations = {
   no: {
     welcomeBadge: "Digital Gjestemappe",
     welcomeButton: "La oss gå",
+    greetingHello: "Hei,",
+    greetingWelcome: "så hyggelig at du er her.",
     navHome: "Hjem",
     navGaestemappe: "Mappe",
     navAdmin: "Admin",
     navReview: "Vurder",
     navRoute: "Rute",
+    weatherTitle: "Sol",
+    weatherSub: "Aktuell vær",
+    forecastTitle: "Prognose",
+    forecastSub: "7 Dager",
     schnellzugriffTitle: "Hurtigtilgang",
     wlanTitle: "WiFi",
     parkingTitle: "Parkering",
@@ -435,11 +483,17 @@ const translations = {
   hr: {
     welcomeBadge: "Digitalni Mapa",
     welcomeButton: "Kreni",
+    greetingHello: "Bok,",
+    greetingWelcome: "drago nam je da si ovdje.",
     navHome: "Početna",
     navGaestemappe: "Mapa",
     navAdmin: "Admin",
     navReview: "Ocijeni",
     navRoute: "Ruta",
+    weatherTitle: "Sunčano",
+    weatherSub: "Trenutno vrijeme",
+    forecastTitle: "Prognoza",
+    forecastSub: "7 Dana",
     schnellzugriffTitle: "Brzi Pristup",
     wlanTitle: "WiFi",
     parkingTitle: "Parking",
@@ -488,12 +542,18 @@ const translations = {
   sq: {
     welcomeBadge: "Dosja Digjitale",
     welcomeButton: "Le të fillojmë",
+    greetingHello: "Përshëndetje,",
+    greetingWelcome: "kënaqësi që jeni këtu.",
     navHome: "Kryefaqja",
     navGaestemappe: "Udhëzuesi",
     navAdmin: "Admin",
     navReview: "Vlerëso",
     navRoute: "Rruga",
     schnellzugriffTitle: "Qasja e Shpejtë",
+    weatherTitle: "Me diell",
+    weatherSub: "Moti aktual",
+    forecastTitle: "Parashikimi",
+    forecastSub: "7 Ditë",
     wlanTitle: "WiFi",
     parkingTitle: "Parkimi",
     breakfastTitle: "Mëngjesi",
@@ -561,21 +621,23 @@ export default function App() {
 
   const [hotel, setHotel] = useState({
     logoUrl: '', 
-    name: 'Mein Hotel', 
-    welcomeGreeting: 'Herzlich Willkommen!',
-    phone: '+49 123 456789',
-    email: 'info@mein-hotel.de',
-    address: 'Hauptstraße 1, 67150 Deidesheim',
-    website: 'www.mein-hotel.de',
+    name: 'Deidesheimer Hof', 
+    locationTitle: 'PFALZ / WEINSTRASSE',
+    welcomeGreeting: 'schön dass du da bist.',
+    phone: '+49 6326 96870',
+    email: 'info@deidesheimerhof.de',
+    address: 'Deidesheim, Deutschland',
+    website: 'www.deidesheimerhof.de',
     googleReviewUrl: 'https://g.page/r/example/review',
-    wifiSsid: 'Guest_WiFi',
-    wifiPass: 'pass2026',
+    wifiSsid: 'Deidesheim_Guest',
+    wifiPass: 'pals2026',
     breakfastTime: '07:00 - 10:30 Uhr',
     checkInOut: 'Check-in: ab 15:00 | Check-out: bis 11:00',
     parkingInfo: 'Kostenfreie Parkplätze am Haus verfügbar.',
     themeColor: 'amber',
     images: [
-      'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1000&q=80'
+      'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1000&q=80',
+      'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=1000&q=80'
     ]
   });
 
@@ -649,7 +711,7 @@ export default function App() {
       id: 'gastronomie',
       title: 'Gastronomie & Bar',
       subtitle: 'Speisekarten & Öffnungszeiten',
-      content: 'Genießen Sie unsere regionale Küche und erlesene Weine.',
+      content: 'Genießen Sie unsere regionale Küche und erlesene Weine aus der Pfalz.',
       iconName: 'Utensils'
     },
     {
@@ -841,7 +903,7 @@ export default function App() {
               {t.welcomeBadge}
             </span>
             <h1 className="text-3xl font-black tracking-tight pt-2 drop-shadow-md">
-              {hotel.welcomeGreeting}
+              {hotel.name}
             </h1>
           </div>
 
@@ -894,40 +956,35 @@ export default function App() {
         </div>
       )}
 
-      {/* HEADER (Dil Seçici Sağ Üstte) */}
-      <header className="p-5 pt-7 pb-3 bg-stone-50 border-b border-stone-200/60 sticky top-0 z-40 backdrop-blur-md bg-stone-50/90">
-        <div className="flex justify-between items-center">
-          <div className="flex items-center gap-3">
-            {hotel.logoUrl ? (
-              <img src={hotel.logoUrl} alt="Logo" className="w-10 h-10 rounded-xl object-cover border border-stone-200 shadow-sm" />
-            ) : (
-              <div className={`w-10 h-10 rounded-xl ${currentTheme.bgPrimary} text-white flex items-center justify-center font-bold text-sm shadow-sm`}>
-                {hotel.name.charAt(0)}
-              </div>
-            )}
-            <div>
-              <span className={`text-[9px] font-bold uppercase tracking-wider ${currentTheme.primary} block`}>WILLKOMMEN BEI</span>
-              <h2 className="text-sm font-extrabold text-slate-900 leading-tight">{hotel.name}</h2>
+      {/* HEADER (Dil Seçici Sağ Üstte, Hamburger Menü Yok) */}
+      <header className="p-5 pt-6 pb-2 bg-stone-50 sticky top-0 z-40 backdrop-blur-md bg-stone-50/95 flex justify-between items-center">
+        <div className="flex items-center gap-2.5">
+          {hotel.logoUrl ? (
+            <img src={hotel.logoUrl} alt="Logo" className="w-9 h-9 rounded-xl object-cover border border-stone-200 shadow-sm" />
+          ) : (
+            <div className={`w-9 h-9 rounded-xl ${currentTheme.bgPrimary} text-white flex items-center justify-center font-bold text-xs shadow-sm`}>
+              {hotel.name.charAt(0)}
             </div>
-          </div>
-
-          <select 
-            value={lang} 
-            onChange={(e) => setLang(e.target.value)}
-            className="bg-white border border-stone-200 text-slate-700 text-xs font-semibold rounded-xl px-2.5 py-2 focus:outline-none focus:ring-2 focus:ring-amber-800 cursor-pointer shadow-sm"
-          >
-            <option value="de">🇩🇪 DE</option>
-            <option value="en">🇬🇧 EN</option>
-            <option value="it">🇮🇹 IT</option>
-            <option value="fr">🇫🇷 FR</option>
-            <option value="es">🇪🇸 ES</option>
-            <option value="tr">🇹🇷 TR</option>
-            <option value="sv">🇸🇪 SV</option>
-            <option value="no">🇳🇴 NO</option>
-            <option value="hr">🇭🇷 HR</option>
-            <option value="sq">🇦🇱 SQ</option>
-          </select>
+          )}
+          <span className="text-xs font-bold tracking-wider uppercase text-slate-800">{hotel.name}</span>
         </div>
+
+        <select 
+          value={lang} 
+          onChange={(e) => setLang(e.target.value)}
+          className="bg-white border border-stone-200 text-slate-700 text-xs font-semibold rounded-xl px-2.5 py-1.5 focus:outline-none focus:ring-2 focus:ring-amber-800 cursor-pointer shadow-sm"
+        >
+          <option value="de">🇩🇪 DE</option>
+          <option value="en">🇬🇧 EN</option>
+          <option value="it">🇮🇹 IT</option>
+          <option value="fr">🇫🇷 FR</option>
+          <option value="es">🇪🇸 ES</option>
+          <option value="tr">🇹🇷 TR</option>
+          <option value="sv">🇸🇪 SV</option>
+          <option value="no">🇳🇴 NO</option>
+          <option value="hr">🇭🇷 HR</option>
+          <option value="sq">🇦🇱 SQ</option>
+        </select>
       </header>
 
       {/* MAIN CONTENT */}
@@ -958,17 +1015,29 @@ export default function App() {
           </div>
         ) : (
           <>
-            {/* 1. HOME TAB */}
+            {/* 1. HOME TAB (Yeni Tasarım Düzeni) */}
             {activeTab === 'home' && (
-              <div className="space-y-5 animate-fade-in">
-                {/* Slider */}
-                <div className="relative rounded-2xl overflow-hidden shadow-md h-48 bg-slate-900 group">
+              <div className="space-y-4 animate-fade-in">
+                
+                {/* YENİ STİL KARSILAMA BÖLÜMÜ (Gönderdiğin görseldeki gibi) */}
+                <div className="space-y-0.5 pt-1">
+                  <span className="text-[11px] font-extrabold uppercase tracking-widest text-stone-500 block">
+                    {hotel.locationTitle}
+                  </span>
+                  <h1 className="text-2xl font-black text-slate-900 tracking-tight leading-snug">
+                    {t.greetingHello}<br />
+                    <span className={currentTheme.primary}>{hotel.welcomeGreeting || t.greetingWelcome}</span>
+                  </h1>
+                </div>
+
+                {/* SLIDER (Büyük ve şık, köşe kavisli) */}
+                <div className="relative rounded-3xl overflow-hidden shadow-lg h-56 bg-slate-900 group border border-stone-200">
                   <img 
                     src={hotel.images[currentSlide] || hotel.images[0]} 
                     alt={`Slide ${currentSlide}`} 
                     className="w-full h-full object-cover transition-all duration-500"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent"></div>
 
                   {hotel.images.length > 1 && (
                     <div className="absolute bottom-3 left-0 right-0 flex justify-center gap-1.5 z-10">
@@ -982,13 +1051,55 @@ export default function App() {
                     </div>
                   )}
 
-                  <div className="absolute top-3 right-3 bg-black/50 backdrop-blur-md text-white text-[10px] font-bold px-2.5 py-1 rounded-full flex items-center gap-1">
+                  <div className="absolute top-3 right-3 bg-black/40 backdrop-blur-md text-white text-[10px] font-bold px-2.5 py-1 rounded-full flex items-center gap-1 border border-white/20">
                     <ImageIcon className="w-3 h-3" /> {currentSlide + 1}/{hotel.images.length}
                   </div>
                 </div>
 
+                {/* HAVA DURUMU & TAHMİN KARTLARI (Görseldeki gibi yan yana iki widget) */}
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="bg-white p-4 rounded-2xl shadow-sm border border-stone-200 flex items-center gap-3">
+                    <div className={`p-2.5 ${currentTheme.bgLight} rounded-xl ${currentTheme.primary}`}>
+                      <Sun className="w-6 h-6 animate-spin-slow" />
+                    </div>
+                    <div>
+                      <div className="text-lg font-black text-slate-900 leading-none">14°C</div>
+                      <div className="text-[11px] font-bold text-slate-700 mt-1">{t.weatherTitle}</div>
+                      <div className="text-[10px] text-stone-400 truncate max-w-[100px]">{hotel.address.split(',')[0]}</div>
+                    </div>
+                  </div>
+
+                  <div className="bg-white p-4 rounded-2xl shadow-sm border border-stone-200 flex items-center gap-3">
+                    <div className="p-2.5 bg-stone-100 rounded-xl text-stone-700">
+                      <Calendar className="w-6 h-6" />
+                    </div>
+                    <div>
+                      <div className="text-xs font-extrabold text-slate-900">{t.forecastTitle}</div>
+                      <div className="text-[10px] text-stone-500 mt-0.5">{t.forecastSub}</div>
+                      <div className="text-[10px] font-bold text-amber-700 mt-1">Pfalz Sonne</div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* GÄSTEMAPPE ANA KART (Görseldeki gibi büyük yönlendirici kart) */}
+                <button
+                  onClick={() => setActiveTab('services')}
+                  className={`w-full bg-white p-4 rounded-2xl border border-stone-200 shadow-sm hover:${currentTheme.border} transition flex items-center justify-between text-left group cursor-pointer`}
+                >
+                  <div className="flex items-center gap-3">
+                    <div className={`w-11 h-11 rounded-xl ${currentTheme.bgLight} flex items-center justify-center group-hover:scale-105 transition`}>
+                      <Compass className={`w-6 h-6 ${currentTheme.primary}`} />
+                    </div>
+                    <div>
+                      <h4 className="text-sm font-extrabold text-slate-900">{t.navGaestemappe}</h4>
+                      <p className="text-[11px] text-stone-500">Herzlich willkommen, Ihre Gastgeber, WLAN & mehr</p>
+                    </div>
+                  </div>
+                  <ChevronRight className="w-5 h-5 text-stone-400 group-hover:translate-x-1 transition" />
+                </button>
+
                 {/* SCHNELLZUGRIFF CARDS */}
-                <div className="space-y-3">
+                <div className="space-y-3 pt-2">
                   <h3 className="text-xs font-bold text-stone-500 uppercase tracking-wider">{t.schnellzugriffTitle}</h3>
                   
                   <div className="grid grid-cols-2 gap-3">
@@ -1048,31 +1159,6 @@ export default function App() {
                         </div>
                         <p className="text-[11px] text-slate-600 leading-snug">{item.description}</p>
                       </div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* GÄSTEMAPPE KATEGORIEN LISTESI */}
-                <div className="space-y-3">
-                  <h3 className="text-xs font-bold text-stone-500 uppercase tracking-wider">{t.navGaestemappe}</h3>
-                  <div className="grid grid-cols-1 gap-2.5">
-                    {categories.map((cat) => (
-                      <button
-                        key={cat.id}
-                        onClick={() => setSelectedCategory(cat)}
-                        className={`w-full bg-white p-4 rounded-2xl border border-stone-200 shadow-sm hover:${currentTheme.border} transition flex items-center justify-between text-left group cursor-pointer`}
-                      >
-                        <div className="flex items-center gap-3">
-                          <div className={`w-10 h-10 rounded-xl ${currentTheme.bgLight} flex items-center justify-center group-hover:scale-105 transition`}>
-                            {renderCategoryIcon(cat.iconName)}
-                          </div>
-                          <div>
-                            <h4 className="text-sm font-extrabold text-slate-900">{cat.title}</h4>
-                            <p className="text-xs text-slate-500">{cat.subtitle}</p>
-                          </div>
-                        </div>
-                        <ChevronRight className="w-4 h-4 text-slate-400 group-hover:translate-x-1 transition" />
-                      </button>
                     ))}
                   </div>
                 </div>
@@ -1267,7 +1353,18 @@ export default function App() {
                   </div>
 
                   <div>
-                    <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">{t.lblGreeting}</label>
+                    <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">Region / Standort Titel (z.B. Pfalz)</label>
+                    <input 
+                      type="text" 
+                      value={hotel.locationTitle}
+                      disabled={!isEditUnlocked}
+                      onChange={(e) => setHotel({ ...hotel, locationTitle: e.target.value })}
+                      className={`w-full p-2.5 text-xs border border-stone-200 rounded-xl ${!isEditUnlocked ? 'bg-stone-100 text-stone-500 cursor-not-allowed' : ''}`}
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">{t.lblGreeting} (z.B. schön dass du da bist)</label>
                     <input 
                       type="text" 
                       value={hotel.welcomeGreeting}
@@ -1301,7 +1398,7 @@ export default function App() {
                   </div>
 
                   <div>
-                    <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">{t.lblAddress}</label>
+                    <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">{t.lblAddress} (Standort für Wetter)</label>
                     <input 
                       type="text" 
                       value={hotel.address}
@@ -1403,7 +1500,7 @@ export default function App() {
                   </div>
                 </div>
 
-                {/* STEP 5: Schnellzugriff (Standard & Max 2 Custom) */}
+                {/* STEP 5: Schnellzugriff */}
                 <div className="bg-white p-5 rounded-2xl shadow-sm border border-stone-200 space-y-4">
                   <h3 className="font-bold text-xs text-slate-900 flex items-center gap-1.5">
                     <Wifi className={`w-4 h-4 ${currentTheme.primary}`} /> {t.sec5Title}
