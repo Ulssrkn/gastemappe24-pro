@@ -4,7 +4,7 @@ import {
   Settings, Phone, Plus, Trash2, 
   Check, Image as ImageIcon, Copy,
   ChevronRight, ArrowRight, Upload, AlertCircle, Lock, Unlock,
-  Utensils, Heart, Compass, Coffee, Car, Clock, ShieldCheck, Edit3, Mail, Globe, ExternalLink, QrCode, Printer, BarChart3, Star, Navigation, Sun, CloudRain
+  Utensils, Heart, Compass, Coffee, Car, Clock, ShieldCheck, Edit3, Mail, Globe, ExternalLink, QrCode, Printer, BarChart3, Star, Navigation, Sun
 } from 'lucide-react';
 
 const translations = {
@@ -19,9 +19,7 @@ const translations = {
     navReview: "Bewerten",
     navRoute: "Anfahrt",
     weatherTitle: "Heiter",
-    weatherSub: "Aktuelles Wetter",
-    forecastTitle: "Vorhersage",
-    forecastSub: "7 Tage & Details",
+    weatherSub: "Aktuelles Wetter vor Ort",
     schnellzugriffTitle: "Schnellzugriff",
     wlanTitle: "WLAN",
     parkingTitle: "Parkplatz",
@@ -51,8 +49,8 @@ const translations = {
     sec5Title: "5. Schnellzugriff (Standard & Max. 2 Custom)",
     sec6Title: "6. Kategorien der Gästemappe",
     themeTitle: "7. White-Label Design & Farben",
-    lblHotelName: "Hotel Name",
-    lblGreeting: "Begrüßungstext",
+    lblHotelName: "Hotel / Unterkunft Name",
+    lblGreeting: "Eigener Begrüßungstext (Leer lassen für automatische Übersetzung)",
     lblPhone: "Telefon",
     lblEmail: "E-Mail",
     lblAddress: "Adresse",
@@ -63,7 +61,7 @@ const translations = {
     lblBreakfastTime: "Frühstückszeiten",
     lblCheckInOut: "Check-in / Check-out Infos",
     lblParkingInfo: "Parkplatz Info",
-    btnLogoUpload: "Logo Seç / Değiştir",
+    btnLogoUpload: "Logo Wählen / Ändern",
     btnAddCategory: "Neue Kategorie hinzufügen",
     btnCatSubmit: "Kategorie Hinzufügen"
   },
@@ -78,9 +76,7 @@ const translations = {
     navReview: "Review",
     navRoute: "Route",
     weatherTitle: "Sunny",
-    weatherSub: "Current Weather",
-    forecastTitle: "Forecast",
-    forecastSub: "7 Days & Details",
+    weatherSub: "Current local weather",
     schnellzugriffTitle: "Quick Access",
     wlanTitle: "WiFi",
     parkingTitle: "Parking",
@@ -103,15 +99,15 @@ const translations = {
     printA4: "Print Template A4",
     printA5: "Print Template A5",
     printCard: "Print Template Business Card",
-    sec1Title: "1. Hotel Information & Contacts",
+    sec1Title: "1. Property Information & Contacts",
     sec2Title: "2. Upload Logo (Max. 2 MB)",
     sec3Title: "3. Image Management (Max. 5 images)",
     sec4Title: "4. Welcome Screen & Slider Images",
     sec5Title: "5. Quick Access",
     sec6Title: "6. Directory Categories",
     themeTitle: "7. White-Label Design & Colors",
-    lblHotelName: "Hotel Name",
-    lblGreeting: "Welcome Message",
+    lblHotelName: "Property Name",
+    lblGreeting: "Custom Welcome Text (Leave empty for automatic translation)",
     lblPhone: "Phone",
     lblEmail: "E-Mail",
     lblAddress: "Address",
@@ -137,9 +133,7 @@ const translations = {
     navReview: "Recensione",
     navRoute: "Mappa",
     weatherTitle: "Sereno",
-    weatherSub: "Meteo attuale",
-    forecastTitle: "Previsioni",
-    forecastSub: "7 Giorni",
+    weatherSub: "Meteo locale attuale",
     schnellzugriffTitle: "Accesso Rapido",
     wlanTitle: "WiFi",
     parkingTitle: "Parcheggio",
@@ -162,15 +156,15 @@ const translations = {
     printA4: "Stampa A4",
     printA5: "Stampa A5",
     printCard: "Stampa Biglietto",
-    sec1Title: "1. Info Hotel",
+    sec1Title: "1. Info Struttura",
     sec2Title: "2. Logo",
     sec3Title: "3. Immagini",
     sec4Title: "4. Immagini Schermata",
     sec5Title: "5. Accesso Rapido",
     sec6Title: "6. Categorie",
     themeTitle: "7. Design & Colori",
-    lblHotelName: "Nome Hotel",
-    lblGreeting: "Messaggio di Benvenuto",
+    lblHotelName: "Nome Struttura",
+    lblGreeting: "Messaggio Personalizzato (Lascia vuoto per la traduzione automatica)",
     lblPhone: "Telefono",
     lblEmail: "E-Mail",
     lblAddress: "Indirizzo",
@@ -196,9 +190,7 @@ const translations = {
     navReview: "Avis",
     navRoute: "Itinéraire",
     weatherTitle: "Ensoleillé",
-    weatherSub: "Météo actuelle",
-    forecastTitle: "Prévisions",
-    forecastSub: "7 Jours",
+    weatherSub: "Météo locale actuelle",
     schnellzugriffTitle: "Accès Rapide",
     wlanTitle: "WiFi",
     parkingTitle: "Parking",
@@ -221,15 +213,15 @@ const translations = {
     printA4: "Impression A4",
     printA5: "Impression A5",
     printCard: "Carte de visite",
-    sec1Title: "1. Infos Hôtel",
+    sec1Title: "1. Infos Établissement",
     sec2Title: "2. Logo",
     sec3Title: "3. Images",
     sec4Title: "4. Slider",
     sec5Title: "5. Accès Rapide",
     sec6Title: "6. Catégories",
     themeTitle: "7. Thème & Couleurs",
-    lblHotelName: "Nom de l'Hôtel",
-    lblGreeting: "Message de Bienvenue",
+    lblHotelName: "Nom de l'Établissement",
+    lblGreeting: "Message Personnalisé (Laissez vide pour traduction automatique)",
     lblPhone: "Téléphone",
     lblEmail: "E-Mail",
     lblAddress: "Adresse",
@@ -255,9 +247,7 @@ const translations = {
     navReview: "Opinión",
     navRoute: "Ruta",
     weatherTitle: "Soleado",
-    weatherSub: "Clima actual",
-    forecastTitle: "Pronóstico",
-    forecastSub: "7 Días",
+    weatherSub: "Clima local actual",
     schnellzugriffTitle: "Acceso Rápido",
     wlanTitle: "WiFi",
     parkingTitle: "Aparcamiento",
@@ -280,15 +270,15 @@ const translations = {
     printA4: "Imprimir A4",
     printA5: "Imprimir A5",
     printCard: "Tarjeta",
-    sec1Title: "1. Info del Hotel",
+    sec1Title: "1. Info del Alojamiento",
     sec2Title: "2. Logo",
     sec3Title: "3. Imágenes",
     sec4Title: "4. Slider",
     sec5Title: "5. Acceso",
     sec6Title: "6. Categorías",
     themeTitle: "7. Tema y Colores",
-    lblHotelName: "Nombre del Hotel",
-    lblGreeting: "Mensaje de Bienvenida",
+    lblHotelName: "Nombre del Alojamiento",
+    lblGreeting: "Mensaje Personalizado (Dejar vacío para traducción automática)",
     lblPhone: "Teléfono",
     lblEmail: "E-Mail",
     lblAddress: "Dirección",
@@ -314,9 +304,7 @@ const translations = {
     navReview: "Değerlendir",
     navRoute: "Yol Tarifi",
     weatherTitle: "Güneşli",
-    weatherSub: "Güncel Hava",
-    forecastTitle: "Tahmin",
-    forecastSub: "7 Günlük",
+    weatherSub: "Güncel Konum Havası",
     schnellzugriffTitle: "Hızlı Erişim",
     wlanTitle: "WLAN",
     parkingTitle: "Otopark",
@@ -339,15 +327,15 @@ const translations = {
     printA4: "A4 Baskı Şablonu",
     printA5: "A5 Baskı Şablonu",
     printCard: "Kartvizit Şablonu",
-    sec1Title: "1. Otel Bilgileri & İletişim",
+    sec1Title: "1. Tesis Bilgileri & İletişim",
     sec2Title: "2. Logo Yükleme (Maks. 2 MB)",
     sec3Title: "3. Resim Yönetimi (Maks. 5 Resim)",
     sec4Title: "4. Karşılama ve Slider Görselleri",
     sec5Title: "5. Hızlı Erişim",
     sec6Title: "6. Rehber Kategorileri",
     themeTitle: "7. Tema & Renk Seçimi",
-    lblHotelName: "Otel Adı",
-    lblGreeting: "Karşılama Mesajı",
+    lblHotelName: "Tesis / Otel / Ev Adı",
+    lblGreeting: "Özel Karşılama Metni (Otomatik çeviri için boş bırakın)",
     lblPhone: "Telefon",
     lblEmail: "E-Posta",
     lblAddress: "Adres",
@@ -373,9 +361,7 @@ const translations = {
     navReview: "Betygsätt",
     navRoute: "Vägvisning",
     weatherTitle: "Soligt",
-    weatherSub: "Aktuellt väder",
-    forecastTitle: "Prognos",
-    forecastSub: "7 Dagar",
+    weatherSub: "Aktuellt lokalväder",
     schnellzugriffTitle: "Snabbåtkomst",
     wlanTitle: "WiFi",
     parkingTitle: "Parkering",
@@ -398,15 +384,15 @@ const translations = {
     printA4: "Utskrift A4",
     printA5: "Utskrift A5",
     printCard: "Visiteffekt",
-    sec1Title: "1. Hotellinfo",
+    sec1Title: "1. Boendeinformation",
     sec2Title: "2. Logo",
     sec3Title: "3. Bilder",
     sec4Title: "4. Slider",
     sec5Title: "5. Snabbåtkomst",
     sec6Title: "6. Kategorier",
     themeTitle: "7. Tema & Färger",
-    lblHotelName: "Hotellnamn",
-    lblGreeting: "Välkomnande",
+    lblHotelName: "Boendets Namn",
+    lblGreeting: "Egen Hälsning (Lämna tom för automatisk översättning)",
     lblPhone: "Telefon",
     lblEmail: "E-post",
     lblAddress: "Adress",
@@ -432,9 +418,7 @@ const translations = {
     navReview: "Vurder",
     navRoute: "Rute",
     weatherTitle: "Sol",
-    weatherSub: "Aktuell vær",
-    forecastTitle: "Prognose",
-    forecastSub: "7 Dager",
+    weatherSub: "Lokalvær nå",
     schnellzugriffTitle: "Hurtigtilgang",
     wlanTitle: "WiFi",
     parkingTitle: "Parkering",
@@ -457,15 +441,15 @@ const translations = {
     printA4: "Utskrift A4",
     printA5: "Utskrift A5",
     printCard: "Visittkort",
-    sec1Title: "1. Hotellinfo",
+    sec1Title: "1. Info om Boenheten",
     sec2Title: "2. Logo",
     sec3Title: "3. Bilder",
     sec4Title: "4. Slider",
     sec5Title: "5. Hurtigtilgang",
     sec6Title: "6. Kategorier",
     themeTitle: "7. Tema & Farger",
-    lblHotelName: "Hotellnavn",
-    lblGreeting: "Velkomstmelding",
+    lblHotelName: "Boenhetens Navn",
+    lblGreeting: "Velkomstmelding (La stå tom for automatisk oversettelse)",
     lblPhone: "Telefon",
     lblEmail: "E-post",
     lblAddress: "Adresse",
@@ -491,9 +475,7 @@ const translations = {
     navReview: "Ocijeni",
     navRoute: "Ruta",
     weatherTitle: "Sunčano",
-    weatherSub: "Trenutno vrijeme",
-    forecastTitle: "Prognoza",
-    forecastSub: "7 Dana",
+    weatherSub: "Trenutno lokalno vrijeme",
     schnellzugriffTitle: "Brzi Pristup",
     wlanTitle: "WiFi",
     parkingTitle: "Parking",
@@ -516,15 +498,15 @@ const translations = {
     printA4: "Ispiši A4",
     printA5: "Ispiši A5",
     printCard: "Kartica",
-    sec1Title: "1. Info Hotela",
+    sec1Title: "1. Info Smještaja",
     sec2Title: "2. Logo",
     sec3Title: "3. Slike",
     sec4Title: "4. Slider",
     sec5Title: "5. Pristup",
     sec6Title: "6. Kategorije",
     themeTitle: "7. Dizajn i Boje",
-    lblHotelName: "Naziv Hotela",
-    lblGreeting: "Pozdravna Poruka",
+    lblHotelName: "Naziv Smještaja",
+    lblGreeting: "Pozdravna Poruka (Ostavite prazno za automatski prijevod)",
     lblPhone: "Telefon",
     lblEmail: "E-Mail",
     lblAddress: "Adresa",
@@ -551,9 +533,7 @@ const translations = {
     navRoute: "Rruga",
     schnellzugriffTitle: "Qasja e Shpejtë",
     weatherTitle: "Me diell",
-    weatherSub: "Moti aktual",
-    forecastTitle: "Parashikimi",
-    forecastSub: "7 Ditë",
+    weatherSub: "Moti lokal aktual",
     wlanTitle: "WiFi",
     parkingTitle: "Parkimi",
     breakfastTitle: "Mëngjesi",
@@ -575,15 +555,15 @@ const translations = {
     printA4: "Printo A4",
     printA5: "Printo A5",
     printCard: "Kartë vizite",
-    sec1Title: "1. Info e Hotelit",
+    sec1Title: "1. Info e Pronës",
     sec2Title: "2. Logo",
     sec3Title: "3. Imazhet",
     sec4Title: "4. Slider",
     sec5Title: "5. Qasja e Shpejtë",
     sec6Title: "6. Kategoritë",
     themeTitle: "7. Tema & Ngjyrat",
-    lblHotelName: "Emri i Hotelit",
-    lblGreeting: "Mesazhi i Mirëseardhjes",
+    lblHotelName: "Emri i Pronës",
+    lblGreeting: "Mesazhi i Mirëseardhjes (Lëreni bosh për përkthim automatik)",
     lblPhone: "Telefoni",
     lblEmail: "E-Mail",
     lblAddress: "Adresa",
@@ -619,18 +599,19 @@ export default function App() {
   const [scanCount] = useState(142);
   const [daysLeft] = useState(24);
 
+  // GLOBAL & WHITE-LABEL STATE
   const [hotel, setHotel] = useState({
     logoUrl: '', 
-    name: 'Deidesheimer Hof', 
-    locationTitle: 'PFALZ / WEINSTRASSE',
-    welcomeGreeting: 'schön dass du da bist.',
-    phone: '+49 6326 96870',
-    email: 'info@deidesheimerhof.de',
-    address: 'Deidesheim, Deutschland',
-    website: 'www.deidesheimerhof.de',
+    name: 'Mein Hotel', 
+    locationTitle: 'REGION / STANDORT',
+    welcomeGreeting: '', // Boş kaldığında %100 otomatik 10 dile çevrilir
+    phone: '+49 123 456789',
+    email: 'info@mein-hotel.de',
+    address: 'Musterstadt, Deutschland',
+    website: 'www.mein-hotel.de',
     googleReviewUrl: 'https://g.page/r/example/review',
-    wifiSsid: 'Deidesheim_Guest',
-    wifiPass: 'pals2026',
+    wifiSsid: 'Guest_WiFi',
+    wifiPass: 'pass2026',
     breakfastTime: '07:00 - 10:30 Uhr',
     checkInOut: 'Check-in: ab 15:00 | Check-out: bis 11:00',
     parkingInfo: 'Kostenfreie Parkplätze am Haus verfügbar.',
@@ -679,7 +660,7 @@ export default function App() {
           <div class="container">
             ${hotel.logoUrl ? `<img src="${hotel.logoUrl}" class="logo" />` : ''}
             <div class="hotel-name">${hotel.name}</div>
-            <div class="greeting">${hotel.welcomeGreeting}</div>
+            <div class="greeting">${hotel.welcomeGreeting || t.greetingWelcome}</div>
             <div class="guide-title">Digitaler Gästemappe</div>
             
             <div class="qr-box">
@@ -711,7 +692,7 @@ export default function App() {
       id: 'gastronomie',
       title: 'Gastronomie & Bar',
       subtitle: 'Speisekarten & Öffnungszeiten',
-      content: 'Genießen Sie unsere regionale Küche und erlesene Weine aus der Pfalz.',
+      content: 'Genießen Sie unsere regionale Küche und erlesene Getränke.',
       iconName: 'Utensils'
     },
     {
@@ -854,7 +835,7 @@ export default function App() {
     }
   };
 
-  // 1. WELCOME SCREEN (Dil Seçici Sağ Üstte)
+  // 1. WELCOME SCREEN
   if (showWelcomeScreen) {
     return (
       <div className="min-h-screen bg-slate-950 max-w-md mx-auto shadow-2xl relative overflow-hidden flex flex-col justify-between font-sans">
@@ -956,7 +937,7 @@ export default function App() {
         </div>
       )}
 
-      {/* HEADER (Dil Seçici Sağ Üstte, Hamburger Menü Yok) */}
+      {/* HEADER */}
       <header className="p-5 pt-6 pb-2 bg-stone-50 sticky top-0 z-40 backdrop-blur-md bg-stone-50/95 flex justify-between items-center">
         <div className="flex items-center gap-2.5">
           {hotel.logoUrl ? (
@@ -1015,22 +996,24 @@ export default function App() {
           </div>
         ) : (
           <>
-            {/* 1. HOME TAB (Yeni Tasarım Düzeni) */}
+            {/* 1. HOME TAB */}
             {activeTab === 'home' && (
               <div className="space-y-4 animate-fade-in">
                 
-                {/* YENİ STİL KARSILAMA BÖLÜMÜ (Gönderdiğin görseldeki gibi) */}
+                {/* DİNAMİK KARSILAMA BÖLÜMÜ (%100 Çevrilebilir) */}
                 <div className="space-y-0.5 pt-1">
                   <span className="text-[11px] font-extrabold uppercase tracking-widest text-stone-500 block">
                     {hotel.locationTitle}
                   </span>
                   <h1 className="text-2xl font-black text-slate-900 tracking-tight leading-snug">
                     {t.greetingHello}<br />
-                    <span className={currentTheme.primary}>{hotel.welcomeGreeting || t.greetingWelcome}</span>
+                    <span className={currentTheme.primary}>
+                      {hotel.welcomeGreeting ? hotel.welcomeGreeting : t.greetingWelcome}
+                    </span>
                   </h1>
                 </div>
 
-                {/* SLIDER (Büyük ve şık, köşe kavisli) */}
+                {/* SLIDER */}
                 <div className="relative rounded-3xl overflow-hidden shadow-lg h-56 bg-slate-900 group border border-stone-200">
                   <img 
                     src={hotel.images[currentSlide] || hotel.images[0]} 
@@ -1056,32 +1039,26 @@ export default function App() {
                   </div>
                 </div>
 
-                {/* HAVA DURUMU & TAHMİN KARTLARI (Görseldeki gibi yan yana iki widget) */}
-                <div className="grid grid-cols-2 gap-3">
-                  <div className="bg-white p-4 rounded-2xl shadow-sm border border-stone-200 flex items-center gap-3">
-                    <div className={`p-2.5 ${currentTheme.bgLight} rounded-xl ${currentTheme.primary}`}>
-                      <Sun className="w-6 h-6 animate-spin-slow" />
+                {/* SEÇENEK 1: TAM GENİŞLİKTE (FULL-WIDTH) SADE & ZARİF HAVA DURUMU KARTI */}
+                <div className="bg-white p-4 rounded-2xl shadow-sm border border-stone-200 flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className={`p-3 ${currentTheme.bgLight} rounded-xl ${currentTheme.primary}`}>
+                      <Sun className="w-6 h-6" />
                     </div>
                     <div>
-                      <div className="text-lg font-black text-slate-900 leading-none">14°C</div>
-                      <div className="text-[11px] font-bold text-slate-700 mt-1">{t.weatherTitle}</div>
-                      <div className="text-[10px] text-stone-400 truncate max-w-[100px]">{hotel.address.split(',')[0]}</div>
+                      <div className="text-xs font-extrabold text-slate-900 uppercase tracking-wider">{t.weatherTitle}</div>
+                      <div className="text-[11px] text-stone-500 font-medium">{t.weatherSub}</div>
                     </div>
                   </div>
-
-                  <div className="bg-white p-4 rounded-2xl shadow-sm border border-stone-200 flex items-center gap-3">
-                    <div className="p-2.5 bg-stone-100 rounded-xl text-stone-700">
-                      <Calendar className="w-6 h-6" />
-                    </div>
-                    <div>
-                      <div className="text-xs font-extrabold text-slate-900">{t.forecastTitle}</div>
-                      <div className="text-[10px] text-stone-500 mt-0.5">{t.forecastSub}</div>
-                      <div className="text-[10px] font-bold text-amber-700 mt-1">Pfalz Sonne</div>
+                  <div className="text-right">
+                    <div className="text-2xl font-black text-slate-900 leading-none">16°C</div>
+                    <div className="text-[10px] font-bold text-stone-400 mt-1 truncate max-w-[110px]">
+                      {hotel.address.split(',')[0]}
                     </div>
                   </div>
                 </div>
 
-                {/* GÄSTEMAPPE ANA KART (Görseldeki gibi büyük yönlendirici kart) */}
+                {/* GÄSTEMAPPE ANA KART */}
                 <button
                   onClick={() => setActiveTab('services')}
                   className={`w-full bg-white p-4 rounded-2xl border border-stone-200 shadow-sm hover:${currentTheme.border} transition flex items-center justify-between text-left group cursor-pointer`}
@@ -1150,7 +1127,7 @@ export default function App() {
                       <p className="text-[11px] text-slate-600 leading-snug">{hotel.checkInOut}</p>
                     </div>
 
-                    {/* ÖZEL EKLENEN KULLANICI HIZLI ERİŞİMLERİ (Custom Quick Links) */}
+                    {/* ÖZEL EKLENEN KULLANICI HIZLI ERİŞİMLERİ */}
                     {customQuickLinks.map((item) => (
                       <div key={item.id} className="bg-white p-4 rounded-2xl shadow-sm border border-stone-200/80 space-y-2 flex flex-col justify-between">
                         <div className={`flex items-center gap-2 ${currentTheme.primary}`}>
@@ -1166,7 +1143,7 @@ export default function App() {
               </div>
             )}
 
-            {/* REHBER TAB (Services / Gästemappe Listesi) */}
+            {/* REHBER TAB */}
             {activeTab === 'services' && (
               <div className="space-y-4 animate-fade-in">
                 <h3 className="text-xs font-bold text-stone-500 uppercase tracking-wider">{t.navGaestemappe}</h3>
@@ -1353,7 +1330,7 @@ export default function App() {
                   </div>
 
                   <div>
-                    <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">Region / Standort Titel (z.B. Pfalz)</label>
+                    <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">Region / Standort Titel (z.B. Region / Stadt)</label>
                     <input 
                       type="text" 
                       value={hotel.locationTitle}
@@ -1364,10 +1341,11 @@ export default function App() {
                   </div>
 
                   <div>
-                    <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">{t.lblGreeting} (z.B. schön dass du da bist)</label>
+                    <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">{t.lblGreeting}</label>
                     <input 
                       type="text" 
                       value={hotel.welcomeGreeting}
+                      placeholder="Automatisch übersetzt wenn leer"
                       disabled={!isEditUnlocked}
                       onChange={(e) => setHotel({ ...hotel, welcomeGreeting: e.target.value })}
                       className={`w-full p-2.5 text-xs border border-stone-200 rounded-xl ${!isEditUnlocked ? 'bg-stone-100 text-stone-500 cursor-not-allowed' : ''}`}
@@ -1559,7 +1537,7 @@ export default function App() {
                     </div>
                   </div>
 
-                  {/* Özel Schnellzugriff Yönetim Alanı */}
+                  {/* Özel Schnellzugriff */}
                   <div className="pt-3 border-t border-stone-100 space-y-3">
                     <h4 className={`font-bold text-[11px] ${currentTheme.primary} uppercase`}>Eigene Schnellzugriffe (Aktuell: {customQuickLinks.length}/2)</h4>
                     
@@ -1619,7 +1597,7 @@ export default function App() {
                   </div>
                 </div>
 
-                {/* STEP 6: Kategorien der Gästemappe */}
+                {/* STEP 6: Kategorien */}
                 <div className="bg-white p-5 rounded-2xl shadow-sm border border-stone-200 space-y-4">
                   <h3 className="font-bold text-xs text-slate-900 flex items-center gap-1.5">
                     <Compass className={`w-4 h-4 ${currentTheme.primary}`} /> {t.sec6Title}
@@ -1712,7 +1690,7 @@ export default function App() {
 
       </main>
 
-      {/* FIXED BOTTOM NAVIGATION BAR & POWERED BY FOOTER */}
+      {/* FIXED BOTTOM NAVIGATION BAR */}
       <div className="fixed bottom-0 left-0 right-0 max-w-md mx-auto bg-white/95 backdrop-blur-md border-t border-stone-200/80 z-50 shadow-2xl">
         <nav className="px-3 py-2 flex justify-around items-center">
           <button 
@@ -1771,7 +1749,7 @@ export default function App() {
           </button>
         </nav>
 
-        {/* Powered By İmzası En Altta */}
+        {/* Powered By İmzası */}
         <div className="bg-stone-100 border-t border-stone-200/50 py-1 text-center text-[9px] text-stone-400 font-medium">
           Powered by <span className="font-bold text-slate-700">gastemappe24-pro</span>
         </div>
