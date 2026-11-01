@@ -4,7 +4,7 @@ import {
   Settings, Phone, Plus, Trash2, 
   Check, Image as ImageIcon, Copy,
   ChevronRight, ArrowRight, Upload, AlertCircle, Lock, Unlock,
-  Utensils, Heart, Compass, Coffee, Car, Clock, ShieldCheck, Edit3, Mail, Globe, ExternalLink, QrCode, Printer, BarChart3, Star, Navigation, Sun
+  Utensils, Heart, Compass, Coffee, Car, Clock, ShieldCheck, Edit3, Mail, Globe, ExternalLink, QrCode, Printer, BarChart3, Star, Navigation, Sun, LogOut, User
 } from 'lucide-react';
 
 const translations = {
@@ -15,7 +15,6 @@ const translations = {
     greetingWelcome: "schön dass du da bist.",
     navHome: "Home",
     navGaestemappe: "Gästemappe",
-    navAdmin: "Admin",
     navReview: "Bewerten",
     navRoute: "Anfahrt",
     weatherTitle: "Heiter",
@@ -27,11 +26,15 @@ const translations = {
     checkInOutTitle: "Check-in / Out",
     detailBack: "Zurück zur Übersicht",
     detailLabel: "Detailinfo",
-    adminTitle: "Verwaltung (Admin Panel)",
-    adminUnlockMode: "Bearbeitungsmodus Aktiv",
-    adminLockMode: "Ansichtsmodus (Geschützt)",
-    adminBtnLock: "Sperren",
-    adminBtnUnlock: "Entsperren",
+    adminTitle: "Verwaltung (Dashboard)",
+    guestViewBtn: "Gastansicht öffnen",
+    editBtn: "Bearbeiten",
+    logoutBtn: "Abmelden",
+    loginTitle: "Partner Login",
+    loginSub: "Anmelden um Ihre Gästemappe zu verwalten",
+    lblEmail: "E-Mail-Adresse",
+    lblPassword: "Passwort",
+    btnLoginSubmit: "Anmelden",
     trialTitle: "30-Tage Testversion (PRO)",
     trialDaysLeft: "Tage verbleibend",
     statsTitle: "Nutzungsstatistik",
@@ -42,17 +45,17 @@ const translations = {
     printA4: "Druckvorlage A4",
     printA5: "Druckvorlage A5",
     printCard: "Druckvorlage Visitenkarte",
-    sec1Title: "1. Hotelinformationen & Kontaktdaten",
+    sec1Title: "1. Unterkunft Informationen & Kontaktdaten",
     sec2Title: "2. Logo hochladen (Max. 2 MB)",
     sec3Title: "3. Bilderverwaltung (Max. 5 Bilder, max. 5 MB pro Bild)",
     sec4Title: "4. Bilder für den Willkommensbildschirm und den Startseiten-Slider",
     sec5Title: "5. Schnellzugriff (Standard & Max. 2 Custom)",
     sec6Title: "6. Kategorien der Gästemappe",
     themeTitle: "7. White-Label Design & Farben",
-    lblHotelName: "Hotel / Unterkunft Name",
+    lblHotelName: "Unterkunft Name",
     lblGreeting: "Eigener Begrüßungstext (Leer lassen für automatische Übersetzung)",
     lblPhone: "Telefon",
-    lblEmail: "E-Mail",
+    lblEmailField: "E-Mail",
     lblAddress: "Adresse",
     lblWebsite: "Webseite",
     lblGoogleReview: "Google Review Link",
@@ -72,7 +75,6 @@ const translations = {
     greetingWelcome: "glad you're here.",
     navHome: "Home",
     navGaestemappe: "Directory",
-    navAdmin: "Admin",
     navReview: "Review",
     navRoute: "Route",
     weatherTitle: "Sunny",
@@ -84,11 +86,15 @@ const translations = {
     checkInOutTitle: "Check-in / Out",
     detailBack: "Back to Overview",
     detailLabel: "Details",
-    adminTitle: "Management (Admin Panel)",
-    adminUnlockMode: "Edit Mode Active",
-    adminLockMode: "View Mode (Protected)",
-    adminBtnLock: "Lock",
-    adminBtnUnlock: "Unlock",
+    adminTitle: "Management (Dashboard)",
+    guestViewBtn: "Open Guest View",
+    editBtn: "Edit",
+    logoutBtn: "Log out",
+    loginTitle: "Partner Login",
+    loginSub: "Log in to manage your guest directory",
+    lblEmail: "E-Mail Address",
+    lblPassword: "Password",
+    btnLoginSubmit: "Sign In",
     trialTitle: "30-Day Trial (PRO)",
     trialDaysLeft: "Days remaining",
     statsTitle: "Usage Statistics",
@@ -109,7 +115,7 @@ const translations = {
     lblHotelName: "Property Name",
     lblGreeting: "Custom Welcome Text (Leave empty for automatic translation)",
     lblPhone: "Phone",
-    lblEmail: "E-Mail",
+    lblEmailField: "E-Mail",
     lblAddress: "Address",
     lblWebsite: "Website",
     lblGoogleReview: "Google Review Link",
@@ -129,7 +135,6 @@ const translations = {
     greetingWelcome: "benvenuto.",
     navHome: "Home",
     navGaestemappe: "Guida",
-    navAdmin: "Admin",
     navReview: "Recensione",
     navRoute: "Mappa",
     weatherTitle: "Sereno",
@@ -142,10 +147,14 @@ const translations = {
     detailBack: "Torna alla Panoramica",
     detailLabel: "Dettagli",
     adminTitle: "Gestione",
-    adminUnlockMode: "Modifica Attiva",
-    adminLockMode: "Protetto",
-    adminBtnLock: "Blocca",
-    adminBtnUnlock: "Sblocca",
+    guestViewBtn: "Apri Vista Ospite",
+    editBtn: "Modifica",
+    logoutBtn: "Esci",
+    loginTitle: "Login Partner",
+    loginSub: "Accedi per gestire la guida",
+    lblEmail: "E-mail",
+    lblPassword: "Password",
+    btnLoginSubmit: "Accedi",
     trialTitle: "Prova di 30 Giorni",
     trialDaysLeft: "Giorni rimanenti",
     statsTitle: "Statistiche",
@@ -159,14 +168,14 @@ const translations = {
     sec1Title: "1. Info Struttura",
     sec2Title: "2. Logo",
     sec3Title: "3. Immagini",
-    sec4Title: "4. Immagini Schermata",
+    sec4Title: "4. Slider",
     sec5Title: "5. Accesso Rapido",
     sec6Title: "6. Categorie",
     themeTitle: "7. Design & Colori",
     lblHotelName: "Nome Struttura",
-    lblGreeting: "Messaggio Personalizzato (Lascia vuoto per la traduzione automatica)",
+    lblGreeting: "Messaggio Personalizzato",
     lblPhone: "Telefono",
-    lblEmail: "E-Mail",
+    lblEmailField: "E-Mail",
     lblAddress: "Indirizzo",
     lblWebsite: "Sito Web",
     lblGoogleReview: "Link Recensione Google",
@@ -186,7 +195,6 @@ const translations = {
     greetingWelcome: "ravi de vous voir.",
     navHome: "Accueil",
     navGaestemappe: "Guide",
-    navAdmin: "Admin",
     navReview: "Avis",
     navRoute: "Itinéraire",
     weatherTitle: "Ensoleillé",
@@ -199,10 +207,14 @@ const translations = {
     detailBack: "Retour",
     detailLabel: "Détails",
     adminTitle: "Gestion",
-    adminUnlockMode: "Mode Édition Actif",
-    adminLockMode: "Mode Lecture",
-    adminBtnLock: "Verrouiller",
-    adminBtnUnlock: "Déverrouiller",
+    guestViewBtn: "Vue Invité",
+    editBtn: "Éditer",
+    logoutBtn: "Déconnexion",
+    loginTitle: "Connexion Partenaire",
+    loginSub: "Connectez-vous pour gérer",
+    lblEmail: "E-Mail",
+    lblPassword: "Mot de passe",
+    btnLoginSubmit: "Se connecter",
     trialTitle: "Essai 30 Jours",
     trialDaysLeft: "Jours restants",
     statsTitle: "Statistiques",
@@ -221,9 +233,9 @@ const translations = {
     sec6Title: "6. Catégories",
     themeTitle: "7. Thème & Couleurs",
     lblHotelName: "Nom de l'Établissement",
-    lblGreeting: "Message Personnalisé (Laissez vide pour traduction automatique)",
+    lblGreeting: "Message Personnalisé",
     lblPhone: "Téléphone",
-    lblEmail: "E-Mail",
+    lblEmailField: "E-Mail",
     lblAddress: "Adresse",
     lblWebsite: "Site Web",
     lblGoogleReview: "Lien Avis Google",
@@ -243,7 +255,6 @@ const translations = {
     greetingWelcome: "qué bueno que estás aquí.",
     navHome: "Inicio",
     navGaestemappe: "Guía",
-    navAdmin: "Admin",
     navReview: "Opinión",
     navRoute: "Ruta",
     weatherTitle: "Soleado",
@@ -256,10 +267,14 @@ const translations = {
     detailBack: "Volver",
     detailLabel: "Detalles",
     adminTitle: "Gestión",
-    adminUnlockMode: "Modo Edición Activo",
-    adminLockMode: "Protegido",
-    adminBtnLock: "Bloquear",
-    adminBtnUnlock: "Desbloquear",
+    guestViewBtn: "Vista Huésped",
+    editBtn: "Editar",
+    logoutBtn: "Cerrar sesión",
+    loginTitle: "Login Partner",
+    loginSub: "Inicia sesión para gestionar",
+    lblEmail: "E-Mail",
+    lblPassword: "Contraseña",
+    btnLoginSubmit: "Entrar",
     trialTitle: "Prueba de 30 Días",
     trialDaysLeft: "Días restantes",
     statsTitle: "Estadísticas",
@@ -278,9 +293,9 @@ const translations = {
     sec6Title: "6. Categorías",
     themeTitle: "7. Tema y Colores",
     lblHotelName: "Nombre del Alojamiento",
-    lblGreeting: "Mensaje Personalizado (Dejar vacío para traducción automática)",
+    lblGreeting: "Mensaje Personalizado",
     lblPhone: "Teléfono",
-    lblEmail: "E-Mail",
+    lblEmailField: "E-Mail",
     lblAddress: "Dirección",
     lblWebsite: "Sitio Web",
     lblGoogleReview: "Enlace Reseñas Google",
@@ -297,10 +312,9 @@ const translations = {
     welcomeBadge: "Dijital Misafir Rehberi",
     welcomeButton: "Başlayalım",
     greetingHello: "Merhaba,",
-    greetingWelcome: "hoş geldin, iyi ki buradasın.",
+    greetingWelcome: "hoş geldiniz, iyi ki buradasınız.",
     navHome: "Ana Sayfa",
     navGaestemappe: "Rehber",
-    navAdmin: "Admin",
     navReview: "Değerlendir",
     navRoute: "Yol Tarifi",
     weatherTitle: "Güneşli",
@@ -312,11 +326,15 @@ const translations = {
     checkInOutTitle: "Giriş / Çıkış",
     detailBack: "Geri Dön",
     detailLabel: "Detay",
-    adminTitle: "Yönetim Paneli",
-    adminUnlockMode: "Düzenleme Modu Aktif",
-    adminLockMode: "Korumalı Mod",
-    adminBtnLock: "Kilitle",
-    adminBtnUnlock: "Kilidi Aç",
+    adminTitle: "Yönetim Paneli (Dashboard)",
+    guestViewBtn: "Misafir Görünümünü Aç",
+    editBtn: "Düzenle",
+    logoutBtn: "Çıkış Yap",
+    loginTitle: "Partner Girişi",
+    loginSub: "Rehberinizi yönetmek için giriş yapın",
+    lblEmail: "E-Posta Adresi",
+    lblPassword: "Şifre",
+    btnLoginSubmit: "Giriş Yap",
     trialTitle: "30 Günlük Deneme (PRO)",
     trialDaysLeft: "Gün kaldı",
     statsTitle: "Kullanım İstatistikleri",
@@ -337,7 +355,7 @@ const translations = {
     lblHotelName: "Tesis / Otel / Ev Adı",
     lblGreeting: "Özel Karşılama Metni (Otomatik çeviri için boş bırakın)",
     lblPhone: "Telefon",
-    lblEmail: "E-Posta",
+    lblEmailField: "E-Posta",
     lblAddress: "Adres",
     lblWebsite: "Web Sitesi",
     lblGoogleReview: "Google Yorum Linki",
@@ -357,7 +375,6 @@ const translations = {
     greetingWelcome: "kul att du är här.",
     navHome: "Hem",
     navGaestemappe: "Mapp",
-    navAdmin: "Admin",
     navReview: "Betygsätt",
     navRoute: "Vägvisning",
     weatherTitle: "Soligt",
@@ -370,10 +387,14 @@ const translations = {
     detailBack: "Tillbaka",
     detailLabel: "Detaljer",
     adminTitle: "Administration",
-    adminUnlockMode: "Redigeringsläge Aktivt",
-    adminLockMode: "Skyddat Läge",
-    adminBtnLock: "Lås",
-    adminBtnUnlock: "Lås Upp",
+    guestViewBtn: "Öppna Gästvy",
+    editBtn: "Redigera",
+    logoutBtn: "Logga ut",
+    loginTitle: "Partner Login",
+    loginSub: "Logga in för att hantera din mapp",
+    lblEmail: "E-postadress",
+    lblPassword: "Lösenord",
+    btnLoginSubmit: "Logga in",
     trialTitle: "30-Dagars Provperiod",
     trialDaysLeft: "Dagar kvar",
     statsTitle: "Statistik",
@@ -392,9 +413,9 @@ const translations = {
     sec6Title: "6. Kategorier",
     themeTitle: "7. Tema & Färger",
     lblHotelName: "Boendets Namn",
-    lblGreeting: "Egen Hälsning (Lämna tom för automatisk översättning)",
+    lblGreeting: "Egen Hälsning",
     lblPhone: "Telefon",
-    lblEmail: "E-post",
+    lblEmailField: "E-post",
     lblAddress: "Adress",
     lblWebsite: "Webbplats",
     lblGoogleReview: "Google Recension Länk",
@@ -414,7 +435,6 @@ const translations = {
     greetingWelcome: "så hyggelig at du er her.",
     navHome: "Hjem",
     navGaestemappe: "Mappe",
-    navAdmin: "Admin",
     navReview: "Vurder",
     navRoute: "Rute",
     weatherTitle: "Sol",
@@ -427,10 +447,14 @@ const translations = {
     detailBack: "Tilbake",
     detailLabel: "Detaljer",
     adminTitle: "Administrasjon",
-    adminUnlockMode: "Redigeringsmodus Aktiv",
-    adminLockMode: "Beskyttet",
-    adminBtnLock: "Lås",
-    adminBtnUnlock: "Lås opp",
+    guestViewBtn: "Åpne Gjestevisning",
+    editBtn: "Rediger",
+    logoutBtn: "Logg ut",
+    loginTitle: "Partner Login",
+    loginSub: "Logg inn for å administrere",
+    lblEmail: "E-postadresse",
+    lblPassword: "Passord",
+    btnLoginSubmit: "Logg inn",
     trialTitle: "30-Dagers Prøveperiode",
     trialDaysLeft: "Dager igjen",
     statsTitle: "Statistikk",
@@ -449,9 +473,9 @@ const translations = {
     sec6Title: "6. Kategorier",
     themeTitle: "7. Tema & Farger",
     lblHotelName: "Boenhetens Navn",
-    lblGreeting: "Velkomstmelding (La stå tom for automatisk oversettelse)",
+    lblGreeting: "Velkomstmelding",
     lblPhone: "Telefon",
-    lblEmail: "E-post",
+    lblEmailField: "E-post",
     lblAddress: "Adresse",
     lblWebsite: "Nettsted",
     lblGoogleReview: "Google Anmeldelse Lenke",
@@ -461,7 +485,7 @@ const translations = {
     lblCheckInOut: "Check-in info",
     lblParkingInfo: "Parkeringsinfo",
     btnLogoUpload: "Velg Logo",
-    btnAddCategory: "Legg til kategori",
+    btnAddCategory: "Legg till kategori",
     btnCatSubmit: "Legg til"
   },
   hr: {
@@ -471,7 +495,6 @@ const translations = {
     greetingWelcome: "drago nam je da si ovdje.",
     navHome: "Početna",
     navGaestemappe: "Mapa",
-    navAdmin: "Admin",
     navReview: "Ocijeni",
     navRoute: "Ruta",
     weatherTitle: "Sunčano",
@@ -484,10 +507,14 @@ const translations = {
     detailBack: "Natrag",
     detailLabel: "Detalji",
     adminTitle: "Upravljanje",
-    adminUnlockMode: "Uređivanje Aktivno",
-    adminLockMode: "Zaštićeno",
-    adminBtnLock: "Zaključaj",
-    adminBtnUnlock: "Otključaj",
+    guestViewBtn: "Otvori Pogled za Goste",
+    editBtn: "Uredi",
+    logoutBtn: "Odjava",
+    loginTitle: "Partner Login",
+    loginSub: "Prijavite se za upravljanje",
+    lblEmail: "E-mail adresa",
+    lblPassword: "Lozinka",
+    btnLoginSubmit: "Prijava",
     trialTitle: "30 Dana Probno",
     trialDaysLeft: "Dana preostalo",
     statsTitle: "Statistika",
@@ -506,9 +533,9 @@ const translations = {
     sec6Title: "6. Kategorije",
     themeTitle: "7. Dizajn i Boje",
     lblHotelName: "Naziv Smještaja",
-    lblGreeting: "Pozdravna Poruka (Ostavite prazno za automatski prijevod)",
+    lblGreeting: "Pozdravna Poruka",
     lblPhone: "Telefon",
-    lblEmail: "E-Mail",
+    lblEmailField: "E-Mail",
     lblAddress: "Adresa",
     lblWebsite: "Web stranica",
     lblGoogleReview: "Google Recenzija Link",
@@ -528,7 +555,6 @@ const translations = {
     greetingWelcome: "kënaqësi që jeni këtu.",
     navHome: "Kryefaqja",
     navGaestemappe: "Udhëzuesi",
-    navAdmin: "Admin",
     navReview: "Vlerëso",
     navRoute: "Rruga",
     schnellzugriffTitle: "Qasja e Shpejtë",
@@ -541,10 +567,14 @@ const translations = {
     detailBack: "Kthehu",
     detailLabel: "Detaje",
     adminTitle: "Menaxhimi",
-    adminUnlockMode: "Modi i Editimit Aktiv",
-    adminLockMode: "I Mbrojtur",
-    adminBtnLock: "Mbyll",
-    adminBtnUnlock: "Hap",
+    guestViewBtn: "Hap Pamjen e Omsit",
+    editBtn: "Ndrysho",
+    logoutBtn: "Dil",
+    loginTitle: "Partner Login",
+    loginSub: "Identifikohuni për të menaxhuar",
+    lblEmail: "E-mail adresa",
+    lblPassword: "Fjalëkalimi",
+    btnLoginSubmit: "Hyr",
     trialTitle: "Prova 30 Ditë",
     trialDaysLeft: "Ditë të mbetura",
     statsTitle: "Statistikat",
@@ -563,9 +593,9 @@ const translations = {
     sec6Title: "6. Kategoritë",
     themeTitle: "7. Tema & Ngjyrat",
     lblHotelName: "Emri i Pronës",
-    lblGreeting: "Mesazhi i Mirëseardhjes (Lëreni bosh për përkthim automatik)",
+    lblGreeting: "Mesazhi i Mirëseardhjes",
     lblPhone: "Telefoni",
-    lblEmail: "E-Mail",
+    lblEmailField: "E-Mail",
     lblAddress: "Adresa",
     lblWebsite: "Faqja Web",
     lblGoogleReview: "Linku i Vlerësimit në Google",
@@ -584,45 +614,49 @@ export default function App() {
   const [lang, setLang] = useState('de');
   const t = translations[lang] || translations.de;
 
+  // UYGULAMA MODU: 'guest' (Misafir) veya 'dashboard' (Otelci Paneli)
+  const [appMode, setAppMode] = useState('guest'); 
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+
+  // LOGIN STATE
+  const [emailInput, setEmailInput] = useState('');
+  const [passwordInput, setPasswordInput] = useState('');
+  const [authError, setAuthError] = useState('');
+
   const [activeTab, setActiveTab] = useState('home');
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [showWelcomeScreen, setShowWelcomeScreen] = useState(true);
   
-  const [isEditUnlocked, setIsEditUnlocked] = useState(false);
-  const [passwordInput, setPasswordInput] = useState('');
-  const [passwordError, setPasswordError] = useState(false);
-  const [showUnlockModal, setShowUnlockModal] = useState(false);
-
   const [currentSlide, setCurrentSlide] = useState(0);
   const [copiedWifi, setCopiedWifi] = useState(false);
 
   const [scanCount] = useState(142);
   const [daysLeft] = useState(24);
 
-  // GLOBAL & WHITE-LABEL STATE (ÖZGÜN İSİMLENDİRME İLE 8 TEMA)
+  // GENEL NÖTR OTEL STATE'İ
   const [hotel, setHotel] = useState({
     logoUrl: '', 
-    name: 'Mein Hotel', 
+    name: 'Boutique Hotel & Suites', 
     locationTitle: 'REGION / STANDORT',
     welcomeGreeting: '', 
     phone: '+49 123 456789',
-    email: 'info@mein-hotel.de',
-    address: 'Musterstadt, Deutschland',
-    website: 'www.mein-hotel.de',
+    email: 'info@meine-unterkunft.de',
+    address: 'Musterstraße 1, 12345 Musterstadt',
+    website: 'www.meine-unterkunft.de',
     googleReviewUrl: 'https://g.page/r/example/review',
     wifiSsid: 'Guest_WiFi',
-    wifiPass: 'pass2026',
-    breakfastTime: '07:00 - 10:30 Uhr',
+    wifiPass: 'welcome2026',
+    breakfastTime: '07:30 - 10:30 Uhr',
     checkInOut: 'Check-in: ab 15:00 | Check-out: bis 11:00',
     parkingInfo: 'Kostenfreie Parkplätze am Haus verfügbar.',
-    themeColor: 'amber', 
+    themeColor: 'amber',
     images: [
       'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1000&q=80',
       'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=1000&q=80'
     ]
   });
 
-  // ÖZGÜN PRO TEMA İSİMLERİ
+  // 8 ÖZGÜN PRO TEMA
   const themes = {
     sahara: { name: 'Sahara', primary: 'text-amber-700', bgPrimary: 'bg-amber-700', bgHover: 'hover:bg-amber-800', bgLight: 'bg-amber-50', border: 'border-amber-700/40', badgeBg: 'bg-amber-50 text-amber-700', dot: 'bg-amber-700' },
     aegean: { name: 'Aegean', primary: 'text-teal-700', bgPrimary: 'bg-teal-700', bgHover: 'hover:bg-teal-800', bgLight: 'bg-teal-50', border: 'border-teal-700/40', badgeBg: 'bg-teal-50 text-teal-700', dot: 'bg-teal-700' },
@@ -667,22 +701,11 @@ export default function App() {
             <div class="hotel-name">${hotel.name}</div>
             <div class="greeting">${hotel.welcomeGreeting || t.greetingWelcome}</div>
             <div class="guide-title">Digitaler Gästemappe</div>
-            
-            <div class="qr-box">
-              <img src="${qrCodeUrl}" class="qr-img" />
-            </div>
-
+            <div class="qr-box"><img src="${qrCodeUrl}" class="qr-img" /></div>
             <div class="instructions">📱 Kamera öffnen & QR-Code scannen</div>
-
-            <div class="footer">
-              <b>${hotel.address}</b><br/>
-              Tel: ${hotel.phone} | E-Mail: ${hotel.email}<br/>
-              Web: ${hotel.website}
-            </div>
+            <div class="footer"><b>${hotel.address}</b><br/>Tel: ${hotel.phone} | E-Mail: ${hotel.email}</div>
           </div>
-          <script>
-            window.onload = function() { window.print(); }
-          </script>
+          <script>window.onload = function() { window.print(); }</script>
         </body>
       </html>
     `);
@@ -693,27 +716,9 @@ export default function App() {
   const [newQuick, setNewQuick] = useState({ title: '', description: '', iconName: 'Info' });
 
   const [categories, setCategories] = useState([
-    {
-      id: 'gastronomie',
-      title: 'Gastronomie & Bar',
-      subtitle: 'Speisekarten & Öffnungszeiten',
-      content: 'Genießen Sie unsere regionale Küche und erlesene Getränke.',
-      iconName: 'Utensils'
-    },
-    {
-      id: 'wellness',
-      title: 'Wellness & SPA',
-      subtitle: 'Sauna & Massagen',
-      content: 'Entspannen Sie in unserem modernen Wellnessbereich.',
-      iconName: 'Heart'
-    },
-    {
-      id: 'az_guide',
-      title: 'Wichtiges von A bis Z',
-      subtitle: 'Rezeption, Wäsche & Infos',
-      content: 'Wichtige Informationen für Ihren Aufenthalt auf einen Blick.',
-      iconName: 'Info'
-    }
+    { id: 'gastronomie', title: 'Gastronomie & Bar', subtitle: 'Speisekarten & Öffnungszeiten', content: 'Genießen Sie unsere regionale Küche.', iconName: 'Utensils' },
+    { id: 'wellness', title: 'Wellness & SPA', subtitle: 'Sauna & Massagen', content: 'Entspannen Sie in unserem Wellnessbereich.', iconName: 'Heart' },
+    { id: 'az_guide', title: 'Wichtiges von A bis Z', subtitle: 'Rezeption, Wäsche & Infos', content: 'Wichtige Informationen für Ihren Aufenthalt.', iconName: 'Info' }
   ]);
 
   const [newCat, setNewCat] = useState({ title: '', subtitle: '', content: '', iconName: 'Info' });
@@ -726,18 +731,20 @@ export default function App() {
     setTimeout(() => setCopiedWifi(false), 2500);
   };
 
-  const handleUnlockSubmit = (e) => {
+  const handleLoginSubmit = (e) => {
     e.preventDefault();
-    if (passwordInput === 'Rina21091987') {
-      setIsEditUnlocked(true);
-      setShowUnlockModal(false);
-      setShowWelcomeScreen(false);
-      setActiveTab('admin');
-      setPasswordInput('');
-      setPasswordError(false);
-    } else {
-      setPasswordError(true);
+    setAuthError('');
+    if (!emailInput.includes('@')) {
+      setAuthError('Bitte eine gültige E-Mail-Adresse eingeben.');
+      return;
     }
+    if (passwordInput.length < 6) {
+      setAuthError('Das Passwort muss mindestens 6 Zeichen lang sein.');
+      return;
+    }
+    setAppMode('dashboard');
+    setIsAuthModalOpen(false);
+    setPasswordInput('');
   };
 
   const handleAddCustomQuick = (e) => {
@@ -747,15 +754,7 @@ export default function App() {
       alert('Sie können maximal 2 eigene Schnellzugriffe hinzufügen.');
       return;
     }
-
-    const newItem = {
-      id: Date.now().toString(),
-      title: newQuick.title,
-      description: newQuick.description || 'Details',
-      iconName: newQuick.iconName
-    };
-
-    setCustomQuickLinks([...customQuickLinks, newItem]);
+    setCustomQuickLinks([...customQuickLinks, { id: Date.now().toString(), ...newQuick }]);
     setNewQuick({ title: '', description: '', iconName: 'Info' });
   };
 
@@ -766,16 +765,7 @@ export default function App() {
   const handleAddCategory = (e) => {
     e.preventDefault();
     if (!newCat.title.trim()) return;
-
-    const newItem = {
-      id: Date.now().toString(),
-      title: newCat.title,
-      subtitle: newCat.subtitle || 'Informationen',
-      content: newCat.content || 'Details folgen in Kürze.',
-      iconName: newCat.iconName
-    };
-
-    setCategories([...categories, newItem]);
+    setCategories([...categories, { id: Date.now().toString(), ...newCat }]);
     setNewCat({ title: '', subtitle: '', content: '', iconName: 'Info' });
   };
 
@@ -797,146 +787,212 @@ export default function App() {
   };
 
   const handleImageUpload = (e) => {
-    if (!isEditUnlocked) { setShowUnlockModal(true); return; }
-    setUploadError('');
-    setUploadSuccess('');
     const files = Array.from(e.target.files);
-
     if (hotel.images.length + files.length > 5) {
       setUploadError('Maximale Anzahl von 5 Fotos erreicht!');
       return;
     }
-
     files.forEach((file) => {
-      if (file.size > 5 * 1024 * 1024) {
-        setUploadError(`Die Datei "${file.name}" überschreitet 5MB!`);
-        return;
-      }
       const reader = new FileReader();
       reader.onloadend = () => {
         setHotel((prev) => ({ ...prev, images: [...prev.images, reader.result] }));
-        setUploadSuccess('Foto erfolgreich hinzugefügt!');
       };
       reader.readAsDataURL(file);
     });
   };
 
   const handleRemoveImage = (indexToRemove) => {
-    if (!isEditUnlocked) { setShowUnlockModal(true); return; }
     setHotel((prev) => ({ ...prev, images: prev.images.filter((_, idx) => idx !== indexToRemove) }));
   };
 
   const handleLogoUpload = (e) => {
-    if (!isEditUnlocked) { setShowUnlockModal(true); return; }
     const file = e.target.files[0];
     if (file) {
-      if (file.size > 2 * 1024 * 1024) {
-        setUploadError('Das Logo darf maximal 2MB groß sein.');
-        return;
-      }
       const reader = new FileReader();
       reader.onloadend = () => { setHotel((prev) => ({ ...prev, logoUrl: reader.result })); };
       reader.readAsDataURL(file);
     }
   };
 
-  // 1. WELCOME SCREEN
+  // 1. DASHBOARD MODU (OTELCİ PANIELI - GUESTARY TARZI)
+  if (appMode === 'dashboard') {
+    return (
+      <div className="min-h-screen bg-[#FBF9F5] font-sans text-slate-800 p-6 md:p-10 space-y-8">
+        <div className="max-w-6xl mx-auto flex justify-between items-center pb-6 border-b border-stone-200">
+          <div className="flex items-center gap-2">
+            <span className="bg-amber-900 text-white font-black px-3 py-1.5 rounded-xl text-sm">G</span>
+            <span className="font-extrabold text-lg tracking-tight">gastemappe24 <span className="text-amber-800 text-xs uppercase px-1.5 py-0.5 bg-amber-100 rounded-md">PRO</span></span>
+          </div>
+          <div className="flex items-center gap-4">
+            <span className="text-xs font-bold text-stone-600">{emailInput || 'demo@gastemappe24.de'}</span>
+            <button onClick={() => { setAppMode('guest'); setShowWelcomeScreen(false); }} className="bg-stone-900 text-white px-4 py-2 rounded-xl text-xs font-bold hover:bg-black transition cursor-pointer">
+              {t.guestViewBtn}
+            </button>
+            <button onClick={() => { setAppMode('guest'); setEmailInput(''); }} className="text-xs font-bold text-rose-700 hover:underline cursor-pointer flex items-center gap-1">
+              <LogOut className="w-3.5 h-3.5" /> {t.logoutBtn}
+            </button>
+          </div>
+        </div>
+
+        <div className="max-w-6xl mx-auto space-y-6">
+          <div className="flex justify-between items-center">
+            <div>
+              <span className="text-[10px] font-extrabold uppercase tracking-widest text-amber-800 bg-amber-100 px-2.5 py-1 rounded-full">Plan Free</span>
+              <h1 className="text-3xl font-black text-slate-900 tracking-tight mt-2">{t.dashboardTitle}</h1>
+            </div>
+          </div>
+
+          {/* MÜLK KARTI & DÜZENLEME SEKMELERİ */}
+          <div className="bg-white rounded-3xl p-6 border border-stone-200 shadow-sm space-y-6">
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 border-b pb-6">
+              <div className="flex items-center gap-4">
+                {hotel.logoUrl ? <img src={hotel.logoUrl} alt="Logo" className="w-16 h-16 rounded-2xl object-cover border" /> : <div className="w-16 h-16 rounded-2xl bg-amber-900 text-white flex items-center justify-center font-bold text-lg">{hotel.name.charAt(0)}</div>}
+                <div>
+                  <span className="bg-emerald-100 text-emerald-800 text-[10px] font-extrabold px-2 py-0.5 rounded-full">● LIVE</span>
+                  <h3 className="text-lg font-black text-slate-900 mt-1">{hotel.name}</h3>
+                  <p className="text-xs text-stone-500">{hotel.address}</p>
+                </div>
+              </div>
+              <button onClick={() => { setAppMode('guest'); setShowWelcomeScreen(false); }} className="bg-amber-900 text-white px-5 py-2.5 rounded-xl text-xs font-bold shadow hover:bg-amber-950 transition flex items-center gap-2 cursor-pointer">
+                <ExternalLink className="w-4 h-4" /> {t.guestViewBtn}
+              </button>
+            </div>
+
+            {/* İSTATİSTİK & QR MERKEZİ */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="bg-slate-900 text-white p-5 rounded-2xl space-y-4">
+                <span className="text-xs font-bold uppercase tracking-wider text-amber-400">{t.trialTitle} ({daysLeft} {t.trialDaysLeft})</span>
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="bg-white/5 p-3 rounded-xl">
+                    <span className="text-[10px] text-stone-400 block">{t.statsScans}</span>
+                    <span className="text-xl font-black">{scanCount}</span>
+                  </div>
+                  <div className="bg-white/5 p-3 rounded-xl">
+                    <span className="text-[10px] text-stone-400 block">{t.statsActiveRooms}</span>
+                    <span className="text-xl font-black text-sky-400">100%</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-stone-50 p-5 rounded-2xl border border-stone-200 text-center space-y-3">
+                <div className="font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2">
+                  <QrCode className="w-4 h-4 text-amber-800" /> {t.qrTitle}
+                </div>
+                <div className="grid grid-cols-3 gap-2">
+                  <button onClick={() => handlePrint('A4')} className="bg-stone-900 text-white p-2 rounded-xl text-[10px] font-bold cursor-pointer">{t.printA4}</button>
+                  <button onClick={() => handlePrint('A5')} className="bg-stone-900 text-white p-2 rounded-xl text-[10px] font-bold cursor-pointer">{t.printA5}</button>
+                  <button onClick={() => handlePrint('Visitenkarte')} className="bg-stone-900 text-white p-2 rounded-xl text-[10px] font-bold cursor-pointer">{t.printCard}</button>
+                </div>
+              </div>
+            </div>
+
+            {/* 8 TEMA SEÇİCİ */}
+            <div className="space-y-3 pt-4 border-t">
+              <h3 className="font-bold text-xs text-slate-900">{t.themeTitle} (8 Pro Temas)</h3>
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                {Object.entries(themes).map(([key, th]) => (
+                  <button key={key} onClick={() => setHotel({...hotel, themeColor: key})} className={`p-3 rounded-xl border text-xs font-bold flex items-center justify-between transition ${hotel.themeColor === key ? 'ring-2 ring-slate-900 bg-stone-100 shadow-sm' : 'bg-white'}`}>
+                    <span>{th.name}</span>
+                    <div className={`w-4 h-4 rounded-full ${th.dot}`}></div>
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* OTEL BİLGİLERİ DÜZENLEME */}
+            <div className="space-y-4 pt-4 border-t">
+              <h3 className="font-bold text-xs text-slate-900">{t.sec1Title}</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-[10px] font-bold text-stone-500 uppercase mb-1">{t.lblHotelName}</label>
+                  <input type="text" value={hotel.name} onChange={(e) => setHotel({ ...hotel, name: e.target.value })} className="w-full p-2.5 text-xs border border-stone-200 rounded-xl" />
+                </div>
+                <div>
+                  <label className="block text-[10px] font-bold text-stone-500 uppercase mb-1">Standort / Region</label>
+                  <input type="text" value={hotel.locationTitle} onChange={(e) => setHotel({ ...hotel, locationTitle: e.target.value })} className="w-full p-2.5 text-xs border border-stone-200 rounded-xl" />
+                </div>
+                <div>
+                  <label className="block text-[10px] font-bold text-stone-500 uppercase mb-1">{t.lblGreeting}</label>
+                  <input type="text" value={hotel.welcomeGreeting} placeholder="Automatisch übersetzt wenn leer" onChange={(e) => setHotel({ ...hotel, welcomeGreeting: e.target.value })} className="w-full p-2.5 text-xs border border-stone-200 rounded-xl" />
+                </div>
+                <div>
+                  <label className="block text-[10px] font-bold text-stone-500 uppercase mb-1">{t.lblAddress}</label>
+                  <input type="text" value={hotel.address} onChange={(e) => setHotel({ ...hotel, address: e.target.value })} className="w-full p-2.5 text-xs border border-stone-200 rounded-xl" />
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // 2. MİSAFİR GÖRÜNÜMÜ (WELCOMESCREEN)
   if (showWelcomeScreen) {
     return (
       <div className="min-h-screen bg-slate-950 max-w-md mx-auto shadow-2xl relative overflow-hidden flex flex-col justify-between font-sans">
         <div className="absolute inset-0 z-0">
-          <img 
-            src={hotel.images[0] || 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1000&q=80'} 
-            alt="Welcome Background" 
-            className="w-full h-full object-cover object-center brightness-75 transition-all duration-700"
-          />
+          <img src={hotel.images[0]} alt="Welcome" className="w-full h-full object-cover brightness-75" />
           <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-slate-950/20"></div>
         </div>
 
         <div className="relative z-10 p-6 flex justify-between items-center text-white">
-          <div className="flex items-center gap-2">
-            {hotel.logoUrl ? (
-              <img src={hotel.logoUrl} alt="Hotel Logo" className="w-8 h-8 rounded-lg object-cover bg-white/15 backdrop-blur-md p-1 border border-white/20" />
-            ) : (
-              <div className="w-8 h-8 rounded-lg bg-white/20 backdrop-blur-md flex items-center justify-center font-bold text-xs border border-white/20">
-                {hotel.name.charAt(0)}
-              </div>
-            )}
-            <span className="text-xs font-bold tracking-wider uppercase opacity-90">{hotel.name}</span>
-          </div>
-
-          <select 
-            value={lang} 
-            onChange={(e) => setLang(e.target.value)}
-            className="bg-black/40 border border-white/30 text-white text-xs font-semibold rounded-xl px-2.5 py-1.5 focus:outline-none backdrop-blur-md cursor-pointer shadow-sm"
-          >
-            <option value="de" className="bg-slate-900 text-white">🇩🇪 DE</option>
-            <option value="en" className="bg-slate-900 text-white">🇬🇧 EN</option>
-            <option value="it" className="bg-slate-900 text-white">🇮🇹 IT</option>
-            <option value="fr" className="bg-slate-900 text-white">🇫🇷 FR</option>
-            <option value="es" className="bg-slate-900 text-white">🇪🇸 ES</option>
-            <option value="tr" className="bg-slate-900 text-white">🇹🇷 TR</option>
-            <option value="sv" className="bg-slate-900 text-white">🇸🇪 SV</option>
-            <option value="no" className="bg-slate-900 text-white">🇳🇴 NO</option>
-            <option value="hr" className="bg-slate-900 text-white">🇭🇷 HR</option>
-            <option value="sq" className="bg-slate-900 text-white">🇦🇱 SQ</option>
+          <span className="text-xs font-bold tracking-wider uppercase opacity-90">{hotel.name}</span>
+          <select value={lang} onChange={(e) => setLang(e.target.value)} className="bg-black/40 border border-white/30 text-white text-xs font-semibold rounded-xl px-2.5 py-1.5 focus:outline-none backdrop-blur-md cursor-pointer">
+            <option value="de" className="bg-slate-900">🇩🇪 DE</option>
+            <option value="en" className="bg-slate-900">🇬🇧 EN</option>
+            <option value="it" className="bg-slate-900">🇮🇹 IT</option>
+            <option value="fr" className="bg-slate-900">🇫🇷 FR</option>
+            <option value="es" className="bg-slate-900">🇪🇸 ES</option>
+            <option value="tr" className="bg-slate-900">🇹🇷 TR</option>
+            <option value="sv" className="bg-slate-900">🇸🇪 SV</option>
+            <option value="no" className="bg-slate-900">🇳🇴 NO</option>
+            <option value="hr" className="bg-slate-900">🇭🇷 HR</option>
+            <option value="sq" className="bg-slate-900">🇦🇱 SQ</option>
           </select>
         </div>
 
         <div className="relative z-10 p-6 space-y-4 text-white">
           <div className="space-y-1">
-            <span className="text-[10px] tracking-widest font-extrabold uppercase bg-amber-500/20 text-amber-300 border border-amber-500/30 px-3 py-1 rounded-full">
-              {t.welcomeBadge}
-            </span>
-            <h1 className="text-3xl font-black tracking-tight pt-2 drop-shadow-md">
-              {hotel.name}
-            </h1>
+            <span className="text-[10px] tracking-widest font-extrabold uppercase bg-amber-500/20 text-amber-300 border border-amber-500/30 px-3 py-1 rounded-full">{t.welcomeBadge}</span>
+            <h1 className="text-3xl font-black tracking-tight pt-2">{hotel.name}</h1>
           </div>
-
-          <button 
-            onClick={() => setShowWelcomeScreen(false)}
-            className="w-full bg-white text-slate-900 py-4 rounded-2xl font-bold text-sm shadow-2xl hover:bg-slate-100 transition flex items-center justify-center gap-2 active:scale-98 cursor-pointer"
-          >
-            <span>{t.welcomeButton}</span>
-            <ArrowRight className="w-4 h-4" />
+          <button onClick={() => setShowWelcomeScreen(false)} className="w-full bg-white text-slate-900 py-4 rounded-2xl font-bold text-sm shadow-2xl hover:bg-slate-100 transition flex items-center justify-center gap-2 cursor-pointer">
+            <span>{t.welcomeButton}</span><ArrowRight className="w-4 h-4" />
           </button>
         </div>
       </div>
     );
   }
 
+  // 3. MİSAFİR REHBER EKRANI (SAF, ADMIN TUŞU YOK)
   return (
     <div className="min-h-screen bg-stone-50 font-sans text-slate-800 pb-32 max-w-md mx-auto shadow-2xl relative border-x border-slate-200">
       
-      {/* UNLOCK MODAL */}
-      {showUnlockModal && (
+      {/* AUTH MODAL (E-POSTA & ŞİFRE) */}
+      {isAuthModalOpen && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-white w-full max-w-sm p-6 rounded-3xl shadow-2xl space-y-4 animate-fade-in text-slate-800">
+          <div className="bg-white w-full max-w-sm p-6 rounded-3xl shadow-2xl space-y-4 text-slate-800">
             <div className="flex items-center justify-between">
-              <div className={`flex items-center gap-2 ${currentTheme.primary}`}>
-                <Lock className="w-5 h-5" />
-                <h2 className="font-bold text-base text-slate-900">Bearbeiten entsperren</h2>
+              <div className="flex items-center gap-2">
+                <User className="w-5 h-5 text-amber-900" />
+                <h2 className="font-bold text-base text-slate-900">{t.loginTitle}</h2>
               </div>
-              <button onClick={() => { setShowUnlockModal(false); setPasswordInput(''); setPasswordError(false); }} className="text-stone-400 font-bold p-1 cursor-pointer">✕</button>
+              <button onClick={() => setIsAuthModalOpen(false)} className="text-stone-400 font-bold p-1 cursor-pointer">✕</button>
             </div>
-            <p className="text-xs text-stone-500">
-              Bitte geben Sie das Entwickler-Passwort ein, um Änderungen vorzunehmen.
-            </p>
-            <form onSubmit={handleUnlockSubmit} className="space-y-3">
-              <input 
-                type="password" 
-                placeholder="Passwort..."
-                value={passwordInput}
-                onChange={(e) => setPasswordInput(e.target.value)}
-                className="w-full p-3 text-xs border border-stone-200 rounded-xl focus:outline-none focus:ring-2 font-mono"
-                autoFocus
-              />
-              {passwordError && (
-                <p className="text-[11px] text-rose-600 font-bold">Falsches Passwort!</p>
-              )}
-              <button type="submit" className={`w-full ${currentTheme.bgPrimary} text-white py-3 rounded-xl text-xs font-bold shadow-md cursor-pointer`}>
-                Entsperren
-              </button>
+            <p className="text-xs text-stone-500">{t.loginSub}</p>
+            <form onSubmit={handleLoginSubmit} className="space-y-3">
+              <div>
+                <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">{t.lblEmail}</label>
+                <input type="email" placeholder="ihre@email.de" value={emailInput} onChange={(e) => setEmailInput(e.target.value)} className="w-full p-3 text-xs border border-stone-200 rounded-xl focus:outline-none" required />
+              </div>
+              <div>
+                <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">{t.lblPassword}</label>
+                <input type="password" placeholder="••••••••" value={passwordInput} onChange={(e) => setPasswordInput(e.target.value)} className="w-full p-3 text-xs border border-stone-200 rounded-xl focus:outline-none font-mono" required />
+              </div>
+              {authError && <p className="text-[11px] text-rose-600 font-bold">{authError}</p>}
+              <button type="submit" className="w-full bg-amber-900 hover:bg-amber-950 text-white py-3 rounded-xl text-xs font-bold shadow-md cursor-pointer transition">{t.btnLoginSubmit}</button>
             </form>
           </div>
         </div>
@@ -945,802 +1001,120 @@ export default function App() {
       {/* HEADER */}
       <header className="p-5 pt-6 pb-2 bg-stone-50 sticky top-0 z-40 backdrop-blur-md bg-stone-50/95 flex justify-between items-center">
         <div className="flex items-center gap-2.5">
-          {hotel.logoUrl ? (
-            <img src={hotel.logoUrl} alt="Logo" className="w-9 h-9 rounded-xl object-cover border border-stone-200 shadow-sm" />
-          ) : (
-            <div className={`w-9 h-9 rounded-xl ${currentTheme.bgPrimary} text-white flex items-center justify-center font-bold text-xs shadow-sm`}>
-              {hotel.name.charAt(0)}
-            </div>
-          )}
+          <div className={`w-9 h-9 rounded-xl ${currentTheme.bgPrimary} text-white flex items-center justify-center font-bold text-xs shadow-sm`}>{hotel.name.charAt(0)}</div>
           <span className="text-xs font-bold tracking-wider uppercase text-slate-800">{hotel.name}</span>
         </div>
 
-        <select 
-          value={lang} 
-          onChange={(e) => setLang(e.target.value)}
-          className="bg-white border border-stone-200 text-slate-700 text-xs font-semibold rounded-xl px-2.5 py-1.5 focus:outline-none focus:ring-2 focus:ring-amber-800 cursor-pointer shadow-sm"
-        >
-          <option value="de">🇩🇪 DE</option>
-          <option value="en">🇬🇧 EN</option>
-          <option value="it">🇮🇹 IT</option>
-          <option value="fr">🇫🇷 FR</option>
-          <option value="es">🇪🇸 ES</option>
-          <option value="tr">🇹🇷 TR</option>
-          <option value="sv">🇸🇪 SV</option>
-          <option value="no">🇳🇴 NO</option>
-          <option value="hr">🇭🇷 HR</option>
-          <option value="sq">🇦🇱 SQ</option>
-        </select>
+        <div className="flex items-center gap-2">
+          <select value={lang} onChange={(e) => setLang(e.target.value)} className="bg-white border border-stone-200 text-slate-700 text-xs font-semibold rounded-xl px-2.5 py-1.5 focus:outline-none cursor-pointer shadow-sm">
+            <option value="de">🇩🇪 DE</option>
+            <option value="en">🇬🇧 EN</option>
+            <option value="it">🇮🇹 IT</option>
+            <option value="fr">🇫🇷 FR</option>
+            <option value="es">🇪🇸 ES</option>
+            <option value="tr">🇹🇷 TR</option>
+            <option value="sv">🇸🇪 SV</option>
+            <option value="no">🇳🇴 NO</option>
+            <option value="hr">🇭🇷 HR</option>
+            <option value="sq">🇦🇱 SQ</option>
+          </select>
+          {/* Gizli Partner Login */}
+          <button onClick={() => setIsAuthModalOpen(true)} className="text-stone-300 hover:text-stone-600 p-1 text-xs cursor-pointer" title="Partner Login">🔑</button>
+        </div>
       </header>
 
-      {/* MAIN CONTENT */}
+      {/* İÇERİK */}
       <main className="p-5 space-y-5">
-        
-        {/* CATEGORY DETAILS */}
         {selectedCategory ? (
           <div className="space-y-4 animate-fade-in">
-            <button 
-              onClick={() => setSelectedCategory(null)}
-              className={`text-xs font-bold ${currentTheme.primary} flex items-center gap-1 hover:underline mb-2 cursor-pointer`}
-            >
-              &larr; {t.detailBack}
-            </button>
-
+            <button onClick={() => setSelectedCategory(null)} className={`text-xs font-bold ${currentTheme.primary} flex items-center gap-1 cursor-pointer`}>&larr; {t.detailBack}</button>
             <div className="bg-white p-6 rounded-2xl shadow-sm border border-stone-200 space-y-4">
-              <div className="flex items-center gap-3 border-b pb-4">
-                <div className={`p-3 ${currentTheme.bgLight} rounded-xl ${currentTheme.primary} font-bold`}>
-                  {renderCategoryIcon(selectedCategory.iconName)}
-                </div>
-                <div>
-                  <span className={`text-[10px] ${currentTheme.badgeBg} px-2 py-0.5 rounded-full font-bold uppercase`}>{t.detailLabel}</span>
-                  <h2 className="text-lg font-black mt-1 text-slate-900">{selectedCategory.title}</h2>
-                </div>
-              </div>
+              <h2 className="text-lg font-black text-slate-900">{selectedCategory.title}</h2>
               <p className="text-xs text-slate-700 leading-relaxed">{selectedCategory.content}</p>
             </div>
           </div>
         ) : (
-          <>
-            {/* 1. HOME TAB */}
-            {activeTab === 'home' && (
-              <div className="space-y-4 animate-fade-in">
-                
-                {/* DİNAMİK KARSILAMA BÖLÜMÜ (%100 Çevrilebilir) */}
-                <div className="space-y-0.5 pt-1">
-                  <span className="text-[11px] font-extrabold uppercase tracking-widest text-stone-500 block">
-                    {hotel.locationTitle}
-                  </span>
-                  <h1 className="text-2xl font-black text-slate-900 tracking-tight leading-snug">
-                    {t.greetingHello}<br />
-                    <span className={currentTheme.primary}>
-                      {hotel.welcomeGreeting ? hotel.welcomeGreeting : t.greetingWelcome}
-                    </span>
-                  </h1>
-                </div>
-
-                {/* SLIDER */}
-                <div className="relative rounded-3xl overflow-hidden shadow-lg h-56 bg-slate-900 group border border-stone-200">
-                  <img 
-                    src={hotel.images[currentSlide] || hotel.images[0]} 
-                    alt={`Slide ${currentSlide}`} 
-                    className="w-full h-full object-cover transition-all duration-500"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent"></div>
-
-                  {hotel.images.length > 1 && (
-                    <div className="absolute bottom-3 left-0 right-0 flex justify-center gap-1.5 z-10">
-                      {hotel.images.map((_, idx) => (
-                        <button 
-                          key={idx}
-                          onClick={() => setCurrentSlide(idx)}
-                          className={`h-1.5 rounded-full transition-all cursor-pointer ${currentSlide === idx ? 'w-6 bg-white' : 'w-1.5 bg-white/50'}`}
-                        />
-                      ))}
-                    </div>
-                  )}
-
-                  <div className="absolute top-3 right-3 bg-black/40 backdrop-blur-md text-white text-[10px] font-bold px-2.5 py-1 rounded-full flex items-center gap-1 border border-white/20">
-                    <ImageIcon className="w-3 h-3" /> {currentSlide + 1}/{hotel.images.length}
-                  </div>
-                </div>
-
-                {/* HAVA DURUMU KARTI */}
-                <div className="bg-white p-4 rounded-2xl shadow-sm border border-stone-200 flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <div className={`p-3 ${currentTheme.bgLight} rounded-xl ${currentTheme.primary}`}>
-                      <Sun className="w-6 h-6" />
-                    </div>
-                    <div>
-                      <div className="text-xs font-extrabold text-slate-900 uppercase tracking-wider">{t.weatherTitle}</div>
-                      <div className="text-[11px] text-stone-500 font-medium">{t.weatherSub}</div>
-                    </div>
-                  </div>
-                  <div className="text-right">
-                    <div className="text-2xl font-black text-slate-900 leading-none">16°C</div>
-                    <div className="text-[10px] font-bold text-stone-400 mt-1 truncate max-w-[110px]">
-                      {hotel.address.split(',')[0]}
-                    </div>
-                  </div>
-                </div>
-
-                {/* GÄSTEMAPPE ANA KART */}
-                <button
-                  onClick={() => setActiveTab('services')}
-                  className={`w-full bg-white p-4 rounded-2xl border border-stone-200 shadow-sm hover:${currentTheme.border} transition flex items-center justify-between text-left group cursor-pointer`}
-                >
-                  <div className="flex items-center gap-3">
-                    <div className={`w-11 h-11 rounded-xl ${currentTheme.bgLight} flex items-center justify-center group-hover:scale-105 transition`}>
-                      <Compass className={`w-6 h-6 ${currentTheme.primary}`} />
-                    </div>
-                    <div>
-                      <h4 className="text-sm font-extrabold text-slate-900">{t.navGaestemappe}</h4>
-                      <p className="text-[11px] text-stone-500">Herzlich willkommen, Ihre Gastgeber, WLAN & mehr</p>
-                    </div>
-                  </div>
-                  <ChevronRight className="w-5 h-5 text-stone-400 group-hover:translate-x-1 transition" />
-                </button>
-
-                {/* SCHNELLZUGRIFF CARDS */}
-                <div className="space-y-3 pt-2">
-                  <h3 className="text-xs font-bold text-stone-500 uppercase tracking-wider">{t.schnellzugriffTitle}</h3>
-                  
-                  <div className="grid grid-cols-2 gap-3">
-                    {/* WLAN */}
-                    <div className="bg-white p-4 rounded-2xl shadow-sm border border-stone-200/80 space-y-2 flex flex-col justify-between">
-                      <div className={`flex items-center gap-2 ${currentTheme.primary}`}>
-                        <Wifi className="w-5 h-5" />
-                        <span className="font-bold text-xs text-slate-900">{t.wlanTitle}</span>
-                      </div>
-                      <div className="text-[11px] text-slate-500 font-mono bg-stone-50 p-2 rounded-lg border">
-                        <div>SSID: <b>{hotel.wifiSsid}</b></div>
-                        <div className="flex justify-between items-center mt-1">
-                          <span>Pass: {hotel.wifiPass}</span>
-                          <button 
-                            onClick={copyWifiPassword}
-                            className={`${currentTheme.bgLight} ${currentTheme.primary} p-1 rounded transition cursor-pointer`}
-                          >
-                            {copiedWifi ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* PARKPLATZ */}
-                    <div className="bg-white p-4 rounded-2xl shadow-sm border border-stone-200/80 space-y-2 flex flex-col justify-between">
-                      <div className={`flex items-center gap-2 ${currentTheme.primary}`}>
-                        <Car className="w-5 h-5" />
-                        <span className="font-bold text-xs text-slate-900">{t.parkingTitle}</span>
-                      </div>
-                      <p className="text-[11px] text-slate-600 leading-snug">{hotel.parkingInfo}</p>
-                    </div>
-
-                    {/* FRÜHSTÜCK */}
-                    <div className="bg-white p-4 rounded-2xl shadow-sm border border-stone-200/80 space-y-2 flex flex-col justify-between">
-                      <div className={`flex items-center gap-2 ${currentTheme.primary}`}>
-                        <Coffee className="w-5 h-5" />
-                        <span className="font-bold text-xs text-slate-900">{t.breakfastTitle}</span>
-                      </div>
-                      <p className="text-[11px] text-slate-600 font-medium">{hotel.breakfastTime}</p>
-                    </div>
-
-                    {/* CHECK-IN / CHECK-OUT */}
-                    <div className="bg-white p-4 rounded-2xl shadow-sm border border-stone-200/80 space-y-2 flex flex-col justify-between">
-                      <div className={`flex items-center gap-2 ${currentTheme.primary}`}>
-                        <Clock className="w-5 h-5" />
-                        <span className="font-bold text-xs text-slate-900">{t.checkInOutTitle}</span>
-                      </div>
-                      <p className="text-[11px] text-slate-600 leading-snug">{hotel.checkInOut}</p>
-                    </div>
-
-                    {/* ÖZEL EKLENEN KULLANICI HIZLI ERİŞİMLERİ */}
-                    {customQuickLinks.map((item) => (
-                      <div key={item.id} className="bg-white p-4 rounded-2xl shadow-sm border border-stone-200/80 space-y-2 flex flex-col justify-between">
-                        <div className={`flex items-center gap-2 ${currentTheme.primary}`}>
-                          {renderCategoryIcon(item.iconName)}
-                          <span className="font-bold text-xs text-slate-900">{item.title}</span>
-                        </div>
-                        <p className="text-[11px] text-slate-600 leading-snug">{item.description}</p>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
+          activeTab === 'home' ? (
+            <div className="space-y-4 animate-fade-in">
+              <div className="space-y-0.5 pt-1">
+                <span className="text-[11px] font-extrabold uppercase tracking-widest text-stone-500 block">{hotel.locationTitle}</span>
+                <h1 className="text-2xl font-black text-slate-900 tracking-tight leading-snug">{t.greetingHello}<br /><span className={currentTheme.primary}>{hotel.welcomeGreeting || t.greetingWelcome}</span></h1>
               </div>
-            )}
 
-            {/* REHBER TAB */}
-            {activeTab === 'services' && (
-              <div className="space-y-4 animate-fade-in">
-                <h3 className="text-xs font-bold text-stone-500 uppercase tracking-wider">{t.navGaestemappe}</h3>
-                <div className="grid grid-cols-1 gap-2.5">
-                  {categories.map((cat) => (
-                    <button
-                      key={cat.id}
-                      onClick={() => setSelectedCategory(cat)}
-                      className={`w-full bg-white p-4 rounded-2xl border border-stone-200 shadow-sm hover:${currentTheme.border} transition flex items-center justify-between text-left group cursor-pointer`}
-                    >
-                      <div className="flex items-center gap-3">
-                        <div className={`w-10 h-10 rounded-xl ${currentTheme.bgLight} flex items-center justify-center group-hover:scale-105 transition`}>
-                          {renderCategoryIcon(cat.iconName)}
-                        </div>
-                        <div>
-                          <h4 className="text-sm font-extrabold text-slate-900">{cat.title}</h4>
-                          <p className="text-xs text-slate-500">{cat.subtitle}</p>
-                        </div>
-                      </div>
-                      <ChevronRight className="w-4 h-4 text-slate-400 group-hover:translate-x-1 transition" />
-                    </button>
-                  ))}
+              {/* Slider */}
+              <div className="relative rounded-3xl overflow-hidden shadow-lg h-56 bg-slate-900 border border-stone-200">
+                <img src={hotel.images[currentSlide] || hotel.images[0]} alt="Slide" className="w-full h-full object-cover" />
+              </div>
+
+              {/* Hava Durumu */}
+              <div className="bg-white p-4 rounded-2xl shadow-sm border border-stone-200 flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className={`p-3 ${currentTheme.bgLight} rounded-xl ${currentTheme.primary}`}><Sun className="w-6 h-6" /></div>
+                  <div>
+                    <div className="text-xs font-extrabold text-slate-900 uppercase">{t.weatherTitle}</div>
+                    <div className="text-[11px] text-stone-500">{t.weatherSub}</div>
+                  </div>
+                </div>
+                <div className="text-right"><div className="text-2xl font-black text-slate-900">16°C</div></div>
+              </div>
+
+              {/* Hızlı Erişimler */}
+              <div className="grid grid-cols-2 gap-3 pt-2">
+                <div className="bg-white p-4 rounded-2xl shadow-sm border border-stone-200 space-y-2">
+                  <div className={`flex items-center gap-2 ${currentTheme.primary}`}><Wifi className="w-5 h-5" /><span className="font-bold text-xs text-slate-900">{t.wlanTitle}</span></div>
+                  <div className="text-[11px] text-slate-500 font-mono bg-stone-50 p-2 rounded-lg border">
+                    <div><b>{hotel.wifiSsid}</b></div>
+                    <div className="flex justify-between items-center mt-1">
+                      <span>{hotel.wifiPass}</span>
+                      <button onClick={copyWifiPassword} className={`${currentTheme.bgLight} ${currentTheme.primary} p-1 rounded cursor-pointer`}>{copiedWifi ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}</button>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="bg-white p-4 rounded-2xl shadow-sm border border-stone-200 space-y-2">
+                  <div className={`flex items-center gap-2 ${currentTheme.primary}`}><Car className="w-5 h-5" /><span className="font-bold text-xs text-slate-900">{t.parkingTitle}</span></div>
+                  <p className="text-[11px] text-slate-600">{hotel.parkingInfo}</p>
                 </div>
               </div>
-            )}
-
-            {/* 2. ADMIN TAB */}
-            {activeTab === 'admin' && (
-              <div className="space-y-5 animate-fade-in">
-                {/* STATUS BAR */}
-                <div className="bg-white p-4 rounded-2xl shadow-sm border border-stone-200 flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    {isEditUnlocked ? <Unlock className="w-5 h-5 text-emerald-600" /> : <Lock className={`w-5 h-5 ${currentTheme.primary}`} />}
-                    <div>
-                      <h3 className="text-xs font-bold text-slate-900">{t.adminTitle}</h3>
-                      <p className="text-[10px] text-stone-500">
-                        {isEditUnlocked ? t.adminUnlockMode : t.adminLockMode}
-                      </p>
-                    </div>
-                  </div>
-                  {isEditUnlocked ? (
-                    <button 
-                      onClick={() => setIsEditUnlocked(false)}
-                      className="bg-stone-100 hover:bg-stone-200 text-stone-700 px-3 py-1.5 rounded-xl text-xs font-bold transition cursor-pointer"
-                    >
-                      {t.adminBtnLock}
-                    </button>
-                  ) : (
-                    <button 
-                      onClick={() => setShowUnlockModal(true)}
-                      className={`${currentTheme.bgPrimary} ${currentTheme.bgHover} text-white px-3 py-1.5 rounded-xl text-xs font-bold shadow transition cursor-pointer`}
-                    >
-                      {t.adminBtnUnlock}
-                    </button>
-                  )}
-                </div>
-
-                {/* STATS & TRIAL CARDS */}
-                <div className="bg-slate-900 text-white p-5 rounded-2xl shadow-lg space-y-4">
-                  <div className="flex justify-between items-center border-b border-white/10 pb-3">
-                    <span className="text-xs font-bold uppercase tracking-wider text-amber-400">{t.trialTitle}</span>
-                    <span className="text-xs bg-amber-500/20 text-amber-300 border border-amber-500/30 px-2.5 py-0.5 rounded-full font-mono font-bold">
-                      {daysLeft} {t.trialDaysLeft}
-                    </span>
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-3">
-                    <div className="bg-white/5 border border-white/10 p-3 rounded-xl flex items-center gap-3">
-                      <div className="p-2.5 bg-amber-500/20 text-amber-400 rounded-lg">
-                        <BarChart3 className="w-4 h-4" />
-                      </div>
+            </div>
+          ) : (
+            <div className="space-y-4 animate-fade-in">
+              <h3 className="text-xs font-bold text-stone-500 uppercase tracking-wider">{t.navGaestemappe}</h3>
+              <div className="grid grid-cols-1 gap-2.5">
+                {categories.map((cat) => (
+                  <button key={cat.id} onClick={() => setSelectedCategory(cat)} className="w-full bg-white p-4 rounded-2xl border border-stone-200 shadow-sm flex items-center justify-between text-left cursor-pointer">
+                    <div className="flex items-center gap-3">
+                      <div className={`w-10 h-10 rounded-xl ${currentTheme.bgLight} flex items-center justify-center`}>{renderCategoryIcon(cat.iconName)}</div>
                       <div>
-                        <span className="text-[10px] text-stone-400 font-medium block">{t.statsScans}</span>
-                        <span className="text-base font-black text-white">{scanCount}</span>
+                        <h4 className="text-sm font-extrabold text-slate-900">{cat.title}</h4>
+                        <p className="text-xs text-slate-500">{cat.subtitle}</p>
                       </div>
                     </div>
-
-                    <div className="bg-white/5 border border-white/10 p-3 rounded-xl flex items-center gap-3">
-                      <div className="p-2.5 bg-sky-500/20 text-sky-400 rounded-lg">
-                        <QrCode className="w-4 h-4" />
-                      </div>
-                      <div>
-                        <span className="text-[10px] text-stone-400 font-medium block">{t.statsActiveRooms}</span>
-                        <span className="text-base font-black text-sky-400">100% aktiv</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* PDF PRINT-CENTER & QR CODE SECTION */}
-                <div className="bg-white p-5 rounded-2xl shadow-sm border border-stone-200 text-center space-y-3">
-                  <div className={`flex items-center justify-center gap-2 ${currentTheme.primary} font-bold text-xs uppercase tracking-wider`}>
-                    <QrCode className="w-4 h-4" />
-                    <span>{t.qrTitle}</span>
-                  </div>
-                  <p className="text-[11px] text-slate-500 max-w-xs mx-auto">
-                    {t.qrSubtitle}
-                  </p>
-                  
-                  <div className="bg-stone-50 p-4 rounded-2xl inline-block border border-stone-200 shadow-inner my-2">
-                    <img 
-                      src={qrCodeUrl} 
-                      alt="Hotel QR Code" 
-                      className="w-36 h-36 mx-auto rounded-lg shadow-sm"
-                    />
-                    <span className="block text-[10px] text-slate-400 font-mono mt-2 truncate max-w-[200px] mx-auto">
-                      {hotelUrl}
-                    </span>
-                  </div>
-
-                  <div className="grid grid-cols-3 gap-2 pt-2">
-                    <button 
-                      onClick={() => handlePrint('A4')}
-                      className="bg-stone-900 hover:bg-black text-white p-2.5 rounded-xl text-[11px] font-bold shadow transition flex flex-col items-center gap-1 cursor-pointer"
-                    >
-                      <Printer className="w-4 h-4 text-amber-400" />
-                      <span>{t.printA4}</span>
-                    </button>
-                    <button 
-                      onClick={() => handlePrint('A5')}
-                      className="bg-stone-900 hover:bg-black text-white p-2.5 rounded-xl text-[11px] font-bold shadow transition flex flex-col items-center gap-1 cursor-pointer"
-                    >
-                      <Printer className="w-4 h-4 text-amber-400" />
-                      <span>{t.printA5}</span>
-                    </button>
-                    <button 
-                      onClick={() => handlePrint('Visitenkarte')}
-                      className="bg-stone-900 hover:bg-black text-white p-2.5 rounded-xl text-[11px] font-bold shadow transition flex flex-col items-center gap-1 cursor-pointer"
-                    >
-                      <Printer className="w-4 h-4 text-amber-400" />
-                      <span>{t.printCard}</span>
-                    </button>
-                  </div>
-                </div>
-
-                {/* 8 ÖZGÜN TEMA SEÇİCİ (COLOR THEMES - SAHARA, AEGEAN, FOREST...) */}
-                <div className="bg-white p-5 rounded-2xl shadow-sm border border-stone-200 space-y-3">
-                  <h3 className="font-bold text-xs text-slate-900 flex items-center gap-1.5">
-                    <Settings className={`w-4 h-4 ${currentTheme.primary}`} /> {t.themeTitle} (8 Pro Temas)
-                  </h3>
-                  <div className="grid grid-cols-2 gap-2">
-                    {Object.entries(themes).map(([key, th]) => (
-                      <button 
-                        key={key}
-                        onClick={() => isEditUnlocked && setHotel({...hotel, themeColor: key})}
-                        className={`p-3 rounded-xl border text-xs font-bold flex items-center justify-between transition ${hotel.themeColor === key ? 'ring-2 ring-slate-900 bg-stone-100 shadow-sm' : 'bg-white opacity-80 hover:opacity-100'} ${!isEditUnlocked ? 'cursor-not-allowed' : 'cursor-pointer'}`}
-                      >
-                        <span className="text-slate-800">{th.name}</span>
-                        <div className={`w-4 h-4 rounded-full ${th.dot} shadow-sm border border-white`}></div>
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                {/* STEP 1: Hotelinformationen & Kontaktdaten */}
-                <div className="bg-white p-5 rounded-2xl shadow-sm border border-stone-200 space-y-3">
-                  <h3 className={`font-bold text-xs text-slate-900 flex items-center gap-1.5`}>
-                    <Edit3 className={`w-4 h-4 ${currentTheme.primary}`} /> {t.sec1Title}
-                  </h3>
-
-                  <div>
-                    <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">{t.lblHotelName}</label>
-                    <input 
-                      type="text" 
-                      value={hotel.name}
-                      disabled={!isEditUnlocked}
-                      onChange={(e) => setHotel({ ...hotel, name: e.target.value })}
-                      className={`w-full p-2.5 text-xs border border-stone-200 rounded-xl ${!isEditUnlocked ? 'bg-stone-100 text-stone-500 cursor-not-allowed' : ''}`}
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">Region / Standort Titel (z.B. Region / Stadt)</label>
-                    <input 
-                      type="text" 
-                      value={hotel.locationTitle}
-                      disabled={!isEditUnlocked}
-                      onChange={(e) => setHotel({ ...hotel, locationTitle: e.target.value })}
-                      className={`w-full p-2.5 text-xs border border-stone-200 rounded-xl ${!isEditUnlocked ? 'bg-stone-100 text-stone-500 cursor-not-allowed' : ''}`}
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">{t.lblGreeting}</label>
-                    <input 
-                      type="text" 
-                      value={hotel.welcomeGreeting}
-                      placeholder="Automatisch übersetzt wenn leer"
-                      disabled={!isEditUnlocked}
-                      onChange={(e) => setHotel({ ...hotel, welcomeGreeting: e.target.value })}
-                      className={`w-full p-2.5 text-xs border border-stone-200 rounded-xl ${!isEditUnlocked ? 'bg-stone-100 text-stone-500 cursor-not-allowed' : ''}`}
-                    />
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-2">
-                    <div>
-                      <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">{t.lblPhone}</label>
-                      <input 
-                        type="text" 
-                        value={hotel.phone}
-                        disabled={!isEditUnlocked}
-                        onChange={(e) => setHotel({ ...hotel, phone: e.target.value })}
-                        className={`w-full p-2.5 text-xs border border-stone-200 rounded-xl ${!isEditUnlocked ? 'bg-stone-100 cursor-not-allowed' : ''}`}
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">{t.lblEmail}</label>
-                      <input 
-                        type="text" 
-                        value={hotel.email}
-                        disabled={!isEditUnlocked}
-                        onChange={(e) => setHotel({ ...hotel, email: e.target.value })}
-                        className={`w-full p-2.5 text-xs border border-stone-200 rounded-xl ${!isEditUnlocked ? 'bg-stone-100 cursor-not-allowed' : ''}`}
-                      />
-                    </div>
-                  </div>
-
-                  <div>
-                    <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">{t.lblAddress} (Standort für Wetter)</label>
-                    <input 
-                      type="text" 
-                      value={hotel.address}
-                      disabled={!isEditUnlocked}
-                      onChange={(e) => setHotel({ ...hotel, address: e.target.value })}
-                      className={`w-full p-2.5 text-xs border border-stone-200 rounded-xl ${!isEditUnlocked ? 'bg-stone-100 cursor-not-allowed' : ''}`}
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">{t.lblWebsite}</label>
-                    <input 
-                      type="text" 
-                      value={hotel.website}
-                      disabled={!isEditUnlocked}
-                      onChange={(e) => setHotel({ ...hotel, website: e.target.value })}
-                      className={`w-full p-2.5 text-xs border border-stone-200 rounded-xl ${!isEditUnlocked ? 'bg-stone-100 cursor-not-allowed' : ''}`}
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">{t.lblGoogleReview}</label>
-                    <input 
-                      type="text" 
-                      value={hotel.googleReviewUrl}
-                      disabled={!isEditUnlocked}
-                      onChange={(e) => setHotel({ ...hotel, googleReviewUrl: e.target.value })}
-                      className={`w-full p-2.5 text-xs border border-stone-200 rounded-xl ${!isEditUnlocked ? 'bg-stone-100 cursor-not-allowed' : ''}`}
-                    />
-                  </div>
-                </div>
-
-                {/* STEP 2: Logo hochladen */}
-                <div className="bg-white p-5 rounded-2xl shadow-sm border border-stone-200 space-y-3">
-                  <h3 className="font-bold text-xs text-slate-900 flex items-center gap-1.5">
-                    <Upload className={`w-4 h-4 ${currentTheme.primary}`} /> {t.sec2Title}
-                  </h3>
-                  <div className="flex items-center gap-4">
-                    {hotel.logoUrl ? (
-                      <img src={hotel.logoUrl} alt="Logo Prev" className="w-12 h-12 rounded-xl object-cover border" />
-                    ) : (
-                      <div className="w-12 h-12 rounded-xl bg-stone-100 border border-dashed flex items-center justify-center text-[10px] text-stone-400">
-                        No Logo
-                      </div>
-                    )}
-                    <label className={`px-3 py-2 rounded-xl text-xs font-bold transition ${isEditUnlocked ? 'bg-stone-100 hover:bg-stone-200 text-slate-700 cursor-pointer' : 'bg-stone-100 text-stone-400 cursor-not-allowed'}`}>
-                      {t.btnLogoUpload}
-                      <input type="file" accept="image/*" onChange={handleLogoUpload} className="hidden" />
-                    </label>
-                  </div>
-                </div>
-
-                {/* STEP 3 & 4: Bilderverwaltung */}
-                <div className="bg-white p-5 rounded-2xl shadow-sm border border-stone-200 space-y-4">
-                  <div>
-                    <h3 className="font-bold text-xs text-slate-900 flex items-center gap-1.5">
-                      <ImageIcon className={`w-4 h-4 ${currentTheme.primary}`} /> {t.sec3Title}
-                    </h3>
-                    <p className={`text-[11px] text-slate-500 mt-1 font-medium ${currentTheme.primary}`}>
-                      {t.sec4Title}
-                    </p>
-                  </div>
-
-                  {uploadError && (
-                    <div className="bg-rose-50 border border-rose-200 text-rose-700 p-3 rounded-xl text-xs flex items-center gap-2">
-                      <AlertCircle className="w-4 h-4 shrink-0" />
-                      <span>{uploadError}</span>
-                    </div>
-                  )}
-                  {uploadSuccess && (
-                    <div className="bg-emerald-50 border border-emerald-200 text-emerald-700 p-3 rounded-xl text-xs flex items-center gap-2">
-                      <Check className="w-4 h-4 shrink-0" />
-                      <span>{uploadSuccess}</span>
-                    </div>
-                  )}
-
-                  <div className="grid grid-cols-3 gap-2">
-                    {hotel.images.map((img, index) => (
-                      <div key={index} className="relative rounded-xl overflow-hidden h-20 group border border-slate-200">
-                        <img src={img} alt={`Upload ${index}`} className="w-full h-full object-cover" />
-                        {isEditUnlocked && (
-                          <button 
-                            onClick={() => handleRemoveImage(index)}
-                            className="absolute top-1 right-1 bg-rose-600 text-white p-1 rounded-full shadow-md hover:bg-rose-700 transition cursor-pointer"
-                          >
-                            <Trash2 className="w-3 h-3" />
-                          </button>
-                        )}
-                      </div>
-                    ))}
-
-                    {hotel.images.length < 5 && (
-                      <label className={`border-2 border-dashed border-stone-300 rounded-xl h-20 flex flex-col items-center justify-center transition ${isEditUnlocked ? `cursor-pointer hover:${currentTheme.border} ${currentTheme.bgLight}` : 'cursor-not-allowed opacity-60'}`}>
-                        <Plus className="w-5 h-5 text-stone-400" />
-                        <span className="text-[10px] text-stone-500 font-medium mt-1">Foto hinzufügen</span>
-                        <input type="file" accept="image/*" multiple onChange={handleImageUpload} className="hidden" disabled={!isEditUnlocked} />
-                      </label>
-                    )}
-                  </div>
-                </div>
-
-                {/* STEP 5: Schnellzugriff */}
-                <div className="bg-white p-5 rounded-2xl shadow-sm border border-stone-200 space-y-4">
-                  <h3 className="font-bold text-xs text-slate-900 flex items-center gap-1.5">
-                    <Wifi className={`w-4 h-4 ${currentTheme.primary}`} /> {t.sec5Title}
-                  </h3>
-
-                  <div className="space-y-3">
-                    <div>
-                      <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">{t.lblWifiSsid}</label>
-                      <input 
-                        type="text" 
-                        value={hotel.wifiSsid}
-                        disabled={!isEditUnlocked}
-                        onChange={(e) => setHotel({ ...hotel, wifiSsid: e.target.value })}
-                        className={`w-full p-2.5 text-xs border border-stone-200 rounded-xl ${!isEditUnlocked ? 'bg-stone-100 cursor-not-allowed' : ''}`}
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">{t.lblWifiPass}</label>
-                      <input 
-                        type="text" 
-                        value={hotel.wifiPass}
-                        disabled={!isEditUnlocked}
-                        onChange={(e) => setHotel({ ...hotel, wifiPass: e.target.value })}
-                        className={`w-full p-2.5 text-xs border border-stone-200 rounded-xl ${!isEditUnlocked ? 'bg-stone-100 cursor-not-allowed' : ''}`}
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">{t.lblBreakfastTime}</label>
-                      <input 
-                        type="text" 
-                        value={hotel.breakfastTime}
-                        disabled={!isEditUnlocked}
-                        onChange={(e) => setHotel({ ...hotel, breakfastTime: e.target.value })}
-                        className={`w-full p-2.5 text-xs border border-stone-200 rounded-xl ${!isEditUnlocked ? 'bg-stone-100 cursor-not-allowed' : ''}`}
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">{t.lblCheckInOut}</label>
-                      <input 
-                        type="text" 
-                        value={hotel.checkInOut}
-                        disabled={!isEditUnlocked}
-                        onChange={(e) => setHotel({ ...hotel, checkInOut: e.target.value })}
-                        className={`w-full p-2.5 text-xs border border-stone-200 rounded-xl ${!isEditUnlocked ? 'bg-stone-100 cursor-not-allowed' : ''}`}
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">{t.lblParkingInfo}</label>
-                      <input 
-                        type="text" 
-                        value={hotel.parkingInfo}
-                        disabled={!isEditUnlocked}
-                        onChange={(e) => setHotel({ ...hotel, parkingInfo: e.target.value })}
-                        className={`w-full p-2.5 text-xs border border-stone-200 rounded-xl ${!isEditUnlocked ? 'bg-stone-100 cursor-not-allowed' : ''}`}
-                      />
-                    </div>
-                  </div>
-
-                  {/* Özel Schnellzugriff */}
-                  <div className="pt-3 border-t border-stone-100 space-y-3">
-                    <h4 className={`font-bold text-[11px] ${currentTheme.primary} uppercase`}>Eigene Schnellzugriffe (Aktuell: {customQuickLinks.length}/2)</h4>
-                    
-                    <div className="space-y-2">
-                      {customQuickLinks.map((item) => (
-                        <div key={item.id} className="flex items-center justify-between p-2.5 bg-stone-50 rounded-xl border border-stone-200 text-xs">
-                          <div className="flex items-center gap-2">
-                            {renderCategoryIcon(item.iconName)}
-                            <div>
-                              <span className="font-bold text-slate-900 block">{item.title}</span>
-                              <span className="text-[10px] text-slate-500">{item.description}</span>
-                            </div>
-                          </div>
-                          {isEditUnlocked && (
-                            <button 
-                              onClick={() => handleDeleteCustomQuick(item.id)}
-                              className="bg-rose-50 text-rose-600 hover:bg-rose-100 p-1.5 rounded-lg transition cursor-pointer"
-                            >
-                              <Trash2 className="w-3.5 h-3.5" />
-                            </button>
-                          )}
-                        </div>
-                      ))}
-                    </div>
-
-                    {isEditUnlocked && customQuickLinks.length < 2 && (
-                      <form onSubmit={handleAddCustomQuick} className="space-y-2 pt-2">
-                        <input 
-                          type="text" 
-                          placeholder="Titel (z.B. Fahrradverleih)"
-                          value={newQuick.title}
-                          onChange={(e) => setNewQuick({ ...newQuick, title: e.target.value })}
-                          className="w-full p-2 text-xs border border-stone-200 rounded-xl"
-                        />
-                        <input 
-                          type="text" 
-                          placeholder="Beschreibung (z.B. An der Rezeption)"
-                          value={newQuick.description}
-                          onChange={(e) => setNewQuick({ ...newQuick, description: e.target.value })}
-                          className="w-full p-2 text-xs border border-stone-200 rounded-xl"
-                        />
-                        <select 
-                          value={newQuick.iconName}
-                          onChange={(e) => setNewQuick({ ...newQuick, iconName: e.target.value })}
-                          className="w-full p-2 text-xs border border-stone-200 rounded-xl bg-white cursor-pointer"
-                        >
-                          <option value="Info">Info</option>
-                          <option value="Phone">Telefon</option>
-                          <option value="Globe">Webseite</option>
-                          <option value="Coffee">Coffee</option>
-                        </select>
-                        <button type="submit" className={`w-full ${currentTheme.bgPrimary} ${currentTheme.bgHover} text-white py-2 rounded-xl text-xs font-bold shadow-md transition flex items-center justify-center gap-1 cursor-pointer`}>
-                          <Plus className="w-3.5 h-3.5" /> Schnellzugriff hinzufügen
-                        </button>
-                      </form>
-                    )}
-                  </div>
-                </div>
-
-                {/* STEP 6: Kategorien */}
-                <div className="bg-white p-5 rounded-2xl shadow-sm border border-stone-200 space-y-4">
-                  <h3 className="font-bold text-xs text-slate-900 flex items-center gap-1.5">
-                    <Compass className={`w-4 h-4 ${currentTheme.primary}`} /> {t.sec6Title}
-                  </h3>
-
-                  <div className="space-y-2">
-                    {categories.map((cat) => (
-                      <div key={cat.id} className="flex items-center justify-between p-3 bg-stone-50 rounded-xl border border-stone-200 text-xs">
-                        <div className="flex items-center gap-2">
-                          {renderCategoryIcon(cat.iconName)}
-                          <div>
-                            <span className="font-bold text-slate-900 block">{cat.title}</span>
-                            <span className="text-[10px] text-slate-500">{cat.subtitle}</span>
-                          </div>
-                        </div>
-                        {isEditUnlocked && (
-                          <button 
-                            onClick={() => handleDeleteCategory(cat.id)}
-                            className="bg-rose-50 text-rose-600 hover:bg-rose-100 p-1.5 rounded-lg transition cursor-pointer"
-                            title="Löschen"
-                          >
-                            <Trash2 className="w-3.5 h-3.5" />
-                          </button>
-                        )}
-                      </div>
-                    ))}
-                  </div>
-
-                  {isEditUnlocked ? (
-                    <form onSubmit={handleAddCategory} className="pt-3 border-t border-stone-100 space-y-3">
-                      <h4 className={`font-bold text-[11px] ${currentTheme.primary} uppercase`}>{t.btnAddCategory}</h4>
-                      <div>
-                        <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">Titel</label>
-                        <input 
-                          type="text" 
-                          placeholder="z.B. Pool & Wellness"
-                          value={newCat.title}
-                          onChange={(e) => setNewCat({ ...newCat, title: e.target.value })}
-                          className="w-full p-2.5 text-xs border border-stone-200 rounded-xl"
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">Untertitel</label>
-                        <input 
-                          type="text" 
-                          placeholder="z.B. Öffnungszeiten & Regeln"
-                          value={newCat.subtitle}
-                          onChange={(e) => setNewCat({ ...newCat, subtitle: e.target.value })}
-                          className="w-full p-2.5 text-xs border border-stone-200 rounded-xl"
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">Inhalt / Details</label>
-                        <textarea 
-                          rows="2"
-                          placeholder="Ausführliche Beschreibung..."
-                          value={newCat.content}
-                          onChange={(e) => setNewCat({ ...newCat, content: e.target.value })}
-                          className="w-full p-2.5 text-xs border border-stone-200 rounded-xl"
-                        ></textarea>
-                      </div>
-                      <div>
-                        <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">Icon Auswählen</label>
-                        <select 
-                          value={newCat.iconName}
-                          onChange={(e) => setNewCat({ ...newCat, iconName: e.target.value })}
-                          className="w-full p-2.5 text-xs border border-stone-200 rounded-xl bg-white cursor-pointer"
-                        >
-                          <option value="Info">Info (Standard)</option>
-                          <option value="Utensils">Gastronomie (Utensils)</option>
-                          <option value="Heart">Wellness (Heart)</option>
-                          <option value="Compass">Umgebung (Compass)</option>
-                          <option value="Coffee">Frühstück (Coffee)</option>
-                          <option value="Car">Parken (Car)</option>
-                        </select>
-                      </div>
-                      <button type="submit" className={`w-full ${currentTheme.bgPrimary} ${currentTheme.bgHover} text-white py-2.5 rounded-xl text-xs font-bold shadow-md transition flex items-center justify-center gap-1 cursor-pointer`}>
-                        <Plus className="w-4 h-4" /> {t.btnCatSubmit}
-                      </button>
-                    </form>
-                  ) : (
-                    <p className="text-[10px] text-stone-400 italic text-center pt-2">Kategorien bearbeiten gesperrt. Bitte zuerst oben "Entsperren".</p>
-                  )}
-                </div>
-
+                    <ChevronRight className="w-4 h-4 text-slate-400" />
+                  </button>
+                ))}
               </div>
-            )}
-          </>
+            </div>
+          )
         )}
-
       </main>
 
-      {/* FIXED BOTTOM NAVIGATION BAR */}
+      {/* SAF MİSAFİR ALT MENÜSÜ (ASLA ADMIN TUŞU YOK!) */}
       <div className="fixed bottom-0 left-0 right-0 max-w-md mx-auto bg-white/95 backdrop-blur-md border-t border-stone-200/80 z-50 shadow-2xl">
         <nav className="px-3 py-2 flex justify-around items-center">
-          <button 
-            onClick={() => { setActiveTab('home'); setSelectedCategory(null); }}
-            className={`flex flex-col items-center gap-1 text-[10px] font-bold transition cursor-pointer ${activeTab === 'home' && !selectedCategory ? currentTheme.primary : 'text-stone-400'}`}
-          >
-            <Info className="w-5 h-5" />
-            <span>{t.navHome}</span>
+          <button onClick={() => { setActiveTab('home'); setSelectedCategory(null); }} className={`flex flex-col items-center gap-1 text-[10px] font-bold cursor-pointer ${activeTab === 'home' && !selectedCategory ? currentTheme.primary : 'text-stone-400'}`}>
+            <Info className="w-5 h-5" /><span>{t.navHome}</span>
           </button>
-
-          <button 
-            onClick={() => { setActiveTab('services'); setSelectedCategory(null); }}
-            className={`flex flex-col items-center gap-1 text-[10px] font-bold transition cursor-pointer ${activeTab === 'services' || selectedCategory ? currentTheme.primary : 'text-stone-400'}`}
-          >
-            <Compass className="w-5 h-5" />
-            <span>{t.navGaestemappe}</span>
+          <button onClick={() => { setActiveTab('services'); setSelectedCategory(null); }} className={`flex flex-col items-center gap-1 text-[10px] font-bold cursor-pointer ${activeTab === 'services' || selectedCategory ? currentTheme.primary : 'text-stone-400'}`}>
+            <Compass className="w-5 h-5" /><span>{t.navGaestemappe}</span>
           </button>
-
-          {/* GOOGLE REVIEW */}
-          {hotel.googleReviewUrl && (
-            <a 
-              href={hotel.googleReviewUrl} 
-              target="_blank" 
-              rel="noreferrer"
-              className="flex flex-col items-center gap-1 text-[10px] font-bold text-stone-400 hover:text-amber-500 transition cursor-pointer"
-            >
-              <Star className="w-5 h-5 text-amber-500 fill-amber-500" />
-              <span>{t.navReview}</span>
-            </a>
-          )}
-
-          {/* ROUTENPLANER */}
-          <a 
-            href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(hotel.address)}`} 
-            target="_blank" 
-            rel="noreferrer"
-            className="flex flex-col items-center gap-1 text-[10px] font-bold text-stone-400 hover:text-sky-600 transition cursor-pointer"
-          >
-            <Navigation className="w-5 h-5 text-sky-600" />
-            <span>{t.navRoute}</span>
+          <a href={hotel.googleReviewUrl} target="_blank" rel="noreferrer" className="flex flex-col items-center gap-1 text-[10px] font-bold text-stone-400 hover:text-amber-500 cursor-pointer">
+            <Star className="w-5 h-5 text-amber-500 fill-amber-500" /><span>{t.navReview}</span>
           </a>
-
-          <button 
-            onClick={() => {
-              if (isEditUnlocked) {
-                setActiveTab('admin');
-                setSelectedCategory(null);
-              } else {
-                setShowUnlockModal(true);
-              }
-            }}
-            className={`flex flex-col items-center gap-1 text-[10px] font-bold transition cursor-pointer ${activeTab === 'admin' ? `${currentTheme.primary} font-extrabold` : 'text-stone-400'}`}
-          >
-            <Settings className="w-5 h-5" />
-            <span>{t.navAdmin}</span>
-          </button>
+          <a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(hotel.address)}`} target="_blank" rel="noreferrer" className="flex flex-col items-center gap-1 text-[10px] font-bold text-stone-400 hover:text-sky-600 cursor-pointer">
+            <Navigation className="w-5 h-5 text-sky-600" /><span>{t.navRoute}</span>
+          </a>
         </nav>
-
-        {/* Powered By İmzası */}
         <div className="bg-stone-100 border-t border-stone-200/50 py-1 text-center text-[9px] text-stone-400 font-medium">
           Powered by <span className="font-bold text-slate-700">gastemappe24-pro</span>
         </div>
