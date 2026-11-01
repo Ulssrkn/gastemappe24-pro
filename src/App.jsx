@@ -599,7 +599,7 @@ export default function App() {
   const [scanCount] = useState(142);
   const [daysLeft] = useState(24);
 
-  // GLOBAL & WHITE-LABEL STATE (8 RENK DESTEĞİ İLE)
+  // GLOBAL & WHITE-LABEL STATE (ÖZGÜN İSİMLENDİRME İLE 8 TEMA)
   const [hotel, setHotel] = useState({
     logoUrl: '', 
     name: 'Mein Hotel', 
@@ -615,26 +615,26 @@ export default function App() {
     breakfastTime: '07:00 - 10:30 Uhr',
     checkInOut: 'Check-in: ab 15:00 | Check-out: bis 11:00',
     parkingInfo: 'Kostenfreie Parkplätze am Haus verfügbar.',
-    themeColor: 'tuscany', // Varsayılan rakip teması
+    themeColor: 'amber', 
     images: [
       'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1000&q=80',
       'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=1000&q=80'
     ]
   });
 
-  // 8 RAKIP TEMA PALETİ
+  // ÖZGÜN PRO TEMA İSİMLERİ
   const themes = {
-    warmSand: { name: 'Warm Sand', primary: 'text-amber-700', bgPrimary: 'bg-amber-700', bgHover: 'hover:bg-amber-800', bgLight: 'bg-amber-50', border: 'border-amber-700/40', badgeBg: 'bg-amber-50 text-amber-700', dot: 'bg-amber-700' },
-    coast: { name: 'Coast', primary: 'text-teal-700', bgPrimary: 'bg-teal-700', bgHover: 'hover:bg-teal-800', bgLight: 'bg-teal-50', border: 'border-teal-700/40', badgeBg: 'bg-teal-50 text-teal-700', dot: 'bg-teal-700' },
-    alpine: { name: 'Alpine', primary: 'text-emerald-800', bgPrimary: 'bg-emerald-800', bgHover: 'hover:bg-emerald-900', bgLight: 'bg-emerald-50', border: 'border-emerald-800/40', badgeBg: 'bg-emerald-50 text-emerald-800', dot: 'bg-emerald-800' },
-    tuscany: { name: 'Tuscany', primary: 'text-amber-900', bgPrimary: 'bg-amber-900', bgHover: 'hover:bg-amber-950', bgLight: 'bg-amber-50', border: 'border-amber-900/40', badgeBg: 'bg-amber-100 text-amber-900', dot: 'bg-amber-900' },
-    city: { name: 'City', primary: 'text-slate-700', bgPrimary: 'bg-slate-700', bgHover: 'hover:bg-slate-800', bgLight: 'bg-slate-50', border: 'border-slate-700/40', badgeBg: 'bg-slate-100 text-slate-700', dot: 'bg-slate-700' },
-    nordic: { name: 'Nordic', primary: 'text-stone-700', bgPrimary: 'bg-stone-700', bgHover: 'hover:bg-stone-800', bgLight: 'bg-stone-100', border: 'border-stone-700/40', badgeBg: 'bg-stone-100 text-stone-700', dot: 'bg-stone-700' },
-    berry: { name: 'Berry', primary: 'text-rose-900', bgPrimary: 'bg-rose-900', bgHover: 'hover:bg-rose-950', bgLight: 'bg-rose-50', border: 'border-rose-900/40', badgeBg: 'bg-rose-50 text-rose-900', dot: 'bg-rose-900' },
-    night: { name: 'Night', primary: 'text-zinc-900', bgPrimary: 'bg-zinc-900', bgHover: 'hover:bg-black', bgLight: 'bg-zinc-100', border: 'border-zinc-900/40', badgeBg: 'bg-zinc-100 text-zinc-900', dot: 'bg-zinc-900' }
+    sahara: { name: 'Sahara', primary: 'text-amber-700', bgPrimary: 'bg-amber-700', bgHover: 'hover:bg-amber-800', bgLight: 'bg-amber-50', border: 'border-amber-700/40', badgeBg: 'bg-amber-50 text-amber-700', dot: 'bg-amber-700' },
+    aegean: { name: 'Aegean', primary: 'text-teal-700', bgPrimary: 'bg-teal-700', bgHover: 'hover:bg-teal-800', bgLight: 'bg-teal-50', border: 'border-teal-700/40', badgeBg: 'bg-teal-50 text-teal-700', dot: 'bg-teal-700' },
+    forest: { name: 'Forest', primary: 'text-emerald-800', bgPrimary: 'bg-emerald-800', bgHover: 'hover:bg-emerald-900', bgLight: 'bg-emerald-50', border: 'border-emerald-800/40', badgeBg: 'bg-emerald-50 text-emerald-800', dot: 'bg-emerald-800' },
+    amber: { name: 'Amber', primary: 'text-amber-900', bgPrimary: 'bg-amber-900', bgHover: 'hover:bg-amber-950', bgLight: 'bg-amber-50', border: 'border-amber-900/40', badgeBg: 'bg-amber-100 text-amber-900', dot: 'bg-amber-900' },
+    urban: { name: 'Urban', primary: 'text-slate-700', bgPrimary: 'bg-slate-700', bgHover: 'hover:bg-slate-800', bgLight: 'bg-slate-50', border: 'border-slate-700/40', badgeBg: 'bg-slate-100 text-slate-700', dot: 'bg-slate-700' },
+    stone: { name: 'Stone', primary: 'text-stone-700', bgPrimary: 'bg-stone-700', bgHover: 'hover:bg-stone-800', bgLight: 'bg-stone-100', border: 'border-stone-700/40', badgeBg: 'bg-stone-100 text-stone-700', dot: 'bg-stone-700' },
+    bordeaux: { name: 'Bordeaux', primary: 'text-rose-900', bgPrimary: 'bg-rose-900', bgHover: 'hover:bg-rose-950', bgLight: 'bg-rose-50', border: 'border-rose-900/40', badgeBg: 'bg-rose-50 text-rose-900', dot: 'bg-rose-900' },
+    midnight: { name: 'Midnight', primary: 'text-zinc-900', bgPrimary: 'bg-zinc-900', bgHover: 'hover:bg-black', bgLight: 'bg-zinc-100', border: 'border-zinc-900/40', badgeBg: 'bg-zinc-100 text-zinc-900', dot: 'bg-zinc-900' }
   };
 
-  const currentTheme = themes[hotel.themeColor] || themes.tuscany;
+  const currentTheme = themes[hotel.themeColor] || themes.amber;
 
   const hotelSlug = hotel.name.toLowerCase().replace(/[^a-z0-9]/g, '-');
   const hotelUrl = `https://gastemappe24-pro.vercel.app/?hotel=${hotelSlug}`;
@@ -1284,7 +1284,7 @@ export default function App() {
                   </div>
                 </div>
 
-                {/* 8 RAKİP TEMA SEÇİCİ (COLOR THEMES) */}
+                {/* 8 ÖZGÜN TEMA SEÇİCİ (COLOR THEMES - SAHARA, AEGEAN, FOREST...) */}
                 <div className="bg-white p-5 rounded-2xl shadow-sm border border-stone-200 space-y-3">
                   <h3 className="font-bold text-xs text-slate-900 flex items-center gap-1.5">
                     <Settings className={`w-4 h-4 ${currentTheme.primary}`} /> {t.themeTitle} (8 Pro Temas)
