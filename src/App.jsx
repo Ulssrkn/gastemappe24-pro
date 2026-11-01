@@ -787,15 +787,22 @@ export default function App() {
   };
 
   const handleImageUpload = (e) => {
+    setUploadError('');
+    setUploadSuccess('');
     const files = Array.from(e.target.files);
     if (hotel.images.length + files.length > 5) {
       setUploadError('Maximale Anzahl von 5 Fotos erreicht!');
       return;
     }
     files.forEach((file) => {
+      if (file.size > 5 * 1024 * 1024) {
+        setUploadError(`Die Datei "${file.name}" überschreitet 5MB!`);
+        return;
+      }
       const reader = new FileReader();
       reader.onloadend = () => {
         setHotel((prev) => ({ ...prev, images: [...prev.images, reader.result] }));
+        setUploadSuccess('Foto erfolgreich hinzugefügt!');
       };
       reader.readAsDataURL(file);
     });
@@ -808,13 +815,17 @@ export default function App() {
   const handleLogoUpload = (e) => {
     const file = e.target.files[0];
     if (file) {
+      if (file.size > 2 * 1024 * 1024) {
+        setUploadError('Das Logo darf maximal 2MB groß sein.');
+        return;
+      }
       const reader = new FileReader();
       reader.onloadend = () => { setHotel((prev) => ({ ...prev, logoUrl: reader.result })); };
       reader.readAsDataURL(file);
     }
   };
 
-  // 1. DASHBOARD MODU (OTELCİ PANIELI - GUESTARY TARZI)
+  // 1. DASHBOARD MODU (OTELCİ PANENLİ - GUESTARY TARZI)
   if (appMode === 'dashboard') {
     return (
       <div className="min-h-screen bg-[#FBF9F5] font-sans text-slate-800 p-6 md:p-10 space-y-8">
@@ -842,7 +853,7 @@ export default function App() {
             </div>
           </div>
 
-          {/* MÜLK KARTI & DÜZENLEME SEKMELERİ */}
+          {/* MÜLK KARTI & DÜZENLEME PANENELİ */}
           <div className="bg-white rounded-3xl p-6 border border-stone-200 shadow-sm space-y-6">
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 border-b pb-6">
               <div className="flex items-center gap-4">
@@ -899,7 +910,7 @@ export default function App() {
               </div>
             </div>
 
-            {/* OTEL BİLGİLERİ DÜZENLEME */}
+            {/* 1. OTEL BİLGİLERİ DÜZENLEME */}
             <div className="space-y-4 pt-4 border-t">
               <h3 className="font-bold text-xs text-slate-900">{t.sec1Title}</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -916,10 +927,171 @@ export default function App() {
                   <input type="text" value={hotel.welcomeGreeting} placeholder="Automatisch übersetzt wenn leer" onChange={(e) => setHotel({ ...hotel, welcomeGreeting: e.target.value })} className="w-full p-2.5 text-xs border border-stone-200 rounded-xl" />
                 </div>
                 <div>
+                  <label className="block text-[10px] font-bold text-stone-500 uppercase mb-1">{t.lblPhone}</label>
+                  <input type="text" value={hotel.phone} onChange={(e) => setHotel({ ...hotel, phone: e.target.value })} className="w-full p-2.5 text-xs border border-stone-200 rounded-xl" />
+                </div>
+                <div>
+                  <label className="block text-[10px] font-bold text-stone-500 uppercase mb-1">{t.lblEmailField}</label>
+                  <input type="text" value={hotel.email} onChange={(e) => setHotel({ ...hotel, email: e.target.value })} className="w-full p-2.5 text-xs border border-stone-200 rounded-xl" />
+                </div>
+                <div>
                   <label className="block text-[10px] font-bold text-stone-500 uppercase mb-1">{t.lblAddress}</label>
                   <input type="text" value={hotel.address} onChange={(e) => setHotel({ ...hotel, address: e.target.value })} className="w-full p-2.5 text-xs border border-stone-200 rounded-xl" />
                 </div>
+                <div>
+                  <label className="block text-[10px] font-bold text-stone-500 uppercase mb-1">{t.lblWebsite}</label>
+                  <input type="text" value={hotel.website} onChange={(e) => setHotel({ ...hotel, website: e.target.value })} className="w-full p-2.5 text-xs border border-stone-200 rounded-xl" />
+                </div>
+                <div>
+                  <label className="block text-[10px] font-bold text-stone-500 uppercase mb-1">{t.lblGoogleReview}</label>
+                  <input type="text" value={hotel.googleReviewUrl} onChange={(e) => setHotel({ ...hotel, googleReviewUrl: e.target.value })} className="w-full p-2.5 text-xs border border-stone-200 rounded-xl" />
+                </div>
               </div>
+            </div>
+
+            {/* 2. LOGO HOCHLADEN */}
+            <div className="space-y-3 pt-4 border-t">
+              <h3 className="font-bold text-xs text-slate-900 flex items-center gap-1.5"><Upload className="w-4 h-4 text-amber-800" /> {t.sec2Title}</h3>
+              <div className="flex items-center gap-4">
+                {hotel.logoUrl ? <img src={hotel.logoUrl} alt="Logo" className="w-12 h-12 rounded-xl object-cover border" /> : <div className="w-12 h-12 rounded-xl bg-stone-100 border border-dashed flex items-center justify-center text-[10px] text-stone-400">No Logo</div>}
+                <label className="px-3 py-2 bg-stone-100 hover:bg-stone-200 text-slate-700 rounded-xl text-xs font-bold cursor-pointer transition">
+                  {t.btnLogoUpload}
+                  <input type="file" accept="image/*" onChange={handleLogoUpload} className="hidden" />
+                </label>
+              </div>
+            </div>
+
+            {/* 3 & 4. BILDERVERWALTUNG (SLIDER & FOTOS) */}
+            <div className="space-y-4 pt-4 border-t">
+              <div>
+                <h3 className="font-bold text-xs text-slate-900 flex items-center gap-1.5"><ImageIcon className="w-4 h-4 text-amber-800" /> {t.sec3Title}</h3>
+                <p className="text-[11px] text-slate-500 mt-1 font-medium">{t.sec4Title}</p>
+              </div>
+
+              {uploadError && <div className="bg-rose-50 border border-rose-200 text-rose-700 p-3 rounded-xl text-xs flex items-center gap-2"><AlertCircle className="w-4 h-4 shrink-0" /><span>{uploadError}</span></div>}
+              {uploadSuccess && <div className="bg-emerald-50 border border-emerald-200 text-emerald-700 p-3 rounded-xl text-xs flex items-center gap-2"><Check className="w-4 h-4 shrink-0" /><span>{uploadSuccess}</span></div>}
+
+              <div className="grid grid-cols-3 sm:grid-cols-5 gap-2">
+                {hotel.images.map((img, index) => (
+                  <div key={index} className="relative rounded-xl overflow-hidden h-20 group border border-slate-200">
+                    <img src={img} alt={`Upload ${index}`} className="w-full h-full object-cover" />
+                    <button onClick={() => handleRemoveImage(index)} className="absolute top-1 right-1 bg-rose-600 text-white p-1 rounded-full shadow hover:bg-rose-700 cursor-pointer"><Trash2 className="w-3 h-3" /></button>
+                  </div>
+                ))}
+                {hotel.images.length < 5 && (
+                  <label className="border-2 border-dashed border-stone-300 rounded-xl h-20 flex flex-col items-center justify-center cursor-pointer hover:bg-stone-50 transition">
+                    <Plus className="w-5 h-5 text-stone-400" />
+                    <span className="text-[10px] text-stone-500 font-medium mt-1">Foto</span>
+                    <input type="file" accept="image/*" multiple onChange={handleImageUpload} className="hidden" />
+                  </label>
+                )}
+              </div>
+            </div>
+
+            {/* 5. SCHNELLZUGRIFF DÜZENLEME & ÖZEL EKLEME */}
+            <div className="space-y-4 pt-4 border-t">
+              <h3 className="font-bold text-xs text-slate-900 flex items-center gap-1.5"><Wifi className="w-4 h-4 text-amber-800" /> {t.sec5Title}</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">{t.lblWifiSsid}</label>
+                  <input type="text" value={hotel.wifiSsid} onChange={(e) => setHotel({ ...hotel, wifiSsid: e.target.value })} className="w-full p-2.5 text-xs border border-stone-200 rounded-xl" />
+                </div>
+                <div>
+                  <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">{t.lblWifiPass}</label>
+                  <input type="text" value={hotel.wifiPass} onChange={(e) => setHotel({ ...hotel, wifiPass: e.target.value })} className="w-full p-2.5 text-xs border border-stone-200 rounded-xl" />
+                </div>
+                <div>
+                  <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">{t.lblBreakfastTime}</label>
+                  <input type="text" value={hotel.breakfastTime} onChange={(e) => setHotel({ ...hotel, breakfastTime: e.target.value })} className="w-full p-2.5 text-xs border border-stone-200 rounded-xl" />
+                </div>
+                <div>
+                  <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">{t.lblCheckInOut}</label>
+                  <input type="text" value={hotel.checkInOut} onChange={(e) => setHotel({ ...hotel, checkInOut: e.target.value })} className="w-full p-2.5 text-xs border border-stone-200 rounded-xl" />
+                </div>
+                <div className="md:col-span-2">
+                  <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">{t.lblParkingInfo}</label>
+                  <input type="text" value={hotel.parkingInfo} onChange={(e) => setHotel({ ...hotel, parkingInfo: e.target.value })} className="w-full p-2.5 text-xs border border-stone-200 rounded-xl" />
+                </div>
+              </div>
+
+              {/* Özel Eklenebilir Schnellzugriff */}
+              <div className="pt-3 border-t space-y-3">
+                <h4 className="font-bold text-[11px] text-amber-900 uppercase">Eigene Schnellzugriffe (Aktuell: {customQuickLinks.length}/2)</h4>
+                <div className="space-y-2">
+                  {customQuickLinks.map((item) => (
+                    <div key={item.id} className="flex items-center justify-between p-2.5 bg-stone-50 rounded-xl border text-xs">
+                      <div className="flex items-center gap-2">
+                        {renderCategoryIcon(item.iconName)}
+                        <div>
+                          <span className="font-bold block">{item.title}</span>
+                          <span className="text-[10px] text-stone-500">{item.description}</span>
+                        </div>
+                      </div>
+                      <button onClick={() => handleDeleteCustomQuick(item.id)} className="bg-rose-50 text-rose-600 p-1.5 rounded-lg cursor-pointer"><Trash2 className="w-3.5 h-3.5" /></button>
+                    </div>
+                  ))}
+                </div>
+
+                {customQuickLinks.length < 2 && (
+                  <form onSubmit={handleAddCustomQuick} className="grid grid-cols-1 sm:grid-cols-3 gap-2 pt-2">
+                    <input type="text" placeholder="Titel (z.B. Fahrradverleih)" value={newQuick.title} onChange={(e) => setNewQuick({ ...newQuick, title: e.target.value })} className="p-2 text-xs border rounded-xl" />
+                    <input type="text" placeholder="Beschreibung (z.B. Rezeption)" value={newQuick.description} onChange={(e) => setNewQuick({ ...newQuick, description: e.target.value })} className="p-2 text-xs border rounded-xl" />
+                    <div className="flex gap-2">
+                      <select value={newQuick.iconName} onChange={(e) => setNewQuick({ ...newQuick, iconName: e.target.value })} className="p-2 text-xs border rounded-xl bg-white w-full cursor-pointer">
+                        <option value="Info">Info</option>
+                        <option value="Phone">Telefon</option>
+                        <option value="Globe">Webseite</option>
+                        <option value="Coffee">Coffee</option>
+                      </select>
+                      <button type="submit" className="bg-amber-900 text-white px-3 py-2 rounded-xl text-xs font-bold shadow cursor-pointer shrink-0"><Plus className="w-4 h-4" /></button>
+                    </div>
+                  </form>
+                )}
+              </div>
+            </div>
+
+            {/* 6. KATEGORİ EKLEME, SİLME & ICON SEÇİMİ */}
+            <div className="space-y-4 pt-4 border-t">
+              <h3 className="font-bold text-xs text-slate-900 flex items-center gap-1.5"><Compass className="w-4 h-4 text-amber-800" /> {t.sec6Title}</h3>
+              <div className="space-y-2">
+                {categories.map((cat) => (
+                  <div key={cat.id} className="flex items-center justify-between p-3 bg-stone-50 rounded-xl border text-xs">
+                    <div className="flex items-center gap-3">
+                      {renderCategoryIcon(cat.iconName)}
+                      <div>
+                        <span className="font-bold block text-slate-900">{cat.title}</span>
+                        <span className="text-[10px] text-stone-500">{cat.subtitle}</span>
+                      </div>
+                    </div>
+                    <button onClick={() => handleDeleteCategory(cat.id)} className="bg-rose-50 text-rose-600 p-1.5 rounded-lg cursor-pointer"><Trash2 className="w-3.5 h-3.5" /></button>
+                  </div>
+                ))}
+              </div>
+
+              {/* Yeni Kategori Ekleme Formu */}
+              <form onSubmit={handleAddCategory} className="pt-3 border-t space-y-3">
+                <h4 className="font-bold text-[11px] text-amber-900 uppercase">{t.btnAddCategory}</h4>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                  <input type="text" placeholder="Titel (z.B. Pool & SPA)" value={newCat.title} onChange={(e) => setNewCat({ ...newCat, title: e.target.value })} className="p-2.5 text-xs border rounded-xl" />
+                  <input type="text" placeholder="Untertitel (z.B. Regeln & Zeiten)" value={newCat.subtitle} onChange={(e) => setNewCat({ ...newCat, subtitle: e.target.value })} className="p-2.5 text-xs border rounded-xl" />
+                </div>
+                <textarea rows="2" placeholder="Inhalt / Details..." value={newCat.content} onChange={(e) => setNewCat({ ...newCat, content: e.target.value })} className="w-full p-2.5 text-xs border rounded-xl"></textarea>
+                <div className="flex gap-2">
+                  <select value={newCat.iconName} onChange={(e) => setNewCat({ ...newCat, iconName: e.target.value })} className="p-2.5 text-xs border rounded-xl bg-white w-full cursor-pointer">
+                    <option value="Info">Info (Standard)</option>
+                    <option value="Utensils">Gastronomie (Utensils)</option>
+                    <option value="Heart">Wellness (Heart)</option>
+                    <option value="Compass">Umgebung (Compass)</option>
+                    <option value="Coffee">Frühstück (Coffee)</option>
+                    <option value="Car">Parken (Car)</option>
+                    <option value="Phone">Telefon (Phone)</option>
+                    <option value="Globe">Webseite (Globe)</option>
+                  </select>
+                  <button type="submit" className="bg-amber-900 text-white px-5 py-2.5 rounded-xl text-xs font-bold shadow cursor-pointer shrink-0 flex items-center gap-1">
+                    <Plus className="w-4 h-4" /> {t.btnCatSubmit}
+                  </button>
+                </div>
+              </form>
             </div>
 
           </div>
@@ -970,7 +1142,7 @@ export default function App() {
   return (
     <div className="min-h-screen bg-stone-50 font-sans text-slate-800 pb-32 max-w-md mx-auto shadow-2xl relative border-x border-slate-200">
       
-      {/* AUTH MODAL (E-POSTA & ŞİFRE) */}
+      {/* AUTH MODAL (E-POSTA & ŞİFRE GİRİŞİ) */}
       {isAuthModalOpen && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
           <div className="bg-white w-full max-w-sm p-6 rounded-3xl shadow-2xl space-y-4 text-slate-800">
@@ -1075,6 +1247,17 @@ export default function App() {
                   <div className={`flex items-center gap-2 ${currentTheme.primary}`}><Car className="w-5 h-5" /><span className="font-bold text-xs text-slate-900">{t.parkingTitle}</span></div>
                   <p className="text-[11px] text-slate-600">{hotel.parkingInfo}</p>
                 </div>
+
+                {/* Dinamik Özel Eklenen Schnellzugriff'ler */}
+                {customQuickLinks.map((item) => (
+                  <div key={item.id} className="bg-white p-4 rounded-2xl shadow-sm border border-stone-200 space-y-2">
+                    <div className={`flex items-center gap-2 ${currentTheme.primary}`}>
+                      {renderCategoryIcon(item.iconName)}
+                      <span className="font-bold text-xs text-slate-900">{item.title}</span>
+                    </div>
+                    <p className="text-[11px] text-slate-600">{item.description}</p>
+                  </div>
+                ))}
               </div>
             </div>
           ) : (
