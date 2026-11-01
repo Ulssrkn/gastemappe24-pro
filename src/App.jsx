@@ -599,12 +599,12 @@ export default function App() {
   const [scanCount] = useState(142);
   const [daysLeft] = useState(24);
 
-  // GLOBAL & WHITE-LABEL STATE
+  // GLOBAL & WHITE-LABEL STATE (8 RENK DESTEĞİ İLE)
   const [hotel, setHotel] = useState({
     logoUrl: '', 
     name: 'Mein Hotel', 
     locationTitle: 'REGION / STANDORT',
-    welcomeGreeting: '', // Boş kaldığında %100 otomatik 10 dile çevrilir
+    welcomeGreeting: '', 
     phone: '+49 123 456789',
     email: 'info@mein-hotel.de',
     address: 'Musterstadt, Deutschland',
@@ -615,21 +615,26 @@ export default function App() {
     breakfastTime: '07:00 - 10:30 Uhr',
     checkInOut: 'Check-in: ab 15:00 | Check-out: bis 11:00',
     parkingInfo: 'Kostenfreie Parkplätze am Haus verfügbar.',
-    themeColor: 'amber',
+    themeColor: 'tuscany', // Varsayılan rakip teması
     images: [
       'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1000&q=80',
       'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=1000&q=80'
     ]
   });
 
+  // 8 RAKIP TEMA PALETİ
   const themes = {
-    amber: { primary: 'text-amber-800', bgPrimary: 'bg-amber-800', bgHover: 'hover:bg-amber-900', bgLight: 'bg-amber-50', border: 'border-amber-800/40', badgeBg: 'bg-amber-50 text-amber-800' },
-    emerald: { primary: 'text-emerald-800', bgPrimary: 'bg-emerald-800', bgHover: 'hover:bg-emerald-900', bgLight: 'bg-emerald-50', border: 'border-emerald-800/40', badgeBg: 'bg-emerald-50 text-emerald-800' },
-    slate: { primary: 'text-slate-800', bgPrimary: 'bg-slate-800', bgHover: 'hover:bg-slate-900', bgLight: 'bg-slate-50', border: 'border-slate-800/40', badgeBg: 'bg-slate-100 text-slate-800' },
-    navy: { primary: 'text-blue-900', bgPrimary: 'bg-blue-900', bgHover: 'hover:bg-blue-950', bgLight: 'bg-blue-50', border: 'border-blue-900/40', badgeBg: 'bg-blue-50 text-blue-900' }
+    warmSand: { name: 'Warm Sand', primary: 'text-amber-700', bgPrimary: 'bg-amber-700', bgHover: 'hover:bg-amber-800', bgLight: 'bg-amber-50', border: 'border-amber-700/40', badgeBg: 'bg-amber-50 text-amber-700', dot: 'bg-amber-700' },
+    coast: { name: 'Coast', primary: 'text-teal-700', bgPrimary: 'bg-teal-700', bgHover: 'hover:bg-teal-800', bgLight: 'bg-teal-50', border: 'border-teal-700/40', badgeBg: 'bg-teal-50 text-teal-700', dot: 'bg-teal-700' },
+    alpine: { name: 'Alpine', primary: 'text-emerald-800', bgPrimary: 'bg-emerald-800', bgHover: 'hover:bg-emerald-900', bgLight: 'bg-emerald-50', border: 'border-emerald-800/40', badgeBg: 'bg-emerald-50 text-emerald-800', dot: 'bg-emerald-800' },
+    tuscany: { name: 'Tuscany', primary: 'text-amber-900', bgPrimary: 'bg-amber-900', bgHover: 'hover:bg-amber-950', bgLight: 'bg-amber-50', border: 'border-amber-900/40', badgeBg: 'bg-amber-100 text-amber-900', dot: 'bg-amber-900' },
+    city: { name: 'City', primary: 'text-slate-700', bgPrimary: 'bg-slate-700', bgHover: 'hover:bg-slate-800', bgLight: 'bg-slate-50', border: 'border-slate-700/40', badgeBg: 'bg-slate-100 text-slate-700', dot: 'bg-slate-700' },
+    nordic: { name: 'Nordic', primary: 'text-stone-700', bgPrimary: 'bg-stone-700', bgHover: 'hover:bg-stone-800', bgLight: 'bg-stone-100', border: 'border-stone-700/40', badgeBg: 'bg-stone-100 text-stone-700', dot: 'bg-stone-700' },
+    berry: { name: 'Berry', primary: 'text-rose-900', bgPrimary: 'bg-rose-900', bgHover: 'hover:bg-rose-950', bgLight: 'bg-rose-50', border: 'border-rose-900/40', badgeBg: 'bg-rose-50 text-rose-900', dot: 'bg-rose-900' },
+    night: { name: 'Night', primary: 'text-zinc-900', bgPrimary: 'bg-zinc-900', bgHover: 'hover:bg-black', bgLight: 'bg-zinc-100', border: 'border-zinc-900/40', badgeBg: 'bg-zinc-100 text-zinc-900', dot: 'bg-zinc-900' }
   };
 
-  const currentTheme = themes[hotel.themeColor] || themes.amber;
+  const currentTheme = themes[hotel.themeColor] || themes.tuscany;
 
   const hotelSlug = hotel.name.toLowerCase().replace(/[^a-z0-9]/g, '-');
   const hotelUrl = `https://gastemappe24-pro.vercel.app/?hotel=${hotelSlug}`;
@@ -1039,7 +1044,7 @@ export default function App() {
                   </div>
                 </div>
 
-                {/* SEÇENEK 1: TAM GENİŞLİKTE (FULL-WIDTH) SADE & ZARİF HAVA DURUMU KARTI */}
+                {/* HAVA DURUMU KARTI */}
                 <div className="bg-white p-4 rounded-2xl shadow-sm border border-stone-200 flex items-center justify-between">
                   <div className="flex items-center gap-3">
                     <div className={`p-3 ${currentTheme.bgLight} rounded-xl ${currentTheme.primary}`}>
@@ -1279,36 +1284,22 @@ export default function App() {
                   </div>
                 </div>
 
-                {/* WHITE-LABEL TEMA SEÇİCİ */}
+                {/* 8 RAKİP TEMA SEÇİCİ (COLOR THEMES) */}
                 <div className="bg-white p-5 rounded-2xl shadow-sm border border-stone-200 space-y-3">
                   <h3 className="font-bold text-xs text-slate-900 flex items-center gap-1.5">
-                    <Settings className={`w-4 h-4 ${currentTheme.primary}`} /> {t.themeTitle}
+                    <Settings className={`w-4 h-4 ${currentTheme.primary}`} /> {t.themeTitle} (8 Pro Temas)
                   </h3>
-                  <div className="grid grid-cols-4 gap-2">
-                    <button 
-                      onClick={() => isEditUnlocked && setHotel({...hotel, themeColor: 'amber'})}
-                      className={`p-3 rounded-xl border text-xs font-bold bg-amber-800 text-white flex flex-col items-center gap-1 ${hotel.themeColor === 'amber' ? 'ring-2 ring-slate-900' : 'opacity-70'} ${!isEditUnlocked ? 'cursor-not-allowed' : 'cursor-pointer'}`}
-                    >
-                      <span>Klassik</span>
-                    </button>
-                    <button 
-                      onClick={() => isEditUnlocked && setHotel({...hotel, themeColor: 'emerald'})}
-                      className={`p-3 rounded-xl border text-xs font-bold bg-emerald-800 text-white flex flex-col items-center gap-1 ${hotel.themeColor === 'emerald' ? 'ring-2 ring-slate-900' : 'opacity-70'} ${!isEditUnlocked ? 'cursor-not-allowed' : 'cursor-pointer'}`}
-                    >
-                      <span>Wellness</span>
-                    </button>
-                    <button 
-                      onClick={() => isEditUnlocked && setHotel({...hotel, themeColor: 'slate'})}
-                      className={`p-3 rounded-xl border text-xs font-bold bg-slate-800 text-white flex flex-col items-center gap-1 ${hotel.themeColor === 'slate' ? 'ring-2 ring-slate-900' : 'opacity-70'} ${!isEditUnlocked ? 'cursor-not-allowed' : 'cursor-pointer'}`}
-                    >
-                      <span>Modern</span>
-                    </button>
-                    <button 
-                      onClick={() => isEditUnlocked && setHotel({...hotel, themeColor: 'navy'})}
-                      className={`p-3 rounded-xl border text-xs font-bold bg-blue-900 text-white flex flex-col items-center gap-1 ${hotel.themeColor === 'navy' ? 'ring-2 ring-slate-900' : 'opacity-70'} ${!isEditUnlocked ? 'cursor-not-allowed' : 'cursor-pointer'}`}
-                    >
-                      <span>Navy</span>
-                    </button>
+                  <div className="grid grid-cols-2 gap-2">
+                    {Object.entries(themes).map(([key, th]) => (
+                      <button 
+                        key={key}
+                        onClick={() => isEditUnlocked && setHotel({...hotel, themeColor: key})}
+                        className={`p-3 rounded-xl border text-xs font-bold flex items-center justify-between transition ${hotel.themeColor === key ? 'ring-2 ring-slate-900 bg-stone-100 shadow-sm' : 'bg-white opacity-80 hover:opacity-100'} ${!isEditUnlocked ? 'cursor-not-allowed' : 'cursor-pointer'}`}
+                      >
+                        <span className="text-slate-800">{th.name}</span>
+                        <div className={`w-4 h-4 rounded-full ${th.dot} shadow-sm border border-white`}></div>
+                      </button>
+                    ))}
                   </div>
                 </div>
 
