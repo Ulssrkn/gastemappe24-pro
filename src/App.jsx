@@ -4,7 +4,8 @@ import {
   Settings, Phone, Plus, Trash2, 
   Check, Image as ImageIcon, Copy,
   ChevronRight, ArrowRight, Upload, AlertCircle, Lock, Unlock,
-  Utensils, Heart, Compass, Coffee, Car, Clock, ShieldCheck, Edit3, Mail, Globe, ExternalLink, QrCode, Printer, BarChart3, Star, Navigation, Sun, LogOut, User
+  Utensils, Heart, Compass, Coffee, Car, Clock, ShieldCheck, Edit3, Mail, Globe, ExternalLink, QrCode, Printer, BarChart3, Star, Navigation, Sun, LogOut, User,
+  Wine, Sparkles, Tv, Waves, Dumbbell, Key, Bed
 } from 'lucide-react';
 
 const translations = {
@@ -66,8 +67,7 @@ const translations = {
     lblParkingInfo: "Parkplatz Info",
     btnLogoUpload: "Logo Wählen / Ändern",
     btnAddCategory: "Neue Kategorie hinzufügen",
-    btnCatSubmit: "Kategorie Hinzufügen",
-    customBadge: "Wichtige Info"
+    btnCatSubmit: "Kategorie Hinzufügen"
   },
   en: {
     welcomeBadge: "Digital Guest Directory",
@@ -127,8 +127,7 @@ const translations = {
     lblParkingInfo: "Parking Info",
     btnLogoUpload: "Select / Change Logo",
     btnAddCategory: "Add New Category",
-    btnCatSubmit: "Add Category",
-    customBadge: "Guest Notice"
+    btnCatSubmit: "Add Category"
   },
   it: {
     welcomeBadge: "Guida Digitale",
@@ -188,8 +187,7 @@ const translations = {
     lblParkingInfo: "Info Parcheggio",
     btnLogoUpload: "Carica Logo",
     btnAddCategory: "Aggiungi Categoria",
-    btnCatSubmit: "Salva Categoria",
-    customBadge: "Informazione"
+    btnCatSubmit: "Salva Categoria"
   },
   fr: {
     welcomeBadge: "Livret d'Accueil Numérique",
@@ -249,8 +247,7 @@ const translations = {
     lblParkingInfo: "Infos Parking",
     btnLogoUpload: "Télécharger le logo",
     btnAddCategory: "Ajouter une catégorie",
-    btnCatSubmit: "Ajouter",
-    customBadge: "Information"
+    btnCatSubmit: "Ajouter"
   },
   es: {
     welcomeBadge: "Carpeta Digital",
@@ -310,8 +307,7 @@ const translations = {
     lblParkingInfo: "Info Parking",
     btnLogoUpload: "Subir Logo",
     btnAddCategory: "Añadir Categoría",
-    btnCatSubmit: "Guardar",
-    customBadge: "Información"
+    btnCatSubmit: "Guardar"
   },
   tr: {
     welcomeBadge: "Dijital Misafir Rehberi",
@@ -371,8 +367,7 @@ const translations = {
     lblParkingInfo: "Otopark Bilgisi",
     btnLogoUpload: "Logo Seç / Değiştir",
     btnAddCategory: "Yeni Kategori Ekle",
-    btnCatSubmit: "Kategori Ekle",
-    customBadge: "Önemli Bilgi"
+    btnCatSubmit: "Kategori Ekle"
   },
   sv: {
     welcomeBadge: "Digital Gästmapp",
@@ -432,8 +427,7 @@ const translations = {
     lblParkingInfo: "Parkeringsinfo",
     btnLogoUpload: "Välj Logo",
     btnAddCategory: "Lägg till kategori",
-    btnCatSubmit: "Lägg till",
-    customBadge: "Viktig info"
+    btnCatSubmit: "Lägg till"
   },
   no: {
     welcomeBadge: "Digital Gjestemappe",
@@ -493,8 +487,7 @@ const translations = {
     lblParkingInfo: "Parkeringsinfo",
     btnLogoUpload: "Velg Logo",
     btnAddCategory: "Legg till kategori",
-    btnCatSubmit: "Legg till",
-    customBadge: "Viktig info"
+    btnCatSubmit: "Legg till"
   },
   hr: {
     welcomeBadge: "Digitalni Mapa",
@@ -554,8 +547,7 @@ const translations = {
     lblParkingInfo: "Info Parking",
     btnLogoUpload: "Učitaj Logo",
     btnAddCategory: "Dodaj Kategoriju",
-    btnCatSubmit: "Spremi",
-    customBadge: "Važna info"
+    btnCatSubmit: "Spremi"
   },
   sq: {
     welcomeBadge: "Dosja Digjitale",
@@ -615,8 +607,7 @@ const translations = {
     lblParkingInfo: "Info Parkimi",
     btnLogoUpload: "Ngarko Logo",
     btnAddCategory: "Shto Kategori",
-    btnCatSubmit: "Ruaj",
-    customBadge: "Informacion i rëndësishëm"
+    btnCatSubmit: "Ruaj"
   }
 };
 
@@ -779,16 +770,27 @@ export default function App() {
     setCategories(categories.filter(cat => cat.id !== id));
   };
 
+  // ZENGİN İKON RENDER FONKSİYONU
   const renderCategoryIcon = (iconName) => {
+    const props = { className: `w-5 h-5 ${currentTheme.primary}` };
     switch (iconName) {
-      case 'Utensils': return <Utensils className={`w-5 h-5 ${currentTheme.primary}`} />;
-      case 'Heart': return <Heart className={`w-5 h-5 ${currentTheme.primary}`} />;
-      case 'Compass': return <Compass className={`w-5 h-5 ${currentTheme.primary}`} />;
-      case 'Coffee': return <Coffee className={`w-5 h-5 ${currentTheme.primary}`} />;
-      case 'Car': return <Car className={`w-5 h-5 ${currentTheme.primary}`} />;
-      case 'Phone': return <Phone className={`w-5 h-5 ${currentTheme.primary}`} />;
-      case 'Globe': return <Globe className={`w-5 h-5 ${currentTheme.primary}`} />;
-      default: return <Info className={`w-5 h-5 ${currentTheme.primary}`} />;
+      case 'Utensils': return <Utensils {...props} />;
+      case 'Heart': return <Heart {...props} />;
+      case 'Compass': return <Compass {...props} />;
+      case 'Coffee': return <Coffee {...props} />;
+      case 'Car': return <Car {...props} />;
+      case 'Phone': return <Phone {...props} />;
+      case 'Globe': return <Globe {...props} />;
+      case 'Wine': return <Wine {...props} />;
+      case 'Sparkles': return <Sparkles {...props} />;
+      case 'Tv': return <Tv {...props} />;
+      case 'Waves': return <Waves {...props} />;
+      case 'Dumbbell': return <Dumbbell {...props} />;
+      case 'Key': return <Key {...props} />;
+      case 'Bed': return <Bed {...props} />;
+      case 'Clock': return <Clock {...props} />;
+      case 'ShieldCheck': return <ShieldCheck {...props} />;
+      default: return <Info {...props} />;
     }
   };
 
@@ -874,120 +876,7 @@ export default function App() {
               </button>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="bg-slate-900 text-white p-5 rounded-2xl space-y-4">
-                <span className="text-xs font-bold uppercase tracking-wider text-amber-400">{t.trialTitle} ({daysLeft} {t.trialDaysLeft})</span>
-                <div className="grid grid-cols-2 gap-3">
-                  <div className="bg-white/5 p-3 rounded-xl">
-                    <span className="text-[10px] text-stone-400 block">{t.statsScans}</span>
-                    <span className="text-xl font-black">{scanCount}</span>
-                  </div>
-                  <div className="bg-white/5 p-3 rounded-xl">
-                    <span className="text-[10px] text-stone-400 block">{t.statsActiveRooms}</span>
-                    <span className="text-xl font-black text-sky-400">100%</span>
-                  </div>
-                </div>
-              </div>
-
-              <div className="bg-stone-50 p-5 rounded-2xl border border-stone-200 text-center space-y-3">
-                <div className="font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2">
-                  <QrCode className="w-4 h-4 text-amber-800" /> {t.qrTitle}
-                </div>
-                <div className="grid grid-cols-3 gap-2">
-                  <button onClick={() => handlePrint('A4')} className="bg-stone-900 text-white p-2 rounded-xl text-[10px] font-bold cursor-pointer">{t.printA4}</button>
-                  <button onClick={() => handlePrint('A5')} className="bg-stone-900 text-white p-2 rounded-xl text-[10px] font-bold cursor-pointer">{t.printA5}</button>
-                  <button onClick={() => handlePrint('Visitenkarte')} className="bg-stone-900 text-white p-2 rounded-xl text-[10px] font-bold cursor-pointer">{t.printCard}</button>
-                </div>
-              </div>
-            </div>
-
-            <div className="space-y-3 pt-4 border-t">
-              <h3 className="font-bold text-xs text-slate-900">{t.themeTitle} (8 Pro Temas)</h3>
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-                {Object.entries(themes).map(([key, th]) => (
-                  <button key={key} onClick={() => setHotel({...hotel, themeColor: key})} className={`p-3 rounded-xl border text-xs font-bold flex items-center justify-between transition ${hotel.themeColor === key ? 'ring-2 ring-slate-900 bg-stone-100 shadow-sm' : 'bg-white'}`}>
-                    <span>{th.name}</span>
-                    <div className={`w-4 h-4 rounded-full ${th.dot}`}></div>
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            <div className="space-y-4 pt-4 border-t">
-              <h3 className="font-bold text-xs text-slate-900">{t.sec1Title}</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                <div>
-                  <label className="block text-[10px] font-bold text-stone-500 uppercase mb-1">{t.lblHotelName}</label>
-                  <input type="text" value={hotel.name} onChange={(e) => setHotel({ ...hotel, name: e.target.value })} className="w-full p-2.5 text-xs border border-stone-200 rounded-xl" />
-                </div>
-                <div>
-                  <label className="block text-[10px] font-bold text-stone-500 uppercase mb-1">Standort / Region</label>
-                  <input type="text" value={hotel.locationTitle} onChange={(e) => setHotel({ ...hotel, locationTitle: e.target.value })} className="w-full p-2.5 text-xs border border-stone-200 rounded-xl" />
-                </div>
-                <div>
-                  <label className="block text-[10px] font-bold text-stone-500 uppercase mb-1">{t.lblGreeting}</label>
-                  <input type="text" value={hotel.welcomeGreeting} placeholder="Automatisch übersetzt wenn leer" onChange={(e) => setHotel({ ...hotel, welcomeGreeting: e.target.value })} className="w-full p-2.5 text-xs border border-stone-200 rounded-xl" />
-                </div>
-                <div>
-                  <label className="block text-[10px] font-bold text-stone-500 uppercase mb-1">{t.lblPhone}</label>
-                  <input type="text" value={hotel.phone} onChange={(e) => setHotel({ ...hotel, phone: e.target.value })} className="w-full p-2.5 text-xs border border-stone-200 rounded-xl" />
-                </div>
-                <div>
-                  <label className="block text-[10px] font-bold text-stone-500 uppercase mb-1">{t.lblEmailField}</label>
-                  <input type="text" value={hotel.email} onChange={(e) => setHotel({ ...hotel, email: e.target.value })} className="w-full p-2.5 text-xs border border-stone-200 rounded-xl" />
-                </div>
-                <div>
-                  <label className="block text-[10px] font-bold text-stone-500 uppercase mb-1">{t.lblAddress}</label>
-                  <input type="text" value={hotel.address} onChange={(e) => setHotel({ ...hotel, address: e.target.value })} className="w-full p-2.5 text-xs border border-stone-200 rounded-xl" />
-                </div>
-                <div>
-                  <label className="block text-[10px] font-bold text-stone-500 uppercase mb-1">{t.lblWebsite}</label>
-                  <input type="text" value={hotel.website} onChange={(e) => setHotel({ ...hotel, website: e.target.value })} className="w-full p-2.5 text-xs border border-stone-200 rounded-xl" />
-                </div>
-                <div>
-                  <label className="block text-[10px] font-bold text-stone-500 uppercase mb-1">{t.lblGoogleReview}</label>
-                  <input type="text" value={hotel.googleReviewUrl} onChange={(e) => setHotel({ ...hotel, googleReviewUrl: e.target.value })} className="w-full p-2.5 text-xs border border-stone-200 rounded-xl" />
-                </div>
-              </div>
-            </div>
-
-            <div className="space-y-3 pt-4 border-t">
-              <h3 className="font-bold text-xs text-slate-900 flex items-center gap-1.5"><Upload className="w-4 h-4 text-amber-800" /> {t.sec2Title}</h3>
-              <div className="flex items-center gap-4">
-                {hotel.logoUrl ? <img src={hotel.logoUrl} alt="Logo" className="w-12 h-12 rounded-xl object-cover border" /> : <div className="w-12 h-12 rounded-xl bg-stone-100 border border-dashed flex items-center justify-center text-[10px] text-stone-400">No Logo</div>}
-                <label className="px-3 py-2 bg-stone-100 hover:bg-stone-200 text-slate-700 rounded-xl text-xs font-bold cursor-pointer transition">
-                  {t.btnLogoUpload}
-                  <input type="file" accept="image/*" onChange={handleLogoUpload} className="hidden" />
-                </label>
-              </div>
-            </div>
-
-            <div className="space-y-4 pt-4 border-t">
-              <div>
-                <h3 className="font-bold text-xs text-slate-900 flex items-center gap-1.5"><ImageIcon className="w-4 h-4 text-amber-800" /> {t.sec3Title}</h3>
-                <p className="text-[11px] text-slate-500 mt-1 font-medium">{t.sec4Title}</p>
-              </div>
-
-              {uploadError && <div className="bg-rose-50 border border-rose-200 text-rose-700 p-3 rounded-xl text-xs flex items-center gap-2"><AlertCircle className="w-4 h-4 shrink-0" /><span>{uploadError}</span></div>}
-              {uploadSuccess && <div className="bg-emerald-50 border border-emerald-200 text-emerald-700 p-3 rounded-xl text-xs flex items-center gap-2"><Check className="w-4 h-4 shrink-0" /><span>{uploadSuccess}</span></div>}
-
-              <div className="grid grid-cols-3 sm:grid-cols-5 gap-2">
-                {hotel.images.map((img, index) => (
-                  <div key={index} className="relative rounded-xl overflow-hidden h-20 group border border-slate-200">
-                    <img src={img} alt={`Upload ${index}`} className="w-full h-full object-cover" />
-                    <button onClick={() => handleRemoveImage(index)} className="absolute top-1 right-1 bg-rose-600 text-white p-1 rounded-full shadow hover:bg-rose-700 cursor-pointer"><Trash2 className="w-3 h-3" /></button>
-                  </div>
-                ))}
-                {hotel.images.length < 5 && (
-                  <label className="border-2 border-dashed border-stone-300 rounded-xl h-20 flex flex-col items-center justify-center cursor-pointer hover:bg-stone-50 transition">
-                    <Plus className="w-5 h-5 text-stone-400" />
-                    <span className="text-[10px] text-stone-500 font-medium mt-1">Foto</span>
-                    <input type="file" accept="image/*" multiple onChange={handleImageUpload} className="hidden" />
-                  </label>
-                )}
-              </div>
-            </div>
-
+            {/* SCHNELLZUGRIFF (ÖZEL HIZLI ERİŞİM EKLEME - ZENGİN İKONLARLA) */}
             <div className="space-y-4 pt-4 border-t">
               <h3 className="font-bold text-xs text-slate-900 flex items-center gap-1.5"><Wifi className="w-4 h-4 text-amber-800" /> {t.sec5Title}</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -998,18 +887,6 @@ export default function App() {
                 <div>
                   <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">{t.lblWifiPass}</label>
                   <input type="text" value={hotel.wifiPass} onChange={(e) => setHotel({ ...hotel, wifiPass: e.target.value })} className="w-full p-2.5 text-xs border border-stone-200 rounded-xl" />
-                </div>
-                <div>
-                  <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">{t.lblBreakfastTime}</label>
-                  <input type="text" value={hotel.breakfastTime} onChange={(e) => setHotel({ ...hotel, breakfastTime: e.target.value })} className="w-full p-2.5 text-xs border border-stone-200 rounded-xl" />
-                </div>
-                <div>
-                  <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">{t.lblCheckInOut}</label>
-                  <input type="text" value={hotel.checkInOut} onChange={(e) => setHotel({ ...hotel, checkInOut: e.target.value })} className="w-full p-2.5 text-xs border border-stone-200 rounded-xl" />
-                </div>
-                <div className="md:col-span-2">
-                  <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">{t.lblParkingInfo}</label>
-                  <input type="text" value={hotel.parkingInfo} onChange={(e) => setHotel({ ...hotel, parkingInfo: e.target.value })} className="w-full p-2.5 text-xs border border-stone-200 rounded-xl" />
                 </div>
               </div>
 
@@ -1022,7 +899,7 @@ export default function App() {
                         {renderCategoryIcon(item.iconName)}
                         <div>
                           <span className="font-bold block">{item.title}</span>
-                          <span className="text-[10px] text-stone-500">{t.customBadge}</span>
+                          <span className="text-[10px] text-stone-500">{item.description}</span>
                         </div>
                       </div>
                       <button onClick={() => handleDeleteCustomQuick(item.id)} className="bg-rose-50 text-rose-600 p-1.5 rounded-lg cursor-pointer"><Trash2 className="w-3.5 h-3.5" /></button>
@@ -1032,14 +909,19 @@ export default function App() {
 
                 {customQuickLinks.length < 2 && (
                   <form onSubmit={handleAddCustomQuick} className="grid grid-cols-1 sm:grid-cols-3 gap-2 pt-2">
-                    <input type="text" placeholder="Titel (z.B. Fahrradverleih)" value={newQuick.title} onChange={(e) => setNewQuick({ ...newQuick, title: e.target.value })} className="p-2 text-xs border rounded-xl" />
-                    <input type="text" placeholder="Beschreibung (z.B. Rezeption)" value={newQuick.description} onChange={(e) => setNewQuick({ ...newQuick, description: e.target.value })} className="p-2 text-xs border rounded-xl" />
+                    <input type="text" placeholder="Titel (z.B. Strandbar)" value={newQuick.title} onChange={(e) => setNewQuick({ ...newQuick, title: e.target.value })} className="p-2 text-xs border rounded-xl" />
+                    <input type="text" placeholder="Beschreibung (z.B. 10 Uhr)" value={newQuick.description} onChange={(e) => setNewQuick({ ...newQuick, description: e.target.value })} className="p-2 text-xs border rounded-xl" />
                     <div className="flex gap-2">
                       <select value={newQuick.iconName} onChange={(e) => setNewQuick({ ...newQuick, iconName: e.target.value })} className="p-2 text-xs border rounded-xl bg-white w-full cursor-pointer">
                         <option value="Info">Info</option>
                         <option value="Phone">Telefon</option>
                         <option value="Globe">Webseite</option>
                         <option value="Coffee">Coffee</option>
+                        <option value="Wine">Bar / Wein</option>
+                        <option value="Sparkles">Wellness</option>
+                        <option value="Waves">Pool / Strand</option>
+                        <option value="Dumbbell">Gym / Sport</option>
+                        <option value="Key">Key / Check-in</option>
                       </select>
                       <button type="submit" className="bg-amber-900 text-white px-3 py-2 rounded-xl text-xs font-bold shadow cursor-pointer shrink-0"><Plus className="w-4 h-4" /></button>
                     </div>
@@ -1048,6 +930,7 @@ export default function App() {
               </div>
             </div>
 
+            {/* KATEGORİ EKLEME (ZENGİN İKONLARLA) */}
             <div className="space-y-4 pt-4 border-t">
               <h3 className="font-bold text-xs text-slate-900 flex items-center gap-1.5"><Compass className="w-4 h-4 text-amber-800" /> {t.sec6Title}</h3>
               <div className="space-y-2">
@@ -1075,13 +958,17 @@ export default function App() {
                 <div className="flex gap-2">
                   <select value={newCat.iconName} onChange={(e) => setNewCat({ ...newCat, iconName: e.target.value })} className="p-2.5 text-xs border rounded-xl bg-white w-full cursor-pointer">
                     <option value="Info">Info (Standard)</option>
-                    <option value="Utensils">Gastronomie (Utensils)</option>
-                    <option value="Heart">Wellness (Heart)</option>
-                    <option value="Compass">Umgebung (Compass)</option>
-                    <option value="Coffee">Frühstück (Coffee)</option>
-                    <option value="Car">Parken (Car)</option>
-                    <option value="Phone">Telefon (Phone)</option>
-                    <option value="Globe">Webseite (Globe)</option>
+                    <option value="Utensils">Gastronomie</option>
+                    <option value="Heart">Wellness / Spa</option>
+                    <option value="Compass">Umgebung</option>
+                    <option value="Coffee">Frühstück</option>
+                    <option value="Car">Parken</option>
+                    <option value="Phone">Telefon</option>
+                    <option value="Wine">Bar & Drinks</option>
+                    <option value="Sparkles">Highlights</option>
+                    <option value="Waves">Pool & Strand</option>
+                    <option value="Dumbbell">Fitness</option>
+                    <option value="Bed">Zimmerinfo</option>
                   </select>
                   <button type="submit" className="bg-amber-900 text-white px-5 py-2.5 rounded-xl text-xs font-bold shadow cursor-pointer shrink-0 flex items-center gap-1">
                     <Plus className="w-4 h-4" /> {t.btnCatSubmit}
@@ -1134,7 +1021,7 @@ export default function App() {
     );
   }
 
-  // 3. MİSAFİR REHBER EKRANI
+  // 3. MİSAFİR REHBER EKRANI (ÖZEL ALANLARDA ROZET YOK - TERTEMİZ)
   return (
     <div className="min-h-screen bg-stone-50 font-sans text-slate-800 pb-32 max-w-md mx-auto shadow-2xl relative border-x border-slate-200">
       
@@ -1237,16 +1124,14 @@ export default function App() {
                   <p className="text-[11px] text-slate-600">{hotel.parkingInfo}</p>
                 </div>
 
+                {/* ÖZEL EKLENEN HIZLI ERİŞİMLER (ROZETSİZ, TEMİZ VE PROFESYONEL) */}
                 {customQuickLinks.map((item) => (
                   <div key={item.id} className="bg-white p-4 rounded-2xl shadow-sm border border-stone-200 space-y-1">
                     <div className={`flex items-center gap-2 ${currentTheme.primary}`}>
                       {renderCategoryIcon(item.iconName)}
                       <span className="font-bold text-xs text-slate-900">{item.title}</span>
                     </div>
-                    <p className="text-[11px] text-slate-600">{item.description}</p>
-                    <span className="inline-block text-[9px] font-extrabold uppercase tracking-wider text-amber-800 bg-amber-50 px-2 py-0.5 rounded-full mt-1">
-                      {t.customBadge}
-                    </span>
+                    <p className="text-[11px] text-slate-600 pt-1">{item.description}</p>
                   </div>
                 ))}
               </div>
