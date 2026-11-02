@@ -66,7 +66,8 @@ const translations = {
     lblParkingInfo: "Parkplatz Info",
     btnLogoUpload: "Logo Wählen / Ändern",
     btnAddCategory: "Neue Kategorie hinzufügen",
-    btnCatSubmit: "Kategorie Hinzufügen"
+    btnCatSubmit: "Kategorie Hinzufügen",
+    customBadge: "Wichtige Info"
   },
   en: {
     welcomeBadge: "Digital Guest Directory",
@@ -126,7 +127,8 @@ const translations = {
     lblParkingInfo: "Parking Info",
     btnLogoUpload: "Select / Change Logo",
     btnAddCategory: "Add New Category",
-    btnCatSubmit: "Add Category"
+    btnCatSubmit: "Add Category",
+    customBadge: "Guest Notice"
   },
   it: {
     welcomeBadge: "Guida Digitale",
@@ -186,7 +188,8 @@ const translations = {
     lblParkingInfo: "Info Parcheggio",
     btnLogoUpload: "Carica Logo",
     btnAddCategory: "Aggiungi Categoria",
-    btnCatSubmit: "Salva Categoria"
+    btnCatSubmit: "Salva Categoria",
+    customBadge: "Informazione"
   },
   fr: {
     welcomeBadge: "Livret d'Accueil Numérique",
@@ -246,7 +249,8 @@ const translations = {
     lblParkingInfo: "Infos Parking",
     btnLogoUpload: "Télécharger le logo",
     btnAddCategory: "Ajouter une catégorie",
-    btnCatSubmit: "Ajouter"
+    btnCatSubmit: "Ajouter",
+    customBadge: "Information"
   },
   es: {
     welcomeBadge: "Carpeta Digital",
@@ -306,7 +310,8 @@ const translations = {
     lblParkingInfo: "Info Parking",
     btnLogoUpload: "Subir Logo",
     btnAddCategory: "Añadir Categoría",
-    btnCatSubmit: "Guardar"
+    btnCatSubmit: "Guardar",
+    customBadge: "Información"
   },
   tr: {
     welcomeBadge: "Dijital Misafir Rehberi",
@@ -366,7 +371,8 @@ const translations = {
     lblParkingInfo: "Otopark Bilgisi",
     btnLogoUpload: "Logo Seç / Değiştir",
     btnAddCategory: "Yeni Kategori Ekle",
-    btnCatSubmit: "Kategori Ekle"
+    btnCatSubmit: "Kategori Ekle",
+    customBadge: "Önemli Bilgi"
   },
   sv: {
     welcomeBadge: "Digital Gästmapp",
@@ -426,7 +432,8 @@ const translations = {
     lblParkingInfo: "Parkeringsinfo",
     btnLogoUpload: "Välj Logo",
     btnAddCategory: "Lägg till kategori",
-    btnCatSubmit: "Lägg till"
+    btnCatSubmit: "Lägg till",
+    customBadge: "Viktig info"
   },
   no: {
     welcomeBadge: "Digital Gjestemappe",
@@ -486,7 +493,8 @@ const translations = {
     lblParkingInfo: "Parkeringsinfo",
     btnLogoUpload: "Velg Logo",
     btnAddCategory: "Legg till kategori",
-    btnCatSubmit: "Legg til"
+    btnCatSubmit: "Legg till",
+    customBadge: "Viktig info"
   },
   hr: {
     welcomeBadge: "Digitalni Mapa",
@@ -546,7 +554,8 @@ const translations = {
     lblParkingInfo: "Info Parking",
     btnLogoUpload: "Učitaj Logo",
     btnAddCategory: "Dodaj Kategoriju",
-    btnCatSubmit: "Spremi"
+    btnCatSubmit: "Spremi",
+    customBadge: "Važna info"
   },
   sq: {
     welcomeBadge: "Dosja Digjitale",
@@ -606,7 +615,8 @@ const translations = {
     lblParkingInfo: "Info Parkimi",
     btnLogoUpload: "Ngarko Logo",
     btnAddCategory: "Shto Kategori",
-    btnCatSubmit: "Ruaj"
+    btnCatSubmit: "Ruaj",
+    customBadge: "Informacion i rëndësishëm"
   }
 };
 
@@ -614,11 +624,9 @@ export default function App() {
   const [lang, setLang] = useState('de');
   const t = translations[lang] || translations.de;
 
-  // UYGULAMA MODU: 'guest' (Misafir) veya 'dashboard' (Otelci Paneli)
   const [appMode, setAppMode] = useState('guest'); 
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
 
-  // LOGIN STATE
   const [emailInput, setEmailInput] = useState('');
   const [passwordInput, setPasswordInput] = useState('');
   const [authError, setAuthError] = useState('');
@@ -633,7 +641,6 @@ export default function App() {
   const [scanCount] = useState(142);
   const [daysLeft] = useState(24);
 
-  // GENEL NÖTR OTEL STATE'İ
   const [hotel, setHotel] = useState({
     logoUrl: '', 
     name: 'Boutique Hotel & Suites', 
@@ -656,7 +663,6 @@ export default function App() {
     ]
   });
 
-  // 8 ÖZGÜN PRO TEMA
   const themes = {
     sahara: { name: 'Sahara', primary: 'text-amber-700', bgPrimary: 'bg-amber-700', bgHover: 'hover:bg-amber-800', bgLight: 'bg-amber-50', border: 'border-amber-700/40', badgeBg: 'bg-amber-50 text-amber-700', dot: 'bg-amber-700' },
     aegean: { name: 'Aegean', primary: 'text-teal-700', bgPrimary: 'bg-teal-700', bgHover: 'hover:bg-teal-800', bgLight: 'bg-teal-50', border: 'border-teal-700/40', badgeBg: 'bg-teal-50 text-teal-700', dot: 'bg-teal-700' },
@@ -825,7 +831,7 @@ export default function App() {
     }
   };
 
-  // 1. DASHBOARD MODU (OTELCİ PANENLİ - GUESTARY TARZI)
+  // 1. DASHBOARD MODU
   if (appMode === 'dashboard') {
     return (
       <div className="min-h-screen bg-[#FBF9F5] font-sans text-slate-800 p-6 md:p-10 space-y-8">
@@ -853,7 +859,6 @@ export default function App() {
             </div>
           </div>
 
-          {/* MÜLK KARTI & DÜZENLEME PANENELİ */}
           <div className="bg-white rounded-3xl p-6 border border-stone-200 shadow-sm space-y-6">
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 border-b pb-6">
               <div className="flex items-center gap-4">
@@ -869,7 +874,6 @@ export default function App() {
               </button>
             </div>
 
-            {/* İSTATİSTİK & QR MERKEZİ */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="bg-slate-900 text-white p-5 rounded-2xl space-y-4">
                 <span className="text-xs font-bold uppercase tracking-wider text-amber-400">{t.trialTitle} ({daysLeft} {t.trialDaysLeft})</span>
@@ -897,7 +901,6 @@ export default function App() {
               </div>
             </div>
 
-            {/* 8 TEMA SEÇİCİ */}
             <div className="space-y-3 pt-4 border-t">
               <h3 className="font-bold text-xs text-slate-900">{t.themeTitle} (8 Pro Temas)</h3>
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
@@ -910,7 +913,6 @@ export default function App() {
               </div>
             </div>
 
-            {/* 1. OTEL BİLGİLERİ DÜZENLEME */}
             <div className="space-y-4 pt-4 border-t">
               <h3 className="font-bold text-xs text-slate-900">{t.sec1Title}</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -949,7 +951,6 @@ export default function App() {
               </div>
             </div>
 
-            {/* 2. LOGO HOCHLADEN */}
             <div className="space-y-3 pt-4 border-t">
               <h3 className="font-bold text-xs text-slate-900 flex items-center gap-1.5"><Upload className="w-4 h-4 text-amber-800" /> {t.sec2Title}</h3>
               <div className="flex items-center gap-4">
@@ -961,7 +962,6 @@ export default function App() {
               </div>
             </div>
 
-            {/* 3 & 4. BILDERVERWALTUNG (SLIDER & FOTOS) */}
             <div className="space-y-4 pt-4 border-t">
               <div>
                 <h3 className="font-bold text-xs text-slate-900 flex items-center gap-1.5"><ImageIcon className="w-4 h-4 text-amber-800" /> {t.sec3Title}</h3>
@@ -988,7 +988,6 @@ export default function App() {
               </div>
             </div>
 
-            {/* 5. SCHNELLZUGRIFF DÜZENLEME & ÖZEL EKLEME */}
             <div className="space-y-4 pt-4 border-t">
               <h3 className="font-bold text-xs text-slate-900 flex items-center gap-1.5"><Wifi className="w-4 h-4 text-amber-800" /> {t.sec5Title}</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -1014,7 +1013,6 @@ export default function App() {
                 </div>
               </div>
 
-              {/* Özel Eklenebilir Schnellzugriff */}
               <div className="pt-3 border-t space-y-3">
                 <h4 className="font-bold text-[11px] text-amber-900 uppercase">Eigene Schnellzugriffe (Aktuell: {customQuickLinks.length}/2)</h4>
                 <div className="space-y-2">
@@ -1024,7 +1022,7 @@ export default function App() {
                         {renderCategoryIcon(item.iconName)}
                         <div>
                           <span className="font-bold block">{item.title}</span>
-                          <span className="text-[10px] text-stone-500">{item.description}</span>
+                          <span className="text-[10px] text-stone-500">{t.customBadge}</span>
                         </div>
                       </div>
                       <button onClick={() => handleDeleteCustomQuick(item.id)} className="bg-rose-50 text-rose-600 p-1.5 rounded-lg cursor-pointer"><Trash2 className="w-3.5 h-3.5" /></button>
@@ -1050,7 +1048,6 @@ export default function App() {
               </div>
             </div>
 
-            {/* 6. KATEGORİ EKLEME, SİLME & ICON SEÇİMİ */}
             <div className="space-y-4 pt-4 border-t">
               <h3 className="font-bold text-xs text-slate-900 flex items-center gap-1.5"><Compass className="w-4 h-4 text-amber-800" /> {t.sec6Title}</h3>
               <div className="space-y-2">
@@ -1068,7 +1065,6 @@ export default function App() {
                 ))}
               </div>
 
-              {/* Yeni Kategori Ekleme Formu */}
               <form onSubmit={handleAddCategory} className="pt-3 border-t space-y-3">
                 <h4 className="font-bold text-[11px] text-amber-900 uppercase">{t.btnAddCategory}</h4>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
@@ -1138,11 +1134,10 @@ export default function App() {
     );
   }
 
-  // 3. MİSAFİR REHBER EKRANI (SAF, ADMIN TUŞU YOK)
+  // 3. MİSAFİR REHBER EKRANI
   return (
     <div className="min-h-screen bg-stone-50 font-sans text-slate-800 pb-32 max-w-md mx-auto shadow-2xl relative border-x border-slate-200">
       
-      {/* AUTH MODAL (E-POSTA & ŞİFRE GİRİŞİ) */}
       {isAuthModalOpen && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
           <div className="bg-white w-full max-w-sm p-6 rounded-3xl shadow-2xl space-y-4 text-slate-800">
@@ -1170,7 +1165,6 @@ export default function App() {
         </div>
       )}
 
-      {/* HEADER */}
       <header className="p-5 pt-6 pb-2 bg-stone-50 sticky top-0 z-40 backdrop-blur-md bg-stone-50/95 flex justify-between items-center">
         <div className="flex items-center gap-2.5">
           <div className={`w-9 h-9 rounded-xl ${currentTheme.bgPrimary} text-white flex items-center justify-center font-bold text-xs shadow-sm`}>{hotel.name.charAt(0)}</div>
@@ -1190,12 +1184,10 @@ export default function App() {
             <option value="hr">🇭🇷 HR</option>
             <option value="sq">🇦🇱 SQ</option>
           </select>
-          {/* Gizli Partner Login */}
           <button onClick={() => setIsAuthModalOpen(true)} className="text-stone-300 hover:text-stone-600 p-1 text-xs cursor-pointer" title="Partner Login">🔑</button>
         </div>
       </header>
 
-      {/* İÇERİK */}
       <main className="p-5 space-y-5">
         {selectedCategory ? (
           <div className="space-y-4 animate-fade-in">
@@ -1213,12 +1205,10 @@ export default function App() {
                 <h1 className="text-2xl font-black text-slate-900 tracking-tight leading-snug">{t.greetingHello}<br /><span className={currentTheme.primary}>{hotel.welcomeGreeting || t.greetingWelcome}</span></h1>
               </div>
 
-              {/* Slider */}
               <div className="relative rounded-3xl overflow-hidden shadow-lg h-56 bg-slate-900 border border-stone-200">
                 <img src={hotel.images[currentSlide] || hotel.images[0]} alt="Slide" className="w-full h-full object-cover" />
               </div>
 
-              {/* Hava Durumu */}
               <div className="bg-white p-4 rounded-2xl shadow-sm border border-stone-200 flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <div className={`p-3 ${currentTheme.bgLight} rounded-xl ${currentTheme.primary}`}><Sun className="w-6 h-6" /></div>
@@ -1230,7 +1220,6 @@ export default function App() {
                 <div className="text-right"><div className="text-2xl font-black text-slate-900">16°C</div></div>
               </div>
 
-              {/* Hızlı Erişimler */}
               <div className="grid grid-cols-2 gap-3 pt-2">
                 <div className="bg-white p-4 rounded-2xl shadow-sm border border-stone-200 space-y-2">
                   <div className={`flex items-center gap-2 ${currentTheme.primary}`}><Wifi className="w-5 h-5" /><span className="font-bold text-xs text-slate-900">{t.wlanTitle}</span></div>
@@ -1248,14 +1237,16 @@ export default function App() {
                   <p className="text-[11px] text-slate-600">{hotel.parkingInfo}</p>
                 </div>
 
-                {/* Dinamik Özel Eklenen Schnellzugriff'ler */}
                 {customQuickLinks.map((item) => (
-                  <div key={item.id} className="bg-white p-4 rounded-2xl shadow-sm border border-stone-200 space-y-2">
+                  <div key={item.id} className="bg-white p-4 rounded-2xl shadow-sm border border-stone-200 space-y-1">
                     <div className={`flex items-center gap-2 ${currentTheme.primary}`}>
                       {renderCategoryIcon(item.iconName)}
                       <span className="font-bold text-xs text-slate-900">{item.title}</span>
                     </div>
                     <p className="text-[11px] text-slate-600">{item.description}</p>
+                    <span className="inline-block text-[9px] font-extrabold uppercase tracking-wider text-amber-800 bg-amber-50 px-2 py-0.5 rounded-full mt-1">
+                      {t.customBadge}
+                    </span>
                   </div>
                 ))}
               </div>
@@ -1282,7 +1273,6 @@ export default function App() {
         )}
       </main>
 
-      {/* SAF MİSAFİR ALT MENÜSÜ (ASLA ADMIN TUŞU YOK!) */}
       <div className="fixed bottom-0 left-0 right-0 max-w-md mx-auto bg-white/95 backdrop-blur-md border-t border-stone-200/80 z-50 shadow-2xl">
         <nav className="px-3 py-2 flex justify-around items-center">
           <button onClick={() => { setActiveTab('home'); setSelectedCategory(null); }} className={`flex flex-col items-center gap-1 text-[10px] font-bold cursor-pointer ${activeTab === 'home' && !selectedCategory ? currentTheme.primary : 'text-stone-400'}`}>
