@@ -54,7 +54,7 @@ const translations = {
     sec6Title: "6. Kategorien der Gästemappe",
     themeTitle: "7. White-Label Design & Farben",
     lblHotelName: "Unterkunft Name",
-    lblGreeting: "Eigener Begrüßungstext (Leer lassen für automatische Übersetzung)",
+    lblGreeting: "Eigener Begrüßungstext",
     lblPhone: "Telefon",
     lblEmailField: "E-Mail",
     lblAddress: "Adresse",
@@ -67,7 +67,8 @@ const translations = {
     lblParkingInfo: "Parkplatz Info",
     btnLogoUpload: "Logo Wählen / Ändern",
     btnAddCategory: "Neue Kategorie hinzufügen",
-    btnCatSubmit: "Kategorie Hinzufügen"
+    btnCatSubmit: "Kategorie Hinzufügen",
+    customBadge: "Hotel Service"
   },
   en: {
     welcomeBadge: "Digital Guest Directory",
@@ -114,7 +115,7 @@ const translations = {
     sec6Title: "6. Directory Categories",
     themeTitle: "7. White-Label Design & Colors",
     lblHotelName: "Property Name",
-    lblGreeting: "Custom Welcome Text (Leave empty for automatic translation)",
+    lblGreeting: "Custom Welcome Text",
     lblPhone: "Phone",
     lblEmailField: "E-Mail",
     lblAddress: "Address",
@@ -127,7 +128,8 @@ const translations = {
     lblParkingInfo: "Parking Info",
     btnLogoUpload: "Select / Change Logo",
     btnAddCategory: "Add New Category",
-    btnCatSubmit: "Add Category"
+    btnCatSubmit: "Add Category",
+    customBadge: "Hotel Service"
   },
   it: {
     welcomeBadge: "Guida Digitale",
@@ -187,7 +189,8 @@ const translations = {
     lblParkingInfo: "Info Parcheggio",
     btnLogoUpload: "Carica Logo",
     btnAddCategory: "Aggiungi Categoria",
-    btnCatSubmit: "Salva Categoria"
+    btnCatSubmit: "Salva Categoria",
+    customBadge: "Servizio Hotel"
   },
   fr: {
     welcomeBadge: "Livret d'Accueil Numérique",
@@ -247,7 +250,8 @@ const translations = {
     lblParkingInfo: "Infos Parking",
     btnLogoUpload: "Télécharger le logo",
     btnAddCategory: "Ajouter une catégorie",
-    btnCatSubmit: "Ajouter"
+    btnCatSubmit: "Ajouter",
+    customBadge: "Service Hôtel"
   },
   es: {
     welcomeBadge: "Carpeta Digital",
@@ -307,7 +311,8 @@ const translations = {
     lblParkingInfo: "Info Parking",
     btnLogoUpload: "Subir Logo",
     btnAddCategory: "Añadir Categoría",
-    btnCatSubmit: "Guardar"
+    btnCatSubmit: "Guardar",
+    customBadge: "Servicio Hotel"
   },
   tr: {
     welcomeBadge: "Dijital Misafir Rehberi",
@@ -354,7 +359,7 @@ const translations = {
     sec6Title: "6. Rehber Kategorileri",
     themeTitle: "7. Tema & Renk Seçimi",
     lblHotelName: "Tesis / Otel / Ev Adı",
-    lblGreeting: "Özel Karşılama Metni (Otomatik çeviri için boş bırakın)",
+    lblGreeting: "Özel Karşılama Metni",
     lblPhone: "Telefon",
     lblEmailField: "E-Posta",
     lblAddress: "Adres",
@@ -367,7 +372,8 @@ const translations = {
     lblParkingInfo: "Otopark Bilgisi",
     btnLogoUpload: "Logo Seç / Değiştir",
     btnAddCategory: "Yeni Kategori Ekle",
-    btnCatSubmit: "Kategori Ekle"
+    btnCatSubmit: "Kategori Ekle",
+    customBadge: "Otel Servisi"
   },
   sv: {
     welcomeBadge: "Digital Gästmapp",
@@ -427,7 +433,8 @@ const translations = {
     lblParkingInfo: "Parkeringsinfo",
     btnLogoUpload: "Välj Logo",
     btnAddCategory: "Lägg till kategori",
-    btnCatSubmit: "Lägg till"
+    btnCatSubmit: "Lägg till",
+    customBadge: "Hotellservice"
   },
   no: {
     welcomeBadge: "Digital Gjestemappe",
@@ -487,7 +494,8 @@ const translations = {
     lblParkingInfo: "Parkeringsinfo",
     btnLogoUpload: "Velg Logo",
     btnAddCategory: "Legg till kategori",
-    btnCatSubmit: "Legg till"
+    btnCatSubmit: "Legg till",
+    customBadge: "Hotellservice"
   },
   hr: {
     welcomeBadge: "Digitalni Mapa",
@@ -547,7 +555,8 @@ const translations = {
     lblParkingInfo: "Info Parking",
     btnLogoUpload: "Učitaj Logo",
     btnAddCategory: "Dodaj Kategoriju",
-    btnCatSubmit: "Spremi"
+    btnCatSubmit: "Spremi",
+    customBadge: "Usluga hotela"
   },
   sq: {
     welcomeBadge: "Dosja Digjitale",
@@ -607,7 +616,8 @@ const translations = {
     lblParkingInfo: "Info Parkimi",
     btnLogoUpload: "Ngarko Logo",
     btnAddCategory: "Shto Kategori",
-    btnCatSubmit: "Ruaj"
+    btnCatSubmit: "Ruaj",
+    customBadge: "Shërbim Hoteli"
   }
 };
 
@@ -770,7 +780,6 @@ export default function App() {
     setCategories(categories.filter(cat => cat.id !== id));
   };
 
-  // ZENGİN İKON RENDER FONKSİYONU
   const renderCategoryIcon = (iconName) => {
     const props = { className: `w-5 h-5 ${currentTheme.primary}` };
     switch (iconName) {
@@ -833,7 +842,7 @@ export default function App() {
     }
   };
 
-  // 1. DASHBOARD MODU
+  // 1. DASHBOARD MODU (TÜM 4 STANDART KART + ÖZEL ALANLAR TAM KADRO)
   if (appMode === 'dashboard') {
     return (
       <div className="min-h-screen bg-[#FBF9F5] font-sans text-slate-800 p-6 md:p-10 space-y-8">
@@ -876,7 +885,7 @@ export default function App() {
               </button>
             </div>
 
-            {/* SCHNELLZUGRIFF (ÖZEL HIZLI ERİŞİM EKLEME - ZENGİN İKONLARLA) */}
+            {/* 5. SCHNELLZUGRIFF (TÜM 4 STANDART KART ADMİNDE EKSİKSİZ) */}
             <div className="space-y-4 pt-4 border-t">
               <h3 className="font-bold text-xs text-slate-900 flex items-center gap-1.5"><Wifi className="w-4 h-4 text-amber-800" /> {t.sec5Title}</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -888,8 +897,21 @@ export default function App() {
                   <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">{t.lblWifiPass}</label>
                   <input type="text" value={hotel.wifiPass} onChange={(e) => setHotel({ ...hotel, wifiPass: e.target.value })} className="w-full p-2.5 text-xs border border-stone-200 rounded-xl" />
                 </div>
+                <div>
+                  <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">{t.lblBreakfastTime}</label>
+                  <input type="text" value={hotel.breakfastTime} onChange={(e) => setHotel({ ...hotel, breakfastTime: e.target.value })} className="w-full p-2.5 text-xs border border-stone-200 rounded-xl" />
+                </div>
+                <div>
+                  <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">{t.lblCheckInOut}</label>
+                  <input type="text" value={hotel.checkInOut} onChange={(e) => setHotel({ ...hotel, checkInOut: e.target.value })} className="w-full p-2.5 text-xs border border-stone-200 rounded-xl" />
+                </div>
+                <div className="md:col-span-2">
+                  <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">{t.lblParkingInfo}</label>
+                  <input type="text" value={hotel.parkingInfo} onChange={(e) => setHotel({ ...hotel, parkingInfo: e.target.value })} className="w-full p-2.5 text-xs border border-stone-200 rounded-xl" />
+                </div>
               </div>
 
+              {/* Özel Eklenenler */}
               <div className="pt-3 border-t space-y-3">
                 <h4 className="font-bold text-[11px] text-amber-900 uppercase">Eigene Schnellzugriffe (Aktuell: {customQuickLinks.length}/2)</h4>
                 <div className="space-y-2">
@@ -909,19 +931,16 @@ export default function App() {
 
                 {customQuickLinks.length < 2 && (
                   <form onSubmit={handleAddCustomQuick} className="grid grid-cols-1 sm:grid-cols-3 gap-2 pt-2">
-                    <input type="text" placeholder="Titel (z.B. Strandbar)" value={newQuick.title} onChange={(e) => setNewQuick({ ...newQuick, title: e.target.value })} className="p-2 text-xs border rounded-xl" />
-                    <input type="text" placeholder="Beschreibung (z.B. 10 Uhr)" value={newQuick.description} onChange={(e) => setNewQuick({ ...newQuick, description: e.target.value })} className="p-2 text-xs border rounded-xl" />
+                    <input type="text" placeholder="Titel (z.B. Lobby Bar)" value={newQuick.title} onChange={(e) => setNewQuick({ ...newQuick, title: e.target.value })} className="p-2 text-xs border rounded-xl" />
+                    <input type="text" placeholder="Beschreibung (z.B. 10-12 Uhr)" value={newQuick.description} onChange={(e) => setNewQuick({ ...newQuick, description: e.target.value })} className="p-2 text-xs border rounded-xl" />
                     <div className="flex gap-2">
                       <select value={newQuick.iconName} onChange={(e) => setNewQuick({ ...newQuick, iconName: e.target.value })} className="p-2 text-xs border rounded-xl bg-white w-full cursor-pointer">
                         <option value="Info">Info</option>
                         <option value="Phone">Telefon</option>
-                        <option value="Globe">Webseite</option>
-                        <option value="Coffee">Coffee</option>
                         <option value="Wine">Bar / Wein</option>
+                        <option value="Coffee">Coffee</option>
+                        <option value="Waves">Pool</option>
                         <option value="Sparkles">Wellness</option>
-                        <option value="Waves">Pool / Strand</option>
-                        <option value="Dumbbell">Gym / Sport</option>
-                        <option value="Key">Key / Check-in</option>
                       </select>
                       <button type="submit" className="bg-amber-900 text-white px-3 py-2 rounded-xl text-xs font-bold shadow cursor-pointer shrink-0"><Plus className="w-4 h-4" /></button>
                     </div>
@@ -930,7 +949,7 @@ export default function App() {
               </div>
             </div>
 
-            {/* KATEGORİ EKLEME (ZENGİN İKONLARLA) */}
+            {/* KATEGORİLER */}
             <div className="space-y-4 pt-4 border-t">
               <h3 className="font-bold text-xs text-slate-900 flex items-center gap-1.5"><Compass className="w-4 h-4 text-amber-800" /> {t.sec6Title}</h3>
               <div className="space-y-2">
@@ -952,23 +971,16 @@ export default function App() {
                 <h4 className="font-bold text-[11px] text-amber-900 uppercase">{t.btnAddCategory}</h4>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                   <input type="text" placeholder="Titel (z.B. Pool & SPA)" value={newCat.title} onChange={(e) => setNewCat({ ...newCat, title: e.target.value })} className="p-2.5 text-xs border rounded-xl" />
-                  <input type="text" placeholder="Untertitel (z.B. Regeln & Zeiten)" value={newCat.subtitle} onChange={(e) => setNewCat({ ...newCat, subtitle: e.target.value })} className="p-2.5 text-xs border rounded-xl" />
+                  <input type="text" placeholder="Untertitel (z.B. Zeiten)" value={newCat.subtitle} onChange={(e) => setNewCat({ ...newCat, subtitle: e.target.value })} className="p-2.5 text-xs border rounded-xl" />
                 </div>
                 <textarea rows="2" placeholder="Inhalt / Details..." value={newCat.content} onChange={(e) => setNewCat({ ...newCat, content: e.target.value })} className="w-full p-2.5 text-xs border rounded-xl"></textarea>
                 <div className="flex gap-2">
                   <select value={newCat.iconName} onChange={(e) => setNewCat({ ...newCat, iconName: e.target.value })} className="p-2.5 text-xs border rounded-xl bg-white w-full cursor-pointer">
                     <option value="Info">Info (Standard)</option>
                     <option value="Utensils">Gastronomie</option>
-                    <option value="Heart">Wellness / Spa</option>
-                    <option value="Compass">Umgebung</option>
-                    <option value="Coffee">Frühstück</option>
-                    <option value="Car">Parken</option>
-                    <option value="Phone">Telefon</option>
-                    <option value="Wine">Bar & Drinks</option>
-                    <option value="Sparkles">Highlights</option>
+                    <option value="Heart">Wellness</option>
                     <option value="Waves">Pool & Strand</option>
-                    <option value="Dumbbell">Fitness</option>
-                    <option value="Bed">Zimmerinfo</option>
+                    <option value="Wine">Bar</option>
                   </select>
                   <button type="submit" className="bg-amber-900 text-white px-5 py-2.5 rounded-xl text-xs font-bold shadow cursor-pointer shrink-0 flex items-center gap-1">
                     <Plus className="w-4 h-4" /> {t.btnCatSubmit}
@@ -1021,7 +1033,7 @@ export default function App() {
     );
   }
 
-  // 3. MİSAFİR REHBER EKRANI (ÖZEL ALANLARDA ROZET YOK - TERTEMİZ)
+  // 3. MİSAFİR REHBER EKRANI (TÜM 4 STANDART HIZLI ERİŞİM KARTI EKSİKSİZ + ÖZEL ALANLAR)
   return (
     <div className="min-h-screen bg-stone-50 font-sans text-slate-800 pb-32 max-w-md mx-auto shadow-2xl relative border-x border-slate-200">
       
@@ -1107,7 +1119,9 @@ export default function App() {
                 <div className="text-right"><div className="text-2xl font-black text-slate-900">16°C</div></div>
               </div>
 
+              {/* HIZLI ERİŞİM KARTLARI (TÜM 4 KART + ÖZEL EKLENENLER EKSİKSİZ) */}
               <div className="grid grid-cols-2 gap-3 pt-2">
+                {/* 1. WLAN */}
                 <div className="bg-white p-4 rounded-2xl shadow-sm border border-stone-200 space-y-2">
                   <div className={`flex items-center gap-2 ${currentTheme.primary}`}><Wifi className="w-5 h-5" /><span className="font-bold text-xs text-slate-900">{t.wlanTitle}</span></div>
                   <div className="text-[11px] text-slate-500 font-mono bg-stone-50 p-2 rounded-lg border">
@@ -1119,12 +1133,25 @@ export default function App() {
                   </div>
                 </div>
 
+                {/* 2. PARKING */}
                 <div className="bg-white p-4 rounded-2xl shadow-sm border border-stone-200 space-y-2">
                   <div className={`flex items-center gap-2 ${currentTheme.primary}`}><Car className="w-5 h-5" /><span className="font-bold text-xs text-slate-900">{t.parkingTitle}</span></div>
                   <p className="text-[11px] text-slate-600">{hotel.parkingInfo}</p>
                 </div>
 
-                {/* ÖZEL EKLENEN HIZLI ERİŞİMLER (ROZETSİZ, TEMİZ VE PROFESYONEL) */}
+                {/* 3. BREAKFAST */}
+                <div className="bg-white p-4 rounded-2xl shadow-sm border border-stone-200 space-y-2">
+                  <div className={`flex items-center gap-2 ${currentTheme.primary}`}><Coffee className="w-5 h-5" /><span className="font-bold text-xs text-slate-900">{t.breakfastTitle}</span></div>
+                  <p className="text-[11px] text-slate-600">{hotel.breakfastTime}</p>
+                </div>
+
+                {/* 4. CHECK-IN / OUT */}
+                <div className="bg-white p-4 rounded-2xl shadow-sm border border-stone-200 space-y-2">
+                  <div className={`flex items-center gap-2 ${currentTheme.primary}`}><Clock className="w-5 h-5" /><span className="font-bold text-xs text-slate-900">{t.checkInOutTitle}</span></div>
+                  <p className="text-[11px] text-slate-600">{hotel.checkInOut}</p>
+                </div>
+
+                {/* ÖZEL EKLENEN HIZLI ERİŞİMLER (ROZETSİZ, TEMİZ) */}
                 {customQuickLinks.map((item) => (
                   <div key={item.id} className="bg-white p-4 rounded-2xl shadow-sm border border-stone-200 space-y-1">
                     <div className={`flex items-center gap-2 ${currentTheme.primary}`}>
