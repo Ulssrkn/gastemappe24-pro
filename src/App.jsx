@@ -320,6 +320,16 @@ export default function App() {
     }
   };
 
+  // KATEGORİLERİ ANA GRUPLARA GÖRE GRUPLAMA FONKSİYONU
+  const groupedCategories = categories.reduce((acc, cat) => {
+    const presetData = categoryPresets.find(p => p.id === cat.presetId);
+    if (!presetData) return acc;
+    const groupName = presetData.group;
+    if (!acc[groupName]) acc[groupName] = [];
+    acc[groupName].push({ ...cat, presetData });
+    return acc;
+  }, {});
+
   if (appMode === 'dashboard') {
     return (
       <div className="min-h-screen bg-[#FBF9F5] font-sans text-slate-800 p-6 md:p-10 space-y-8 relative">
@@ -502,60 +512,64 @@ export default function App() {
                 </button>
               </div>
               
-              <div className="space-y-3">
-                {categories.map((cat) => {
-                  const presetData = categoryPresets.find(p => p.id === cat.presetId);
-                  if (!presetData) return null;
-                  
-                  const defaultTitle = presetData.title[lang] || presetData.title.de;
-                  const defaultSub = presetData.subtitle[lang] || presetData.subtitle.de;
-                  const defaultContent = presetData.content[lang] || presetData.content.de;
+              <div className="space-y-6">
+                {Object.entries(groupedCategories).map(([groupName, groupItems]) => (
+                  <div key={groupName} className="space-y-3">
+                    <h4 className="text-xs font-black text-amber-900 uppercase tracking-wider bg-amber-50 px-3 py-1.5 rounded-lg border border-amber-100/60 inline-block">{groupName}</h4>
+                    <div className="space-y-3">
+                      {groupItems.map((cat) => {
+                        const defaultTitle = cat.presetData.title[lang] || cat.presetData.title.de;
+                        const defaultSub = cat.presetData.subtitle[lang] || cat.presetData.subtitle.de;
+                        const defaultContent = cat.presetData.content[lang] || cat.presetData.content.de;
 
-                  return (
-                    <div key={cat.id} className="p-4 bg-stone-50 rounded-2xl border space-y-3 shadow-sm">
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-2.5">
-                          {renderIcon(cat.icon)}
-                          <span className="font-bold text-xs text-slate-900 uppercase">{presetData.group}</span>
-                        </div>
-                        <button onClick={() => handleDeleteCategory(cat.id)} className="bg-rose-50 text-rose-600 p-1.5 rounded-lg cursor-pointer hover:bg-rose-100"><Trash2 className="w-3.5 h-3.5" /></button>
-                      </div>
+                        return (
+                          <div key={cat.id} className="p-4 bg-stone-50 rounded-2xl border space-y-3 shadow-sm">
+                            <div className="flex items-center justify-between border-b pb-2">
+                              <div className="flex items-center gap-2">
+                                {renderIcon(cat.icon)}
+                                <span className="font-bold text-xs text-slate-800">{cat.customTitle || defaultTitle}</span>
+                              </div>
+                              <button onClick={() => handleDeleteCategory(cat.id)} className="bg-rose-50 text-rose-600 p-1.5 rounded-lg cursor-pointer hover:bg-rose-100"><Trash2 className="w-3.5 h-3.5" /></button>
+                            </div>
 
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                        <div>
-                          <label className="block text-[9px] font-bold text-stone-500 uppercase mb-0.5">{t.editTitle}</label>
-                          <input 
-                            type="text" 
-                            placeholder={defaultTitle} 
-                            value={cat.customTitle} 
-                            onChange={(e) => handleUpdateCategoryField(cat.id, 'customTitle', e.target.value)} 
-                            className="w-full p-2 text-xs border rounded-xl bg-white" 
-                          />
-                        </div>
-                        <div>
-                          <label className="block text-[9px] font-bold text-stone-500 uppercase mb-0.5">{t.editSubtitle}</label>
-                          <input 
-                            type="text" 
-                            placeholder={defaultSub} 
-                            value={cat.customSubtitle} 
-                            onChange={(e) => handleUpdateCategoryField(cat.id, 'customSubtitle', e.target.value)} 
-                            className="w-full p-2 text-xs border rounded-xl bg-white" 
-                          />
-                        </div>
-                      </div>
-                      <div>
-                        <label className="block text-[9px] font-bold text-stone-500 uppercase mb-0.5">{t.editContent}</label>
-                        <textarea 
-                          rows="2"
-                          placeholder={defaultContent} 
-                          value={cat.customContent} 
-                          onChange={(e) => handleUpdateCategoryField(cat.id, 'customContent', e.target.value)} 
-                          className="w-full p-2 text-xs border rounded-xl bg-white" 
-                        />
-                      </div>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                              <div>
+                                <label className="block text-[9px] font-bold text-stone-500 uppercase mb-0.5">{t.editTitle}</label>
+                                <input 
+                                  type="text" 
+                                  placeholder={defaultTitle} 
+                                  value={cat.customTitle} 
+                                  onChange={(e) => handleUpdateCategoryField(cat.id, 'customTitle', e.target.value)} 
+                                  className="w-full p-2 text-xs border rounded-xl bg-white" 
+                                />
+                              </div>
+                              <div>
+                                <label className="block text-[9px] font-bold text-stone-500 uppercase mb-0.5">{t.editSubtitle}</label>
+                                <input 
+                                  type="text" 
+                                  placeholder={defaultSub} 
+                                  value={cat.customSubtitle} 
+                                  onChange={(e) => handleUpdateCategoryField(cat.id, 'customSubtitle', e.target.value)} 
+                                  className="w-full p-2 text-xs border rounded-xl bg-white" 
+                                />
+                              </div>
+                            </div>
+                            <div>
+                              <label className="block text-[9px] font-bold text-stone-500 uppercase mb-0.5">{t.editContent}</label>
+                              <textarea 
+                                rows="2"
+                                placeholder={defaultContent} 
+                                value={cat.customContent} 
+                                onChange={(e) => handleUpdateCategoryField(cat.id, 'customContent', e.target.value)} 
+                                className="w-full p-2 text-xs border rounded-xl bg-white" 
+                              />
+                            </div>
+                          </div>
+                        );
+                      })}
                     </div>
-                  );
-                })}
+                  </div>
+                ))}
               </div>
             </div>
 
@@ -692,31 +706,34 @@ export default function App() {
               </div>
             </div>
           ) : (
-            <div className="space-y-4 animate-fade-in">
+            /* MİSAFİR REHBER SEKMESİ: GRUPLANDIRILMIŞ VE ŞIK AKIŞ */
+            <div className="space-y-6 animate-fade-in">
               <h3 className="text-xs font-bold text-stone-500 uppercase tracking-wider">{t.navGaestemappe}</h3>
-              <div className="grid grid-cols-1 gap-2.5">
-                {categories.map((cat) => {
-                  const presetData = categoryPresets.find(p => p.id === cat.presetId);
-                  if (!presetData) return null;
-                  
-                  const title = cat.customTitle || presetData.title[lang] || presetData.title.de;
-                  const sub = cat.customSubtitle || presetData.subtitle[lang] || presetData.subtitle.de;
-                  const content = cat.customContent || presetData.content[lang] || presetData.content.de;
+              {Object.entries(groupedCategories).map(([groupName, groupItems]) => (
+                <div key={groupName} className="space-y-2.5">
+                  <h4 className="text-xs font-black text-amber-900 uppercase tracking-wider px-1">{groupName}</h4>
+                  <div className="grid grid-cols-1 gap-2.5">
+                    {groupItems.map((cat) => {
+                      const title = cat.customTitle || cat.presetData.title[lang] || cat.presetData.title.de;
+                      const sub = cat.customSubtitle || cat.presetData.subtitle[lang] || cat.presetData.subtitle.de;
+                      const content = cat.customContent || cat.presetData.content[lang] || cat.presetData.content.de;
 
-                  return (
-                    <button key={cat.id} onClick={() => setSelectedCategory({ title, content })} className="w-full bg-white p-4 rounded-2xl border border-stone-200 shadow-sm flex items-center justify-between text-left cursor-pointer hover:border-amber-900/40 transition">
-                      <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-xl bg-amber-50 flex items-center justify-center">{renderIcon(cat.icon)}</div>
-                        <div>
-                          <h4 className="text-sm font-extrabold text-slate-900">{title}</h4>
-                          <p className="text-xs text-slate-500">{sub}</p>
-                        </div>
-                      </div>
-                      <ChevronRight className="w-4 h-4 text-slate-400" />
-                    </button>
-                  );
-                })}
-              </div>
+                      return (
+                        <button key={cat.id} onClick={() => setSelectedCategory({ title, content })} className="w-full bg-white p-4 rounded-2xl border border-stone-200 shadow-sm flex items-center justify-between text-left cursor-pointer hover:border-amber-900/40 transition">
+                          <div className="flex items-center gap-3">
+                            <div className="w-10 h-10 rounded-xl bg-amber-50 flex items-center justify-center">{renderIcon(cat.icon)}</div>
+                            <div>
+                              <h5 className="text-sm font-extrabold text-slate-900">{title}</h5>
+                              <p className="text-xs text-slate-500">{sub}</p>
+                            </div>
+                          </div>
+                          <ChevronRight className="w-4 h-4 text-slate-400" />
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              ))}
             </div>
           )
         )}
