@@ -660,6 +660,8 @@ const categoryPresets = [
 
 export default function App() {
   const [lang, setLang] = useState('de');
+  
+  // Güvenli sözlük referansı (Dil değiştiğinde tüm arayüz anında tetiklenir)
   const t = translations[lang] || translations.de;
 
   const [appMode, setAppMode] = useState('guest'); 
