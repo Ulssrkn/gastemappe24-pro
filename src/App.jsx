@@ -5,7 +5,7 @@ import {
   Check, Image as ImageIcon, Copy,
   ChevronRight, ArrowRight, Upload, AlertCircle, Lock, Unlock,
   Utensils, Heart, Compass, Coffee, Car, Clock, ShieldCheck, Edit3, Mail, Globe, ExternalLink, QrCode, Printer, BarChart3, Star, Navigation, Sun, LogOut, User,
-  Wine, Sparkles, Tv, Waves, Dumbbell, Key, Bed, Building, ShoppingBag, Landmark, Map, Bus, Plane, Scroll, Save, Eye, EyeOff
+  Wine, Sparkles, Tv, Waves, Dumbbell, Key, Bed, Building, ShoppingBag, Landmark, Map, Bus, Plane, Scroll, Save, Eye, EyeOff, Palette
 } from 'lucide-react';
 
 const translations = {
@@ -40,10 +40,11 @@ const translations = {
     printA5: "Druckvorlage A5",
     printCard: "Visitenkarte",
     sec1Title: "1. Unterkunft Informationen & Kontaktdaten",
-    sec2Title: "2. Logo hochladen",
-    sec3Title: "3. Bilderverwaltung (Slider)",
-    sec4Title: "4. Schnellzugriff (Aktivieren / Deaktivieren)",
-    sec5Title: "5. Gästemappe Kategorien (Vollständiger Katalog)",
+    sec2Title: "2. Design & Farb-Themen (8 Optionen)",
+    sec3Title: "3. Logo hochladen",
+    sec4Title: "4. Bilderverwaltung (Slider)",
+    sec5Title: "5. Schnellzugriff (Aktivieren / Deaktivieren)",
+    sec6Title: "6. Gästemappe Kategorien (Vollständiger Katalog)",
     lblHotelName: "Unterkunft Name",
     lblPhone: "Telefon",
     lblEmailField: "E-Mail",
@@ -96,10 +97,11 @@ const translations = {
     printA5: "Print Template A5",
     printCard: "Business Card",
     sec1Title: "1. Property Information & Contacts",
-    sec2Title: "2. Upload Logo",
-    sec3Title: "3. Image Management (Slider)",
-    sec4Title: "4. Quick Access (Enable / Disable Cards)",
-    sec5Title: "5. Directory Categories (Full Catalog)",
+    sec2Title: "2. Design & Color Themes (8 Options)",
+    sec3Title: "3. Upload Logo",
+    sec4Title: "4. Image Management (Slider)",
+    sec5Title: "5. Quick Access (Enable / Disable Cards)",
+    sec6Title: "6. Directory Categories (Full Catalog)",
     lblHotelName: "Property Name",
     lblPhone: "Phone",
     lblEmailField: "E-Mail",
@@ -152,10 +154,11 @@ const translations = {
     printA5: "Modello A5",
     printCard: "Biglietto da visita",
     sec1Title: "1. Info struttura e contatti",
-    sec2Title: "2. Carica logo",
-    sec3Title: "3. Gestione immagini",
-    sec4Title: "4. Accesso rapido",
-    sec5Title: "5. Categorie guida",
+    sec2Title: "2. Temi di colore",
+    sec3Title: "3. Carica logo",
+    sec4Title: "4. Gestione immagini",
+    sec5Title: "5. Accesso rapido",
+    sec6Title: "6. Categorie guida",
     lblHotelName: "Nome struttura",
     lblPhone: "Telefono",
     lblEmailField: "E-mail",
@@ -208,10 +211,11 @@ const translations = {
     printA5: "Modèle A5",
     printCard: "Carte de visite",
     sec1Title: "1. Infos et contacts",
-    sec2Title: "2. Télécharger le logo",
-    sec3Title: "3. Gestion des images",
-    sec4Title: "4. Accès rapide",
-    sec5Title: "5. Catégories",
+    sec2Title: "2. Thèmes de couleurs",
+    sec3Title: "3. Télécharger le logo",
+    sec4Title: "4. Gestion des images",
+    sec5Title: "5. Accès rapide",
+    sec6Title: "6. Catégories",
     lblHotelName: "Nom de l'établissement",
     lblPhone: "Téléphone",
     lblEmailField: "E-mail",
@@ -264,10 +268,11 @@ const translations = {
     printA5: "Plantilla A5",
     printCard: "Tarjeta de visita",
     sec1Title: "1. Info y contactos",
-    sec2Title: "2. Subir logo",
-    sec3Title: "3. Gestión de imágenes",
-    sec4Title: "4. Acceso rápido",
-    sec5Title: "5. Categorías de la guía",
+    sec2Title: "2. Temas de color",
+    sec3Title: "3. Subir logo",
+    sec4Title: "4. Gestión de imágenes",
+    sec5Title: "5. Acceso rápido",
+    sec6Title: "6. Categorías de la guía",
     lblHotelName: "Nombre del alojamiento",
     lblPhone: "Teléfono",
     lblEmailField: "Correo electrónico",
@@ -320,10 +325,11 @@ const translations = {
     printA5: "A5 Baskı Şablonu",
     printCard: "Kartvizit Şablonu",
     sec1Title: "1. Tesis Bilgileri & İletişim",
-    sec2Title: "2. Logo Yükleme",
-    sec3Title: "3. Resim Yönetimi (Slider)",
-    sec4Title: "4. Hızlı Erişim (Kartları Aç / Kapat)",
-    sec5Title: "5. Rehber Kategorileri (Tam Katalog)",
+    sec2Title: "2. Renk Temaları (8 Seçenek)",
+    sec3Title: "3. Logo Yükleme",
+    sec4Title: "4. Resim Yönetimi (Slider)",
+    sec5Title: "5. Hızlı Erişim (Kartları Aç / Kapat)",
+    sec6Title: "6. Rehber Kategorileri (Tam Katalog)",
     lblHotelName: "Tesis / Otel Adı",
     lblPhone: "Telefon",
     lblEmailField: "E-Posta",
@@ -376,10 +382,11 @@ const translations = {
     printA5: "Utskrift A5",
     printCard: "Visiterkort",
     sec1Title: "1. Boendeinformation",
-    sec2Title: "2. Ladda upp logotyp",
-    sec3Title: "3. Bildhantering",
-    sec4Title: "4. Snabbåtkomst",
-    sec5Title: "5. Kategorier",
+    sec2Title: "2. Färgteman",
+    sec3Title: "3. Ladda upp logotyp",
+    sec4Title: "4. Bildhantering",
+    sec5Title: "5. Snabbåtkomst",
+    sec6Title: "6. Kategorier",
     lblHotelName: "Boendets namn",
     lblPhone: "Telefon",
     lblEmailField: "E-post",
@@ -432,10 +439,11 @@ const translations = {
     printA5: "Utskrift A5",
     printCard: "Visittkort",
     sec1Title: "1. Boliginformasjon",
-    sec2Title: "2. Last opp logo",
-    sec3Title: "3. Bildebehandling",
-    sec4Title: "4. Hurtigtilgang",
-    sec5Title: "5. Kategorier",
+    sec2Title: "2. Fargetemaer",
+    sec3Title: "3. Last opp logo",
+    sec4Title: "4. Bildebehandling",
+    sec5Title: "5. Hurtigtilgang",
+    sec6Title: "6. Kategorier",
     lblHotelName: "Boligens navn",
     lblPhone: "Telefon",
     lblEmailField: "E-post",
@@ -488,10 +496,11 @@ const translations = {
     printA5: "Predložak A5",
     printCard: "Vizitka",
     sec1Title: "1. Informacije o objektu",
-    sec2Title: "2. Učitaj logotip",
-    sec3Title: "3. Upravljanje slikama",
-    sec4Title: "4. Brzi pristup",
-    sec5Title: "5. Kategorije vodiča",
+    sec2Title: "2. Teme boja",
+    sec3Title: "3. Učitaj logotip",
+    sec4Title: "4. Upravljanje slikama",
+    sec5Title: "5. Brzi pristup",
+    sec6Title: "6. Kategorije vodiča",
     lblHotelName: "Naziv objekta",
     lblPhone: "Telefon",
     lblEmailField: "E-pošta",
@@ -544,10 +553,11 @@ const translations = {
     printA5: "Modeli A5",
     printCard: "Kard vizite",
     sec1Title: "1. Informacioni i pronës",
-    sec2Title: "2. Ngarko logon",
-    sec3Title: "3. Menaxhimi i imazheve",
-    sec4Title: "4. Qasja e shpejtë",
-    sec5Title: "5. Kategoritë",
+    sec2Title: "2. Temat e ngjyrave",
+    sec3Title: "3. Ngarko logon",
+    sec4Title: "4. Menaxhimi i imazheve",
+    sec5Title: "5. Qasja e shpejtë",
+    sec6Title: "6. Kategoritë",
     lblHotelName: "Emri i pronës",
     lblPhone: "Telefoni",
     lblEmailField: "E-mail",
@@ -570,6 +580,17 @@ const translations = {
     inactiveCard: "Fshih kartelën"
   }
 };
+
+const themeColors = [
+  { id: 'amber', name: 'Amber Warm', bg: 'bg-amber-900', text: 'text-amber-900', bgLight: 'bg-amber-50', border: 'border-amber-900/40', hex: '#78350f' },
+  { id: 'emerald', name: 'Forest Emerald', bg: 'bg-emerald-800', text: 'text-emerald-800', bgLight: 'bg-emerald-50', border: 'border-emerald-800/40', hex: '#065f46' },
+  { id: 'indigo', name: 'Royal Indigo', bg: 'bg-indigo-900', text: 'text-indigo-900', bgLight: 'bg-indigo-50', border: 'border-indigo-900/40', hex: '#312e81' },
+  { id: 'rose', name: 'Rose Luxury', bg: 'bg-rose-800', text: 'text-rose-800', bgLight: 'bg-rose-50', border: 'border-rose-800/40', hex: '#9f1239' },
+  { id: 'slate', name: 'Classic Slate', bg: 'bg-slate-900', text: 'text-slate-900', bgLight: 'bg-slate-100', border: 'border-slate-900/40', hex: '#0f172a' },
+  { id: 'violet', name: 'Deep Violet', bg: 'bg-violet-900', text: 'text-violet-900', bgLight: 'bg-violet-50', border: 'border-violet-900/40', hex: '#581c87' },
+  { id: 'cyan', name: 'Ocean Cyan', bg: 'bg-cyan-800', text: 'text-cyan-800', bgLight: 'bg-cyan-50', border: 'border-cyan-800/40', hex: '#155e75' },
+  { id: 'orange', name: 'Sunset Orange', bg: 'bg-orange-700', text: 'text-orange-700', bgLight: 'bg-orange-50', border: 'border-orange-700/40', hex: '#c2410c' }
+];
 
 const categoryPresets = [
   { 
@@ -828,7 +849,6 @@ const categoryPresets = [
 
 export default function App() {
   const [lang, setLang] = useState('de');
-  
   const t = translations[lang] || translations.de;
 
   const [appMode, setAppMode] = useState('guest'); 
@@ -882,6 +902,8 @@ export default function App() {
     ];
   });
 
+  const currentTheme = themeColors.find(tc => tc.id === hotel.themeColor) || themeColors[0];
+
   const handleSaveData = () => {
     localStorage.setItem('gm24_hotel', JSON.stringify(hotel));
     localStorage.setItem('gm24_categories', JSON.stringify(categories));
@@ -917,7 +939,7 @@ export default function App() {
             <h1>${hotel.name}</h1>
             <p class="sub">Digitale Gästemappe / Digital Guest Directory</p>
             <img src="${qrCodeUrl}" class="qr-img" />
-            <p style="font-size: 12px; font-weight: bold; color: #78350f;">Scannen Sie den QR-Code für alle Infos & Services</p>
+            <p style="font-size: 12px; font-weight: bold; color: ${currentTheme.hex};">Scannen Sie den QR-Code für alle Infos & Services</p>
             <div class="info-box">
               ${hotel.address ? `<div><strong>Adresse:</strong> ${hotel.address}</div>` : ''}
               ${hotel.phone ? `<div><strong>Telefon:</strong> ${hotel.phone}</div>` : ''}
@@ -968,7 +990,7 @@ export default function App() {
   };
 
   const renderIcon = (iconName) => {
-    const props = { className: `w-5 h-5 text-amber-900` };
+    const props = { className: `w-5 h-5 ${currentTheme.text}` };
     switch (iconName) {
       case 'Building': return <Building {...props} />;
       case 'Bed': return <Bed {...props} />;
@@ -1014,13 +1036,13 @@ export default function App() {
                   }, {})
                 ).map(([groupName, presets]) => (
                   <div key={groupName} className="space-y-2">
-                    <h3 className="text-xs font-black text-amber-900 uppercase tracking-wider">{groupName}</h3>
+                    <h3 className={`text-xs font-black ${currentTheme.text} uppercase tracking-wider`}>{groupName}</h3>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                       {presets.map((preset) => {
                         const title = preset.title[lang] || preset.title.de;
                         const sub = preset.subtitle[lang] || preset.subtitle.de;
                         return (
-                          <div key={preset.id} className="p-3 rounded-2xl border flex items-center justify-between transition bg-stone-50 hover:border-amber-900/40 cursor-pointer">
+                          <div key={preset.id} className={`p-3 rounded-2xl border flex items-center justify-between transition bg-stone-50 hover:${currentTheme.border} cursor-pointer`}>
                             <div className="flex items-center gap-2.5">
                               {renderIcon(preset.icon)}
                               <div>
@@ -1028,7 +1050,7 @@ export default function App() {
                                 <span className="text-[10px] text-stone-500 block">{sub}</span>
                               </div>
                             </div>
-                            <button onClick={() => handleAddPresetCategory(preset)} className="bg-amber-900 text-white px-3 py-1.5 rounded-xl text-[10px] font-bold shadow hover:bg-amber-950 cursor-pointer flex items-center gap-1">
+                            <button onClick={() => handleAddPresetCategory(preset)} className={`${currentTheme.bg} text-white px-3 py-1.5 rounded-xl text-[10px] font-bold shadow hover:opacity-90 cursor-pointer flex items-center gap-1`}>
                               <Plus className="w-3 h-3" /> {t.addBtn}
                             </button>
                           </div>
@@ -1044,8 +1066,8 @@ export default function App() {
 
         <div className="max-w-6xl mx-auto flex justify-between items-center pb-6 border-b border-stone-200">
           <div className="flex items-center gap-2">
-            <span className="bg-amber-900 text-white font-black px-3 py-1.5 rounded-xl text-sm">G</span>
-            <span className="font-extrabold text-lg tracking-tight">gastemappe24 <span className="text-amber-800 text-xs uppercase px-1.5 py-0.5 bg-amber-100 rounded-md">PRO</span></span>
+            <span className={`${currentTheme.bg} text-white font-black px-3 py-1.5 rounded-xl text-sm`}>G</span>
+            <span className="font-extrabold text-lg tracking-tight">gastemappe24 <span className={`${currentTheme.text} text-xs uppercase px-1.5 py-0.5 ${currentTheme.bgLight} rounded-md`}>PRO</span></span>
           </div>
           <div className="flex items-center gap-3">
             <button onClick={handleSaveData} className="bg-emerald-700 text-white px-5 py-2 rounded-xl text-xs font-bold hover:bg-emerald-800 transition cursor-pointer flex items-center gap-2 shadow-md">
@@ -1077,7 +1099,7 @@ export default function App() {
 
             <div className="bg-stone-50 p-5 rounded-2xl border border-stone-200 text-center space-y-3">
               <div className="font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2">
-                <QrCode className="w-4 h-4 text-amber-800" /> {t.qrTitle}
+                <QrCode className={`w-4 h-4 ${currentTheme.text}`} /> {t.qrTitle}
               </div>
               <div className="grid grid-cols-3 gap-2">
                 <button onClick={() => handlePrint('A4')} className="bg-stone-900 text-white p-2 rounded-xl text-[10px] font-bold cursor-pointer">{t.printA4}</button>
@@ -1090,7 +1112,7 @@ export default function App() {
           <div className="bg-white rounded-3xl p-6 border border-stone-200 shadow-sm space-y-8">
             
             <div className="space-y-4">
-              <h3 className="font-bold text-xs text-amber-900 uppercase tracking-wider">{t.sec1Title}</h3>
+              <h3 className={`font-bold text-xs ${currentTheme.text} uppercase tracking-wider`}>{t.sec1Title}</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                 <div>
                   <label className="block text-[10px] font-bold text-stone-500 uppercase mb-1">{t.lblHotelName}</label>
@@ -1120,7 +1142,27 @@ export default function App() {
             </div>
 
             <div className="space-y-3 pt-4 border-t">
-              <h3 className="font-bold text-xs text-amber-900 uppercase tracking-wider">{t.sec2Title}</h3>
+              <h3 className={`font-bold text-xs ${currentTheme.text} uppercase tracking-wider flex items-center gap-1.5`}><Palette className="w-4 h-4" /> {t.sec2Title}</h3>
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+                {themeColors.map((theme) => (
+                  <button 
+                    key={theme.id}
+                    onClick={() => setHotel({ ...hotel, themeColor: theme.id })}
+                    className={`p-3 rounded-2xl border text-left flex items-center gap-2.5 transition cursor-pointer ${hotel.themeColor === theme.id ? 'border-slate-900 bg-stone-100 shadow-sm' : 'border-stone-200 bg-white hover:bg-stone-50'}`}
+                  >
+                    <div className={`w-6 h-6 rounded-full ${theme.bg} shadow-md flex items-center justify-center text-white`}>
+                      {hotel.themeColor === theme.id && <Check className="w-3.5 h-3.5" />}
+                    </div>
+                    <div>
+                      <span className="font-bold block text-xs text-slate-900">{theme.name}</span>
+                    </div>
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="space-y-3 pt-4 border-t">
+              <h3 className={`font-bold text-xs ${currentTheme.text} uppercase tracking-wider`}>{t.sec3Title}</h3>
               <div className="flex items-center gap-4">
                 {hotel.logoUrl ? <img src={hotel.logoUrl} alt="Logo" className="w-12 h-12 rounded-xl object-cover border" /> : <div className="w-12 h-12 rounded-xl bg-stone-100 border border-dashed flex items-center justify-center text-[10px] text-stone-400">No Logo</div>}
                 <label className="px-3 py-2 bg-stone-100 hover:bg-stone-200 text-slate-700 rounded-xl text-xs font-bold cursor-pointer transition">
@@ -1131,7 +1173,7 @@ export default function App() {
             </div>
 
             <div className="space-y-3 pt-4 border-t">
-              <h3 className="font-bold text-xs text-amber-900 uppercase tracking-wider">{t.sec3Title}</h3>
+              <h3 className={`font-bold text-xs ${currentTheme.text} uppercase tracking-wider`}>{t.sec4Title}</h3>
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                 {hotel.images.map((img, idx) => (
                   <div key={idx} className="relative rounded-xl overflow-hidden h-24 border">
@@ -1142,12 +1184,12 @@ export default function App() {
             </div>
 
             <div className="space-y-4 pt-4 border-t">
-              <h3 className="font-bold text-xs text-amber-900 uppercase tracking-wider">{t.sec4Title}</h3>
+              <h3 className={`font-bold text-xs ${currentTheme.text} uppercase tracking-wider`}>{t.sec5Title}</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 
                 <div className={`p-4 rounded-2xl border transition ${hotel.showWifi ? 'bg-white border-stone-200' : 'bg-stone-100 border-stone-200 opacity-60'}`}>
                   <div className="flex justify-between items-center mb-2">
-                    <span className="font-bold text-xs text-slate-900 flex items-center gap-2"><Wifi className="w-4 h-4 text-amber-900" /> {t.wlanTitle}</span>
+                    <span className="font-bold text-xs text-slate-900 flex items-center gap-2"><Wifi className={`w-4 h-4 ${currentTheme.text}`} /> {t.wlanTitle}</span>
                     <button onClick={() => setHotel({ ...hotel, showWifi: !hotel.showWifi })} className={`px-2.5 py-1 rounded-lg text-[10px] font-bold cursor-pointer flex items-center gap-1 ${hotel.showWifi ? 'bg-emerald-100 text-emerald-800' : 'bg-stone-200 text-stone-600'}`}>
                       {hotel.showWifi ? <Eye className="w-3 h-3" /> : <EyeOff className="w-3 h-3" />}
                       {hotel.showWifi ? t.activeCard : t.inactiveCard}
@@ -1163,7 +1205,7 @@ export default function App() {
 
                 <div className={`p-4 rounded-2xl border transition ${hotel.showParking ? 'bg-white border-stone-200' : 'bg-stone-100 border-stone-200 opacity-60'}`}>
                   <div className="flex justify-between items-center mb-2">
-                    <span className="font-bold text-xs text-slate-900 flex items-center gap-2"><Car className="w-4 h-4 text-amber-900" /> {t.parkingTitle}</span>
+                    <span className="font-bold text-xs text-slate-900 flex items-center gap-2"><Car className={`w-4 h-4 ${currentTheme.text}`} /> {t.parkingTitle}</span>
                     <button onClick={() => setHotel({ ...hotel, showParking: !hotel.showParking })} className={`px-2.5 py-1 rounded-lg text-[10px] font-bold cursor-pointer flex items-center gap-1 ${hotel.showParking ? 'bg-emerald-100 text-emerald-800' : 'bg-stone-200 text-stone-600'}`}>
                       {hotel.showParking ? <Eye className="w-3 h-3" /> : <EyeOff className="w-3 h-3" />}
                       {hotel.showParking ? t.activeCard : t.inactiveCard}
@@ -1176,7 +1218,7 @@ export default function App() {
 
                 <div className={`p-4 rounded-2xl border transition ${hotel.showBreakfast ? 'bg-white border-stone-200' : 'bg-stone-100 border-stone-200 opacity-60'}`}>
                   <div className="flex justify-between items-center mb-2">
-                    <span className="font-bold text-xs text-slate-900 flex items-center gap-2"><Coffee className="w-4 h-4 text-amber-900" /> {t.breakfastTitle}</span>
+                    <span className="font-bold text-xs text-slate-900 flex items-center gap-2"><Coffee className={`w-4 h-4 ${currentTheme.text}`} /> {t.breakfastTitle}</span>
                     <button onClick={() => setHotel({ ...hotel, showBreakfast: !hotel.showBreakfast })} className={`px-2.5 py-1 rounded-lg text-[10px] font-bold cursor-pointer flex items-center gap-1 ${hotel.showBreakfast ? 'bg-emerald-100 text-emerald-800' : 'bg-stone-200 text-stone-600'}`}>
                       {hotel.showBreakfast ? <Eye className="w-3 h-3" /> : <EyeOff className="w-3 h-3" />}
                       {hotel.showBreakfast ? t.activeCard : t.inactiveCard}
@@ -1189,7 +1231,7 @@ export default function App() {
 
                 <div className={`p-4 rounded-2xl border transition ${hotel.showCheckInOut ? 'bg-white border-stone-200' : 'bg-stone-100 border-stone-200 opacity-60'}`}>
                   <div className="flex justify-between items-center mb-2">
-                    <span className="font-bold text-xs text-slate-900 flex items-center gap-2"><Clock className="w-4 h-4 text-amber-900" /> {t.checkInOutTitle}</span>
+                    <span className="font-bold text-xs text-slate-900 flex items-center gap-2"><Clock className={`w-4 h-4 ${currentTheme.text}`} /> {t.checkInOutTitle}</span>
                     <button onClick={() => setHotel({ ...hotel, showCheckInOut: !hotel.showCheckInOut })} className={`px-2.5 py-1 rounded-lg text-[10px] font-bold cursor-pointer flex items-center gap-1 ${hotel.showCheckInOut ? 'bg-emerald-100 text-emerald-800' : 'bg-stone-200 text-stone-600'}`}>
                       {hotel.showCheckInOut ? <Eye className="w-3 h-3" /> : <EyeOff className="w-3 h-3" />}
                       {hotel.showCheckInOut ? t.activeCard : t.inactiveCard}
@@ -1205,8 +1247,8 @@ export default function App() {
 
             <div className="space-y-4 pt-4 border-t">
               <div className="flex justify-between items-center">
-                <h3 className="font-bold text-xs text-amber-900 uppercase tracking-wider">{t.sec5Title}</h3>
-                <button onClick={() => setIsCatalogModalOpen(true)} className="bg-amber-900 text-white px-4 py-2 rounded-xl text-xs font-bold shadow hover:bg-amber-950 cursor-pointer flex items-center gap-1.5">
+                <h3 className={`font-bold text-xs ${currentTheme.text} uppercase tracking-wider`}>{t.sec6Title}</h3>
+                <button onClick={() => setIsCatalogModalOpen(true)} className={`${currentTheme.bg} text-white px-4 py-2 rounded-xl text-xs font-bold shadow hover:opacity-95 cursor-pointer flex items-center gap-1.5`}>
                   <Plus className="w-4 h-4" /> {t.btnAddCategory}
                 </button>
               </div>
@@ -1214,7 +1256,7 @@ export default function App() {
               <div className="space-y-6">
                 {Object.entries(groupedCategories).map(([groupName, groupItems]) => (
                   <div key={groupName} className="space-y-3">
-                    <h4 className="text-xs font-black text-amber-900 uppercase tracking-wider bg-amber-50 px-3 py-1.5 rounded-lg border border-amber-100/60 inline-block">{groupName}</h4>
+                    <h4 className={`text-xs font-black ${currentTheme.text} uppercase tracking-wider ${currentTheme.bgLight} px-3 py-1.5 rounded-lg border border-stone-200/60 inline-block`}>{groupName}</h4>
                     <div className="space-y-3">
                       {groupItems.map((cat) => {
                         const presetObj = cat.presetData;
@@ -1286,7 +1328,7 @@ export default function App() {
 
         <div className="relative z-10 p-6 flex justify-between items-center text-white">
           <div className="flex items-center gap-2">
-            {hotel.logoUrl ? <img src={hotel.logoUrl} alt="Logo" className="w-8 h-8 rounded-lg object-cover border border-white/20" /> : <div className="w-8 h-8 rounded-lg bg-amber-600 flex items-center justify-center font-bold text-xs">{hotel.name.charAt(0)}</div>}
+            {hotel.logoUrl ? <img src={hotel.logoUrl} alt="Logo" className="w-8 h-8 rounded-lg object-cover border border-white/20" /> : <div className={`w-8 h-8 rounded-lg ${currentTheme.bg} flex items-center justify-center font-bold text-xs`}>{hotel.name.charAt(0)}</div>}
             <span className="text-xs font-bold tracking-wider uppercase opacity-90">{hotel.name}</span>
           </div>
           <select value={lang} onChange={(e) => setLang(e.target.value)} className="bg-black/40 border border-white/30 text-white text-xs font-semibold rounded-xl px-2.5 py-1.5 cursor-pointer">
@@ -1305,7 +1347,7 @@ export default function App() {
 
         <div className="relative z-10 p-6 space-y-4 text-white">
           <div className="space-y-1">
-            <span className="text-[10px] tracking-widest font-extrabold uppercase bg-amber-500/20 text-amber-300 border border-amber-500/30 px-3 py-1 rounded-full">{t.welcomeBadge}</span>
+            <span className="text-[10px] tracking-widest font-extrabold uppercase bg-white/20 text-white border border-white/30 px-3 py-1 rounded-full">{t.welcomeBadge}</span>
             <h1 className="text-3xl font-black tracking-tight pt-2">{hotel.name}</h1>
           </div>
           <button onClick={() => setShowWelcomeScreen(false)} className="w-full bg-white text-slate-900 py-4 rounded-2xl font-bold text-sm shadow-2xl hover:bg-slate-100 transition flex items-center justify-center gap-2 cursor-pointer">
@@ -1319,31 +1361,31 @@ export default function App() {
   const activeQuickCards = [
     hotel.showWifi && (
       <div key="wifi" className="bg-white p-4 rounded-2xl shadow-sm border border-stone-200 space-y-2">
-        <div className="flex items-center gap-2 text-amber-900"><Wifi className="w-5 h-5" /><span className="font-bold text-xs text-slate-900">{t.wlanTitle}</span></div>
+        <div className={`flex items-center gap-2 ${currentTheme.text}`}><Wifi className="w-5 h-5" /><span className="font-bold text-xs text-slate-900">{t.wlanTitle}</span></div>
         <div className="text-[11px] text-slate-500 font-mono bg-stone-50 p-2 rounded-lg border">
           <div><b>{hotel.wifiSsid}</b></div>
           <div className="flex justify-between items-center mt-1">
             <span>{hotel.wifiPass}</span>
-            <button onClick={copyWifiPassword} className="bg-amber-50 text-amber-900 p-1 rounded cursor-pointer">{copiedWifi ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}</button>
+            <button onClick={copyWifiPassword} className={`${currentTheme.bgLight} ${currentTheme.text} p-1 rounded cursor-pointer`}>{copiedWifi ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}</button>
           </div>
         </div>
       </div>
     ),
     hotel.showParking && (
       <div key="parking" className="bg-white p-4 rounded-2xl shadow-sm border border-stone-200 space-y-2">
-        <div className="flex items-center gap-2 text-amber-900"><Car className="w-5 h-5" /><span className="font-bold text-xs text-slate-900">{t.parkingTitle}</span></div>
+        <div className={`flex items-center gap-2 ${currentTheme.text}`}><Car className="w-5 h-5" /><span className="font-bold text-xs text-slate-900">{t.parkingTitle}</span></div>
         <p className="text-[11px] text-slate-600">{hotel.parkingInfo}</p>
       </div>
     ),
     hotel.showBreakfast && (
       <div key="breakfast" className="bg-white p-4 rounded-2xl shadow-sm border border-stone-200 space-y-2">
-        <div className="flex items-center gap-2 text-amber-900"><Coffee className="w-5 h-5" /><span className="font-bold text-xs text-slate-900">{t.breakfastTitle}</span></div>
+        <div className={`flex items-center gap-2 ${currentTheme.text}`}><Coffee className="w-5 h-5" /><span className="font-bold text-xs text-slate-900">{t.breakfastTitle}</span></div>
         <p className="text-[11px] text-slate-600">{hotel.breakfastTime}</p>
       </div>
     ),
     hotel.showCheckInOut && (
       <div key="checkinout" className="bg-white p-4 rounded-2xl shadow-sm border border-stone-200 space-y-2">
-        <div className="flex items-center gap-2 text-amber-900"><Clock className="w-5 h-5" /><span className="font-bold text-xs text-slate-900">{t.checkInOutTitle}</span></div>
+        <div className={`flex items-center gap-2 ${currentTheme.text}`}><Clock className="w-5 h-5" /><span className="font-bold text-xs text-slate-900">{t.checkInOutTitle}</span></div>
         <p className="text-[11px] text-slate-600">{hotel.checkInOut}</p>
       </div>
     )
@@ -1353,7 +1395,7 @@ export default function App() {
     <div className="min-h-screen bg-stone-50 font-sans text-slate-800 pb-32 max-w-md mx-auto shadow-2xl relative border-x border-slate-200">
       <header className="p-5 pt-6 pb-2 bg-stone-50 sticky top-0 z-40 flex justify-between items-center">
         <div className="flex items-center gap-2.5">
-          {hotel.logoUrl ? <img src={hotel.logoUrl} alt="Logo" className="w-9 h-9 rounded-xl object-cover border" /> : <div className="w-9 h-9 rounded-xl bg-amber-900 text-white flex items-center justify-center font-bold text-xs">{hotel.name.charAt(0)}</div>}
+          {hotel.logoUrl ? <img src={hotel.logoUrl} alt="Logo" className="w-9 h-9 rounded-xl object-cover border" /> : <div className={`w-9 h-9 rounded-xl ${currentTheme.bg} text-white flex items-center justify-center font-bold text-xs`}>{hotel.name.charAt(0)}</div>}
           <span className="text-xs font-bold tracking-wider uppercase text-slate-800">{hotel.name}</span>
         </div>
 
@@ -1377,7 +1419,7 @@ export default function App() {
       <main className="p-5 space-y-5">
         {selectedCategory ? (
           <div className="space-y-4 animate-fade-in">
-            <button onClick={() => setSelectedCategory(null)} className="text-xs font-bold text-amber-900 cursor-pointer">&larr; {t.detailBack}</button>
+            <button onClick={() => setSelectedCategory(null)} className={`text-xs font-bold ${currentTheme.text} cursor-pointer flex items-center gap-1`}>&larr; {t.detailBack}</button>
             <div className="bg-white p-6 rounded-2xl shadow-sm border space-y-4">
               <h2 className="text-lg font-black text-slate-900">{selectedCategory.title}</h2>
               <p className="text-xs text-slate-700 leading-relaxed">{selectedCategory.content}</p>
@@ -1388,7 +1430,7 @@ export default function App() {
             <div className="space-y-4 animate-fade-in">
               <div className="space-y-0.5 pt-1">
                 <span className="text-[11px] font-extrabold uppercase tracking-widest text-stone-500 block">{hotel.locationTitle}</span>
-                <h1 className="text-2xl font-black text-slate-900 tracking-tight leading-snug">{t.greetingHello}<br /><span className="text-amber-900">{t.greetingWelcome}</span></h1>
+                <h1 className="text-2xl font-black text-slate-900 tracking-tight leading-snug">{t.greetingHello}<br /><span className={currentTheme.text}>{t.greetingWelcome}</span></h1>
               </div>
 
               <div className="relative rounded-3xl overflow-hidden shadow-lg h-56 bg-slate-900 border border-stone-200">
@@ -1397,7 +1439,7 @@ export default function App() {
 
               <div className="bg-white p-4 rounded-2xl shadow-sm border border-stone-200 flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <div className="p-3 bg-amber-50 rounded-xl text-amber-900"><Sun className="w-6 h-6" /></div>
+                  <div className={`p-3 ${currentTheme.bgLight} rounded-xl ${currentTheme.text}`}><Sun className="w-6 h-6" /></div>
                   <div>
                     <div className="text-xs font-extrabold text-slate-900 uppercase">{t.weatherTitle}</div>
                     <div className="text-[11px] text-stone-500">{t.weatherSub}</div>
@@ -1417,7 +1459,7 @@ export default function App() {
               <h3 className="text-xs font-bold text-stone-500 uppercase tracking-wider">{t.navGaestemappe}</h3>
               {Object.entries(groupedCategories).map(([groupName, groupItems]) => (
                 <div key={groupName} className="space-y-2.5">
-                  <h4 className="text-xs font-black text-amber-900 uppercase tracking-wider px-1">{groupName}</h4>
+                  <h4 className={`text-xs font-black ${currentTheme.text} uppercase tracking-wider px-1`}>{groupName}</h4>
                   <div className="grid grid-cols-1 gap-2.5">
                     {groupItems.map((cat) => {
                       const presetObj = cat.presetData;
@@ -1428,9 +1470,9 @@ export default function App() {
                       const content = rawTpl.replace('{val1}', cat.val1 || '').replace('{val2}', cat.val2 || '');
 
                       return (
-                        <button key={cat.id} onClick={() => setSelectedCategory({ title, content })} className="w-full bg-white p-4 rounded-2xl border border-stone-200 shadow-sm flex items-center justify-between text-left cursor-pointer hover:border-amber-900/40 transition">
+                        <button key={cat.id} onClick={() => setSelectedCategory({ title, content })} className={`w-full bg-white p-4 rounded-2xl border border-stone-200 shadow-sm flex items-center justify-between text-left cursor-pointer hover:${currentTheme.border} transition`}>
                           <div className="flex items-center gap-3">
-                            <div className="w-10 h-10 rounded-xl bg-amber-50 flex items-center justify-center">{renderIcon(cat.icon)}</div>
+                            <div className={`w-10 h-10 rounded-xl ${currentTheme.bgLight} flex items-center justify-center`}>{renderIcon(cat.icon)}</div>
                             <div>
                               <h5 className="text-sm font-extrabold text-slate-900">{title}</h5>
                               <p className="text-xs text-slate-500">{sub}</p>
@@ -1450,10 +1492,10 @@ export default function App() {
 
       <div className="fixed bottom-0 left-0 right-0 max-w-md mx-auto bg-white/95 backdrop-blur-md border-t border-stone-200/80 z-50 shadow-2xl">
         <nav className="px-3 py-2 flex justify-around items-center">
-          <button onClick={() => { setActiveTab('home'); setSelectedCategory(null); }} className={`flex flex-col items-center gap-1 text-[10px] font-bold cursor-pointer ${activeTab === 'home' && !selectedCategory ? 'text-amber-900' : 'text-stone-400'}`}>
+          <button onClick={() => { setActiveTab('home'); setSelectedCategory(null); }} className={`flex flex-col items-center gap-1 text-[10px] font-bold cursor-pointer ${activeTab === 'home' && !selectedCategory ? currentTheme.text : 'text-stone-400'}`}>
             <Info className="w-5 h-5" /><span>{t.navHome}</span>
           </button>
-          <button onClick={() => { setActiveTab('services'); setSelectedCategory(null); }} className={`flex flex-col items-center gap-1 text-[10px] font-bold cursor-pointer ${activeTab === 'services' || selectedCategory ? 'text-amber-900' : 'text-stone-400'}`}>
+          <button onClick={() => { setActiveTab('services'); setSelectedCategory(null); }} className={`flex flex-col items-center gap-1 text-[10px] font-bold cursor-pointer ${activeTab === 'services' || selectedCategory ? currentTheme.text : 'text-stone-400'}`}>
             <Compass className="w-5 h-5" /><span>{t.navGaestemappe}</span>
           </button>
           <a href={hotel.googleReviewUrl} target="_blank" rel="noreferrer" className="flex flex-col items-center gap-1 text-[10px] font-bold text-stone-400 hover:text-amber-500 cursor-pointer">
