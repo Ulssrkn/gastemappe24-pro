@@ -5,7 +5,7 @@ import {
   Check, Image as ImageIcon, Copy,
   ChevronRight, ArrowRight, Upload, AlertCircle, Lock, Unlock,
   Utensils, Heart, Compass, Coffee, Car, Clock, ShieldCheck, Edit3, Mail, Globe, ExternalLink, QrCode, Printer, BarChart3, Star, Navigation, Sun, LogOut, User,
-  Wine, Sparkles, Tv, Waves, Dumbbell, Key, Bed, Building, ShoppingBag, Landmark, Map, Bus, Plane, Scroll, Save, Eye, EyeOff, Palette
+  Wine, Sparkles, Tv, Waves, Dumbbell, Key, Bed, Building, ShoppingBag, Landmark, Map, Bus, Plane, Scroll, Save, Eye, EyeOff, Palette, TrendingUp, Users, Activity
 } from 'lucide-react';
 
 const translations = {
@@ -26,15 +26,17 @@ const translations = {
     breakfastTitle: "Frühstück",
     checkInOutTitle: "Check-in / Out",
     detailBack: "Zurück zur Übersicht",
-    adminTitle: "Verwaltung (Dashboard)",
+    adminTitle: "Verwaltung & Analytik (Dashboard)",
     guestViewBtn: "Gastansicht öffnen",
     saveBtn: "Änderungen speichern",
     savedMsg: "Gespeichert!",
     logoutBtn: "Abmelden",
     trialTitle: "30-Tage Testversion (PRO)",
     trialDaysLeft: "Tage verbleibend",
-    statsScans: "QR-Code Scans",
+    statsScans: "QR-Code Scans (Gesamt)",
     statsActiveRooms: "Aktive Zimmer-Zugriffe",
+    statsTopCategory: "Beliebteste Kategorie",
+    statsPeakTime: "Besuchs-Spitzenzeit",
     qrTitle: "QR-Code & Print-Center",
     printA4: "Druckvorlage A4",
     printA5: "Druckvorlage A5",
@@ -83,15 +85,17 @@ const translations = {
     breakfastTitle: "Breakfast",
     checkInOutTitle: "Check-in / Out",
     detailBack: "Back to Overview",
-    adminTitle: "Management (Dashboard)",
+    adminTitle: "Management & Analytics (Dashboard)",
     guestViewBtn: "Open Guest View",
     saveBtn: "Save Changes",
     savedMsg: "Saved!",
     logoutBtn: "Log out",
     trialTitle: "30-Day Trial (PRO)",
     trialDaysLeft: "Days remaining",
-    statsScans: "QR Code Scans",
+    statsScans: "QR Code Scans (Total)",
     statsActiveRooms: "Active Room Access",
+    statsTopCategory: "Top Category",
+    statsPeakTime: "Peak Hours",
     qrTitle: "QR Code & Print Center",
     printA4: "Print Template A4",
     printA5: "Print Template A5",
@@ -140,7 +144,7 @@ const translations = {
     breakfastTitle: "Colazione",
     checkInOutTitle: "Check-in / Out",
     detailBack: "Torna alla panoramica",
-    adminTitle: "Gestione (Dashboard)",
+    adminTitle: "Gestione e Analisi",
     guestViewBtn: "Apri vista ospiti",
     saveBtn: "Salva modifiche",
     savedMsg: "Salvato!",
@@ -149,6 +153,8 @@ const translations = {
     trialDaysLeft: "Giorni rimanenti",
     statsScans: "Scansioni QR",
     statsActiveRooms: "Accessi attivi",
+    statsTopCategory: "Categoria top",
+    statsPeakTime: "Orario di punta",
     qrTitle: "Centro stampa QR",
     printA4: "Modello A4",
     printA5: "Modello A5",
@@ -197,7 +203,7 @@ const translations = {
     breakfastTitle: "Petit-déjeuner",
     checkInOutTitle: "Arrivée / Départ",
     detailBack: "Retour",
-    adminTitle: "Administration (Tableau de bord)",
+    adminTitle: "Administration et Analyses",
     guestViewBtn: "Ouvrir la vue invité",
     saveBtn: "Enregistrer",
     savedMsg: "Enregistré !",
@@ -206,6 +212,8 @@ const translations = {
     trialDaysLeft: "jours restants",
     statsScans: "Scans QR",
     statsActiveRooms: "Accès actifs",
+    statsTopCategory: "Catégorie principale",
+    statsPeakTime: "Heures de pointe",
     qrTitle: "Centre d'impression QR",
     printA4: "Modèle A4",
     printA5: "Modèle A5",
@@ -254,7 +262,7 @@ const translations = {
     breakfastTitle: "Desayuno",
     checkInOutTitle: "Entrada / Salida",
     detailBack: "Volver",
-    adminTitle: "Gestión (Panel)",
+    adminTitle: "Gestión y Analítica",
     guestViewBtn: "Abrir vista de huésped",
     saveBtn: "Guardar cambios",
     savedMsg: "¡Guardado!",
@@ -263,6 +271,8 @@ const translations = {
     trialDaysLeft: "días restantes",
     statsScans: "Escaneos QR",
     statsActiveRooms: "Accesos activos",
+    statsTopCategory: "Categoría principal",
+    statsPeakTime: "Hora punta",
     qrTitle: "Centro de impresión QR",
     printA4: "Plantilla A4",
     printA5: "Plantilla A5",
@@ -311,15 +321,17 @@ const translations = {
     breakfastTitle: "Kahvaltı",
     checkInOutTitle: "Giriş / Çıkış",
     detailBack: "Geri Dön",
-    adminTitle: "Yönetim Paneli (Dashboard)",
+    adminTitle: "Yönetim Paneli & Analitik (Dashboard)",
     guestViewBtn: "Misafir Görünümünü Aç",
     saveBtn: "Değişiklikleri Kaydet",
     savedMsg: "Kaydedildi!",
     logoutBtn: "Çıkış Yap",
     trialTitle: "30 Günlük Deneme (PRO)",
     trialDaysLeft: "Gün kaldı",
-    statsScans: "QR Kod Taramaları",
+    statsScans: "QR Kod Taramaları (Toplam)",
     statsActiveRooms: "Aktif Oda Erişimi",
+    statsTopCategory: "En Çok Tıklanan Kategori",
+    statsPeakTime: "Yoğun Kullanım Saati",
     qrTitle: "QR Kod & Baskı Merkezi",
     printA4: "A4 Baskı Şablonu",
     printA5: "A5 Baskı Şablonu",
@@ -368,7 +380,7 @@ const translations = {
     breakfastTitle: "Frukost",
     checkInOutTitle: "Incheckning / Utcheckning",
     detailBack: "Tillbaka",
-    adminTitle: "Administration",
+    adminTitle: "Administration & Analys",
     guestViewBtn: "Öppna gästvy",
     saveBtn: "Spara ändringar",
     savedMsg: "Sparat!",
@@ -377,6 +389,8 @@ const translations = {
     trialDaysLeft: "dagar kvar",
     statsScans: "QR-skanningar",
     statsActiveRooms: "Aktiva rum",
+    statsTopCategory: "Populäraste kategori",
+    statsPeakTime: "Pikatid",
     qrTitle: "QR-utskriftscenter",
     printA4: "Utskrift A4",
     printA5: "Utskrift A5",
@@ -425,7 +439,7 @@ const translations = {
     breakfastTitle: "Frokost",
     checkInOutTitle: "Inn- / Utsjekking",
     detailBack: "Tilbake",
-    adminTitle: "Administrasjon",
+    adminTitle: "Administrasjon og Analyse",
     guestViewBtn: "Åpne gjestevisning",
     saveBtn: "Lagre endringer",
     savedMsg: "Lagret!",
@@ -434,6 +448,8 @@ const translations = {
     trialDaysLeft: "dager igjen",
     statsScans: "QR-skanninger",
     statsActiveRooms: "Aktive rom",
+    statsTopCategory: "Toppkategori",
+    statsPeakTime: "Mest aktiv tid",
     qrTitle: "QR-utskriftssenter",
     printA4: "Utskrift A4",
     printA5: "Utskrift A5",
@@ -456,7 +472,7 @@ const translations = {
     lblCheckInOut: "Inn- / Utsjekk info",
     lblParkingInfo: "Parkeringsinfo",
     btnLogoUpload: "Velg logo",
-    btnAddCategory: "Legg til kategori",
+    btnAddCategory: "Legg till kategori",
     modalTitle: "Katalog: Velg kategori",
     addBtn: "Legg til",
     editTitle: "Navn / Tittel",
@@ -482,7 +498,7 @@ const translations = {
     breakfastTitle: "Doručak",
     checkInOutTitle: "Prijava / Odjava",
     detailBack: "Natrag",
-    adminTitle: "Upravljanje",
+    adminTitle: "Upravljanje i Analitika",
     guestViewBtn: "Otvori prikaz za goste",
     saveBtn: "Spremi promjene",
     savedMsg: "Spremljeno!",
@@ -491,6 +507,8 @@ const translations = {
     trialDaysLeft: "preostalih dana",
     statsScans: "QR skeniranja",
     statsActiveRooms: "Aktivne sobe",
+    statsTopCategory: "Najpopularnija kategorija",
+    statsPeakTime: "Najaktivnije vrijeme",
     qrTitle: "QR centar za ispis",
     printA4: "Predložak A4",
     printA5: "Predložak A5",
@@ -539,7 +557,7 @@ const translations = {
     breakfastTitle: "Mëngjesi",
     checkInOutTitle: "Check-in / Out",
     detailBack: "Kthehu prapa",
-    adminTitle: "Administrimi",
+    adminTitle: "Administrimi dhe Analitika",
     guestViewBtn: "Hap pamjen e mysafirit",
     saveBtn: "Ruaj ndryshimet",
     savedMsg: "U ruajt!",
@@ -548,6 +566,8 @@ const translations = {
     trialDaysLeft: "ditë të mbetura",
     statsScans: "Skanime QR",
     statsActiveRooms: "Dhoma aktive",
+    statsTopCategory: "Kategoria kryesore",
+    statsPeakTime: "Orari i pikut",
     qrTitle: "Qendra e printimit QR",
     printA4: "Modeli A4",
     printA5: "Modeli A5",
@@ -828,7 +848,6 @@ const categoryPresets = [
     id: 'house_rules', 
     group: 'Regeln & Wissenswertes', 
     title: { de: 'Hausordnung & Ruhezeiten', en: 'House Rules & Quiet Hours', tr: 'Ev Kuralları ve Sessizlik', it: 'Regolamento e Orari di silenzio', fr: 'Règlement et Heures de calme', es: 'Normas y Horas de silencio', sv: 'Ordningsregler & Tystnad', no: 'Husordensregler og Ro', hr: 'Kućni red i tišina', sq: 'Rregullat dhe Qetësia' }, 
-    subtitle: { de: 'Nachtruhe ab 22:00 Uhr', en: 'Quiet hours from 10:00 PM', tr: '22:00’den itibaren gece sessizliği', it: 'Silenzio dalle 22:00', fr: 'Heures de calme dès 22h00', es: 'Horas de silencio desde las 22:00', sv: 'Tystnad från kl. 22:00', no: 'Ro fra kl. 22:00', hr: 'Noćni mir od 22:00', sq: 'Qetësia e natës nga ora 22:00' }, 
     contentTpl: { 
       de: 'Wir bitten Sie die Ruhezeiten einzuhalten. Details: {val1}. Hinweis: {val2}', 
       en: 'We ask you to observe quiet hours. Details: {val1}. Note: {val2}', 
@@ -862,8 +881,10 @@ export default function App() {
   const [currentSlide] = useState(0);
   const [copiedWifi, setCopiedWifi] = useState(false);
 
-  const [scanCount] = useState(142);
+  // Geliştirilmiş İstatistik & Analitik State'leri
+  const [scanCount] = useState(184);
   const [daysLeft] = useState(24);
+  const [activeRooms] = useState(12);
 
   const [hotel, setHotel] = useState(() => {
     const saved = localStorage.getItem('gm24_hotel');
@@ -1082,21 +1103,46 @@ export default function App() {
         <div className="max-w-6xl mx-auto space-y-6">
           <h1 className="text-3xl font-black text-slate-900 tracking-tight">{t.adminTitle}</h1>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="bg-slate-900 text-white p-5 rounded-2xl space-y-4">
-              <span className="text-xs font-bold uppercase tracking-wider text-amber-400">{t.trialTitle} ({daysLeft} {t.trialDaysLeft})</span>
-              <div className="grid grid-cols-2 gap-3">
-                <div className="bg-white/5 p-3 rounded-xl">
-                  <span className="text-[10px] text-stone-400 block">{t.statsScans}</span>
-                  <span className="text-xl font-black">{scanCount}</span>
-                </div>
-                <div className="bg-white/5 p-3 rounded-xl">
-                  <span className="text-[10px] text-stone-400 block">{t.statsActiveRooms}</span>
-                  <span className="text-xl font-black text-sky-400">100%</span>
-                </div>
+          {/* Geliştirilmiş İstatistik & Analitik Kartları */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="bg-slate-900 text-white p-5 rounded-2xl space-y-2 shadow-sm">
+              <div className="flex justify-between items-center text-stone-400">
+                <span className="text-[10px] uppercase font-bold tracking-wider">{t.statsScans}</span>
+                <TrendingUp className="w-4 h-4 text-amber-400" />
               </div>
+              <div className="text-2xl font-black">{scanCount}</div>
+              <span className="text-[10px] text-emerald-400 font-semibold">↑ +18% diese Woche</span>
             </div>
 
+            <div className="bg-white p-5 rounded-2xl border border-stone-200 space-y-2 shadow-sm">
+              <div className="flex justify-between items-center text-stone-500">
+                <span className="text-[10px] uppercase font-bold tracking-wider">{t.statsActiveRooms}</span>
+                <Users className="w-4 h-4 text-sky-600" />
+              </div>
+              <div className="text-2xl font-black text-slate-900">{activeRooms} / 15</div>
+              <span className="text-[10px] text-stone-400">80% Auslastung</span>
+            </div>
+
+            <div className="bg-white p-5 rounded-2xl border border-stone-200 space-y-2 shadow-sm">
+              <div className="flex justify-between items-center text-stone-500">
+                <span className="text-[10px] uppercase font-bold tracking-wider">{t.statsTopCategory}</span>
+                <Activity className="w-4 h-4 text-emerald-600" />
+              </div>
+              <div className="text-sm font-extrabold text-slate-900 truncate">Restaurant & Bar</div>
+              <span className="text-[10px] text-stone-400">42 Aufrufe heute</span>
+            </div>
+
+            <div className="bg-white p-5 rounded-2xl border border-stone-200 space-y-2 shadow-sm">
+              <div className="flex justify-between items-center text-stone-500">
+                <span className="text-[10px] uppercase font-bold tracking-wider">{t.statsPeakTime}</span>
+                <Clock className="w-4 h-4 text-purple-600" />
+              </div>
+              <div className="text-sm font-extrabold text-slate-900">08:00 - 10:00 Uhr</div>
+              <span className="text-[10px] text-stone-400">Frühstückszeit</span>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="bg-stone-50 p-5 rounded-2xl border border-stone-200 text-center space-y-3">
               <div className="font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2">
                 <QrCode className={`w-4 h-4 ${currentTheme.text}`} /> {t.qrTitle}
@@ -1106,6 +1152,14 @@ export default function App() {
                 <button onClick={() => handlePrint('A5')} className="bg-stone-900 text-white p-2 rounded-xl text-[10px] font-bold cursor-pointer">{t.printA5}</button>
                 <button onClick={() => handlePrint('Visitenkarte')} className="bg-stone-900 text-white p-2 rounded-xl text-[10px] font-bold cursor-pointer">{t.printCard}</button>
               </div>
+            </div>
+
+            <div className="bg-slate-900 text-white p-5 rounded-2xl flex flex-col justify-between">
+              <div className="space-y-1">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-amber-400">{t.trialTitle}</span>
+                <div className="text-xl font-black">{daysLeft} {t.trialDaysLeft}</div>
+              </div>
+              <p className="text-[11px] text-stone-400 mt-2">PRO Version ist aktiv. Alle 10 Sprachen und Analysen sind freigeschaltet.</p>
             </div>
           </div>
 
