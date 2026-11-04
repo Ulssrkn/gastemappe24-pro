@@ -43,7 +43,7 @@ const translations = {
     sec2Title: "2. Logo hochladen",
     sec3Title: "3. Bilderverwaltung (Slider)",
     sec4Title: "4. Schnellzugriff (Aktivieren / Deaktivieren)",
-    sec5Title: "5. Gästemappe Kategorien (Hibrit Şablonlar & Özel Değerler)",
+    sec5Title: "5. Gästemappe Kategorien (10-Sprachen Schablonen & Werte)",
     lblHotelName: "Unterkunft Name",
     lblPhone: "Telefon",
     lblEmailField: "E-Mail",
@@ -59,9 +59,9 @@ const translations = {
     btnAddCategory: "Kategorie aus Katalog hinzufügen",
     modalTitle: "Katalog: Kategorie auswählen",
     addBtn: "Hinzufügen",
-    editTitle: "Name / Titel (z.B. Pool Bar)",
-    editCustomVal1: "Individuelle Zeit / Info (z.B. 08:00 - 22:00)",
-    editCustomVal2: "Individuelle Nummer / Detail (z.B. Durchwahl 9)",
+    editTitle: "Name / Titel",
+    editCustomVal1: "Individuelle Zeit / Wert 1",
+    editCustomVal2: "Individuelle Info / Wert 2",
     activeCard: "Karte anzeigen",
     inactiveCard: "Karte ausblenden"
   },
@@ -99,7 +99,7 @@ const translations = {
     sec2Title: "2. Upload Logo",
     sec3Title: "3. Image Management (Slider)",
     sec4Title: "4. Quick Access (Enable / Disable Cards)",
-    sec5Title: "5. Directory Categories (Hybrid Templates & Custom Values)",
+    sec5Title: "5. Directory Categories (10-Language Templates)",
     lblHotelName: "Property Name",
     lblPhone: "Phone",
     lblEmailField: "E-Mail",
@@ -115,9 +115,9 @@ const translations = {
     btnAddCategory: "Add Category from Catalog",
     modalTitle: "Catalog: Select Category",
     addBtn: "Add",
-    editTitle: "Name / Title (e.g. Pool Bar)",
-    editCustomVal1: "Custom Time / Info (e.g. 08:00 - 22:00)",
-    editCustomVal2: "Custom Number / Detail (e.g. Ext. 9)",
+    editTitle: "Name / Title",
+    editCustomVal1: "Custom Time / Value 1",
+    editCustomVal2: "Custom Info / Value 2",
     activeCard: "Show Card",
     inactiveCard: "Hide Card"
   },
@@ -155,7 +155,7 @@ const translations = {
     sec2Title: "2. Logo Yükleme",
     sec3Title: "3. Resim Yönetimi (Slider)",
     sec4Title: "4. Hızlı Erişim (Kartları Aç / Kapat)",
-    sec5Title: "5. Rehber Kategorileri (Hibrit Şablonlar & Özel Değerler)",
+    sec5Title: "5. Rehber Kategorileri (10 Dilde Hibrit Şablonlar)",
     lblHotelName: "Tesis / Otel Adı",
     lblPhone: "Telefon",
     lblEmailField: "E-Posta",
@@ -171,19 +171,99 @@ const translations = {
     btnAddCategory: "Katalogdan Kategori Ekle",
     modalTitle: "Hazır Katalog: Kategori Seçin",
     addBtn: "Ekle",
-    editTitle: "İsim / Başlık (Örn: Pool Bar)",
-    editCustomVal1: "Özel Saat / Zaman (Örn: 08:00 - 22:00)",
-    editCustomVal2: "Özel Numara / Detay (Örn: Dahili 9)",
+    editTitle: "İsim / Başlık",
+    editCustomVal1: "Özel Zaman / Değer 1",
+    editCustomVal2: "Özel Bilgi / Değer 2",
     activeCard: "Kartı Göster",
     inactiveCard: "Kartı Gizle"
   }
 };
 
 const categoryPresets = [
-  { id: 'hotel_info', group: 'Hotel & Unterkunft', title: { de: 'Hotelinformationen', en: 'Hotel Information', tr: 'Otel Bilgileri' }, subtitle: { de: 'Rezeption, Zeiten & Services', en: 'Reception, hours & services', tr: 'Resepsiyon, saatler ve hizmetler' }, contentTpl: { de: 'Herzlich willkommen in unserem Haus. Unsere Rezeption ist von {val1} für Sie besetzt. Notfallnummer: {val2}', en: 'Welcome to our property. Our reception is open from {val1}. Emergency: {val2}', tr: 'Tesisimize hoş geldiniz. Resepsiyonumuz {val1} saatleri arasında hizmet vermektedir. Acil hat: {val2}' }, defaultVal1: '07:00 - 22:00 Uhr', defaultVal2: '+49 123 456', icon: 'Building' },
-  { id: 'room_info', group: 'Hotel & Unterkunft', title: { de: 'Zimmerinformationen', en: 'Room Information', tr: 'Oda Bilgileri' }, subtitle: { de: 'Ausstattung & Safe', en: 'Amenities & safe', tr: 'Oda özellikleri ve kasa' }, contentTpl: { de: 'Alle Zimmer sind mit Safe und Föhn ausgestattet. Check-in Info: {val1}', en: 'All rooms are equipped with safe and hairdryer. Info: {val1}', tr: 'Tüm odalarda kasa ve saç kurutma makinesi mevcuttur. Bilgi: {val1}' }, defaultVal1: 'Nichtraucherzimmer', defaultVal2: '', icon: 'Bed' },
-  { id: 'restaurant_dining', group: 'Essen & Trinken', title: { de: 'Restaurant & Bar', en: 'Restaurant & Bar', tr: 'Restoran ve Bar' }, subtitle: { de: 'Öffnungszeiten & Speisekarte', en: 'Hours & menu', tr: 'Çalışma saatleri ve menü' }, contentTpl: { de: 'Unser Bereich ist täglich von {val1} für Sie geöffnet. Details: {val2}', en: 'Our venue is open daily from {val1}. Details: {val2}', tr: 'Mekanımız her gün {val1} saatleri arasında açıktır. Detay: {val2}' }, defaultVal1: '18:00 - 21:30 Uhr', defaultVal2: 'Reservierung an der Rezeption', icon: 'Utensils' },
-  { id: 'pool_aqua', group: 'Wellness & Spa', title: { de: 'Pool & Wellnessbereich', en: 'Pool & Wellness Area', tr: 'Havuz ve Wellness Alanı' }, subtitle: { de: 'Öffnungszeiten & Handtücher', en: 'Hours & towels', tr: 'Çalışma saatleri ve havlular' }, contentTpl: { de: 'Unser Poolbereich ist von {val1} geöffnet. Hinweis: {val2}', en: 'Our pool area is open from {val1}. Note: {val2}', tr: 'Havuz alanımız {val1} arası açıktır. Not: {val2}' }, defaultVal1: '07:00 - 20:00 Uhr', defaultVal2: 'Handtücher am Empfang erhältlich', icon: 'Waves' }
+  { 
+    id: 'hotel_info', 
+    group: 'Hotel & Unterkunft', 
+    title: { de: 'Hotelinformationen', en: 'Hotel Information', tr: 'Otel Bilgileri', it: 'Informazioni sull\'hotel', fr: 'Informations sur l\'hôtel', es: 'Información del hotel', sv: 'Hotellinformation', no: 'Hotellinformasjon', hr: 'Informacije o hotelu', sq: 'Informacione për hotelin' }, 
+    subtitle: { de: 'Rezeption & Zeiten', en: 'Reception & hours', tr: 'Resepsiyon ve saatler', it: 'Ricezione e orari', fr: 'Réception et horaires', es: 'Recepción y horarios', sv: 'Reception & tider', no: 'Resepsjon og tider', hr: 'Recepcija i radno vrijeme', sq: 'Recepsioni dhe oraret' }, 
+    contentTpl: { 
+      de: 'Herzlich willkommen in unserem Haus. Unsere Rezeption ist von {val1} für Sie besetzt. Notfallnummer: {val2}', 
+      en: 'Welcome to our property. Our reception is open from {val1}. Emergency: {val2}', 
+      tr: 'Tesisimize hoş geldiniz. Resepsiyonumuz {val1} saatleri arasında hizmet vermektedir. Acil hat: {val2}',
+      it: 'Benvenuti nella nostra struttura. La nostra reception è aperta dalle {val1}. Emergenza: {val2}',
+      fr: 'Bienvenue dans notre établissement. Notre réception est ouverte de {val1}. Urgence : {val2}',
+      es: 'Bienvenidos a nuestro establecimiento. Nuestra recepción está abierta de {val1}. Emergencia: {val2}',
+      sv: 'Välkommen till vår fastighet. Vår reception är öppen från {val1}. Nödnummer: {val2}',
+      no: 'Velkommen til vår eiendom. Vår resepsjon er åpen fra {val1}. Nødnummer: {val2}',
+      hr: 'Dobrodošli u naš objekt. Naša recepcija otvorena je od {val1}. Hitni broj: {val2}',
+      sq: 'Mirë se erdhët në pronën tonë. Recepsioni ynë është i hapur nga {val1}. Urgjencë: {val2}'
+    }, 
+    defaultVal1: '07:00 - 22:00 Uhr', 
+    defaultVal2: '+49 123 456', 
+    icon: 'Building' 
+  },
+  { 
+    id: 'room_info', 
+    group: 'Hotel & Unterkunft', 
+    title: { de: 'Zimmerinformationen', en: 'Room Information', tr: 'Oda Bilgileri', it: 'Informazioni sulle camere', fr: 'Informations sur les chambres', es: 'Información de la habitación', sv: 'Rumsinformation', no: 'Romsinformasjon', hr: 'Informacije o sobama', sq: 'Informacione për dhomat' }, 
+    subtitle: { de: 'Ausstattung & Safe', en: 'Amenities & safe', tr: 'Oda özellikleri ve kasa', it: 'Servizi e cassaforte', fr: 'Équipements et coffre', es: 'Servicios y caja fuerte', sv: 'Bekvämligheter & kassaskåp', no: 'Fasiliteter og safe', hr: 'Sadržaji i sef', sq: 'Pajisjet dhe kasaforta' }, 
+    contentTpl: { 
+      de: 'Alle Zimmer sind mit Safe und Föhn ausgestattet. Hinweis: {val1}', 
+      en: 'All rooms are equipped with safe and hairdryer. Note: {val1}', 
+      tr: 'Tüm odalarda kasa ve saç kurutma makinesi mevcuttur. Not: {val1}',
+      it: 'Tutte le camere sono dotate di cassaforte e asciugacapelli. Nota: {val1}',
+      fr: 'Toutes les chambres sont équipées d\'un coffre-fort et d\'un sèche-cheveux. Remarque : {val1}',
+      es: 'Todas las habitaciones están equipadas con caja fuerte y secador de pelo. Nota: {val1}',
+      sv: 'Alla rum är utrustade med kassaskåp och hårtork. Observera: {val1}',
+      no: 'Alle rom er utstyrt med safe og hårføner. Merk: {val1}',
+      hr: 'Sve sobe opremljene su sefom i sušilicem za kosu. Napomena: {val1}',
+      sq: 'Të gjitha dhomat janë të pajisura me kasafortë dhe tharëse flokësh. Shënim: {val1}'
+    }, 
+    defaultVal1: 'Nichtraucherzimmer', 
+    defaultVal2: '', 
+    icon: 'Bed' 
+  },
+  { 
+    id: 'restaurant_dining', 
+    group: 'Essen & Trinken', 
+    title: { de: 'Restaurant & Bar', en: 'Restaurant & Bar', tr: 'Restoran ve Bar', it: 'Ristorante e Bar', fr: 'Restaurant et Bar', es: 'Restaurante y Bar', sv: 'Restaurang & Bar', no: 'Restaurant og Bar', hr: 'Restoran i Bar', sq: 'Restorant dhe Bar' }, 
+    subtitle: { de: 'Öffnungszeiten & Menü', en: 'Hours & menu', tr: 'Çalışma saatleri ve menü', it: 'Orari e menu', fr: 'Horaires et menu', es: 'Horarios y menú', sv: 'Öppettider & meny', no: 'Åpningstider og meny', hr: 'Radno vrijeme i jelovnik', sq: 'Oraret dhe menyja' }, 
+    contentTpl: { 
+      de: 'Unser Bereich ist täglich von {val1} für Sie geöffnet. Details: {val2}', 
+      en: 'Our venue is open daily from {val1}. Details: {val2}', 
+      tr: 'Mekanımız her gün {val1} saatleri arasında açıktır. Detay: {val2}',
+      it: 'Il nostro locale è aperto tutti i giorni dalle {val1}. Dettagli: {val2}',
+      fr: 'Notre établissement est ouvert tous les jours de {val1}. Détails : {val2}',
+      es: 'Nuestro local está abierto todos los días de {val1}. Detalles: {val2}',
+      sv: 'Vår lokal är öppen dagligen från {val1}. Detaljer: {val2}',
+      no: 'Vårt sted er åpent daglig fra {val1}. Detaljer: {val2}',
+      hr: 'Naš objekt otvoren je svakodnevno od {val1}. Detalji: {val2}',
+      sq: 'Vendi ynë është i hapur çdo ditë nga {val1}. Detaje: {val2}'
+    }, 
+    defaultVal1: '18:00 - 21:30 Uhr', 
+    defaultVal2: 'Reservierung an der Rezeption', 
+    icon: 'Utensils' 
+  },
+  { 
+    id: 'pool_aqua', 
+    group: 'Wellness & Spa', 
+    title: { de: 'Pool & Wellnessbereich', en: 'Pool & Wellness Area', tr: 'Havuz ve Wellness Alanı', it: 'Piscina e Benessere', fr: 'Piscine et Espace Bien-être', es: 'Piscina y Bienestar', sv: 'Pool & Wellness', no: 'Basseng og Velvære', hr: 'Bazen i Wellness', sq: 'Pishina dhe Wellness' }, 
+    subtitle: { de: 'Öffnungszeiten & Handtücher', en: 'Hours & towels', tr: 'Çalışma saatleri ve havlular', it: 'Orari e asciugamani', fr: 'Horaires et serviettes', es: 'Horarios y toallas', sv: 'Öppettider & handdukar', no: 'Åpningstider og håndklær', hr: 'Radno vrijeme i ručnici', sq: 'Oraret dhe peshqirët' }, 
+    contentTpl: { 
+      de: 'Unser Poolbereich ist von {val1} geöffnet. Hinweis: {val2}', 
+      en: 'Our pool area is open from {val1}. Note: {val2}', 
+      tr: 'Havuz alanımız {val1} arası açıktır. Not: {val2}',
+      it: 'La nostra area piscina è aperta dalle {val1}. Nota: {val2}',
+      fr: 'Notre espace piscine est ouvert de {val1}. Remarque : {val2}',
+      es: 'Nuestra zona de piscina está abierta de {val1}. Nota: {val2}',
+      sv: 'Vårt poolområde är öppet från {val1}. Observera: {val2}',
+      no: 'Vårt bassengområde er åpent fra {val1}. Merk: {val2}',
+      hr: 'Naš bazenski prostor otvoren je od {val1}. Napomena: {val2}',
+      sq: 'Zona jonë e pishinës është e hapur nga {val1}. Shënim: {val2}'
+    }, 
+    defaultVal1: '07:00 - 20:00 Uhr', 
+    defaultVal2: 'Handtücher am Empfang erhältlich', 
+    icon: 'Waves' 
+  }
 ];
 
 export default function App() {
@@ -291,7 +371,6 @@ export default function App() {
     printWindow.document.close();
   };
 
-  // HİBRİT PRESET: Sabit 10 dil şablonu + otelcinin değiştirebileceği val1 (saat/zaman) ve val2 (detay/numara) alanları
   const handleAddPresetCategory = (presetObj) => {
     setCategories([...categories, { 
       id: Date.now().toString(), 
@@ -441,7 +520,6 @@ export default function App() {
 
           <div className="bg-white rounded-3xl p-6 border border-stone-200 shadow-sm space-y-8">
             
-            {/* 1. ÜNİTE BİLGİLERİ & İLETİŞİM */}
             <div className="space-y-4">
               <h3 className="font-bold text-xs text-amber-900 uppercase tracking-wider">{t.sec1Title}</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -472,7 +550,6 @@ export default function App() {
               </div>
             </div>
 
-            {/* 2. LOGO YÜKLEME */}
             <div className="space-y-3 pt-4 border-t">
               <h3 className="font-bold text-xs text-amber-900 uppercase tracking-wider">{t.sec2Title}</h3>
               <div className="flex items-center gap-4">
@@ -484,7 +561,6 @@ export default function App() {
               </div>
             </div>
 
-            {/* 3. BİLDERVERWALTUNG (SLİDER) */}
             <div className="space-y-3 pt-4 border-t">
               <h3 className="font-bold text-xs text-amber-900 uppercase tracking-wider">{t.sec3Title}</h3>
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
@@ -496,7 +572,6 @@ export default function App() {
               </div>
             </div>
 
-            {/* 4. HIZLI ERİŞİM KARTLARI */}
             <div className="space-y-4 pt-4 border-t">
               <h3 className="font-bold text-xs text-amber-900 uppercase tracking-wider">{t.sec4Title}</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -559,7 +634,6 @@ export default function App() {
               </div>
             </div>
 
-            {/* 5. GÄSTEMAPPE KATEGORIEN (HİBRİT: Sabit Çeviri Şablonu + Otelcinin Değiştirebileceği Özel Değerler) */}
             <div className="space-y-4 pt-4 border-t">
               <div className="flex justify-between items-center">
                 <h3 className="font-bold text-xs text-amber-900 uppercase tracking-wider">{t.sec5Title}</h3>
@@ -781,7 +855,6 @@ export default function App() {
                       const title = cat.customTitle || (presetObj.title[lang] || presetObj.title.de);
                       const sub = presetObj.subtitle[lang] || presetObj.subtitle.de;
                       
-                      // Şablondaki {val1} ve {val2} yer tutucularını otelcinin girdiği özel değerlerle dinamik değiştiriyoruz
                       const rawTpl = presetObj.contentTpl[lang] || presetObj.contentTpl.de;
                       const content = rawTpl.replace('{val1}', cat.val1 || '').replace('{val2}', cat.val2 || '');
 
