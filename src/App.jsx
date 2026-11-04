@@ -43,7 +43,7 @@ const translations = {
     sec2Title: "2. Logo hochladen",
     sec3Title: "3. Bilderverwaltung (Slider)",
     sec4Title: "4. Schnellzugriff (Aktivieren / Deaktivieren)",
-    sec5Title: "5. Gästemappe Kategorien (Katalog & Eigene Einträge)",
+    sec5Title: "5. Gästemappe Kategorien (Hibrit Şablonlar & Özel Değerler)",
     lblHotelName: "Unterkunft Name",
     lblPhone: "Telefon",
     lblEmailField: "E-Mail",
@@ -56,12 +56,12 @@ const translations = {
     lblCheckInOut: "Check-in / Check-out Infos",
     lblParkingInfo: "Parkplatz Info",
     btnLogoUpload: "Logo Wählen / Ändern",
-    btnAddCategory: "Kategorie / Eigene Bar hinzufügen",
+    btnAddCategory: "Kategorie aus Katalog hinzufügen",
     modalTitle: "Katalog: Kategorie auswählen",
     addBtn: "Hinzufügen",
-    editTitle: "Name / Titel (z.B. Beach Bar)",
-    editSubtitle: "Untertitel / Zeiten (Aus Katalog)",
-    editContent: "Inhalt (Aus Katalog vordefiniert)",
+    editTitle: "Name / Titel (z.B. Pool Bar)",
+    editCustomVal1: "Individuelle Zeit / Info (z.B. 08:00 - 22:00)",
+    editCustomVal2: "Individuelle Nummer / Detail (z.B. Durchwahl 9)",
     activeCard: "Karte anzeigen",
     inactiveCard: "Karte ausblenden"
   },
@@ -99,7 +99,7 @@ const translations = {
     sec2Title: "2. Upload Logo",
     sec3Title: "3. Image Management (Slider)",
     sec4Title: "4. Quick Access (Enable / Disable Cards)",
-    sec5Title: "5. Directory Categories (Catalog & Custom Entries)",
+    sec5Title: "5. Directory Categories (Hybrid Templates & Custom Values)",
     lblHotelName: "Property Name",
     lblPhone: "Phone",
     lblEmailField: "E-Mail",
@@ -112,12 +112,12 @@ const translations = {
     lblCheckInOut: "Check-in / Check-out Info",
     lblParkingInfo: "Parking Info",
     btnLogoUpload: "Select / Change Logo",
-    btnAddCategory: "Add Category / Custom Bar",
+    btnAddCategory: "Add Category from Catalog",
     modalTitle: "Catalog: Select Category",
     addBtn: "Add",
-    editTitle: "Name / Title (e.g. Beach Bar)",
-    editSubtitle: "Subtitle / Hours (From Catalog)",
-    editContent: "Content (Predefined from Catalog)",
+    editTitle: "Name / Title (e.g. Pool Bar)",
+    editCustomVal1: "Custom Time / Info (e.g. 08:00 - 22:00)",
+    editCustomVal2: "Custom Number / Detail (e.g. Ext. 9)",
     activeCard: "Show Card",
     inactiveCard: "Hide Card"
   },
@@ -155,7 +155,7 @@ const translations = {
     sec2Title: "2. Logo Yükleme",
     sec3Title: "3. Resim Yönetimi (Slider)",
     sec4Title: "4. Hızlı Erişim (Kartları Aç / Kapat)",
-    sec5Title: "5. Rehber Kategorileri (Katalog & Özel İsimler)",
+    sec5Title: "5. Rehber Kategorileri (Hibrit Şablonlar & Özel Değerler)",
     lblHotelName: "Tesis / Otel Adı",
     lblPhone: "Telefon",
     lblEmailField: "E-Posta",
@@ -168,30 +168,22 @@ const translations = {
     lblCheckInOut: "Giriş / Çıkış Bilgileri",
     lblParkingInfo: "Otopark Bilgisi",
     btnLogoUpload: "Logo Seç / Değiştir",
-    btnAddCategory: "Kategori / Özel Bar Ekle",
+    btnAddCategory: "Katalogdan Kategori Ekle",
     modalTitle: "Hazır Katalog: Kategori Seçin",
     addBtn: "Ekle",
-    editTitle: "İsim / Başlık (Örn: Beach Bar)",
-    editSubtitle: "Alt Başlık / Saatler (Katalogdan)",
-    editContent: "İçerik (Katalogdan Hazır Metin)",
+    editTitle: "İsim / Başlık (Örn: Pool Bar)",
+    editCustomVal1: "Özel Saat / Zaman (Örn: 08:00 - 22:00)",
+    editCustomVal2: "Özel Numara / Detay (Örn: Dahili 9)",
     activeCard: "Kartı Göster",
     inactiveCard: "Kartı Gizle"
   }
 };
 
 const categoryPresets = [
-  { id: 'hotel_info', group: 'Hotel & Unterkunft', title: { de: 'Hotelinformationen', en: 'Hotel Information', tr: 'Otel Bilgileri' }, subtitle: { de: 'Rezeption, Zeiten & Services', en: 'Reception, hours & services', tr: 'Resepsiyon, saatler ve hizmetler' }, content: { de: 'Herzlich willkommen in unserem Haus. Unsere Rezeption ist von 07:00 bis 22:00 Uhr für Sie besetzt.', en: 'Welcome to our property. Our reception is open from 7:00 AM to 10:00 PM.', tr: 'Tesisimize hoş geldiniz. Resepsiyonumuz 07:00 - 22:00 saatleri arasında hizmet vermektedir.' }, icon: 'Building' },
-  { id: 'room_info', group: 'Hotel & Unterkunft', title: { de: 'Zimmerinformationen', en: 'Room Information', tr: 'Oda Bilgileri' }, subtitle: { de: 'Ausstattung & Safe', en: 'Amenities & safe', tr: 'Oda özellikleri ve kasa' }, content: { de: 'Alle Zimmer sind mit einem Safe, Föhn und Flachbild-TV ausgestattet.', en: 'All rooms are equipped with a safe, hairdryer, and flat-screen TV.', tr: 'Tüm odalar kasa, saç kurutma makinesi ve düz ekran TV ile donatılmıştır.' }, icon: 'Bed' },
-  { id: 'keys_access', group: 'Hotel & Unterkunft', title: { de: 'Zimmerschlüssel & Zugang', en: 'Keys & Access', tr: 'Anahtar ve Erişim' }, subtitle: { de: 'Karte & Schließzeiten', en: 'Keycard & locking times', tr: 'Anahtar kartı ve kapı kilit saatleri' }, content: { de: 'Bitte nehmen Sie Ihre Schlüsselkarte beim Verlassen des Hauses mit.', en: 'Please take your keycard with you when leaving.', tr: 'Lütfen çıkarken anahtar kartınızı yanınıza alın.' }, icon: 'Key' },
-  { id: 'restaurant_dining', group: 'Essen & Trinken', title: { de: 'Restaurant & Bar', en: 'Restaurant & Bar', tr: 'Restoran ve Bar' }, subtitle: { de: 'Öffnungszeiten & Speisekarte', en: 'Hours & menu', tr: 'Çalışma saatleri ve menü' }, content: { de: 'Unser Restaurant serviert regionale Spezialitäten von 18:00 bis 21:30 Uhr.', en: 'Our restaurant serves regional specialties from 6:00 PM to 9:30 PM.', tr: 'Restoranımız 18:00 - 21:30 saatleri arasında yöresel lezzetler sunmaktadır.' }, icon: 'Utensils' },
-  { id: 'cafe_snacks', group: 'Essen & Trinken', title: { de: 'Café & Lounge', en: 'Café & Lounge', tr: 'Kafe ve Dinlenme Alanı' }, subtitle: { de: 'Kaffee, Kuchen & Snacks', en: 'Coffee, cake & snacks', tr: 'Kahve, kek ve atıştırmalıklar' }, content: { de: 'Genießen Sie am Nachmittag hausgemachten Kuchen.', en: 'Enjoy homemade cake in the afternoon.', tr: 'Öğleden sonra ev yapımı keklerin tadını çıkarın.' }, icon: 'Coffee' },
-  { id: 'pool_aqua', group: 'Wellness & Spa', title: { de: 'Pool & Wellnessbereich', en: 'Pool & Wellness Area', tr: 'Havuz ve Wellness Alanı' }, subtitle: { de: 'Öffnungszeiten & Handtücher', en: 'Hours & towels', tr: 'Çalışma saatleri ve havlular' }, content: { de: 'Unser Indoor-Pool ist täglich von 07:00 bis 20:00 Uhr geöffnet.', en: 'Our indoor pool is open daily from 7:00 AM to 8:00 PM.', tr: 'Kapalı havuzumuz her gün 07:00 - 20:00 saatleri arasında açıktır.' }, icon: 'Waves' },
-  { id: 'sauna_spa', group: 'Wellness & Spa', title: { de: 'Sauna & Massagen', en: 'Sauna & Massages', tr: 'Sauna ve Masajlar' }, subtitle: { de: 'Finnische Sauna & Termine', en: 'Finnish sauna & appointments', tr: 'Fin saunası ve randevu' }, content: { de: 'Entspannen Sie in unserer finnischen Sauna (16:00 bis 21:00 Uhr).', en: 'Relax in our Finnish sauna (4:00 PM to 9:00 PM).', tr: 'Fin saunamızda rahatlayın (16:00 - 21:00).' }, icon: 'Sparkles' },
-  { id: 'bike_rental', group: 'Freizeit & Aktivitäten', title: { de: 'Fahrradverleih', en: 'Bike Rental', tr: 'Bisiklet Kiralama' }, subtitle: { de: 'E-Bikes & Tourenkarten', en: 'E-bikes & trail maps', tr: 'Elektrikli bisiklet ve haritalar' }, content: { de: 'Hochwertige E-Bikes können tageweise an der Rezeption ausgeliehen werden.', en: 'High-quality e-bikes can be rented daily at reception.', tr: 'Kaliteli e-bisikletler resepsiyondan günlük kiralanabilir.' }, icon: 'Compass' },
-  { id: 'sightseeing', group: 'Umgebung & Ausflüge', title: { de: 'Sehenswürdigkeiten', en: 'Sights & Attractions', tr: 'Görülecek Yerler' }, subtitle: { de: 'Tipps & Highlights', en: 'Tips & highlights', tr: 'İpuçları ve önemli noktalar' }, content: { de: 'Die historische Altstadt lädt zu Spaziergängen ein.', en: 'The historic old town invites you to take walks.', tr: 'Tarihi eski şehir yürüyüşler için davetkardır.' }, icon: 'MapPin' },
-  { id: 'parking_mobility', group: 'Anreise & Mobilität', title: { de: 'Parkmöglichkeiten', en: 'Parking Facilities', tr: 'Otopark İmkanları' }, subtitle: { de: 'Tiefgarage & E-Ladestation', en: 'Underground garage & EV charger', tr: 'Kapalı otopark ve elektrikli şarj' }, content: { de: 'Ihnen stehen kostenfreie Parkplätze direkt am Haus zur Verfügung.', en: 'Free parking spaces directly at the house are available.', tr: 'Otelimizin hemen yanında ücretsiz otoparklar mevcuttur.' }, icon: 'Car' },
-  { id: 'reception_service', group: 'Service & Informationen', title: { de: 'Rezeption & Service', en: 'Reception & Service', tr: 'Resepsiyon ve Servis' }, subtitle: { de: 'Weckruf & Gepäck', en: 'Wake-up call & luggage', tr: 'Uyandırma servisi ve bagaj' }, content: { de: 'Sie erreichen die Rezeption unter der Kurzwahl 9.', en: 'Reach reception at extension 9.', tr: '9’u tuşlayarak resepsiyona ulaşabilirsiniz.' }, icon: 'Phone' },
-  { id: 'house_rules', group: 'Regeln & Wissenswertes', title: { de: 'Hausordnung & Ruhezeiten', en: 'House Rules & Quiet Hours', tr: 'Ev Kuralları ve Sessizlik' }, subtitle: { de: 'Nachtruhe ab 22:00 Uhr', en: 'Quiet hours from 10:00 PM', tr: '22:00’den itibaren gece sessizliği' }, content: { de: 'Wir bitten Sie ab 22:00 Uhr die Nachtruhe einzuhalten.', en: 'We ask you to observe quiet hours from 10:00 PM.', tr: 'Lütfen saat 22:00’den itibaren gece sessizliğine uyunuz.' }, icon: 'ShieldCheck' }
+  { id: 'hotel_info', group: 'Hotel & Unterkunft', title: { de: 'Hotelinformationen', en: 'Hotel Information', tr: 'Otel Bilgileri' }, subtitle: { de: 'Rezeption, Zeiten & Services', en: 'Reception, hours & services', tr: 'Resepsiyon, saatler ve hizmetler' }, contentTpl: { de: 'Herzlich willkommen in unserem Haus. Unsere Rezeption ist von {val1} für Sie besetzt. Notfallnummer: {val2}', en: 'Welcome to our property. Our reception is open from {val1}. Emergency: {val2}', tr: 'Tesisimize hoş geldiniz. Resepsiyonumuz {val1} saatleri arasında hizmet vermektedir. Acil hat: {val2}' }, defaultVal1: '07:00 - 22:00 Uhr', defaultVal2: '+49 123 456', icon: 'Building' },
+  { id: 'room_info', group: 'Hotel & Unterkunft', title: { de: 'Zimmerinformationen', en: 'Room Information', tr: 'Oda Bilgileri' }, subtitle: { de: 'Ausstattung & Safe', en: 'Amenities & safe', tr: 'Oda özellikleri ve kasa' }, contentTpl: { de: 'Alle Zimmer sind mit Safe und Föhn ausgestattet. Check-in Info: {val1}', en: 'All rooms are equipped with safe and hairdryer. Info: {val1}', tr: 'Tüm odalarda kasa ve saç kurutma makinesi mevcuttur. Bilgi: {val1}' }, defaultVal1: 'Nichtraucherzimmer', defaultVal2: '', icon: 'Bed' },
+  { id: 'restaurant_dining', group: 'Essen & Trinken', title: { de: 'Restaurant & Bar', en: 'Restaurant & Bar', tr: 'Restoran ve Bar' }, subtitle: { de: 'Öffnungszeiten & Speisekarte', en: 'Hours & menu', tr: 'Çalışma saatleri ve menü' }, contentTpl: { de: 'Unser Bereich ist täglich von {val1} für Sie geöffnet. Details: {val2}', en: 'Our venue is open daily from {val1}. Details: {val2}', tr: 'Mekanımız her gün {val1} saatleri arasında açıktır. Detay: {val2}' }, defaultVal1: '18:00 - 21:30 Uhr', defaultVal2: 'Reservierung an der Rezeption', icon: 'Utensils' },
+  { id: 'pool_aqua', group: 'Wellness & Spa', title: { de: 'Pool & Wellnessbereich', en: 'Pool & Wellness Area', tr: 'Havuz ve Wellness Alanı' }, subtitle: { de: 'Öffnungszeiten & Handtücher', en: 'Hours & towels', tr: 'Çalışma saatleri ve havlular' }, contentTpl: { de: 'Unser Poolbereich ist von {val1} geöffnet. Hinweis: {val2}', en: 'Our pool area is open from {val1}. Note: {val2}', tr: 'Havuz alanımız {val1} arası açıktır. Not: {val2}' }, defaultVal1: '07:00 - 20:00 Uhr', defaultVal2: 'Handtücher am Empfang erhältlich', icon: 'Waves' }
 ];
 
 export default function App() {
@@ -244,9 +236,8 @@ export default function App() {
   const [categories, setCategories] = useState(() => {
     const saved = localStorage.getItem('gm24_categories');
     return saved ? JSON.parse(saved) : [
-      { id: '1', presetId: 'hotel_info', icon: 'Building', customTitle: '', customSubtitle: '', customContent: '' },
-      { id: '2', presetId: 'restaurant_dining', icon: 'Utensils', customTitle: '', customSubtitle: '', customContent: '' },
-      { id: '3', presetId: 'pool_aqua', icon: 'Waves', customTitle: '', customSubtitle: '', customContent: '' }
+      { id: '1', presetId: 'hotel_info', icon: 'Building', customTitle: '', val1: '07:00 - 22:00 Uhr', val2: '+49 123 456' },
+      { id: '2', presetId: 'restaurant_dining', icon: 'Utensils', customTitle: '', val1: '18:00 - 21:30 Uhr', val2: 'Reservierung an der Rezeption' }
     ];
   });
 
@@ -300,15 +291,15 @@ export default function App() {
     printWindow.document.close();
   };
 
-  // HİBRİT & SABİT ŞABLON MİMARİSİ: Katalogdan eklendiğinde alt metinler ve içerikler şablonun dil karşılıklarıyla otomatik dolar
+  // HİBRİT PRESET: Sabit 10 dil şablonu + otelcinin değiştirebileceği val1 (saat/zaman) ve val2 (detay/numara) alanları
   const handleAddPresetCategory = (presetObj) => {
     setCategories([...categories, { 
       id: Date.now().toString(), 
       presetId: presetObj.id, 
       icon: presetObj.icon,
-      customTitle: presetObj.title[lang] || presetObj.title.de,
-      customSubtitle: presetObj.subtitle[lang] || presetObj.subtitle.de,
-      customContent: presetObj.content[lang] || presetObj.content.de
+      customTitle: '',
+      val1: presetObj.defaultVal1,
+      val2: presetObj.defaultVal2
     }]);
     setIsCatalogModalOpen(false);
   };
@@ -341,16 +332,8 @@ export default function App() {
     switch (iconName) {
       case 'Building': return <Building {...props} />;
       case 'Bed': return <Bed {...props} />;
-      case 'Key': return <Key {...props} />;
       case 'Utensils': return <Utensils {...props} />;
-      case 'Coffee': return <Coffee {...props} />;
       case 'Waves': return <Waves {...props} />;
-      case 'Sparkles': return <Sparkles {...props} />;
-      case 'Compass': return <Compass {...props} />;
-      case 'MapPin': return <MapPin {...props} />;
-      case 'Car': return <Car {...props} />;
-      case 'Phone': return <Phone {...props} />;
-      case 'ShieldCheck': return <ShieldCheck {...props} />;
       default: return <Info {...props} />;
     }
   };
@@ -576,7 +559,7 @@ export default function App() {
               </div>
             </div>
 
-            {/* 5. GÄSTEMAPPE KATEGORIEN (SABİT ŞABLON & ÖZEL İSİM DEĞİŞTİRME) */}
+            {/* 5. GÄSTEMAPPE KATEGORIEN (HİBRİT: Sabit Çeviri Şablonu + Otelcinin Değiştirebileceği Özel Değerler) */}
             <div className="space-y-4 pt-4 border-t">
               <div className="flex justify-between items-center">
                 <h3 className="font-bold text-xs text-amber-900 uppercase tracking-wider">{t.sec5Title}</h3>
@@ -591,13 +574,9 @@ export default function App() {
                     <h4 className="text-xs font-black text-amber-900 uppercase tracking-wider bg-amber-50 px-3 py-1.5 rounded-lg border border-amber-100/60 inline-block">{groupName}</h4>
                     <div className="space-y-3">
                       {groupItems.map((cat) => {
-                        const defaultPresetData = categoryPresets.find(p => p.id === cat.presetId);
-                        const baseTitle = defaultPresetData ? (defaultPresetData.title[lang] || defaultPresetData.title.de) : '';
-                        const baseSubtitle = defaultPresetData ? (defaultPresetData.subtitle[lang] || defaultPresetData.subtitle.de) : '';
-                        const baseContent = defaultPresetData ? (defaultPresetData.content[lang] || defaultPresetData.content.de) : '';
-
-                        // Eğer özel isim girilmemişse şablonun dil karşılığını göster
-                        const displayTitle = cat.customTitle !== undefined ? cat.customTitle : baseTitle;
+                        const presetObj = cat.presetData;
+                        const baseTitle = presetObj ? (presetObj.title[lang] || presetObj.title.de) : '';
+                        const displayTitle = cat.customTitle || baseTitle;
 
                         return (
                           <div key={cat.id} className="p-4 bg-stone-50 rounded-2xl border space-y-3 shadow-sm">
@@ -609,21 +588,35 @@ export default function App() {
                               <button onClick={() => handleDeleteCategory(cat.id)} className="bg-rose-50 text-rose-600 p-1.5 rounded-lg cursor-pointer hover:bg-rose-100"><Trash2 className="w-3.5 h-3.5" /></button>
                             </div>
 
-                            {/* Sadece İsim (Başlık) Değiştirilebilir - Alt metin ve içerikler 10 dilde sabit/şablondan gelir */}
-                            <div>
-                              <label className="block text-[9px] font-bold text-stone-500 uppercase mb-0.5">{t.editTitle}</label>
-                              <input 
-                                type="text" 
-                                placeholder={baseTitle}
-                                value={cat.customTitle || ''} 
-                                onChange={(e) => handleUpdateCategoryField(cat.id, 'customTitle', e.target.value)} 
-                                className="w-full p-2 text-xs border rounded-xl bg-white font-semibold" 
-                              />
-                            </div>
-
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-2 pt-1 text-[11px] text-stone-500 bg-white p-3 rounded-xl border">
-                              <div><strong className="text-slate-700 block text-[9px] uppercase">Untertitel (Katalog):</strong> {baseSubtitle}</div>
-                              <div><strong className="text-slate-700 block text-[9px] uppercase">Inhalt (10-Sprachen Schablone):</strong> {baseContent}</div>
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
+                              <div>
+                                <label className="block text-[9px] font-bold text-stone-500 uppercase mb-0.5">{t.editTitle}</label>
+                                <input 
+                                  type="text" 
+                                  placeholder={baseTitle}
+                                  value={cat.customTitle || ''} 
+                                  onChange={(e) => handleUpdateCategoryField(cat.id, 'customTitle', e.target.value)} 
+                                  className="w-full p-2 text-xs border rounded-xl bg-white font-semibold" 
+                                />
+                              </div>
+                              <div>
+                                <label className="block text-[9px] font-bold text-stone-500 uppercase mb-0.5">{t.editCustomVal1}</label>
+                                <input 
+                                  type="text" 
+                                  value={cat.val1 || ''} 
+                                  onChange={(e) => handleUpdateCategoryField(cat.id, 'val1', e.target.value)} 
+                                  className="w-full p-2 text-xs border rounded-xl bg-white" 
+                                />
+                              </div>
+                              <div>
+                                <label className="block text-[9px] font-bold text-stone-500 uppercase mb-0.5">{t.editCustomVal2}</label>
+                                <input 
+                                  type="text" 
+                                  value={cat.val2 || ''} 
+                                  onChange={(e) => handleUpdateCategoryField(cat.id, 'val2', e.target.value)} 
+                                  className="w-full p-2 text-xs border rounded-xl bg-white" 
+                                />
+                              </div>
                             </div>
                           </div>
                         );
@@ -787,7 +780,10 @@ export default function App() {
                       const presetObj = cat.presetData;
                       const title = cat.customTitle || (presetObj.title[lang] || presetObj.title.de);
                       const sub = presetObj.subtitle[lang] || presetObj.subtitle.de;
-                      const content = presetObj.content[lang] || presetObj.content.de;
+                      
+                      // Şablondaki {val1} ve {val2} yer tutucularını otelcinin girdiği özel değerlerle dinamik değiştiriyoruz
+                      const rawTpl = presetObj.contentTpl[lang] || presetObj.contentTpl.de;
+                      const content = rawTpl.replace('{val1}', cat.val1 || '').replace('{val2}', cat.val2 || '');
 
                       return (
                         <button key={cat.id} onClick={() => setSelectedCategory({ title, content })} className="w-full bg-white p-4 rounded-2xl border border-stone-200 shadow-sm flex items-center justify-between text-left cursor-pointer hover:border-amber-900/40 transition">
