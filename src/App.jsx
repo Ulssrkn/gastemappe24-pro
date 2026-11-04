@@ -59,9 +59,9 @@ const translations = {
     btnAddCategory: "Kategorie / Eigene Bar hinzufügen",
     modalTitle: "Katalog: Kategorie auswählen",
     addBtn: "Hinzufügen",
-    editTitle: "Name / Titel (z.B. Pool Bar)",
-    editSubtitle: "Untertitel / Zeiten",
-    editContent: "Detaillierter Inhalt",
+    editTitle: "Name / Titel (z.B. Beach Bar)",
+    editSubtitle: "Untertitel / Zeiten (Aus Katalog)",
+    editContent: "Inhalt (Aus Katalog vordefiniert)",
     activeCard: "Karte anzeigen",
     inactiveCard: "Karte ausblenden"
   },
@@ -115,9 +115,9 @@ const translations = {
     btnAddCategory: "Add Category / Custom Bar",
     modalTitle: "Catalog: Select Category",
     addBtn: "Add",
-    editTitle: "Name / Title (e.g. Pool Bar)",
-    editSubtitle: "Subtitle / Hours",
-    editContent: "Detailed Content",
+    editTitle: "Name / Title (e.g. Beach Bar)",
+    editSubtitle: "Subtitle / Hours (From Catalog)",
+    editContent: "Content (Predefined from Catalog)",
     activeCard: "Show Card",
     inactiveCard: "Hide Card"
   },
@@ -172,8 +172,8 @@ const translations = {
     modalTitle: "Hazır Katalog: Kategori Seçin",
     addBtn: "Ekle",
     editTitle: "İsim / Başlık (Örn: Beach Bar)",
-    editSubtitle: "Alt Başlık / Saatler",
-    editContent: "Detaylı Açıklama",
+    editSubtitle: "Alt Başlık / Saatler (Katalogdan)",
+    editContent: "İçerik (Katalogdan Hazır Metin)",
     activeCard: "Kartı Göster",
     inactiveCard: "Kartı Gizle"
   }
@@ -300,7 +300,7 @@ export default function App() {
     printWindow.document.close();
   };
 
-  // HİBRİT YAPI: Aynı kategoriden birden fazla eklenebilir (Örn: Pool Bar, Beach Bar)
+  // HİBRİT & SABİT ŞABLON MİMARİSİ: Katalogdan eklendiğinde alt metinler ve içerikler şablonun dil karşılıklarıyla otomatik dolar
   const handleAddPresetCategory = (presetObj) => {
     setCategories([...categories, { 
       id: Date.now().toString(), 
@@ -576,7 +576,7 @@ export default function App() {
               </div>
             </div>
 
-            {/* 5. GÄSTEMAPPE KATEGORIEN (HİBRİT ÖZELLEŞTİRİLEBİLİR İSİMLER) */}
+            {/* 5. GÄSTEMAPPE KATEGORIEN (SABİT ŞABLON & ÖZEL İSİM DEĞİŞTİRME) */}
             <div className="space-y-4 pt-4 border-t">
               <div className="flex justify-between items-center">
                 <h3 className="font-bold text-xs text-amber-900 uppercase tracking-wider">{t.sec5Title}</h3>
@@ -591,51 +591,39 @@ export default function App() {
                     <h4 className="text-xs font-black text-amber-900 uppercase tracking-wider bg-amber-50 px-3 py-1.5 rounded-lg border border-amber-100/60 inline-block">{groupName}</h4>
                     <div className="space-y-3">
                       {groupItems.map((cat) => {
-                        const defaultTitle = cat.presetData.title[lang] || cat.presetData.title.de;
-                        const defaultSub = cat.presetData.subtitle[lang] || cat.presetData.subtitle.de;
-                        const defaultContent = cat.presetData.content[lang] || cat.presetData.content.de;
+                        const defaultPresetData = categoryPresets.find(p => p.id === cat.presetId);
+                        const baseTitle = defaultPresetData ? (defaultPresetData.title[lang] || defaultPresetData.title.de) : '';
+                        const baseSubtitle = defaultPresetData ? (defaultPresetData.subtitle[lang] || defaultPresetData.subtitle.de) : '';
+                        const baseContent = defaultPresetData ? (defaultPresetData.content[lang] || defaultPresetData.content.de) : '';
+
+                        // Eğer özel isim girilmemişse şablonun dil karşılığını göster
+                        const displayTitle = cat.customTitle !== undefined ? cat.customTitle : baseTitle;
 
                         return (
                           <div key={cat.id} className="p-4 bg-stone-50 rounded-2xl border space-y-3 shadow-sm">
                             <div className="flex items-center justify-between border-b pb-2">
                               <div className="flex items-center gap-2">
                                 {renderIcon(cat.icon)}
-                                <span className="font-bold text-xs text-slate-800">{cat.customTitle || defaultTitle}</span>
+                                <span className="font-bold text-xs text-slate-800">{displayTitle}</span>
                               </div>
                               <button onClick={() => handleDeleteCategory(cat.id)} className="bg-rose-50 text-rose-600 p-1.5 rounded-lg cursor-pointer hover:bg-rose-100"><Trash2 className="w-3.5 h-3.5" /></button>
                             </div>
 
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                              <div>
-                                <label className="block text-[9px] font-bold text-stone-500 uppercase mb-0.5">{t.editTitle}</label>
-                                <input 
-                                  type="text" 
-                                  placeholder={defaultTitle} 
-                                  value={cat.customTitle} 
-                                  onChange={(e) => handleUpdateCategoryField(cat.id, 'customTitle', e.target.value)} 
-                                  className="w-full p-2 text-xs border rounded-xl bg-white font-semibold" 
-                                />
-                              </div>
-                              <div>
-                                <label className="block text-[9px] font-bold text-stone-500 uppercase mb-0.5">{t.editSubtitle}</label>
-                                <input 
-                                  type="text" 
-                                  placeholder={defaultSub} 
-                                  value={cat.customSubtitle} 
-                                  onChange={(e) => handleUpdateCategoryField(cat.id, 'customSubtitle', e.target.value)} 
-                                  className="w-full p-2 text-xs border rounded-xl bg-white" 
-                                />
-                              </div>
-                            </div>
+                            {/* Sadece İsim (Başlık) Değiştirilebilir - Alt metin ve içerikler 10 dilde sabit/şablondan gelir */}
                             <div>
-                              <label className="block text-[9px] font-bold text-stone-500 uppercase mb-0.5">{t.editContent}</label>
-                              <textarea 
-                                rows="2"
-                                placeholder={defaultContent} 
-                                value={cat.customContent} 
-                                onChange={(e) => handleUpdateCategoryField(cat.id, 'customContent', e.target.value)} 
-                                className="w-full p-2 text-xs border rounded-xl bg-white" 
+                              <label className="block text-[9px] font-bold text-stone-500 uppercase mb-0.5">{t.editTitle}</label>
+                              <input 
+                                type="text" 
+                                placeholder={baseTitle}
+                                value={cat.customTitle || ''} 
+                                onChange={(e) => handleUpdateCategoryField(cat.id, 'customTitle', e.target.value)} 
+                                className="w-full p-2 text-xs border rounded-xl bg-white font-semibold" 
                               />
+                            </div>
+
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-2 pt-1 text-[11px] text-stone-500 bg-white p-3 rounded-xl border">
+                              <div><strong className="text-slate-700 block text-[9px] uppercase">Untertitel (Katalog):</strong> {baseSubtitle}</div>
+                              <div><strong className="text-slate-700 block text-[9px] uppercase">Inhalt (10-Sprachen Schablone):</strong> {baseContent}</div>
                             </div>
                           </div>
                         );
@@ -796,13 +784,10 @@ export default function App() {
                   <h4 className="text-xs font-black text-amber-900 uppercase tracking-wider px-1">{groupName}</h4>
                   <div className="grid grid-cols-1 gap-2.5">
                     {groupItems.map((cat) => {
-                      const defaultTitle = cat.presetData.title[lang] || cat.presetData.title.de;
-                      const defaultSub = cat.presetData.subtitle[lang] || cat.presetData.subtitle.de;
-                      const defaultContent = cat.presetData.content[lang] || cat.presetData.content.de;
-
-                      const title = cat.customTitle || defaultTitle;
-                      const sub = cat.customSubtitle || defaultSub;
-                      const content = cat.customContent || defaultContent;
+                      const presetObj = cat.presetData;
+                      const title = cat.customTitle || (presetObj.title[lang] || presetObj.title.de);
+                      const sub = presetObj.subtitle[lang] || presetObj.subtitle.de;
+                      const content = presetObj.content[lang] || presetObj.content.de;
 
                       return (
                         <button key={cat.id} onClick={() => setSelectedCategory({ title, content })} className="w-full bg-white p-4 rounded-2xl border border-stone-200 shadow-sm flex items-center justify-between text-left cursor-pointer hover:border-amber-900/40 transition">
