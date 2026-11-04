@@ -217,7 +217,7 @@ export default function App() {
 
   const [hotel, setHotel] = useState(() => {
     const saved = localStorage.getItem('gm24_hotel');
-    return saved ? JSON.parse(saved) : {
+    const defaultData = {
       logoUrl: '', 
       name: 'Boutique Hotel & Suites', 
       locationTitle: 'REGION / STANDORT',
@@ -231,7 +231,6 @@ export default function App() {
       breakfastTime: '07:30 - 10:30 Uhr',
       checkInOut: 'Check-in: ab 15:00 | Check-out: bis 11:00',
       parkingInfo: 'Kostenfreie Parkplätze am Haus verfügbar.',
-      // 4 HIZLI ERİŞİM KARTININ AKTİF/PASİF DURUMLARI
       showWifi: true,
       showParking: true,
       showBreakfast: true,
@@ -242,6 +241,7 @@ export default function App() {
         'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=1000&q=80'
       ]
     };
+    return saved ? { ...defaultData, ...JSON.parse(saved) } : defaultData;
   });
 
   const [categories, setCategories] = useState(() => {
@@ -437,7 +437,6 @@ export default function App() {
         <div className="max-w-6xl mx-auto space-y-6">
           <h1 className="text-3xl font-black text-slate-900 tracking-tight">{t.adminTitle}</h1>
 
-          {/* İSTATİSTİK & QR PRINT CENTER */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="bg-slate-900 text-white p-5 rounded-2xl space-y-4">
               <span className="text-xs font-bold uppercase tracking-wider text-amber-400">{t.trialTitle} ({daysLeft} {t.trialDaysLeft})</span>
@@ -522,7 +521,7 @@ export default function App() {
               </div>
             </div>
 
-            {/* 4. HIZLI ERİŞİM KARTLARI (AKTİF/PASİF SEÇENEKLİ) */}
+            {/* 4. HIZLI ERİŞİM KARTLARI (AKTİF/PASİF KONTROLÜ) */}
             <div className="space-y-4 pt-4 border-t">
               <h3 className="font-bold text-xs text-amber-900 uppercase tracking-wider">{t.sec4Title}</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -589,7 +588,7 @@ export default function App() {
               </div>
             </div>
 
-            {/* 5. GÄSTEMAPPE KATEGORIEN (PRESET KATALOG & METİN DÜZENLEME) */}
+            {/* 5. GÄSTEMAPPE KATEGORIEN */}
             <div className="space-y-4 pt-4 border-t">
               <div className="flex justify-between items-center">
                 <h3 className="font-bold text-xs text-amber-900 uppercase tracking-wider">{t.sec5Title}</h3>
@@ -705,6 +704,40 @@ export default function App() {
     );
   }
 
+  // MİSAFİR GÖRÜNÜMÜ: AKTİF HIZLI ERİŞİM KARTLARINI FİLTRELEME
+  const activeQuickCards = [
+    hotel.showWifi && (
+      <div key="wifi" className="bg-white p-4 rounded-2xl shadow-sm border border-stone-200 space-y-2">
+        <div className="flex items-center gap-2 text-amber-900"><Wifi className="w-5 h-5" /><span className="font-bold text-xs text-slate-900">{t.wlanTitle}</span></div>
+        <div className="text-[11px] text-slate-500 font-mono bg-stone-50 p-2 rounded-lg border">
+          <div><b>{hotel.wifiSsid}</b></div>
+          <div className="flex justify-between items-center mt-1">
+            <span>{hotel.wifiPass}</span>
+            <button onClick={copyWifiPassword} className="bg-amber-50 text-amber-900 p-1 rounded cursor-pointer">{copiedWifi ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}</button>
+          </div>
+        </div>
+      </div>
+    ),
+    hotel.showParking && (
+      <div key="parking" className="bg-white p-4 rounded-2xl shadow-sm border border-stone-200 space-y-2">
+        <div className="flex items-center gap-2 text-amber-900"><Car className="w-5 h-5" /><span className="font-bold text-xs text-slate-900">{t.parkingTitle}</span></div>
+        <p className="text-[11px] text-slate-600">{hotel.parkingInfo}</p>
+      </div>
+    ),
+    hotel.showBreakfast && (
+      <div key="breakfast" className="bg-white p-4 rounded-2xl shadow-sm border border-stone-200 space-y-2">
+        <div className="flex items-center gap-2 text-amber-900"><Coffee className="w-5 h-5" /><span className="font-bold text-xs text-slate-900">{t.breakfastTitle}</span></div>
+        <p className="text-[11px] text-slate-600">{hotel.breakfastTime}</p>
+      </div>
+    ),
+    hotel.showCheckInOut && (
+      <div key="checkinout" className="bg-white p-4 rounded-2xl shadow-sm border border-stone-200 space-y-2">
+        <div className="flex items-center gap-2 text-amber-900"><Clock className="w-5 h-5" /><span className="font-bold text-xs text-slate-900">{t.checkInOutTitle}</span></div>
+        <p className="text-[11px] text-slate-600">{hotel.checkInOut}</p>
+      </div>
+    )
+  ].filter(Boolean);
+
   return (
     <div className="min-h-screen bg-stone-50 font-sans text-slate-800 pb-32 max-w-md mx-auto shadow-2xl relative border-x border-slate-200">
       <header className="p-5 pt-6 pb-2 bg-stone-50 sticky top-0 z-40 flex justify-between items-center">
@@ -762,45 +795,15 @@ export default function App() {
                 <div className="text-right"><div className="text-2xl font-black text-slate-900">16°C</div></div>
               </div>
 
-              {/* DİNAMİK HIZLI ERİŞİM KARTLARI (SADECE OTELCİNİN AÇTIĞI KARTLAR GÖRÜNÜR) */}
-              <div className="grid grid-cols-2 gap-3 pt-2">
-                {hotel.showWifi && (
-                  <div className="bg-white p-4 rounded-2xl shadow-sm border border-stone-200 space-y-2">
-                    <div className="flex items-center gap-2 text-amber-900"><Wifi className="w-5 h-5" /><span className="font-bold text-xs text-slate-900">{t.wlanTitle}</span></div>
-                    <div className="text-[11px] text-slate-500 font-mono bg-stone-50 p-2 rounded-lg border">
-                      <div><b>{hotel.wifiSsid}</b></div>
-                      <div className="flex justify-between items-center mt-1">
-                        <span>{hotel.wifiPass}</span>
-                        <button onClick={copyWifiPassword} className="bg-amber-50 text-amber-900 p-1 rounded cursor-pointer">{copiedWifi ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}</button>
-                      </div>
-                    </div>
-                  </div>
-                )}
-
-                {hotel.showParking && (
-                  <div className="bg-white p-4 rounded-2xl shadow-sm border border-stone-200 space-y-2">
-                    <div className="flex items-center gap-2 text-amber-900"><Car className="w-5 h-5" /><span className="font-bold text-xs text-slate-900">{t.parkingTitle}</span></div>
-                    <p className="text-[11px] text-slate-600">{hotel.parkingInfo}</p>
-                  </div>
-                )}
-
-                {hotel.showBreakfast && (
-                  <div className="bg-white p-4 rounded-2xl shadow-sm border border-stone-200 space-y-2">
-                    <div className="flex items-center gap-2 text-amber-900"><Coffee className="w-5 h-5" /><span className="font-bold text-xs text-slate-900">{t.breakfastTitle}</span></div>
-                    <p className="text-[11px] text-slate-600">{hotel.breakfastTime}</p>
-                  </div>
-                )}
-
-                {hotel.showCheckInOut && (
-                  <div className="bg-white p-4 rounded-2xl shadow-sm border border-stone-200 space-y-2">
-                    <div className="flex items-center gap-2 text-amber-900"><Clock className="w-5 h-5" /><span className="font-bold text-xs text-slate-900">{t.checkInOutTitle}</span></div>
-                    <p className="text-[11px] text-slate-600">{hotel.checkInOut}</p>
-                  </div>
-                )}
-              </div>
+              {/* DİNAMİK HIZLI ERİŞİM KARTLARI (SADECE AÇIK OLANLAR VE KUSURSUZ DÜZEN) */}
+              {activeQuickCards.length > 0 && (
+                <div className="grid grid-cols-2 gap-3 pt-2">
+                  {activeQuickCards}
+                </div>
+              )}
             </div>
           ) : (
-            /* MİSAFİR REHBER SEKMESİ: GRUPLANDIRILMIŞ VE ŞIK AKIŞ */
+            /* MİSAFİR REHBER SEKMESİ */
             <div className="space-y-6 animate-fade-in">
               <h3 className="text-xs font-bold text-stone-500 uppercase tracking-wider">{t.navGaestemappe}</h3>
               {Object.entries(groupedCategories).map(([groupName, groupItems]) => (
