@@ -472,7 +472,7 @@ const translations = {
     lblCheckInOut: "Inn- / Utsjekk info",
     lblParkingInfo: "Parkeringsinfo",
     btnLogoUpload: "Velg logo",
-    btnAddCategory: "Legg till kategori",
+    btnAddCategory: "Legg til kategori",
     modalTitle: "Katalog: Velg kategori",
     addBtn: "Legg til",
     editTitle: "Navn / Tittel",
@@ -881,7 +881,6 @@ export default function App() {
   const [currentSlide] = useState(0);
   const [copiedWifi, setCopiedWifi] = useState(false);
 
-  // Geliştirilmiş İstatistik & Analitik State'leri
   const [scanCount] = useState(184);
   const [daysLeft] = useState(24);
   const [activeRooms] = useState(12);
@@ -1041,8 +1040,9 @@ export default function App() {
   if (appMode === 'dashboard') {
     return (
       <div className="min-h-screen bg-[#FBF9F5] font-sans text-slate-800 p-6 md:p-10 space-y-8 relative pb-28">
+        {/* Katalog Modal - Z-Index ve Mobil Kapsayıcı Düzeltmesi */}
         {isCatalogModalOpen && (
-          <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[999] flex items-center justify-center p-4">
             <div className="bg-white w-full max-w-2xl max-h-[85vh] overflow-y-auto p-6 rounded-3xl shadow-2xl space-y-6">
               <div className="flex items-center justify-between border-b pb-4">
                 <h2 className="font-extrabold text-lg text-slate-900">{t.modalTitle}</h2>
@@ -1103,7 +1103,7 @@ export default function App() {
         <div className="max-w-6xl mx-auto space-y-6">
           <h1 className="text-3xl font-black text-slate-900 tracking-tight">{t.adminTitle}</h1>
 
-          {/* Geliştirilmiş İstatistik & Analitik Kartları */}
+          {/* İstatistik & Analitik Kartları */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             <div className="bg-slate-900 text-white p-5 rounded-2xl space-y-2 shadow-sm">
               <div className="flex justify-between items-center text-stone-400">
@@ -1404,7 +1404,7 @@ export default function App() {
             <span className="text-[10px] tracking-widest font-extrabold uppercase bg-white/20 text-white border border-white/30 px-3 py-1 rounded-full">{t.welcomeBadge}</span>
             <h1 className="text-3xl font-black tracking-tight pt-2">{hotel.name}</h1>
           </div>
-          <button onClick={() => setShowWelcomeScreen(false)} className="w-full bg-white text-slate-900 py-4 rounded-2xl font-bold text-sm shadow-2xl hover:bg-slate-100 transition flex items-center justify-center gap-2 cursor-pointer">
+          <button onClick={() => setShowWelcomeScreen(false)} className={`w-full ${currentTheme.bg} text-white py-4 rounded-2xl font-bold text-sm shadow-2xl hover:opacity-95 transition flex items-center justify-center gap-2 cursor-pointer`}>
             <span>{t.welcomeButton}</span><ArrowRight className="w-4 h-4" />
           </button>
         </div>
@@ -1544,6 +1544,7 @@ export default function App() {
         )}
       </main>
 
+      {/* Bottom Bar - Tamamen Seçilen Tema Rengiyle Bütünleşik */}
       <div className="fixed bottom-0 left-0 right-0 max-w-md mx-auto bg-white/95 backdrop-blur-md border-t border-stone-200/80 z-50 shadow-2xl">
         <nav className="px-3 py-2 flex justify-around items-center">
           <button onClick={() => { setActiveTab('home'); setSelectedCategory(null); }} className={`flex flex-col items-center gap-1 text-[10px] font-bold cursor-pointer ${activeTab === 'home' && !selectedCategory ? currentTheme.text : 'text-stone-400'}`}>
@@ -1552,11 +1553,11 @@ export default function App() {
           <button onClick={() => { setActiveTab('services'); setSelectedCategory(null); }} className={`flex flex-col items-center gap-1 text-[10px] font-bold cursor-pointer ${activeTab === 'services' || selectedCategory ? currentTheme.text : 'text-stone-400'}`}>
             <Compass className="w-5 h-5" /><span>{t.navGaestemappe}</span>
           </button>
-          <a href={hotel.googleReviewUrl} target="_blank" rel="noreferrer" className="flex flex-col items-center gap-1 text-[10px] font-bold text-stone-400 hover:text-amber-500 cursor-pointer">
-            <Star className="w-5 h-5 text-amber-500 fill-amber-500" /><span>{t.navReview}</span>
+          <a href={hotel.googleReviewUrl} target="_blank" rel="noreferrer" className={`flex flex-col items-center gap-1 text-[10px] font-bold cursor-pointer ${currentTheme.text} hover:opacity-80`}>
+            <Star className={`w-5 h-5 fill-current`} /><span>{t.navReview}</span>
           </a>
-          <a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(hotel.address)}`} target="_blank" rel="noreferrer" className="flex flex-col items-center gap-1 text-[10px] font-bold text-stone-400 hover:text-sky-600 cursor-pointer">
-            <Navigation className="w-5 h-5 text-sky-600" /><span>{t.navRoute}</span>
+          <a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(hotel.address)}`} target="_blank" rel="noreferrer" className={`flex flex-col items-center gap-1 text-[10px] font-bold cursor-pointer ${currentTheme.text} hover:opacity-80`}>
+            <Navigation className="w-5 h-5" /><span>{t.navRoute}</span>
           </a>
         </nav>
       </div>
