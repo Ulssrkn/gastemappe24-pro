@@ -268,16 +268,39 @@ export default function App() {
   const hotelUrl = `https://gastemappe24-pro.vercel.app/?hotel=${hotelSlug}`;
   const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(hotelUrl)}`;
 
+  // QR BASKI PENCERESİ ZENGİNLEŞTİRİLDİ (OTEL BİLGİLERİ, İLETİŞİM & WIFI EKLENDİ)
   const handlePrint = (format) => {
     const printWindow = window.open('', '_blank');
     if (!printWindow) return;
     printWindow.document.write(`
       <html>
-        <head><title>QR-Code ${format} ${hotel.name}</title></head>
-        <body style="text-align:center;font-family:sans-serif;padding:40px;">
-          <h2>${hotel.name}</h2>
-          <img src="${qrCodeUrl}" width="200" />
-          <p>Digitaler Gästemappe</p>
+        <head>
+          <title>QR-Code ${format} - ${hotel.name}</title>
+          <style>
+            body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; text-align: center; padding: 40px; color: #1e293b; }
+            .card { border: 2px solid #e2e8f0; border-radius: 24px; padding: 32px; max-w: 450px; margin: 0 auto; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05); }
+            .logo { max-height: 60px; margin-bottom: 12px; border-radius: 12px; }
+            h1 { font-size: 22px; margin: 8px 0 4px 0; color: #0f172a; }
+            p.sub { color: #64748b; font-size: 13px; margin-bottom: 20px; }
+            .qr-img { width: 180px; height: 180px; margin: 16px 0; border: 8px solid #f8fafc; border-radius: 16px; }
+            .info-box { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 16px; padding: 14px; margin-top: 20px; text-align: left; font-size: 12px; line-height: 1.6; }
+            .info-box strong { color: #0f172a; }
+          </style>
+        </head>
+        <body>
+          <div class="card">
+            ${hotel.logoUrl ? `<img src="${hotel.logoUrl}" class="logo" />` : ''}
+            <h1>${hotel.name}</h1>
+            <p class="sub">Digitale Gästemappe / Digital Guest Directory</p>
+            <img src="${qrCodeUrl}" class="qr-img" />
+            <p style="font-size: 12px; font-weight: bold; color: #78350f;">Scannen Sie den QR-Code für alle Infos & Services</p>
+            <div class="info-box">
+              ${hotel.address ? `<div><strong>Adresse:</strong> ${hotel.address}</div>` : ''}
+              ${hotel.phone ? `<div><strong>Telefon:</strong> ${hotel.phone}</div>` : ''}
+              ${hotel.email ? `<div><strong>E-Mail:</strong> ${hotel.email}</div>` : ''}
+              ${hotel.wifiSsid ? `<div style="margin-top:6px; padding-top:6px; border-top: 1px dashed #cbd5e1;"><strong>WLAN:</strong> ${hotel.wifiSsid} | <strong>Pass:</strong> ${hotel.wifiPass}</div>` : ''}
+            </div>
+          </div>
           <script>window.onload = function() { window.print(); }</script>
         </body>
       </html>
@@ -730,7 +753,7 @@ export default function App() {
               </div>
             </div>
           ) : (
-            /* MİSAFİR REHBER SEKMESİ: GRUPLANDIRILMIŞ VE ŞIK AKIŞ (EMOJİSİZ, 10 DİL) */
+            /* MİSAFİR REHBER SEKMESİ: GRUPLANDIRILMIŞ VE ŞIK AKIŞ */
             <div className="space-y-6 animate-fade-in">
               <h3 className="text-xs font-bold text-stone-500 uppercase tracking-wider">{t.navGaestemappe}</h3>
               {Object.entries(groupedCategories).map(([groupName, groupItems]) => (
