@@ -43,7 +43,7 @@ const translations = {
     sec2Title: "2. Logo hochladen",
     sec3Title: "3. Bilderverwaltung (Slider)",
     sec4Title: "4. Schnellzugriff (Aktivieren / Deaktivieren)",
-    sec5Title: "5. Gästemappe Kategorien (Preset-Katalog & Textbearbeitung)",
+    sec5Title: "5. Gästemappe Kategorien (Katalog & Eigene Einträge)",
     lblHotelName: "Unterkunft Name",
     lblPhone: "Telefon",
     lblEmailField: "E-Mail",
@@ -56,13 +56,12 @@ const translations = {
     lblCheckInOut: "Check-in / Check-out Infos",
     lblParkingInfo: "Parkplatz Info",
     btnLogoUpload: "Logo Wählen / Ändern",
-    btnAddCategory: "Kategorie aus Katalog hinzufügen",
+    btnAddCategory: "Kategorie / Eigene Bar hinzufügen",
     modalTitle: "Katalog: Kategorie auswählen",
-    alreadyAdded: "Bereits hinzugefügt",
     addBtn: "Hinzufügen",
-    editTitle: "Titel bearbeiten",
-    editSubtitle: "Untertitel / Alt-Text bearbeiten",
-    editContent: "Detaillierten Inhalt bearbeiten",
+    editTitle: "Name / Titel (z.B. Pool Bar)",
+    editSubtitle: "Untertitel / Zeiten",
+    editContent: "Detaillierter Inhalt",
     activeCard: "Karte anzeigen",
     inactiveCard: "Karte ausblenden"
   },
@@ -100,7 +99,7 @@ const translations = {
     sec2Title: "2. Upload Logo",
     sec3Title: "3. Image Management (Slider)",
     sec4Title: "4. Quick Access (Enable / Disable Cards)",
-    sec5Title: "5. Directory Categories (Preset Catalog & Editing)",
+    sec5Title: "5. Directory Categories (Catalog & Custom Entries)",
     lblHotelName: "Property Name",
     lblPhone: "Phone",
     lblEmailField: "E-Mail",
@@ -113,13 +112,12 @@ const translations = {
     lblCheckInOut: "Check-in / Check-out Info",
     lblParkingInfo: "Parking Info",
     btnLogoUpload: "Select / Change Logo",
-    btnAddCategory: "Add Category from Catalog",
+    btnAddCategory: "Add Category / Custom Bar",
     modalTitle: "Catalog: Select Category",
-    alreadyAdded: "Added",
     addBtn: "Add",
-    editTitle: "Edit Title",
-    editSubtitle: "Edit Subtitle",
-    editContent: "Edit Content",
+    editTitle: "Name / Title (e.g. Pool Bar)",
+    editSubtitle: "Subtitle / Hours",
+    editContent: "Detailed Content",
     activeCard: "Show Card",
     inactiveCard: "Hide Card"
   },
@@ -157,7 +155,7 @@ const translations = {
     sec2Title: "2. Logo Yükleme",
     sec3Title: "3. Resim Yönetimi (Slider)",
     sec4Title: "4. Hızlı Erişim (Kartları Aç / Kapat)",
-    sec5Title: "5. Rehber Kategorileri (Katalog & Metin Düzenleme)",
+    sec5Title: "5. Rehber Kategorileri (Katalog & Özel İsimler)",
     lblHotelName: "Tesis / Otel Adı",
     lblPhone: "Telefon",
     lblEmailField: "E-Posta",
@@ -170,13 +168,12 @@ const translations = {
     lblCheckInOut: "Giriş / Çıkış Bilgileri",
     lblParkingInfo: "Otopark Bilgisi",
     btnLogoUpload: "Logo Seç / Değiştir",
-    btnAddCategory: "Katalogdan Kategori Ekle",
+    btnAddCategory: "Kategori / Özel Bar Ekle",
     modalTitle: "Hazır Katalog: Kategori Seçin",
-    alreadyAdded: "Eklendi",
     addBtn: "Ekle",
-    editTitle: "Başlığı Düzenle",
-    editSubtitle: "Alt Metni Düzenle",
-    editContent: "Detaylı İçeriği Düzenle",
+    editTitle: "İsim / Başlık (Örn: Beach Bar)",
+    editSubtitle: "Alt Başlık / Saatler",
+    editContent: "Detaylı Açıklama",
     activeCard: "Kartı Göster",
     inactiveCard: "Kartı Gizle"
   }
@@ -303,15 +300,15 @@ export default function App() {
     printWindow.document.close();
   };
 
+  // HİBRİT YAPI: Aynı kategoriden birden fazla eklenebilir (Örn: Pool Bar, Beach Bar)
   const handleAddPresetCategory = (presetObj) => {
-    if (categories.some(c => c.presetId === presetObj.id)) return;
     setCategories([...categories, { 
       id: Date.now().toString(), 
       presetId: presetObj.id, 
       icon: presetObj.icon,
-      customTitle: '',
-      customSubtitle: '',
-      customContent: ''
+      customTitle: presetObj.title[lang] || presetObj.title.de,
+      customSubtitle: presetObj.subtitle[lang] || presetObj.subtitle.de,
+      customContent: presetObj.content[lang] || presetObj.content.de
     }]);
     setIsCatalogModalOpen(false);
   };
@@ -389,11 +386,10 @@ export default function App() {
                     <h3 className="text-xs font-black text-amber-900 uppercase tracking-wider">{groupName}</h3>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                       {presets.map((preset) => {
-                        const isAlreadyAdded = categories.some(c => c.presetId === preset.id);
                         const title = preset.title[lang] || preset.title.de;
                         const sub = preset.subtitle[lang] || preset.subtitle.de;
                         return (
-                          <div key={preset.id} className={`p-3 rounded-2xl border flex items-center justify-between transition ${isAlreadyAdded ? 'bg-stone-100 opacity-60 border-stone-200' : 'bg-stone-50 hover:border-amber-900/40 cursor-pointer'}`}>
+                          <div key={preset.id} className="p-3 rounded-2xl border flex items-center justify-between transition bg-stone-50 hover:border-amber-900/40 cursor-pointer">
                             <div className="flex items-center gap-2.5">
                               {renderIcon(preset.icon)}
                               <div>
@@ -401,13 +397,9 @@ export default function App() {
                                 <span className="text-[10px] text-stone-500 block">{sub}</span>
                               </div>
                             </div>
-                            {isAlreadyAdded ? (
-                              <span className="text-[10px] font-bold text-stone-400 bg-stone-200 px-2 py-1 rounded-lg">{t.alreadyAdded}</span>
-                            ) : (
-                              <button onClick={() => handleAddPresetCategory(preset)} className="bg-amber-900 text-white px-3 py-1.5 rounded-xl text-[10px] font-bold shadow hover:bg-amber-950 cursor-pointer flex items-center gap-1">
-                                <Plus className="w-3 h-3" /> {t.addBtn}
-                              </button>
-                            )}
+                            <button onClick={() => handleAddPresetCategory(preset)} className="bg-amber-900 text-white px-3 py-1.5 rounded-xl text-[10px] font-bold shadow hover:bg-amber-950 cursor-pointer flex items-center gap-1">
+                              <Plus className="w-3 h-3" /> {t.addBtn}
+                            </button>
                           </div>
                         );
                       })}
@@ -521,12 +513,11 @@ export default function App() {
               </div>
             </div>
 
-            {/* 4. HIZLI ERİŞİM KARTLARI (AKTİF/PASİF KONTROLÜ) */}
+            {/* 4. HIZLI ERİŞİM KARTLARI */}
             <div className="space-y-4 pt-4 border-t">
               <h3 className="font-bold text-xs text-amber-900 uppercase tracking-wider">{t.sec4Title}</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 
-                {/* WLAN Card Config */}
                 <div className={`p-4 rounded-2xl border transition ${hotel.showWifi ? 'bg-white border-stone-200' : 'bg-stone-100 border-stone-200 opacity-60'}`}>
                   <div className="flex justify-between items-center mb-2">
                     <span className="font-bold text-xs text-slate-900 flex items-center gap-2"><Wifi className="w-4 h-4 text-amber-900" /> {t.wlanTitle}</span>
@@ -543,7 +534,6 @@ export default function App() {
                   )}
                 </div>
 
-                {/* Parking Card Config */}
                 <div className={`p-4 rounded-2xl border transition ${hotel.showParking ? 'bg-white border-stone-200' : 'bg-stone-100 border-stone-200 opacity-60'}`}>
                   <div className="flex justify-between items-center mb-2">
                     <span className="font-bold text-xs text-slate-900 flex items-center gap-2"><Car className="w-4 h-4 text-amber-900" /> {t.parkingTitle}</span>
@@ -557,7 +547,6 @@ export default function App() {
                   )}
                 </div>
 
-                {/* Breakfast Card Config */}
                 <div className={`p-4 rounded-2xl border transition ${hotel.showBreakfast ? 'bg-white border-stone-200' : 'bg-stone-100 border-stone-200 opacity-60'}`}>
                   <div className="flex justify-between items-center mb-2">
                     <span className="font-bold text-xs text-slate-900 flex items-center gap-2"><Coffee className="w-4 h-4 text-amber-900" /> {t.breakfastTitle}</span>
@@ -571,7 +560,6 @@ export default function App() {
                   )}
                 </div>
 
-                {/* Check-in / Out Card Config */}
                 <div className={`p-4 rounded-2xl border transition ${hotel.showCheckInOut ? 'bg-white border-stone-200' : 'bg-stone-100 border-stone-200 opacity-60'}`}>
                   <div className="flex justify-between items-center mb-2">
                     <span className="font-bold text-xs text-slate-900 flex items-center gap-2"><Clock className="w-4 h-4 text-amber-900" /> {t.checkInOutTitle}</span>
@@ -588,7 +576,7 @@ export default function App() {
               </div>
             </div>
 
-            {/* 5. GÄSTEMAPPE KATEGORIEN */}
+            {/* 5. GÄSTEMAPPE KATEGORIEN (HİBRİT ÖZELLEŞTİRİLEBİLİR İSİMLER) */}
             <div className="space-y-4 pt-4 border-t">
               <div className="flex justify-between items-center">
                 <h3 className="font-bold text-xs text-amber-900 uppercase tracking-wider">{t.sec5Title}</h3>
@@ -625,7 +613,7 @@ export default function App() {
                                   placeholder={defaultTitle} 
                                   value={cat.customTitle} 
                                   onChange={(e) => handleUpdateCategoryField(cat.id, 'customTitle', e.target.value)} 
-                                  className="w-full p-2 text-xs border rounded-xl bg-white" 
+                                  className="w-full p-2 text-xs border rounded-xl bg-white font-semibold" 
                                 />
                               </div>
                               <div>
@@ -704,7 +692,6 @@ export default function App() {
     );
   }
 
-  // MİSAFİR GÖRÜNÜMÜ: AKTİF HIZLI ERİŞİM KARTLARINI FİLTRELEME
   const activeQuickCards = [
     hotel.showWifi && (
       <div key="wifi" className="bg-white p-4 rounded-2xl shadow-sm border border-stone-200 space-y-2">
@@ -795,7 +782,6 @@ export default function App() {
                 <div className="text-right"><div className="text-2xl font-black text-slate-900">16°C</div></div>
               </div>
 
-              {/* DİNAMİK HIZLI ERİŞİM KARTLARI (SADECE AÇIK OLANLAR VE KUSURSUZ DÜZEN) */}
               {activeQuickCards.length > 0 && (
                 <div className="grid grid-cols-2 gap-3 pt-2">
                   {activeQuickCards}
@@ -803,7 +789,6 @@ export default function App() {
               )}
             </div>
           ) : (
-            /* MİSAFİR REHBER SEKMESİ */
             <div className="space-y-6 animate-fade-in">
               <h3 className="text-xs font-bold text-stone-500 uppercase tracking-wider">{t.navGaestemappe}</h3>
               {Object.entries(groupedCategories).map(([groupName, groupItems]) => (
@@ -811,9 +796,13 @@ export default function App() {
                   <h4 className="text-xs font-black text-amber-900 uppercase tracking-wider px-1">{groupName}</h4>
                   <div className="grid grid-cols-1 gap-2.5">
                     {groupItems.map((cat) => {
-                      const title = cat.customTitle || cat.presetData.title[lang] || cat.presetData.title.de;
-                      const sub = cat.customSubtitle || cat.presetData.subtitle[lang] || cat.presetData.subtitle.de;
-                      const content = cat.customContent || cat.presetData.content[lang] || cat.presetData.content.de;
+                      const defaultTitle = cat.presetData.title[lang] || cat.presetData.title.de;
+                      const defaultSub = cat.presetData.subtitle[lang] || cat.presetData.subtitle.de;
+                      const defaultContent = cat.presetData.content[lang] || cat.presetData.content.de;
+
+                      const title = cat.customTitle || defaultTitle;
+                      const sub = cat.customSubtitle || defaultSub;
+                      const content = cat.customContent || defaultContent;
 
                       return (
                         <button key={cat.id} onClick={() => setSelectedCategory({ title, content })} className="w-full bg-white p-4 rounded-2xl border border-stone-200 shadow-sm flex items-center justify-between text-left cursor-pointer hover:border-amber-900/40 transition">
