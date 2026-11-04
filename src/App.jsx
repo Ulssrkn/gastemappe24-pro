@@ -43,7 +43,7 @@ const translations = {
     sec2Title: "2. Logo hochladen",
     sec3Title: "3. Bilderverwaltung (Slider)",
     sec4Title: "4. Schnellzugriff (Aktivieren / Deaktivieren)",
-    sec5Title: "5. Gästemappe Kategorien (10-Sprachen Schablonen & Werte)",
+    sec5Title: "5. Gästemappe Kategorien (Vollständiger Katalog)",
     lblHotelName: "Unterkunft Name",
     lblPhone: "Telefon",
     lblEmailField: "E-Mail",
@@ -99,7 +99,7 @@ const translations = {
     sec2Title: "2. Upload Logo",
     sec3Title: "3. Image Management (Slider)",
     sec4Title: "4. Quick Access (Enable / Disable Cards)",
-    sec5Title: "5. Directory Categories (10-Language Templates)",
+    sec5Title: "5. Directory Categories (Full Catalog)",
     lblHotelName: "Property Name",
     lblPhone: "Phone",
     lblEmailField: "E-Mail",
@@ -323,7 +323,7 @@ const translations = {
     sec2Title: "2. Logo Yükleme",
     sec3Title: "3. Resim Yönetimi (Slider)",
     sec4Title: "4. Hızlı Erişim (Kartları Aç / Kapat)",
-    sec5Title: "5. Rehber Kategorileri (10 Dilde Hibrit Şablonlar)",
+    sec5Title: "5. Rehber Kategorileri (Tam Katalog)",
     lblHotelName: "Tesis / Otel Adı",
     lblPhone: "Telefon",
     lblEmailField: "E-Posta",
@@ -615,6 +615,27 @@ const categoryPresets = [
     icon: 'Bed' 
   },
   { 
+    id: 'keys_access', 
+    group: 'Hotel & Unterkunft', 
+    title: { de: 'Zimmerschlüssel & Zugang', en: 'Keys & Access', tr: 'Anahtar ve Erişim', it: 'Chiavi e accesso', fr: 'Clés et accès', es: 'Llaves y acceso', sv: 'Nycklar & åtkomst', no: 'Nøkler og tilgang', hr: 'Ključevi i pristup', sq: 'Çelësat dhe qasja' }, 
+    subtitle: { de: 'Karte & Schließzeiten', en: 'Keycard & locking times', tr: 'Anahtar kartı ve kapı saatleri', it: 'Scheda chiave e orari', fr: 'Carte clé et horaires', es: 'Tarjeta llave y horarios', sv: 'Nyckelkort & tider', no: 'Nøkkelkort og tider', hr: 'Ključ kartica i vremena', sq: 'Kardçelës dhe oraret' }, 
+    contentTpl: { 
+      de: 'Bitte nehmen Sie Ihre Schlüsselkarte beim Verlassen des Hauses mit. Info: {val1}', 
+      en: 'Please take your keycard with you when leaving. Info: {val1}', 
+      tr: 'Lütfen çıkarken anahtar kartınızı yanınıza alın. Bilgi: {val1}',
+      it: 'Si prega di prendere la chiave magnetica quando si esce. Info: {val1}',
+      fr: 'Veuillez emporter votre carte clé en sortant. Info : {val1}',
+      es: 'Por favor, lleve su tarjeta llave al salir. Info: {val1}',
+      sv: 'Ta med ditt nyckelkort när du går. Info: {val1}',
+      no: 'Ta med nøkkelkortet når du går. Info: {val1}',
+      hr: 'Molimo ponesite ključ karticu pri izlasku. Info: {val1}',
+      sq: 'Ju lutemi merrni me vete kartën e dhomës kur dilni. Info: {val1}'
+    }, 
+    defaultVal1: '24h Empfang besetzt', 
+    defaultVal2: '', 
+    icon: 'Key' 
+  },
+  { 
     id: 'restaurant_dining', 
     group: 'Essen & Trinken', 
     title: { de: 'Restaurant & Bar', en: 'Restaurant & Bar', tr: 'Restoran ve Bar', it: 'Ristorante e Bar', fr: 'Restaurant et Bar', es: 'Restaurante y Bar', sv: 'Restaurang & Bar', no: 'Restaurant og Bar', hr: 'Restoran i Bar', sq: 'Restorant dhe Bar' }, 
@@ -636,6 +657,27 @@ const categoryPresets = [
     icon: 'Utensils' 
   },
   { 
+    id: 'cafe_snacks', 
+    group: 'Essen & Trinken', 
+    title: { de: 'Café & Lounge', en: 'Café & Lounge', tr: 'Kafe ve Dinlenme Alanı', it: 'Caffè e Lounge', fr: 'Café et Salon', es: 'Café y Salón', sv: 'Café & Lounge', no: 'Café og Lounge', hr: 'Kafić i Salon', sq: 'Kafe dhe Lounge' }, 
+    subtitle: { de: 'Kaffee, Kuchen & Snacks', en: 'Coffee, cake & snacks', tr: 'Kahve, kek ve atıştırmalıklar', it: 'Caffè, dolci e snack', fr: 'Café, gâteaux et en-cas', es: 'Café, pasteles y aperitivos', sv: 'Kaffe, tårta & snacks', no: 'Kaffe, kake og snacks', hr: 'Kava, kolači i grickalice', sq: 'Kafe, ëmbëlsira dhe snack' }, 
+    contentTpl: { 
+      de: 'Genießen Sie am Nachmittag hausgemachten Kuchen von {val1}. Info: {val2}', 
+      en: 'Enjoy homemade cake in the afternoon from {val1}. Info: {val2}', 
+      tr: 'Öğleden sonra {val1} saatleri arasında ev yapımı keklerin tadını çıkarın. Bilgi: {val2}',
+      it: 'Goditi una torta fatta in casa nel pomeriggio dalle {val1}. Info: {val2}',
+      fr: 'Profitez de gâteaux faits maison l\'après-midi de {val1}. Info : {val2}',
+      es: 'Disfrute de pasteles caseros por la tarde de {val1}. Info: {val2}',
+      sv: 'Njut av hembakad tårta på eftermiddagen från {val1}. Info: {val2}',
+      no: 'Nyt hjemmelaget kake på ettermiddagen fra {val1}. Info: {val2}',
+      hr: 'Uživajte u domaćim kolačima popodne od {val1}. Info: {val2}',
+      sq: 'Shijoni ëmbëlsira shtëpie pasdite nga {val1}. Info: {val2}'
+    }, 
+    defaultVal1: '14:00 - 18:00 Uhr', 
+    defaultVal2: 'Terrassenbereich', 
+    icon: 'Coffee' 
+  },
+  { 
     id: 'pool_aqua', 
     group: 'Wellness & Spa', 
     title: { de: 'Pool & Wellnessbereich', en: 'Pool & Wellness Area', tr: 'Havuz ve Wellness Alanı', it: 'Piscina e Benessere', fr: 'Piscine et Espace Bien-être', es: 'Piscina y Bienestar', sv: 'Pool & Wellness', no: 'Basseng og Velvære', hr: 'Bazen i Wellness', sq: 'Pishina dhe Wellness' }, 
@@ -655,13 +697,138 @@ const categoryPresets = [
     defaultVal1: '07:00 - 20:00 Uhr', 
     defaultVal2: 'Handtücher am Empfang erhältlich', 
     icon: 'Waves' 
+  },
+  { 
+    id: 'sauna_spa', 
+    group: 'Wellness & Spa', 
+    title: { de: 'Sauna & Massagen', en: 'Sauna & Massages', tr: 'Sauna ve Masajlar', it: 'Sauna e Massaggi', fr: 'Sauna et Massages', es: 'Sauna y Masajes', sv: 'Sauna & Massage', no: 'Sauna og Massasje', hr: 'Sauna i Masaže', sq: 'Sauna dhe Masazhet' }, 
+    subtitle: { de: 'Finnische Sauna & Termine', en: 'Finnish sauna & appointments', tr: 'Fin saunası ve randevu', it: 'Sauna finlandese e appuntamenti', fr: 'Sauna finlandais et rendez-vous', es: 'Sauna finlandesa y citas', sv: 'Finsk bastu & tider', no: 'Finsk badstue og avtaler', hr: 'Finska sauna i termini', sq: 'Sauna finlandeze dhe takimet' }, 
+    contentTpl: { 
+      de: 'Entspannen Sie in unserer finnischen Sauna von {val1}. Termin: {val2}', 
+      en: 'Relax in our Finnish sauna from {val1}. Appointment: {val2}', 
+      tr: 'Fin saunamızda {val1} saatleri arasında rahatlayın. Randevu: {val2}',
+      it: 'Rilassati nella nostra sauna finlandese dalle {val1}. Appuntamento: {val2}',
+      fr: 'Détendez-vous dans notre sauna finlandais de {val1}. Rendez-vous : {val2}',
+      es: 'Relájese en nuestra sauna finlandesa de {val1}. Cita: {val2}',
+      sv: 'Koppla av i vår finska bastu från {val1}. Bokning: {val2}',
+      no: 'Slapp av i vår finske badstue fra {val1}. Bestilling: {val2}',
+      hr: 'Opustite se u našoj finskoj sauni od {val1}. Termin: {val2}',
+      sq: 'Relaksohuni në saunën tonë finlandeze nga {val1}. Takimi: {val2}'
+    }, 
+    defaultVal1: '16:00 - 21:00 Uhr', 
+    defaultVal2: 'Anmeldung an der Rezeption', 
+    icon: 'Sparkles' 
+  },
+  { 
+    id: 'bike_rental', 
+    group: 'Freizeit & Aktivitäten', 
+    title: { de: 'Fahrradverleih', en: 'Bike Rental', tr: 'Bisiklet Kiralama', it: 'Noleggio biciclette', fr: 'Location de vélos', es: 'Alquiler de bicicletas', sv: 'Cykeluthyrning', no: 'Sykkelutleie', hr: 'Najam bicikala', sq: 'Qira biçikletash' }, 
+    subtitle: { de: 'E-Bikes & Tourenkarten', en: 'E-bikes & trail maps', tr: 'Elektrikli bisiklet ve haritalar', it: 'E-bike e mappe', fr: 'E-bikes et cartes', es: 'Bicicletas eléctricas y mapas', sv: 'E-cyklar & kartor', no: 'Elsykler og kart', hr: 'E-bicikli i karte', sq: 'E-biçikleta dhe harta' }, 
+    contentTpl: { 
+      de: 'Hochwertige E-Bikes können tageweise ausgeliehen werden. Preis/Info: {val1}. Kontakt: {val2}', 
+      en: 'High-quality e-bikes can be rented daily. Price/Info: {val1}. Contact: {val2}', 
+      tr: 'Kaliteli e-bisikletler günlük kiralanabilir. Fiyat/Bilgi: {val1}. İletişim: {val2}',
+      it: 'E-bike di alta qualità possono essere noleggiate giornalmente. Prezzo/Info: {val1}. Contatto: {val2}',
+      fr: 'Des vélos électriques de haute qualité peuvent être loués à la journée. Prix/Info : {val1}. Contact : {val2}',
+      es: 'Se pueden alquilar bicicletas eléctricas de alta calidad por días. Precio/Info: {val1}. Contacto: {val2}',
+      sv: 'Högkvalitativa elcyklar kan hyras dagligen. Pris/Info: {val1}. Kontakt: {val2}',
+      no: 'Elsykler av høy kvalitet kan leies daglig. Pris/Info: {val1}. Kontakt: {val2}',
+      hr: 'Kvalitetni e-bicikli mogu se iznajmiti na dane. Cijena/Info: {val1}. Kontakt: {val2}',
+      sq: 'E-biçikleta me cilësi të lartë mund të merren me qira ditore. Çmimi/Info: {val1}. Kontaktoni: {val2}'
+    }, 
+    defaultVal1: '25€ pro Tag', 
+    defaultVal2: 'Rezeption', 
+    icon: 'Compass' 
+  },
+  { 
+    id: 'sightseeing', 
+    group: 'Umgebung & Ausflüge', 
+    title: { de: 'Sehenswürdigkeiten', en: 'Sights & Attractions', tr: 'Görülecek Yerler', it: 'Attrazioni turistiche', fr: 'Sites touristiques', es: 'Lugares de interés', sv: 'Sevärdheter', no: 'Severdigheter', hr: 'Znamenitosti', sq: 'Vende interesi' }, 
+    subtitle: { de: 'Tipps & Highlights', en: 'Tips & highlights', tr: 'İpuçları ve önemli noktalar', it: 'Consigli e punti salienti', fr: 'Conseils et points forts', es: 'Consejos y destacados', sv: 'Tips & höjdpunkter', no: 'Tips og høydepunkter', hr: 'Savjeti i istaknuto', sq: 'Këshilla dhe pika kryesore' }, 
+    contentTpl: { 
+      de: 'Entdecken Sie die schönsten Orte der Region. Empfehlung: {val1}. Weitere Infos: {val2}', 
+      en: 'Discover the best places in the region. Recommendation: {val1}. More info: {val2}', 
+      tr: 'Bölgenin en güzel yerlerini keşfedin. Öneri: {val1}. Daha fazla bilgi: {val2}',
+      it: 'Scopri i posti più bellli della regione. Consigli: {val1}. Altre info: {val2}',
+      fr: 'Découvrez les plus beaux endroits de la région. Recommandation : {val1}. Plus d\'infos : {val2}',
+      es: 'Descubra los mejores lugares de la región. Recomendación: {val1}. Más info: {val2}',
+      sv: 'Upptäck regionens vackraste platser. Rekommendation: {val1}. Mer info: {val2}',
+      no: 'Oppdag regionens vakreste steder. Anbefaling: {val1}. Mer info: {val2}',
+      hr: 'Otkrijte najljepša mjesta u regiji. Preporuka: {val1}. Više informacija: {val2}',
+      sq: 'Zbuloni vendet më të bukura të rajonit. Rekomandim: {val1}. Më shumë info: {val2}'
+    }, 
+    defaultVal1: 'Historische Altstadt', 
+    defaultVal2: 'Karten an der Rezeption', 
+    icon: 'MapPin' 
+  },
+  { 
+    id: 'parking_mobility', 
+    group: 'Anreise & Mobilität', 
+    title: { de: 'Parkmöglichkeiten', en: 'Parking Facilities', tr: 'Otopark İmkanları', it: 'Parcheggio', fr: 'Parking', es: 'Aparcamiento', sv: 'Parkering', no: 'Parkering', hr: 'Parkiralište', sq: 'Parkimi' }, 
+    subtitle: { de: 'Tiefgarage & E-Ladestation', en: 'Underground garage & EV charger', tr: 'Kapalı otopark ve elektrikli şarj', it: 'Garage sotterraneo e ricarica', fr: 'Garage souterrain et recharge', es: 'Garaje subterráneo y cargador', sv: 'Garage & elbilsladdning', no: 'Garasje og elbil-lader', hr: 'Garaža i punjač', sq: 'Garazh dhe karikues' }, 
+    contentTpl: { 
+      de: 'Ihnen stehen Parkmöglichkeiten zur Verfügung. Details: {val1}. Hinweis: {val2}', 
+      en: 'Parking facilities are available. Details: {val1}. Note: {val2}', 
+      tr: 'Otopark imkanları mevcuttur. Detay: {val1}. Not: {val2}',
+      it: 'Sono disponibili posti auto. Dettagli: {val1}. Nota: {val2}',
+      fr: 'Des facilités de stationnement sont disponibles. Détails : {val1}. Remarque : {val2}',
+      es: 'Hay instalaciones de aparcamiento disponibles. Detalles: {val1}. Nota: {val2}',
+      sv: 'Parkeringsmöjligheter finns tillgängliga. Detaljer: {val1}. Observera: {val2}',
+      no: 'Parkeringsmuligheter er tilgjengelige. Detaljer: {val1}. Merk: {val2}',
+      hr: 'Dostupna su parkirna mjesta. Detalji: {val1}. Napomena: {val2}',
+      sq: 'Janë të disponueshme mundësi parkimi. Detajet: {val1}. Shënim: {val2}'
+    }, 
+    defaultVal1: 'Kostenfrei am Haus', 
+    defaultVal2: 'E-Ladestation vorhanden', 
+    icon: 'Car' 
+  },
+  { 
+    id: 'reception_service', 
+    group: 'Service & Informationen', 
+    title: { de: 'Rezeption & Service', en: 'Reception & Service', tr: 'Resepsiyon ve Servis', it: 'Ricezione e Servizio', fr: 'Réception et Service', es: 'Recepción y Servicio', sv: 'Reception & Service', no: 'Resepsjon og Service', hr: 'Recepcija i Usluge', sq: 'Recepsioni dhe Shërbimi' }, 
+    subtitle: { de: 'Weckruf & Gepäck', en: 'Wake-up call & luggage', tr: 'Uyandırma servisi ve bagaj', it: 'Sveglia e bagagli', fr: 'Réveil et bagages', es: 'Servicio despertador y equipaje', sv: 'Väckning & bagage', no: 'Vekking og bagasje', hr: 'Usluga buđenja i prtljaga', sq: 'Zgjimi dhe bagazhet' }, 
+    contentTpl: { 
+      de: 'Sie erreichen unseren Service unter der Nummer {val1}. Info: {val2}', 
+      en: 'You can reach our service at number {val1}. Info: {val2}', 
+      tr: 'Servisimize {val1} numarasından ulaşabilirsiniz. Bilgi: {val2}',
+      it: 'Potete contattare il nostro servizio al numero {val1}. Info: {val2}',
+      fr: 'Vous pouvez joindre notre service au numéro {val1}. Info : {val2}',
+      es: 'Puede ponerse en contacto con nuestro servicio en el número {val1}. Info: {val2}',
+      sv: 'Du kan nå vår service på nummer {val1}. Info: {val2}',
+      no: 'Du kan nå vår tjeneste på nummer {val1}. Info: {val2}',
+      hr: 'Našu uslugu možete kontaktirati na broj {val1}. Info: {val2}',
+      sq: 'Mund të kontaktoni shërbimin tonë në numrin {val1}. Info: {val2}'
+    }, 
+    defaultVal1: 'Kurzwahl 9', 
+    defaultVal2: 'Gepäckaufbewahrung verfügbar', 
+    icon: 'Phone' 
+  },
+  { 
+    id: 'house_rules', 
+    group: 'Regeln & Wissenswertes', 
+    title: { de: 'Hausordnung & Ruhezeiten', en: 'House Rules & Quiet Hours', tr: 'Ev Kuralları ve Sessizlik', it: 'Regolamento e Orari di silenzio', fr: 'Règlement et Heures de calme', es: 'Normas y Horas de silencio', sv: 'Ordningsregler & Tystnad', no: 'Husordensregler og Ro', hr: 'Kućni red i tišina', sq: 'Rregullat dhe Qetësia' }, 
+    subtitle: { de: 'Nachtruhe ab 22:00 Uhr', en: 'Quiet hours from 10:00 PM', tr: '22:00’den itibaren gece sessizliği', it: 'Silenzio dalle 22:00', fr: 'Heures de calme dès 22h00', es: 'Horas de silencio desde las 22:00', sv: 'Tystnad från kl. 22:00', no: 'Ro fra kl. 22:00', hr: 'Noćni mir od 22:00', sq: 'Qetësia e natës nga ora 22:00' }, 
+    contentTpl: { 
+      de: 'Wir bitten Sie die Ruhezeiten einzuhalten. Details: {val1}. Hinweis: {val2}', 
+      en: 'We ask you to observe quiet hours. Details: {val1}. Note: {val2}', 
+      tr: 'Lütfen sessizlik kurallarına uyunuz. Detay: {val1}. Not: {val2}',
+      it: 'Vi chiediamo di rispettare gli orari di silenzio. Dettagli: {val1}. Nota: {val2}',
+      fr: 'Nous vous demandons de respecter les heures de calme. Détails : {val1}. Remarque : {val2}',
+      es: 'Les rogamos respeten las horas de silencio. Detalles: {val1}. Nota: {val2}',
+      sv: 'Vi ber dig att iaktta tystnadstider. Detaljer: {val1}. Observera: {val2}',
+      no: 'Vi ber deg om å overholde tidene for ro. Detaljer: {val1}. Merk: {val2}',
+      hr: 'Molimo Vas da poštujete vrijeme mira. Detalji: {val1}. Napomena: {val2}',
+      sq: 'Ju kërkojmë të respektoni orët e qetësisë. Detajet: {val1}. Shënim: {val2}'
+    }, 
+    defaultVal1: 'Nachtruhe ab 22:00 Uhr', 
+    defaultVal2: 'Rauchverbot im gesamten Gebäude', 
+    icon: 'ShieldCheck' 
   }
 ];
 
 export default function App() {
   const [lang, setLang] = useState('de');
   
-  // Güvenli sözlük referansı (Dil değiştiğinde tüm arayüz anında tetiklenir)
   const t = translations[lang] || translations.de;
 
   const [appMode, setAppMode] = useState('guest'); 
@@ -805,8 +972,16 @@ export default function App() {
     switch (iconName) {
       case 'Building': return <Building {...props} />;
       case 'Bed': return <Bed {...props} />;
+      case 'Key': return <Key {...props} />;
       case 'Utensils': return <Utensils {...props} />;
+      case 'Coffee': return <Coffee {...props} />;
       case 'Waves': return <Waves {...props} />;
+      case 'Sparkles': return <Sparkles {...props} />;
+      case 'Compass': return <Compass {...props} />;
+      case 'MapPin': return <MapPin {...props} />;
+      case 'Car': return <Car {...props} />;
+      case 'Phone': return <Phone {...props} />;
+      case 'ShieldCheck': return <ShieldCheck {...props} />;
       default: return <Info {...props} />;
     }
   };
