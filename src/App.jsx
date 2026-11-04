@@ -5,7 +5,7 @@ import {
   Check, Image as ImageIcon, Copy,
   ChevronRight, ArrowRight, Upload, AlertCircle, Lock, Unlock,
   Utensils, Heart, Compass, Coffee, Car, Clock, ShieldCheck, Edit3, Mail, Globe, ExternalLink, QrCode, Printer, BarChart3, Star, Navigation, Sun, LogOut, User,
-  Wine, Sparkles, Tv, Waves, Dumbbell, Key, Bed, Building, ShoppingBag, Landmark, Map, Bus, Plane, Scroll, Save
+  Wine, Sparkles, Tv, Waves, Dumbbell, Key, Bed, Building, ShoppingBag, Landmark, Map, Bus, Plane, Scroll, Save, Eye, EyeOff
 } from 'lucide-react';
 
 const translations = {
@@ -31,11 +31,6 @@ const translations = {
     saveBtn: "Änderungen speichern",
     savedMsg: "Gespeichert!",
     logoutBtn: "Abmelden",
-    loginTitle: "Partner Login",
-    loginSub: "Anmelden um Ihre Gästemappe zu verwalten",
-    lblEmail: "E-Mail-Adresse",
-    lblPassword: "Passwort",
-    btnLoginSubmit: "Anmelden",
     trialTitle: "30-Tage Testversion (PRO)",
     trialDaysLeft: "Tage verbleibend",
     statsScans: "QR-Code Scans",
@@ -47,7 +42,7 @@ const translations = {
     sec1Title: "1. Unterkunft Informationen & Kontaktdaten",
     sec2Title: "2. Logo hochladen",
     sec3Title: "3. Bilderverwaltung (Slider)",
-    sec4Title: "4. Schnellzugriff (4 Fixe Standard-Karten)",
+    sec4Title: "4. Schnellzugriff (Aktivieren / Deaktivieren)",
     sec5Title: "5. Gästemappe Kategorien (Preset-Katalog & Textbearbeitung)",
     lblHotelName: "Unterkunft Name",
     lblPhone: "Telefon",
@@ -67,7 +62,9 @@ const translations = {
     addBtn: "Hinzufügen",
     editTitle: "Titel bearbeiten",
     editSubtitle: "Untertitel / Alt-Text bearbeiten",
-    editContent: "Detaillierten Inhalt bearbeiten"
+    editContent: "Detaillierten Inhalt bearbeiten",
+    activeCard: "Karte anzeigen",
+    inactiveCard: "Karte ausblenden"
   },
   en: {
     welcomeBadge: "Digital Guest Directory",
@@ -91,11 +88,6 @@ const translations = {
     saveBtn: "Save Changes",
     savedMsg: "Saved!",
     logoutBtn: "Log out",
-    loginTitle: "Partner Login",
-    loginSub: "Log in to manage your guest directory",
-    lblEmail: "E-Mail Address",
-    lblPassword: "Password",
-    btnLoginSubmit: "Sign In",
     trialTitle: "30-Day Trial (PRO)",
     trialDaysLeft: "Days remaining",
     statsScans: "QR Code Scans",
@@ -107,7 +99,7 @@ const translations = {
     sec1Title: "1. Property Information & Contacts",
     sec2Title: "2. Upload Logo",
     sec3Title: "3. Image Management (Slider)",
-    sec4Title: "4. Quick Access (4 Fixed Cards)",
+    sec4Title: "4. Quick Access (Enable / Disable Cards)",
     sec5Title: "5. Directory Categories (Preset Catalog & Editing)",
     lblHotelName: "Property Name",
     lblPhone: "Phone",
@@ -127,7 +119,9 @@ const translations = {
     addBtn: "Add",
     editTitle: "Edit Title",
     editSubtitle: "Edit Subtitle",
-    editContent: "Edit Content"
+    editContent: "Edit Content",
+    activeCard: "Show Card",
+    inactiveCard: "Hide Card"
   },
   tr: {
     welcomeBadge: "Dijital Misafir Rehberi",
@@ -151,11 +145,6 @@ const translations = {
     saveBtn: "Değişiklikleri Kaydet",
     savedMsg: "Kaydedildi!",
     logoutBtn: "Çıkış Yap",
-    loginTitle: "Partner Girişi",
-    loginSub: "Rehberinizi yönetmek için giriş yapın",
-    lblEmail: "E-Posta Adresi",
-    lblPassword: "Şifre",
-    btnLoginSubmit: "Giriş Yap",
     trialTitle: "30 Günlük Deneme (PRO)",
     trialDaysLeft: "Gün kaldı",
     statsScans: "QR Kod Taramaları",
@@ -167,7 +156,7 @@ const translations = {
     sec1Title: "1. Tesis Bilgileri & İletişim",
     sec2Title: "2. Logo Yükleme",
     sec3Title: "3. Resim Yönetimi (Slider)",
-    sec4Title: "4. Hızlı Erişim (4 Sabit Kart)",
+    sec4Title: "4. Hızlı Erişim (Kartları Aç / Kapat)",
     sec5Title: "5. Rehber Kategorileri (Katalog & Metin Düzenleme)",
     lblHotelName: "Tesis / Otel Adı",
     lblPhone: "Telefon",
@@ -187,7 +176,9 @@ const translations = {
     addBtn: "Ekle",
     editTitle: "Başlığı Düzenle",
     editSubtitle: "Alt Metni Düzenle",
-    editContent: "Detaylı İçeriği Düzenle"
+    editContent: "Detaylı İçeriği Düzenle",
+    activeCard: "Kartı Göster",
+    inactiveCard: "Kartı Gizle"
   }
 };
 
@@ -240,6 +231,11 @@ export default function App() {
       breakfastTime: '07:30 - 10:30 Uhr',
       checkInOut: 'Check-in: ab 15:00 | Check-out: bis 11:00',
       parkingInfo: 'Kostenfreie Parkplätze am Haus verfügbar.',
+      // 4 HIZLI ERİŞİM KARTININ AKTİF/PASİF DURUMLARI
+      showWifi: true,
+      showParking: true,
+      showBreakfast: true,
+      showCheckInOut: true,
       themeColor: 'amber',
       images: [
         'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1000&q=80',
@@ -268,7 +264,6 @@ export default function App() {
   const hotelUrl = `https://gastemappe24-pro.vercel.app/?hotel=${hotelSlug}`;
   const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(hotelUrl)}`;
 
-  // QR BASKI PENCERESİ ZENGİNLEŞTİRİLDİ (OTEL BİLGİLERİ, İLETİŞİM & WIFI EKLENDİ)
   const handlePrint = (format) => {
     const printWindow = window.open('', '_blank');
     if (!printWindow) return;
@@ -278,7 +273,7 @@ export default function App() {
           <title>QR-Code ${format} - ${hotel.name}</title>
           <style>
             body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; text-align: center; padding: 40px; color: #1e293b; }
-            .card { border: 2px solid #e2e8f0; border-radius: 24px; padding: 32px; max-w: 450px; margin: 0 auto; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05); }
+            .card { border: 2px solid #e2e8f0; border-radius: 24px; padding: 32px; max-width: 450px; margin: 0 auto; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05); }
             .logo { max-height: 60px; margin-bottom: 12px; border-radius: 12px; }
             h1 { font-size: 22px; margin: 8px 0 4px 0; color: #0f172a; }
             p.sub { color: #64748b; font-size: 13px; margin-bottom: 20px; }
@@ -527,26 +522,70 @@ export default function App() {
               </div>
             </div>
 
-            {/* 4. HIZLI ERİŞİM (4 SABİT KART) */}
+            {/* 4. HIZLI ERİŞİM KARTLARI (AKTİF/PASİF SEÇENEKLİ) */}
             <div className="space-y-4 pt-4 border-t">
               <h3 className="font-bold text-xs text-amber-900 uppercase tracking-wider">{t.sec4Title}</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                <div>
-                  <label className="block text-[10px] font-bold text-stone-500 uppercase mb-1">{t.lblWifiSsid}</label>
-                  <input type="text" value={hotel.wifiSsid} onChange={(e) => setHotel({ ...hotel, wifiSsid: e.target.value })} className="w-full p-2.5 text-xs border border-stone-200 rounded-xl" />
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                
+                {/* WLAN Card Config */}
+                <div className={`p-4 rounded-2xl border transition ${hotel.showWifi ? 'bg-white border-stone-200' : 'bg-stone-100 border-stone-200 opacity-60'}`}>
+                  <div className="flex justify-between items-center mb-2">
+                    <span className="font-bold text-xs text-slate-900 flex items-center gap-2"><Wifi className="w-4 h-4 text-amber-900" /> {t.wlanTitle}</span>
+                    <button onClick={() => setHotel({ ...hotel, showWifi: !hotel.showWifi })} className={`px-2.5 py-1 rounded-lg text-[10px] font-bold cursor-pointer flex items-center gap-1 ${hotel.showWifi ? 'bg-emerald-100 text-emerald-800' : 'bg-stone-200 text-stone-600'}`}>
+                      {hotel.showWifi ? <Eye className="w-3 h-3" /> : <EyeOff className="w-3 h-3" />}
+                      {hotel.showWifi ? t.activeCard : t.inactiveCard}
+                    </button>
+                  </div>
+                  {hotel.showWifi && (
+                    <div className="grid grid-cols-2 gap-2 mt-2">
+                      <input type="text" placeholder={t.lblWifiSsid} value={hotel.wifiSsid} onChange={(e) => setHotel({ ...hotel, wifiSsid: e.target.value })} className="p-2 text-xs border rounded-xl" />
+                      <input type="text" placeholder={t.lblWifiPass} value={hotel.wifiPass} onChange={(e) => setHotel({ ...hotel, wifiPass: e.target.value })} className="p-2 text-xs border rounded-xl" />
+                    </div>
+                  )}
                 </div>
-                <div>
-                  <label className="block text-[10px] font-bold text-stone-500 uppercase mb-1">{t.lblWifiPass}</label>
-                  <input type="text" value={hotel.wifiPass} onChange={(e) => setHotel({ ...hotel, wifiPass: e.target.value })} className="w-full p-2.5 text-xs border border-stone-200 rounded-xl" />
+
+                {/* Parking Card Config */}
+                <div className={`p-4 rounded-2xl border transition ${hotel.showParking ? 'bg-white border-stone-200' : 'bg-stone-100 border-stone-200 opacity-60'}`}>
+                  <div className="flex justify-between items-center mb-2">
+                    <span className="font-bold text-xs text-slate-900 flex items-center gap-2"><Car className="w-4 h-4 text-amber-900" /> {t.parkingTitle}</span>
+                    <button onClick={() => setHotel({ ...hotel, showParking: !hotel.showParking })} className={`px-2.5 py-1 rounded-lg text-[10px] font-bold cursor-pointer flex items-center gap-1 ${hotel.showParking ? 'bg-emerald-100 text-emerald-800' : 'bg-stone-200 text-stone-600'}`}>
+                      {hotel.showParking ? <Eye className="w-3 h-3" /> : <EyeOff className="w-3 h-3" />}
+                      {hotel.showParking ? t.activeCard : t.inactiveCard}
+                    </button>
+                  </div>
+                  {hotel.showParking && (
+                    <input type="text" placeholder={t.lblParkingInfo} value={hotel.parkingInfo} onChange={(e) => setHotel({ ...hotel, parkingInfo: e.target.value })} className="w-full p-2 text-xs border rounded-xl mt-2" />
+                  )}
                 </div>
-                <div>
-                  <label className="block text-[10px] font-bold text-stone-500 uppercase mb-1">{t.lblBreakfastTime}</label>
-                  <input type="text" value={hotel.breakfastTime} onChange={(e) => setHotel({ ...hotel, breakfastTime: e.target.value })} className="w-full p-2.5 text-xs border border-stone-200 rounded-xl" />
+
+                {/* Breakfast Card Config */}
+                <div className={`p-4 rounded-2xl border transition ${hotel.showBreakfast ? 'bg-white border-stone-200' : 'bg-stone-100 border-stone-200 opacity-60'}`}>
+                  <div className="flex justify-between items-center mb-2">
+                    <span className="font-bold text-xs text-slate-900 flex items-center gap-2"><Coffee className="w-4 h-4 text-amber-900" /> {t.breakfastTitle}</span>
+                    <button onClick={() => setHotel({ ...hotel, showBreakfast: !hotel.showBreakfast })} className={`px-2.5 py-1 rounded-lg text-[10px] font-bold cursor-pointer flex items-center gap-1 ${hotel.showBreakfast ? 'bg-emerald-100 text-emerald-800' : 'bg-stone-200 text-stone-600'}`}>
+                      {hotel.showBreakfast ? <Eye className="w-3 h-3" /> : <EyeOff className="w-3 h-3" />}
+                      {hotel.showBreakfast ? t.activeCard : t.inactiveCard}
+                    </button>
+                  </div>
+                  {hotel.showBreakfast && (
+                    <input type="text" placeholder={t.lblBreakfastTime} value={hotel.breakfastTime} onChange={(e) => setHotel({ ...hotel, breakfastTime: e.target.value })} className="w-full p-2 text-xs border rounded-xl mt-2" />
+                  )}
                 </div>
-                <div>
-                  <label className="block text-[10px] font-bold text-stone-500 uppercase mb-1">{t.lblCheckInOut}</label>
-                  <input type="text" value={hotel.checkInOut} onChange={(e) => setHotel({ ...hotel, checkInOut: e.target.value })} className="w-full p-2.5 text-xs border border-stone-200 rounded-xl" />
+
+                {/* Check-in / Out Card Config */}
+                <div className={`p-4 rounded-2xl border transition ${hotel.showCheckInOut ? 'bg-white border-stone-200' : 'bg-stone-100 border-stone-200 opacity-60'}`}>
+                  <div className="flex justify-between items-center mb-2">
+                    <span className="font-bold text-xs text-slate-900 flex items-center gap-2"><Clock className="w-4 h-4 text-amber-900" /> {t.checkInOutTitle}</span>
+                    <button onClick={() => setHotel({ ...hotel, showCheckInOut: !hotel.showCheckInOut })} className={`px-2.5 py-1 rounded-lg text-[10px] font-bold cursor-pointer flex items-center gap-1 ${hotel.showCheckInOut ? 'bg-emerald-100 text-emerald-800' : 'bg-stone-200 text-stone-600'}`}>
+                      {hotel.showCheckInOut ? <Eye className="w-3 h-3" /> : <EyeOff className="w-3 h-3" />}
+                      {hotel.showCheckInOut ? t.activeCard : t.inactiveCard}
+                    </button>
+                  </div>
+                  {hotel.showCheckInOut && (
+                    <input type="text" placeholder={t.lblCheckInOut} value={hotel.checkInOut} onChange={(e) => setHotel({ ...hotel, checkInOut: e.target.value })} className="w-full p-2 text-xs border rounded-xl mt-2" />
+                  )}
                 </div>
+
               </div>
             </div>
 
@@ -723,33 +762,41 @@ export default function App() {
                 <div className="text-right"><div className="text-2xl font-black text-slate-900">16°C</div></div>
               </div>
 
-              {/* 4 SABİT HIZLI ERİŞİM KARTI */}
+              {/* DİNAMİK HIZLI ERİŞİM KARTLARI (SADECE OTELCİNİN AÇTIĞI KARTLAR GÖRÜNÜR) */}
               <div className="grid grid-cols-2 gap-3 pt-2">
-                <div className="bg-white p-4 rounded-2xl shadow-sm border border-stone-200 space-y-2">
-                  <div className="flex items-center gap-2 text-amber-900"><Wifi className="w-5 h-5" /><span className="font-bold text-xs text-slate-900">{t.wlanTitle}</span></div>
-                  <div className="text-[11px] text-slate-500 font-mono bg-stone-50 p-2 rounded-lg border">
-                    <div><b>{hotel.wifiSsid}</b></div>
-                    <div className="flex justify-between items-center mt-1">
-                      <span>{hotel.wifiPass}</span>
-                      <button onClick={copyWifiPassword} className="bg-amber-50 text-amber-900 p-1 rounded cursor-pointer">{copiedWifi ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}</button>
+                {hotel.showWifi && (
+                  <div className="bg-white p-4 rounded-2xl shadow-sm border border-stone-200 space-y-2">
+                    <div className="flex items-center gap-2 text-amber-900"><Wifi className="w-5 h-5" /><span className="font-bold text-xs text-slate-900">{t.wlanTitle}</span></div>
+                    <div className="text-[11px] text-slate-500 font-mono bg-stone-50 p-2 rounded-lg border">
+                      <div><b>{hotel.wifiSsid}</b></div>
+                      <div className="flex justify-between items-center mt-1">
+                        <span>{hotel.wifiPass}</span>
+                        <button onClick={copyWifiPassword} className="bg-amber-50 text-amber-900 p-1 rounded cursor-pointer">{copiedWifi ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}</button>
+                      </div>
                     </div>
                   </div>
-                </div>
+                )}
 
-                <div className="bg-white p-4 rounded-2xl shadow-sm border border-stone-200 space-y-2">
-                  <div className="flex items-center gap-2 text-amber-900"><Car className="w-5 h-5" /><span className="font-bold text-xs text-slate-900">{t.parkingTitle}</span></div>
-                  <p className="text-[11px] text-slate-600">{hotel.parkingInfo}</p>
-                </div>
+                {hotel.showParking && (
+                  <div className="bg-white p-4 rounded-2xl shadow-sm border border-stone-200 space-y-2">
+                    <div className="flex items-center gap-2 text-amber-900"><Car className="w-5 h-5" /><span className="font-bold text-xs text-slate-900">{t.parkingTitle}</span></div>
+                    <p className="text-[11px] text-slate-600">{hotel.parkingInfo}</p>
+                  </div>
+                )}
 
-                <div className="bg-white p-4 rounded-2xl shadow-sm border border-stone-200 space-y-2">
-                  <div className="flex items-center gap-2 text-amber-900"><Coffee className="w-5 h-5" /><span className="font-bold text-xs text-slate-900">{t.breakfastTitle}</span></div>
-                  <p className="text-[11px] text-slate-600">{hotel.breakfastTime}</p>
-                </div>
+                {hotel.showBreakfast && (
+                  <div className="bg-white p-4 rounded-2xl shadow-sm border border-stone-200 space-y-2">
+                    <div className="flex items-center gap-2 text-amber-900"><Coffee className="w-5 h-5" /><span className="font-bold text-xs text-slate-900">{t.breakfastTitle}</span></div>
+                    <p className="text-[11px] text-slate-600">{hotel.breakfastTime}</p>
+                  </div>
+                )}
 
-                <div className="bg-white p-4 rounded-2xl shadow-sm border border-stone-200 space-y-2">
-                  <div className="flex items-center gap-2 text-amber-900"><Clock className="w-5 h-5" /><span className="font-bold text-xs text-slate-900">{t.checkInOutTitle}</span></div>
-                  <p className="text-[11px] text-slate-600">{hotel.checkInOut}</p>
-                </div>
+                {hotel.showCheckInOut && (
+                  <div className="bg-white p-4 rounded-2xl shadow-sm border border-stone-200 space-y-2">
+                    <div className="flex items-center gap-2 text-amber-900"><Clock className="w-5 h-5" /><span className="font-bold text-xs text-slate-900">{t.checkInOutTitle}</span></div>
+                    <p className="text-[11px] text-slate-600">{hotel.checkInOut}</p>
+                  </div>
+                )}
               </div>
             </div>
           ) : (
