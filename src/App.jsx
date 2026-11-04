@@ -191,7 +191,6 @@ const translations = {
   }
 };
 
-// EMOJİLER KESİN OLARAK TEMİZLENDİ
 const categoryPresets = [
   { id: 'hotel_info', group: 'Hotel & Unterkunft', title: { de: 'Hotelinformationen', en: 'Hotel Information', tr: 'Otel Bilgileri' }, subtitle: { de: 'Rezeption, Zeiten & Services', en: 'Reception, hours & services', tr: 'Resepsiyon, saatler ve hizmetler' }, content: { de: 'Herzlich willkommen in unserem Haus. Unsere Rezeption ist von 07:00 bis 22:00 Uhr für Sie besetzt.', en: 'Welcome to our property. Our reception is open from 7:00 AM to 10:00 PM.', tr: 'Tesisimize hoş geldiniz. Resepsiyonumuz 07:00 - 22:00 saatleri arasında hizmet vermektedir.' }, icon: 'Building' },
   { id: 'room_info', group: 'Hotel & Unterkunft', title: { de: 'Zimmerinformationen', en: 'Room Information', tr: 'Oda Bilgileri' }, subtitle: { de: 'Ausstattung & Safe', en: 'Amenities & safe', tr: 'Oda özellikleri ve kasa' }, content: { de: 'Alle Zimmer sind mit einem Safe, Föhn und Flachbild-TV ausgestattet.', en: 'All rooms are equipped with a safe, hairdryer, and flat-screen TV.', tr: 'Tüm odalar kasa, saç kurutma makinesi ve düz ekran TV ile donatılmıştır.' }, icon: 'Bed' },
@@ -225,7 +224,6 @@ export default function App() {
   const [scanCount] = useState(142);
   const [daysLeft] = useState(24);
 
-  // LOCALSTORAGE İLE KALICILIK (F5 YAPINCA VERİLER KAYBOLMAZ)
   const [hotel, setHotel] = useState(() => {
     const saved = localStorage.getItem('gm24_hotel');
     return saved ? JSON.parse(saved) : {
@@ -621,7 +619,14 @@ export default function App() {
           <select value={lang} onChange={(e) => setLang(e.target.value)} className="bg-black/40 border border-white/30 text-white text-xs font-semibold rounded-xl px-2.5 py-1.5 cursor-pointer">
             <option value="de">🇩🇪 DE</option>
             <option value="en">🇬🇧 EN</option>
+            <option value="it">🇮🇹 IT</option>
+            <option value="fr">🇫🇷 FR</option>
+            <option value="es">🇪🇸 ES</option>
             <option value="tr">🇹🇷 TR</option>
+            <option value="sv">🇸🇪 SV</option>
+            <option value="no">🇳🇴 NO</option>
+            <option value="hr">🇭🇷 HR</option>
+            <option value="sq">🇦🇱 SQ</option>
           </select>
         </div>
 
@@ -650,7 +655,14 @@ export default function App() {
           <select value={lang} onChange={(e) => setLang(e.target.value)} className="bg-white border border-stone-200 text-slate-700 text-xs font-semibold rounded-xl px-2.5 py-1.5 cursor-pointer shadow-sm">
             <option value="de">🇩🇪 DE</option>
             <option value="en">🇬🇧 EN</option>
+            <option value="it">🇮🇹 IT</option>
+            <option value="fr">🇫🇷 FR</option>
+            <option value="es">🇪🇸 ES</option>
             <option value="tr">🇹🇷 TR</option>
+            <option value="sv">🇸🇪 SV</option>
+            <option value="no">🇳🇴 NO</option>
+            <option value="hr">🇭🇷 HR</option>
+            <option value="sq">🇦🇱 SQ</option>
           </select>
           <button onClick={() => setAppMode('dashboard')} className="text-stone-300 hover:text-stone-600 p-1 text-xs cursor-pointer" title="Admin">🔑</button>
         </div>
@@ -718,7 +730,7 @@ export default function App() {
               </div>
             </div>
           ) : (
-            /* MİSAFİR REHBER SEKMESİ: GRUPLANDIRILMIŞ VE ŞIK AKIŞ (EMOJİSİZ) */
+            /* MİSAFİR REHBER SEKMESİ: GRUPLANDIRILMIŞ VE ŞIK AKIŞ (EMOJİSİZ, 10 DİL) */
             <div className="space-y-6 animate-fade-in">
               <h3 className="text-xs font-bold text-stone-500 uppercase tracking-wider">{t.navGaestemappe}</h3>
               {Object.entries(groupedCategories).map(([groupName, groupItems]) => (
