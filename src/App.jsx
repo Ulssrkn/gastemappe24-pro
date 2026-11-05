@@ -70,6 +70,7 @@ const translations = {
     editTitle: "Name / Titel",
     editCustomVal1: "Individuelle Zeit / Wert 1",
     editCustomVal2: "Individuelle Info / Wert 2",
+    customTextWarning: "⚠️ Dieser eigene Text wird für alle 10 Sprachen unverändert übernommen (keine automatische Übersetzung).",
     activeCard: "Karte anzeigen",
     inactiveCard: "Karte ausblenden"
   },
@@ -129,6 +130,7 @@ const translations = {
     editTitle: "Name / Title",
     editCustomVal1: "Custom Time / Value 1",
     editCustomVal2: "Custom Info / Value 2",
+    customTextWarning: "⚠️ This custom text is kept as-is across all 10 languages (no automatic translation).",
     activeCard: "Show Card",
     inactiveCard: "Hide Card"
   },
@@ -188,6 +190,7 @@ const translations = {
     editTitle: "İsim / Başlık",
     editCustomVal1: "Özel Zaman / Değer 1",
     editCustomVal2: "Özel Bilgi / Değer 2",
+    customTextWarning: "⚠️ Bu özel metin 10 dilde de aynı kalacaktır (çeviri yapılmaz).",
     activeCard: "Kartı Göster",
     inactiveCard: "Kartı Gizle"
   },
@@ -247,6 +250,7 @@ const translations = {
     editTitle: "Nome / Titolo",
     editCustomVal1: "Orario / Valore 1",
     editCustomVal2: "Info / Valore 2",
+    customTextWarning: "⚠️ Questo testo personalizzato rimane invariato in tutte le 10 lingue (nessuna traduzione).",
     activeCard: "Mostra carta",
     inactiveCard: "Nascondi carta"
   },
@@ -306,6 +310,7 @@ const translations = {
     editTitle: "Nom / Titre",
     editCustomVal1: "Heure / Valeur 1",
     editCustomVal2: "Info / Valeur 2",
+    customTextWarning: "⚠️ Ce texte personnalisé reste identique dans les 10 langues (pas de traduction).",
     activeCard: "Afficher",
     inactiveCard: "Masquer"
   },
@@ -365,6 +370,7 @@ const translations = {
     editTitle: "Nombre / Título",
     editCustomVal1: "Hora / Valor 1",
     editCustomVal2: "Info / Valor 2",
+    customTextWarning: "⚠️ Este texto personalizado se mantiene igual en los 10 idiomas (sin traducción).",
     activeCard: "Mostrar tarjeta",
     inactiveCard: "Ocultar tarjeta"
   },
@@ -423,7 +429,8 @@ const translations = {
     addBtn: "Lägg till",
     editTitle: "Namn / Titel",
     editCustomVal1: "Tid / Värde 1",
-    editCustomVal2: "Tid / Värde 2",
+    editCustomVal2: "Info / Värde 2",
+    customTextWarning: "⚠️ Denna anpassade text förblir oförändrad på alla 10 språk (ingen översättning).",
     activeCard: "Visa kort",
     inactiveCard: "Dölj kort"
   },
@@ -483,6 +490,7 @@ const translations = {
     editTitle: "Navn / Tittel",
     editCustomVal1: "Tid / Verdi 1",
     editCustomVal2: "Info / Verdi 2",
+    customTextWarning: "⚠️ Denne egendefinerte teksten forblir uendret på alle 10 språk (ingen oversettelse).",
     activeCard: "Vis kort",
     inactiveCard: "Skjul kort"
   },
@@ -542,6 +550,7 @@ const translations = {
     editTitle: "Naziv / Naslov",
     editCustomVal1: "Vrijeme / Vrijednost 1",
     editCustomVal2: "Info / Vrijednost 2",
+    customTextWarning: "⚠️ Ovaj prilagođeni tekst ostaje neizmijenjen na svih 10 jezika (bez automatskog prevođenja).",
     activeCard: "Prikaži karticu",
     inactiveCard: "Sakrij karticu"
   },
@@ -601,6 +610,7 @@ const translations = {
     editTitle: "Emri / Titulli",
     editCustomVal1: "Koha / Vlera 1",
     editCustomVal2: "Info / Vlera 2",
+    customTextWarning: "⚠️ Ky tekst i personalizuar mbetet i njëjtë në të 10 gjuhët (pa përkthim).",
     activeCard: "Shfaq kartelën",
     inactiveCard: "Fshih kartelën"
   }
@@ -617,6 +627,7 @@ const themeColors = [
   { id: 'orange', name: 'Sunset Orange', bg: 'bg-orange-700', text: 'text-orange-700', bgLight: 'bg-orange-50', border: 'border-orange-700/40', hex: '#c2410c' }
 ];
 
+// Her kategori için 10 dilde tam metin şablonları ({val1}, {val2}, {val3} dinamik alanlar, {customText} 4. özel alan)
 const categoryPresets = [
   { 
     id: 'hotel_info', 
@@ -624,19 +635,21 @@ const categoryPresets = [
     title: { de: 'Hotelinformationen', en: 'Hotel Information', tr: 'Otel Bilgileri', it: 'Informazioni sull\'hotel', fr: 'Informations sur l\'hôtel', es: 'Información del hotel', sv: 'Hotellinformation', no: 'Hotellinformasjon', hr: 'Informacije o hotelu', sq: 'Informacione për hotelin' }, 
     subtitle: { de: 'Rezeption & Zeiten', en: 'Reception & hours', tr: 'Resepsiyon ve saatler', it: 'Ricezione e orari', fr: 'Réception et horaires', es: 'Recepción y horarios', sv: 'Reception & tider', no: 'Resepsjon og tider', hr: 'Recepcija i radno vrijeme', sq: 'Recepsioni dhe oraret' }, 
     contentTpl: { 
-      de: 'Herzlich willkommen in unserem Haus. Unsere Rezeption ist von {val1} für Sie besetzt. Notfallnummer: {val2}', 
-      en: 'Welcome to our property. Our reception is open from {val1}. Emergency: {val2}', 
-      tr: 'Tesisimize hoş geldiniz. Resepsiyonumuz {val1} saatleri arasında hizmet vermektedir. Acil hat: {val2}',
-      it: 'Benvenuti nella nostra struttura. La nostra reception è aperta dalle {val1}. Emergenza: {val2}',
-      fr: 'Bienvenue dans notre établissement. Notre réception est ouverte de {val1}. Urgence : {val2}',
-      es: 'Bienvenidos a nuestro establecimiento. Nuestra recepción está abierta de {val1}. Emergencia: {val2}',
-      sv: 'Välkommen till vår fastighet. Vår reception är öppen från {val1}. Nödnummer: {val2}',
-      no: 'Velkommen til vår eiendom. Vår resepsjon er åpen fra {val1}. Nødnummer: {val2}',
-      hr: 'Dobrodošli u naš objekt. Naša recepcija otvorena je od {val1}. Hitni broj: {val2}',
-      sq: 'Mirë se erdhët në pronën tonë. Recepsioni ynë është i hapur nga {val1}. Urgjencë: {val2}'
+      de: 'Herzlich willkommen in unserem Haus. Unsere Rezeption ist von {val1} für Sie besetzt. Notfallnummer: {val2}. Weitere Hinweise: {val3} \n\n{customText}', 
+      en: 'Welcome to our property. Our reception is open from {val1}. Emergency: {val2}. Additional notes: {val3} \n\n{customText}', 
+      tr: 'Tesisimize hoş geldiniz. Resepsiyonumuz {val1} saatleri arasında hizmet vermektedir. Acil hat: {val2}. Ek notlar: {val3} \n\n{customText}',
+      it: 'Benvenuti nella nostra struttura. La nostra reception è aperta dalle {val1}. Emergenza: {val2}. Note aggiuntive: {val3} \n\n{customText}',
+      fr: 'Bienvenue dans notre établissement. Notre réception est ouverte de {val1}. Urgence : {val2}. Notes additionnelles : {val3} \n\n{customText}',
+      es: 'Bienvenidos a nuestro establecimiento. Nuestra recepción está abierta de {val1}. Emergencia: {val2}. Notas adicionales: {val3} \n\n{customText}',
+      sv: 'Välkommen till vår fastighet. Vår reception är öppen från {val1}. Nödnummer: {val2}. Ytterligare anteckningar: {val3} \n\n{customText}',
+      no: 'Velkommen til vår eiendom. Vår resepsjon er åpen fra {val1}. Nødnummer: {val2}. Ytterligere merknader: {val3} \n\n{customText}',
+      hr: 'Dobrodošli u naš objekt. Naša recepcija otvorena je od {val1}. Hitni broj: {val2}. Dodatne napomene: {val3} \n\n{customText}',
+      sq: 'Mirë se erdhët në pronën tonë. Recepsioni ynë është i hapur nga {val1}. Urgjencë: {val2}. Shënime shtesë: {val3} \n\n{customText}'
     }, 
     defaultVal1: '07:00 - 22:00 Uhr', 
     defaultVal2: '+49 123 456', 
+    defaultVal3: 'Bitte beachten Sie die Hausordnung.',
+    defaultCustomText: '',
     icon: 'Building' 
   },
   { 
@@ -645,41 +658,22 @@ const categoryPresets = [
     title: { de: 'Zimmerinformationen', en: 'Room Information', tr: 'Oda Bilgileri', it: 'Informazioni sulle camere', fr: 'Informations sur les chambres', es: 'Información de la habitación', sv: 'Rumsinformation', no: 'Romsinformasjon', hr: 'Informacije o sobama', sq: 'Informacione për dhomat' }, 
     subtitle: { de: 'Ausstattung & Safe', en: 'Amenities & safe', tr: 'Oda özellikleri ve kasa', it: 'Servizi e cassaforte', fr: 'Équipements et coffre', es: 'Servicios y caja fuerte', sv: 'Bekvämligheter & kassaskåp', no: 'Fasiliteter og safe', hr: 'Sadržaji i sef', sq: 'Pajisjet dhe kasaforta' }, 
     contentTpl: { 
-      de: 'Alle Zimmer sind mit Safe und Föhn ausgestattet. Hinweis: {val1}', 
-      en: 'All rooms are equipped with safe and hairdryer. Note: {val1}', 
-      tr: 'Tüm odalarda kasa ve saç kurutma makinesi mevcuttur. Not: {val1}',
-      it: 'Tutte le camere sono dotate di cassaforte e asciugacapelli. Nota: {val1}',
-      fr: 'Toutes les chambres sont équipées d\'un coffre-fort et d\'un sèche-cheveux. Remarque : {val1}',
-      es: 'Todas las habitaciones están equipadas con caja fuerte y secador de pelo. Nota: {val1}',
-      sv: 'Alla rum är utrustade med kassaskåp och hårtork. Observera: {val1}',
-      no: 'Alle rom er utstyrt med safe og hårføner. Merk: {val1}',
-      hr: 'Sve sobe opremljene su sefom i sušilicem za kosu. Napomena: {val1}',
-      sq: 'Të gjitha dhomat janë të pajisura me kasafortë dhe tharëse flokësh. Shënim: {val1}'
+      de: 'Alle Zimmer sind mit Safe und Föhn ausgestattet. Typ: {val1}. WLAN-Info: {val2}. Hinweis: {val3} \n\n{customText}', 
+      en: 'All rooms are equipped with safe and hairdryer. Type: {val1}. WiFi info: {val2}. Note: {val3} \n\n{customText}', 
+      tr: 'Tüm odalarda kasa ve saç kurutma makinesi mevcuttur. Tip: {val1}. WiFi Bilgisi: {val2}. Not: {val3} \n\n{customText}',
+      it: 'Tutte le camere sono dotate di cassaforte e asciugacapelli. Tipo: {val1}. Info WiFi: {val2}. Nota: {val3} \n\n{customText}',
+      fr: 'Toutes les chambres sont équipées d\'un coffre-fort et d\'un sèche-cheveux. Type : {val1}. Info WiFi : {val2}. Remarque : {val3} \n\n{customText}',
+      es: 'Todas las habitaciones están equipadas con caja fuerte y secador de pelo. Tipo: {val1}. Info WiFi: {val2}. Nota: {val3} \n\n{customText}',
+      sv: 'Alla rum är utrustade med kassaskåp och hårtork. Typ: {val1}. WiFi-info: {val2}. Observera: {val3} \n\n{customText}',
+      no: 'Alle rom er utstyrt med safe og hårføner. Type: {val1}. WiFi-info: {val2}. Merk: {val3} \n\n{customText}',
+      hr: 'Sve sobe opremljene su sefom i sušilicem za kosu. Tip: {val1}. WiFi info: {val2}. Napomena: {val3} \n\n{customText}',
+      sq: 'Të gjitha dhomat janë të pajisura me kasafortë dhe tharëse flokësh. Lloji: {val1}. Info WiFi: {val2}. Shënim: {val3} \n\n{customText}'
     }, 
     defaultVal1: 'Nichtraucherzimmer', 
-    defaultVal2: '', 
+    defaultVal2: 'Verfügbar', 
+    defaultVal3: 'Klimaanlage inklusive',
+    defaultCustomText: '',
     icon: 'Bed' 
-  },
-  { 
-    id: 'keys_access', 
-    group: 'Hotel & Unterkunft', 
-    title: { de: 'Zimmerschlüssel & Zugang', en: 'Keys & Access', tr: 'Anahtar ve Erişim', it: 'Chiavi e accesso', fr: 'Clés et accès', es: 'Llaves y acceso', sv: 'Nycklar & åtkomst', no: 'Nøkler og tilgang', hr: 'Ključevi i pristup', sq: 'Çelësat dhe qasja' }, 
-    subtitle: { de: 'Karte & Schließzeiten', en: 'Keycard & locking times', tr: 'Anahtar kartı ve kapı saatleri', it: 'Scheda chiave e orari', fr: 'Carte clé et horaires', es: 'Tarjeta llave y horarios', sv: 'Nyckelkort & tider', no: 'Nøkkelkort og tider', hr: 'Ključ kartica i vremena', sq: 'Kardçelës dhe oraret' }, 
-    contentTpl: { 
-      de: 'Bitte nehmen Sie Ihre Schlüsselkarte beim Verlassen des Hauses mit. Info: {val1}', 
-      en: 'Please take your keycard with you when leaving. Info: {val1}', 
-      tr: 'Lütfen çıkarken anahtar kartınızı yanınıza alın. Bilgi: {val1}',
-      it: 'Si prega di prendere la chiave magnetica quando si esce. Info: {val1}',
-      fr: 'Veuillez emporter votre carte clé en sortant. Info : {val1}',
-      es: 'Por favor, lleve su tarjeta llave al salir. Info: {val1}',
-      sv: 'Ta med ditt nyckelkort när du går. Info: {val1}',
-      no: 'Ta med nøkkelkortet når du går. Info: {val1}',
-      hr: 'Molimo ponesite ključ karticu pri izlasku. Info: {val1}',
-      sq: 'Ju lutemi merrni me vete kartën e dhomës kur dilni. Info: {val1}'
-    }, 
-    defaultVal1: '24h Empfang besetzt', 
-    defaultVal2: '', 
-    icon: 'Key' 
   },
   { 
     id: 'restaurant_dining', 
@@ -687,41 +681,22 @@ const categoryPresets = [
     title: { de: 'Restaurant & Bar', en: 'Restaurant & Bar', tr: 'Restoran ve Bar', it: 'Ristorante e Bar', fr: 'Restaurant et Bar', es: 'Restaurante y Bar', sv: 'Restaurang & Bar', no: 'Restaurant og Bar', hr: 'Restoran i Bar', sq: 'Restorant dhe Bar' }, 
     subtitle: { de: 'Öffnungszeiten & Menü', en: 'Hours & menu', tr: 'Çalışma saatleri ve menü', it: 'Orari e menu', fr: 'Horaires et menu', es: 'Horarios y menú', sv: 'Öppettider & meny', no: 'Åpningstider og meny', hr: 'Radno vrijeme i jelovnik', sq: 'Oraret dhe menyja' }, 
     contentTpl: { 
-      de: 'Unser Bereich ist täglich von {val1} für Sie geöffnet. Details: {val2}', 
-      en: 'Our venue is open daily from {val1}. Details: {val2}', 
-      tr: 'Mekanımız her gün {val1} saatleri arasında açıktır. Detay: {val2}',
-      it: 'Il nostro locale è aperto tutti i giorni dalle {val1}. Dettagli: {val2}',
-      fr: 'Notre établissement est ouvert tous les jours de {val1}. Détails : {val2}',
-      es: 'Nuestro local está abierto todos los días de {val1}. Detalles: {val2}',
-      sv: 'Vår lokal är öppen dagligen från {val1}. Detaljer: {val2}',
-      no: 'Vårt sted er åpent daglig fra {val1}. Detaljer: {val2}',
-      hr: 'Naš objekt otvoren je svakodnevno od {val1}. Detalji: {val2}',
-      sq: 'Vendi ynë është i hapur çdo ditë nga {val1}. Detaje: {val2}'
+      de: 'Unser Bereich ist täglich von {val1} geöffnet. Küche bis: {val2}. Tischreservierung: {val3} \n\n{customText}', 
+      en: 'Our venue is open daily from {val1}. Kitchen until: {val2}. Reservation: {val3} \n\n{customText}', 
+      tr: 'Mekanımız her gün {val1} arası açıktır. Mutfak kapanış: {val2}. Rezervasyon: {val3} \n\n{customText}',
+      it: 'Il nostro locale è aperto tutti i giorni dalle {val1}. Cucina fino alle: {val2}. Prenotazione: {val3} \n\n{customText}',
+      fr: 'Notre établissement est ouvert tous les jours de {val1}. Cuisine jusqu\'à : {val2}. Réservation : {val3} \n\n{customText}',
+      es: 'Nuestro local está abierto todos los días de {val1}. Cocina hasta: {val2}. Reserva: {val3} \n\n{customText}',
+      sv: 'Vår lokal är öppen dagligen från {val1}. Kök till: {val2}. Bokning: {val3} \n\n{customText}',
+      no: 'Vårt sted er åpent daglig fra {val1}. Kjøkken til: {val2}. Bestilling: {val3} \n\n{customText}',
+      hr: 'Naš objekt otvoren je svakodnevno od {val1}. Kuhinja do: {val2}. Rezervacija: {val3} \n\n{customText}',
+      sq: 'Vendi ynë është i hapur çdo ditë nga {val1}. Kuzhina deri në: {val2}. Rezervimi: {val3} \n\n{customText}'
     }, 
     defaultVal1: '18:00 - 21:30 Uhr', 
-    defaultVal2: 'Reservierung an der Rezeption', 
+    defaultVal2: '21:00 Uhr', 
+    defaultVal3: 'An der Rezeption',
+    defaultCustomText: '',
     icon: 'Utensils' 
-  },
-  { 
-    id: 'cafe_snacks', 
-    group: 'Essen & Trinken', 
-    title: { de: 'Café & Lounge', en: 'Café & Lounge', tr: 'Kafe ve Dinlenme Alanı', it: 'Caffè e Lounge', fr: 'Café et Salon', es: 'Café y Salón', sv: 'Café & Lounge', no: 'Café og Lounge', hr: 'Kafić i Salon', sq: 'Kafe dhe Lounge' }, 
-    subtitle: { de: 'Kaffee, Kuchen & Snacks', en: 'Coffee, cake & snacks', tr: 'Kahve, kek ve atıştırmalıklar', it: 'Caffè, dolci e snack', fr: 'Café, gâteaux et en-cas', es: 'Café, pasteles y aperitivos', sv: 'Kaffe, tårta & snacks', no: 'Kaffe, kake og snacks', hr: 'Kava, kolači i grickalice', sq: 'Kafe, ëmbëlsira dhe snack' }, 
-    contentTpl: { 
-      de: 'Genießen Sie am Nachmittag hausgemachten Kuchen von {val1}. Info: {val2}', 
-      en: 'Enjoy homemade cake in the afternoon from {val1}. Info: {val2}', 
-      tr: 'Öğleden sonra {val1} saatleri arasında ev yapımı keklerin tadını çıkarın. Bilgi: {val2}',
-      it: 'Goditi una torta fatta in casa nel pomeriggio dalle {val1}. Info: {val2}',
-      fr: 'Profitez de gâteaux faits maison l\'après-midi de {val1}. Info : {val2}',
-      es: 'Disfrute de pasteles caseros por la tarde de {val1}. Info: {val2}',
-      sv: 'Njut av hembakad tårta på eftermiddagen från {val1}. Info: {val2}',
-      no: 'Nyt hjemmelaget kake på ettermiddagen fra {val1}. Info: {val2}',
-      hr: 'Uživajte u domaćim kolačima popodne od {val1}. Info: {val2}',
-      sq: 'Shijoni ëmbëlsira shtëpie pasdite nga {val1}. Info: {val2}'
-    }, 
-    defaultVal1: '14:00 - 18:00 Uhr', 
-    defaultVal2: 'Terrassenbereich', 
-    icon: 'Coffee' 
   },
   { 
     id: 'pool_aqua', 
@@ -729,83 +704,22 @@ const categoryPresets = [
     title: { de: 'Pool & Wellnessbereich', en: 'Pool & Wellness Area', tr: 'Havuz ve Wellness Alanı', it: 'Piscina e Benessere', fr: 'Piscine et Espace Bien-être', es: 'Piscina y Bienestar', sv: 'Pool & Wellness', no: 'Basseng og Velvære', hr: 'Bazen i Wellness', sq: 'Pishina dhe Wellness' }, 
     subtitle: { de: 'Öffnungszeiten & Handtücher', en: 'Hours & towels', tr: 'Çalışma saatleri ve havlular', it: 'Orari e asciugamani', fr: 'Horaires et serviettes', es: 'Horarios y toallas', sv: 'Öppettider & handdukar', no: 'Åpningstider og håndklær', hr: 'Radno vrijeme i ručnici', sq: 'Oraret dhe peshqirët' }, 
     contentTpl: { 
-      de: 'Unser Poolbereich ist von {val1} geöffnet. Hinweis: {val2}', 
-      en: 'Our pool area is open from {val1}. Note: {val2}', 
-      tr: 'Havuz alanımız {val1} arası açıktır. Not: {val2}',
-      it: 'La nostra area piscina è aperta dalle {val1}. Nota: {val2}',
-      fr: 'Notre espace piscine est ouvert de {val1}. Remarque : {val2}',
-      es: 'Nuestra zona de piscina está abierta de {val1}. Nota: {val2}',
-      sv: 'Vårt poolområde är öppet från {val1}. Observera: {val2}',
-      no: 'Vårt bassengområde er åpent fra {val1}. Merk: {val2}',
-      hr: 'Naš bazenski prostor otvoren je od {val1}. Napomena: {val2}',
-      sq: 'Zona jonë e pishinës është e hapur nga {val1}. Shënim: {val2}'
+      de: 'Unser Poolbereich ist von {val1} geöffnet. Handtücher: {val2}. Bademantel: {val3} \n\n{customText}', 
+      en: 'Our pool area is open from {val1}. Towels: {val2}. Bathrobe: {val3} \n\n{customText}', 
+      tr: 'Havuz alanımız {val1} arası açıktır. Havlular: {val2}. Bornoz: {val3} \n\n{customText}',
+      it: 'La nostra area piscina è aperta dalle {val1}. Asciugamani: {val2}. Accappatoio: {val3} \n\n{customText}',
+      fr: 'Notre espace piscine est ouvert de {val1}. Serviettes : {val2}. Peignoir : {val3} \n\n{customText}',
+      es: 'Nuestra zona de piscina está abierta de {val1}. Toallas: {val2}. Albornoz: {val3} \n\n{customText}',
+      sv: 'Vårt poolområde är öppet från {val1}. Handdukar: {val2}. Badrock: {val3} \n\n{customText}',
+      no: 'Vårt bassengområde er åpent fra {val1}. Håndklær: {val2}. Badekåpe: {val3} \n\n{customText}',
+      hr: 'Naš bazenski prostor otvoren je od {val1}. Ručnici: {val2}. Ogrtač: {val3} \n\n{customText}',
+      sq: 'Zona jonë e pishinës është e hapur nga {val1}. Peshqirët: {val2}. Robesardhi: {val3} \n\n{customText}'
     }, 
     defaultVal1: '07:00 - 20:00 Uhr', 
-    defaultVal2: 'Handtücher am Empfang erhältlich', 
+    defaultVal2: 'Am Empfang erhältlich', 
+    defaultVal3: 'Auf dem Zimmer',
+    defaultCustomText: '',
     icon: 'Waves' 
-  },
-  { 
-    id: 'sauna_spa', 
-    group: 'Wellness & Spa', 
-    title: { de: 'Sauna & Massagen', en: 'Sauna & Massages', tr: 'Sauna ve Masajlar', it: 'Sauna e Massaggi', fr: 'Sauna et Massages', es: 'Sauna y Masajes', sv: 'Sauna & Massage', no: 'Sauna og Massasje', hr: 'Finska sauna i masaže', sq: 'Sauna dhe Masazhet' }, 
-    subtitle: { de: 'Finnische Sauna & Termine', en: 'Finnish sauna & appointments', tr: 'Fin saunası ve randevu', it: 'Sauna finlandese e appuntamenti', fr: 'Sauna finlandais et rendez-vous', es: 'Sauna finlandesa y citas', sv: 'Finsk bastu & tider', no: 'Finsk badstue og avtaler', hr: 'Finska sauna i termini', sq: 'Sauna finlandeze dhe takimet' }, 
-    contentTpl: { 
-      de: 'Entspannen Sie in unserer finnischen Sauna von {val1}. Termin: {val2}', 
-      en: 'Relax in our Finnish sauna from {val1}. Appointment: {val2}', 
-      tr: 'Fin saunamızda {val1} saatleri arasında rahatlayın. Randevu: {val2}',
-      it: 'Rilassati nella nostra sauna finlandese dalle {val1}. Appuntamento: {val2}',
-      fr: 'Détendez-vous dans notre sauna finlandais de {val1}. Rendez-vous : {val2}',
-      es: 'Relájese en nuestra sauna finlandesa de {val1}. Cita: {val2}',
-      sv: 'Koppla av i vår finska bastu från {val1}. Bokning: {val2}',
-      no: 'Slapp av i vår finske badstue fra {val1}. Bestilling: {val2}',
-      hr: 'Opustite se u našoj finskoj sauni od {val1}. Termin: {val2}',
-      sq: 'Relaksohuni në saunën tonë finlandeze nga {val1}. Takimi: {val2}'
-    }, 
-    defaultVal1: '16:00 - 21:00 Uhr', 
-    defaultVal2: 'Anmeldung an der Rezeption', 
-    icon: 'Sparkles' 
-  },
-  { 
-    id: 'bike_rental', 
-    group: 'Freizeit & Aktivitäten', 
-    title: { de: 'Fahrradverleih', en: 'Bike Rental', tr: 'Bisiklet Kiralama', it: 'Noleggio biciclette', fr: 'Location de vélos', es: 'Alquiler de bicicletas', sv: 'Cykeluthyrning', no: 'Sykkelutleie', hr: 'Najam bicikala', sq: 'Qira biçikletash' }, 
-    subtitle: { de: 'E-Bikes & Tourenkarten', en: 'E-bikes & trail maps', tr: 'Elektrikli bisiklet ve haritalar', it: 'E-bike e mappe', fr: 'E-bikes et cartes', es: 'Bicicletas eléctricas y mapas', sv: 'E-cyklar & kartor', no: 'Elsykler og kart', hr: 'E-bicikli i karte', sq: 'E-biçikleta dhe harta' }, 
-    contentTpl: { 
-      de: 'Hochwertige E-Bikes können tageweise ausgeliehen werden. Preis/Info: {val1}. Kontakt: {val2}', 
-      en: 'High-quality e-bikes can be rented daily. Price/Info: {val1}. Contact: {val2}', 
-      tr: 'Kaliteli e-bisikletler günlük kiralanabilir. Fiyat/Bilgi: {val1}. İletişim: {val2}',
-      it: 'E-bike di alta qualità possono essere noleggiate giornalmente. Prezzo/Info: {val1}. Contatto: {val2}',
-      fr: 'Des vélos électriques de haute qualité peuvent être loués à la journée. Prix/Info : {val1}. Contact : {val2}',
-      es: 'Se pueden alquilar bicicletas eléctricas de alta calidad por días. Precio/Info: {val1}. Contacto: {val2}',
-      sv: 'Högkvalitativa elcyklar kan hyras dagligen. Pris/Info: {val1}. Kontakt: {val2}',
-      no: 'Elsykler av høy kvalitet kan leies daglig. Pris/Info: {val1}. Kontakt: {val2}',
-      hr: 'Kvalitetni e-bicikli mogu se iznajmiti na dane. Cijena/Info: {val1}. Kontakt: {val2}',
-      sq: 'E-biçikleta me cilësi të lartë mund të merren me qira ditore. Çmimi/Info: {val1}. Kontaktoni: {val2}'
-    }, 
-    defaultVal1: '25€ pro Tag', 
-    defaultVal2: 'Rezeption', 
-    icon: 'Compass' 
-  },
-  { 
-    id: 'sightseeing', 
-    group: 'Umgebung & Ausflüge', 
-    title: { de: 'Sehenswürdigkeiten', en: 'Sights & Attractions', tr: 'Görülecek Yerler', it: 'Attrazioni turistiche', fr: 'Sites touristiques', es: 'Lugares de interés', sv: 'Sevärdheter', no: 'Severdigheter', hr: 'Znamenitosti', sq: 'Vende interesi' }, 
-    subtitle: { de: 'Tipps & Highlights', en: 'Tips & highlights', tr: 'İpuçları ve önemli noktalar', it: 'Consigli e punti salienti', fr: 'Conseils et points forts', es: 'Consejos y destacados', sv: 'Tips & höjdpunkter', no: 'Tips og høydepunkter', hr: 'Savjeti i istaknuto', sq: 'Këshilla dhe pika kryesore' }, 
-    contentTpl: { 
-      de: 'Entdecken Sie die schönsten Orte der Region. Empfehlung: {val1}. Weitere Infos: {val2}', 
-      en: 'Discover the best places in the region. Recommendation: {val1}. More info: {val2}', 
-      tr: 'Bölgenin en güzel yerlerini keşfedin. Öneri: {val1}. Daha fazla bilgi: {val2}',
-      it: 'Scopri i posti più bellli della regione. Consigli: {val1}. Altre info: {val2}',
-      fr: 'Découvrez les plus beaux endroits de la région. Recommandation : {val1}. Plus d\'infos : {val2}',
-      es: 'Descubra los mejores lugares de la región. Recomendación: {val1}. Más info: {val2}',
-      sv: 'Upptäck regionens vackraste platser. Rekommendation: {val1}. Mer info: {val2}',
-      no: 'Oppdag regionens vakreste steder. Anbefaling: {val1}. Mer info: {val2}',
-      hr: 'Otkrijte najljepša mjesta u regiji. Preporuka: {val1}. Više informacija: {val2}',
-      sq: 'Zbuloni vendet më të bukura të rajonit. Rekomandim: {val1}. Më shumë info: {val2}'
-    }, 
-    defaultVal1: 'Historische Altstadt', 
-    defaultVal2: 'Karten an der Rezeption', 
-    icon: 'MapPin' 
   },
   { 
     id: 'parking_mobility', 
@@ -813,65 +727,25 @@ const categoryPresets = [
     title: { de: 'Parkmöglichkeiten', en: 'Parking Facilities', tr: 'Otopark İmkanları', it: 'Parcheggio', fr: 'Parking', es: 'Aparcamiento', sv: 'Parkering', no: 'Parkering', hr: 'Parkiralište', sq: 'Parkimi' }, 
     subtitle: { de: 'Tiefgarage & E-Ladestation', en: 'Underground garage & EV charger', tr: 'Kapalı otopark ve elektrikli şarj', it: 'Garage sotterraneo e ricarica', fr: 'Garage souterrain et recharge', es: 'Garaje subterráneo y cargador', sv: 'Garage & elbilsladdning', no: 'Garasje og elbil-lader', hr: 'Garaža i punjač', sq: 'Garazh dhe karikues' }, 
     contentTpl: { 
-      de: 'Ihnen stehen Parkmöglichkeiten zur Verfügung. Details: {val1}. Hinweis: {val2}', 
-      en: 'Parking facilities are available. Details: {val1}. Note: {val2}', 
-      tr: 'Otopark imkanları mevcuttur. Detay: {val1}. Not: {val2}',
-      it: 'Sono disponibili posti auto. Dettagli: {val1}. Nota: {val2}',
-      fr: 'Des facilités de stationnement sont disponibles. Détails : {val1}. Remarque : {val2}',
-      es: 'Hay instalaciones de aparcamiento disponibles. Detalles: {val1}. Nota: {val2}',
-      sv: 'Parkeringsmöjligheter finns tillgängliga. Detaljer: {val1}. Observera: {val2}',
-      no: 'Parkeringsmuligheter er tilgjengelige. Detaljer: {val1}. Merk: {val2}',
-      hr: 'Dostupna su parkirna mjesta. Detalji: {val1}. Napomena: {val2}',
-      sq: 'Janë të disponueshme mundësi parkimi. Detajet: {val1}. Shënim: {val2}'
+      de: 'Ihnen stehen Parkmöglichkeiten zur Verfügung. Gebühr: {val1}. E-Ladestation: {val2}. Schranken-Code: {val3} \n\n{customText}', 
+      en: 'Parking facilities are available. Fee: {val1}. EV Charger: {val2}. Gate Code: {val3} \n\n{customText}', 
+      tr: 'Otopark imkanları mevcuttur. Ücret: {val1}. Elektrikli Şarj: {val2}. Bariyer Kodu: {val3} \n\n{customText}',
+      it: 'Sono disponibili posti auto. Tariffa: {val1}. Colonnina EV: {val2}. Codice sbarra: {val3} \n\n{customText}',
+      fr: 'Des facilités de stationnement sont disponibles. Tarif : {val1}. Borne EV : {val2}. Code barrière : {val3} \n\n{customText}',
+      es: 'Hay instalaciones de aparcamiento. Tarifa: {val1}. Cargador EV: {val2}. Código barrera: {val3} \n\n{customText}',
+      sv: 'Parkeringsmöjligheter finns. Avgift: {val1}. Elbilsladdning: {val2}. Bomkod: {val3} \n\n{customText}',
+      no: 'Parkeringsmuligheter tilgjengelig. Gebyr: {val1}. Elbil-lader: {val2}. Bomkode: {val3} \n\n{customText}',
+      hr: 'Dostupna su parkirna mjesta. Naknada: {val1}. EV punjač: {val2}. Šifra rampe: {val3} \n\n{customText}',
+      sq: 'Mundësi parkimi të disponueshme. Tarifa: {val1}. Karikues EV: {val2}. Kodi i barrierës: {val3} \n\n{customText}'
     }, 
-    defaultVal1: 'Kostenfrei am Haus', 
-    defaultVal2: 'E-Ladestation vorhanden', 
+    defaultVal1: 'Kostenfrei', 
+    defaultVal2: 'Vorhanden', 
+    defaultVal3: '1234',
+    defaultCustomText: '',
     icon: 'Car' 
-  },
-  { 
-    id: 'reception_service', 
-    group: 'Service & Informationen', 
-    title: { de: 'Rezeption & Service', en: 'Reception & Service', tr: 'Resepsiyon ve Servis', it: 'Ricezione e Servizio', fr: 'Réception et Service', es: 'Recepción y Servicio', sv: 'Reception & Service', no: 'Resepsjon og Service', hr: 'Recepcija i Usluge', sq: 'Recepsioni dhe Shërbimi' }, 
-    subtitle: { de: 'Weckruf & Gepäck', en: 'Wake-up call & luggage', tr: 'Uyandırma servisi ve bagaj', it: 'Sveglia e bagagli', fr: 'Réveil et bagages', es: 'Servicio despertador y equipaje', sv: 'Väckning & bagage', no: 'Vekking og bagasje', hr: 'Usluga buđenja i prtljaga', sq: 'Zgjimi dhe bagazhet' }, 
-    contentTpl: { 
-      de: 'Sie erreichen unseren Service unter der Nummer {val1}. Info: {val2}', 
-      en: 'You can reach our service at number {val1}. Info: {val2}', 
-      tr: 'Servisimize {val1} numarasından ulaşabilirsiniz. Bilgi: {val2}',
-      it: 'Potete contattare il nostro servizio al numero {val1}. Info: {val2}',
-      fr: 'Vous pouvez joindre notre service au numéro {val1}. Info : {val2}',
-      es: 'Puede ponerse en contacto con nuestro servicio en el número {val1}. Info: {val2}',
-      sv: 'Du kan nå vår service på nummer {val1}. Info: {val2}',
-      no: 'Du kan nå vår tjeneste på nummer {val1}. Info: {val2}',
-      hr: 'Našu uslugu možete kontaktirati na broj {val1}. Info: {val2}',
-      sq: 'Mund të kontaktoni shërbimin tonë në numrin {val1}. Info: {val2}'
-    }, 
-    defaultVal1: 'Kurzwahl 9', 
-    defaultVal2: 'Gepäckaufbewahrung verfügbar', 
-    icon: 'Phone' 
-  },
-  { 
-    id: 'house_rules', 
-    group: 'Regeln & Wissenswertes', 
-    title: { de: 'Hausordnung & Ruhezeiten', en: 'House Rules & Quiet Hours', tr: 'Ev Kuralları ve Sessizlik', it: 'Regolamento e Orari di silenzio', fr: 'Règlement et Heures de calme', es: 'Normas y Horas de silencio', sv: 'Ordningsregler & Tystnad', no: 'Husordensregler og Ro', hr: 'Kućni red i tišina', sq: 'Rregullat dhe Qetësia' }, 
-    contentTpl: { 
-      de: 'Wir bitten Sie die Ruhezeiten einzuhalten. Details: {val1}. Hinweis: {val2}', 
-      en: 'We ask you to observe quiet hours. Details: {val1}. Note: {val2}', 
-      tr: 'Lütfen sessizlik kurallarına uyunuz. Detay: {val1}. Not: {val2}',
-      it: 'Vi chiediamo di rispettare gli orari di silenzio. Dettagli: {val1}. Nota: {val2}',
-      fr: 'Nous vous demandons de respecter les heures de calme. Détails : {val1}. Remarque : {val2}',
-      es: 'Les rogamos respeten las horas de silencio. Detalles: {val1}. Nota: {val2}',
-      sv: 'Vi ber dig att iaktta tystnadstider. Detaljer: {val1}. Observera: {val2}',
-      no: 'Vi ber deg om å overholde tidene for ro. Detaljer: {val1}. Merk: {val2}',
-      hr: 'Molimo Vas da poštujete vrijeme mira. Detalji: {val1}. Napomena: {val2}',
-      sq: 'Ju kërkojmë të respektoni orët e qetësisë. Detajet: {val1}. Shënim: {val2}'
-    }, 
-    defaultVal1: 'Nachtruhe ab 22:00 Uhr', 
-    defaultVal2: 'Rauchverbot im gesamten Gebäude', 
-    icon: 'ShieldCheck' 
   }
 ];
 
-// Kesin Çökme Korumalı İkon Render Mekanizması
 const renderSafeIcon = (iconName, currentTheme) => {
   const themeClass = currentTheme ? currentTheme.text : 'text-slate-800';
   const className = `w-5 h-5 ${themeClass}`;
@@ -944,8 +818,8 @@ export default function App() {
   const [categories, setCategories] = useState(() => {
     const saved = localStorage.getItem('gm24_categories');
     return saved ? JSON.parse(saved) : [
-      { id: '1', presetId: 'hotel_info', icon: 'Building', customTitle: '', val1: '07:00 - 22:00 Uhr', val2: '+49 123 456' },
-      { id: '2', presetId: 'restaurant_dining', icon: 'Utensils', customTitle: '', val1: '18:00 - 21:30 Uhr', val2: 'Reservierung an der Rezeption' }
+      { id: '1', presetId: 'hotel_info', icon: 'Building', customTitle: '', val1: '07:00 - 22:00 Uhr', val2: '+49 123 456', val3: 'Hausordnung beachten', customText: '' },
+      { id: '2', presetId: 'restaurant_dining', icon: 'Utensils', customTitle: '', val1: '18:00 - 21:30 Uhr', val2: '21:00 Uhr', val3: 'Rezeption', customText: '' }
     ];
   });
 
@@ -1020,7 +894,6 @@ export default function App() {
     printWindow.document.close();
   };
 
-  // Güvenli Kategori Ekleme
   const handleAddPresetCategory = (presetObj) => {
     if (!presetObj) return;
     const newCategory = { 
@@ -1029,7 +902,9 @@ export default function App() {
       icon: presetObj.icon || 'Info',
       customTitle: '',
       val1: presetObj.defaultVal1 || '',
-      val2: presetObj.defaultVal2 || ''
+      val2: presetObj.defaultVal2 || '',
+      val3: presetObj.defaultVal3 || '',
+      customText: presetObj.defaultCustomText || ''
     };
     setCategories(prev => [...prev, newCategory]);
     setIsCatalogModalOpen(false);
@@ -1059,7 +934,6 @@ export default function App() {
     }
   };
 
-  // Tam Çökmeyi Engelleyen Gruplama Mantığı
   const groupedCategories = (categories || []).reduce((acc, cat) => {
     if (!cat) return acc;
     const presetData = categoryPresets.find(p => p.id === cat.presetId);
@@ -1073,7 +947,6 @@ export default function App() {
   if (appMode === 'dashboard') {
     return (
       <div className="min-h-screen bg-[#FBF9F5] font-sans text-slate-800 p-6 md:p-10 space-y-8 relative pb-28">
-        {/* Katalog Modal - Tam Korumalı ve Sıfır Çökme garantili */}
         {isCatalogModalOpen && (
           <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[9999] flex items-center justify-center p-4">
             <div className="bg-white w-full max-w-2xl max-h-[85vh] overflow-y-auto p-6 rounded-3xl shadow-2xl space-y-6">
@@ -1361,7 +1234,7 @@ export default function App() {
                               <button onClick={() => handleDeleteCategory(cat.id)} className="bg-rose-50 text-rose-600 p-1.5 rounded-lg cursor-pointer hover:bg-rose-100"><Trash2 className="w-3.5 h-3.5" /></button>
                             </div>
 
-                            <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                               <div>
                                 <label className="block text-[9px] font-bold text-stone-500 uppercase mb-0.5">{t.editTitle}</label>
                                 <input 
@@ -1390,7 +1263,30 @@ export default function App() {
                                   className="w-full p-2 text-xs border rounded-xl bg-white" 
                                 />
                               </div>
+                              <div>
+                                <label className="block text-[9px] font-bold text-stone-500 uppercase mb-0.5">Dezember / Wert 3</label>
+                                <input 
+                                  type="text" 
+                                  value={cat.val3 || ''} 
+                                  onChange={(e) => handleUpdateCategoryField(cat.id, 'val3', e.target.value)} 
+                                  className="w-full p-2 text-xs border rounded-xl bg-white" 
+                                />
+                              </div>
                             </div>
+
+                            {/* 4. Alan: Custom Text (Çeviri yapılmaz uyarısıyla) */}
+                            <div className="pt-2 border-t border-stone-200/60 space-y-1">
+                              <label className="block text-[9px] font-extrabold text-amber-700 uppercase">Eigener Text (Keine Übersetzung / Custom Text)</label>
+                              <textarea 
+                                rows="2"
+                                value={cat.customText || ''} 
+                                onChange={(e) => handleUpdateCategoryField(cat.id, 'customText', e.target.value)} 
+                                placeholder="Individueller Hinweistext..."
+                                className="w-full p-2.5 text-xs border border-amber-300 rounded-xl bg-amber-50/50" 
+                              />
+                              <p className="text-[10px] text-amber-800 font-semibold">{t.customTextWarning}</p>
+                            </div>
+
                           </div>
                         );
                       })}
@@ -1510,7 +1406,7 @@ export default function App() {
             <button onClick={() => setSelectedCategory(null)} className={`text-xs font-bold ${currentTheme.text} cursor-pointer flex items-center gap-1`}>&larr; {t.detailBack}</button>
             <div className="bg-white p-6 rounded-2xl shadow-sm border space-y-4">
               <h2 className="text-lg font-black text-slate-900">{selectedCategory.title}</h2>
-              <p className="text-xs text-slate-700 leading-relaxed">{selectedCategory.content}</p>
+              <p className="text-xs text-slate-700 leading-relaxed whitespace-pre-line">{selectedCategory.content}</p>
             </div>
           </div>
         ) : (
@@ -1554,8 +1450,12 @@ export default function App() {
                       const title = cat.customTitle || (presetObj && presetObj.title && (presetObj.title[lang] || presetObj.title.de)) || 'Kategorie';
                       const sub = (presetObj && presetObj.subtitle && (presetObj.subtitle[lang] || presetObj.subtitle.de)) || '';
                       
-                      const rawTpl = (presetObj && presetObj.contentTpl && (presetObj.contentTpl[lang] || presetObj.contentTpl.de)) || '{val1} {val2}';
-                      const content = rawTpl.replace('{val1}', cat.val1 || '').replace('{val2}', cat.val2 || '');
+                      const rawTpl = (presetObj && presetObj.contentTpl && (presetObj.contentTpl[lang] || presetObj.contentTpl.de)) || '{val1} {val2} {val3} {customText}';
+                      const content = rawTpl
+                        .replace('{val1}', cat.val1 || '')
+                        .replace('{val2}', cat.val2 || '')
+                        .replace('{val3}', cat.val3 || '')
+                        .replace('{customText}', cat.customText || '');
 
                       return (
                         <button key={cat.id} onClick={() => setSelectedCategory({ title, content })} className={`w-full bg-white p-4 rounded-2xl border border-stone-200 shadow-sm flex items-center justify-between text-left cursor-pointer hover:${currentTheme.border} transition`}>
