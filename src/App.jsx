@@ -423,7 +423,7 @@ const translations = {
     addBtn: "Lägg till",
     editTitle: "Namn / Titel",
     editCustomVal1: "Tid / Värde 1",
-    editCustomVal2: "Info / Värde 2",
+    editCustomVal2: "Tid / Värde 2",
     activeCard: "Visa kort",
     inactiveCard: "Dölj kort"
   },
@@ -747,7 +747,7 @@ const categoryPresets = [
   { 
     id: 'sauna_spa', 
     group: 'Wellness & Spa', 
-    title: { de: 'Sauna & Massagen', en: 'Sauna & Massages', tr: 'Sauna ve Masajlar', it: 'Sauna e Massaggi', fr: 'Sauna et Massages', es: 'Sauna y Masajes', sv: 'Sauna & Massage', no: 'Sauna og Massasje', hr: 'Sauna i Masaže', sq: 'Sauna dhe Masazhet' }, 
+    title: { de: 'Sauna & Massagen', en: 'Sauna & Massages', tr: 'Sauna ve Masajlar', it: 'Sauna e Massaggi', fr: 'Sauna et Massages', es: 'Sauna y Masajes', sv: 'Sauna & Massage', no: 'Sauna og Massasje', hr: 'Finska sauna i masaže', sq: 'Sauna dhe Masazhet' }, 
     subtitle: { de: 'Finnische Sauna & Termine', en: 'Finnish sauna & appointments', tr: 'Fin saunası ve randevu', it: 'Sauna finlandese e appuntamenti', fr: 'Sauna finlandais et rendez-vous', es: 'Sauna finlandesa y citas', sv: 'Finsk bastu & tider', no: 'Finsk badstue og avtaler', hr: 'Finska sauna i termini', sq: 'Sauna finlandeze dhe takimet' }, 
     contentTpl: { 
       de: 'Entspannen Sie in unserer finnischen Sauna von {val1}. Termin: {val2}', 
@@ -871,9 +871,11 @@ const categoryPresets = [
   }
 ];
 
-// Güvenli İkon Render Fonksiyonu (Beyaz Ekran / Crash Hatasını Kesin Çözer)
+// Kesin Çökme Korumalı İkon Render Mekanizması
 const renderSafeIcon = (iconName, currentTheme) => {
-  const className = `w-5 h-5 ${currentTheme.text}`;
+  const themeClass = currentTheme ? currentTheme.text : 'text-slate-800';
+  const className = `w-5 h-5 ${themeClass}`;
+  
   switch (iconName) {
     case 'Building': return <Building className={className} />;
     case 'Bed': return <Bed className={className} />;
@@ -975,7 +977,7 @@ export default function App() {
     }
   };
 
-  const hotelSlug = hotel.name.toLowerCase().replace(/[^a-z0-9]/g, '-');
+  const hotelSlug = hotel.name ? hotel.name.toLowerCase().replace(/[^a-z0-9]/g, '-') : 'hotel';
   const hotelUrl = `https://gastemappe24-pro.vercel.app/?hotel=${hotelSlug}`;
   const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(hotelUrl)}`;
 
@@ -1018,27 +1020,31 @@ export default function App() {
     printWindow.document.close();
   };
 
+  // Güvenli Kategori Ekleme
   const handleAddPresetCategory = (presetObj) => {
-    setCategories([...categories, { 
+    if (!presetObj) return;
+    const newCategory = { 
       id: Date.now().toString(), 
       presetId: presetObj.id, 
-      icon: presetObj.icon,
+      icon: presetObj.icon || 'Info',
       customTitle: '',
-      val1: presetObj.defaultVal1,
-      val2: presetObj.defaultVal2
-    }]);
+      val1: presetObj.defaultVal1 || '',
+      val2: presetObj.defaultVal2 || ''
+    };
+    setCategories(prev => [...prev, newCategory]);
     setIsCatalogModalOpen(false);
   };
 
   const handleDeleteCategory = (id) => {
-    setCategories(categories.filter(cat => cat.id !== id));
+    setCategories(prev => prev.filter(cat => cat.id !== id));
   };
 
   const handleUpdateCategoryField = (id, field, value) => {
-    setCategories(categories.map(cat => cat.id === id ? { ...cat, [field]: value } : cat));
+    setCategories(prev => prev.map(cat => cat.id === id ? { ...cat, [field]: value } : cat));
   };
 
   const copyWifiPassword = () => {
+    if (!hotel.wifiPass) return;
     navigator.clipboard.writeText(hotel.wifiPass);
     setCopiedWifi(true);
     setTimeout(() => setCopiedWifi(false), 2500);
@@ -1053,10 +1059,12 @@ export default function App() {
     }
   };
 
-  const groupedCategories = categories.reduce((acc, cat) => {
+  // Tam Çökmeyi Engelleyen Gruplama Mantığı
+  const groupedCategories = (categories || []).reduce((acc, cat) => {
+    if (!cat) return acc;
     const presetData = categoryPresets.find(p => p.id === cat.presetId);
     if (!presetData) return acc;
-    const groupName = presetData.group;
+    const groupName = presetData.group || 'Sonstige';
     if (!acc[groupName]) acc[groupName] = [];
     acc[groupName].push({ ...cat, presetData });
     return acc;
@@ -1065,7 +1073,7 @@ export default function App() {
   if (appMode === 'dashboard') {
     return (
       <div className="min-h-screen bg-[#FBF9F5] font-sans text-slate-800 p-6 md:p-10 space-y-8 relative pb-28">
-        {/* Katalog Modal - Z-[9999] ve Güvenli İkon Render ile Beyaz Ekran Hatası Kesin Çözüldü */}
+        {/* Katalog Modal - Tam Korumalı ve Sıfır Çökme garantili */}
         {isCatalogModalOpen && (
           <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[9999] flex items-center justify-center p-4">
             <div className="bg-white w-full max-w-2xl max-h-[85vh] overflow-y-auto p-6 rounded-3xl shadow-2xl space-y-6">
@@ -1076,8 +1084,9 @@ export default function App() {
               <div className="space-y-6">
                 {Object.entries(
                   categoryPresets.reduce((acc, preset) => {
-                    acc[preset.group] = acc[preset.group] || [];
-                    acc[preset.group].push(preset);
+                    const group = preset.group || 'Sonstige';
+                    acc[group] = acc[group] || [];
+                    acc[group].push(preset);
                     return acc;
                   }, {})
                 ).map(([groupName, presets]) => (
@@ -1085,15 +1094,15 @@ export default function App() {
                     <h3 className={`text-xs font-black ${currentTheme.text} uppercase tracking-wider`}>{groupName}</h3>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                       {presets.map((preset) => {
-                        const title = preset.title[lang] || preset.title.de;
-                        const sub = preset.subtitle[lang] || preset.subtitle.de;
+                        const title = (preset.title && (preset.title[lang] || preset.title.de)) || 'Kategorie';
+                        const sub = (preset.subtitle && (preset.subtitle[lang] || preset.subtitle.de)) || '';
                         return (
-                          <div key={preset.id} className={`p-3 rounded-2xl border flex items-center justify-between transition bg-stone-50 hover:${currentTheme.border} cursor-pointer`}>
+                          <div key={preset.id} className={`p-3 rounded-2xl border flex items-center justify-between transition bg-stone-50 hover:${currentTheme.border}`}>
                             <div className="flex items-center gap-2.5">
                               {renderSafeIcon(preset.icon, currentTheme)}
                               <div>
                                 <span className="font-bold block text-xs text-slate-900">{title}</span>
-                                <span className="text-[10px] text-stone-500 block">{sub}</span>
+                                {sub && <span className="text-[10px] text-stone-500 block">{sub}</span>}
                               </div>
                             </div>
                             <button onClick={() => handleAddPresetCategory(preset)} className={`${currentTheme.bg} text-white px-3 py-1.5 rounded-xl text-[10px] font-bold shadow hover:opacity-90 cursor-pointer flex items-center gap-1`}>
@@ -1254,7 +1263,7 @@ export default function App() {
             <div className="space-y-3 pt-4 border-t">
               <h3 className={`font-bold text-xs ${currentTheme.text} uppercase tracking-wider`}>{t.sec4Title}</h3>
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-                {hotel.images.map((img, idx) => (
+                {(hotel.images || []).map((img, idx) => (
                   <div key={idx} className="relative rounded-xl overflow-hidden h-24 border">
                     <img src={img} alt="Slider" className="w-full h-full object-cover" />
                   </div>
@@ -1276,8 +1285,8 @@ export default function App() {
                   </div>
                   {hotel.showWifi && (
                     <div className="grid grid-cols-2 gap-2 mt-2">
-                      <input type="text" placeholder={t.lblWifiSsid} value={hotel.wifiSsid} onChange={(e) => setHotel({ ...hotel, wifiSsid: e.target.value })} className="p-2 text-xs border rounded-xl" />
-                      <input type="text" placeholder={t.lblWifiPass} value={hotel.wifiPass} onChange={(e) => setHotel({ ...hotel, wifiPass: e.target.value })} className="p-2 text-xs border rounded-xl" />
+                      <input type="text" placeholder={t.lblWifiSsid} value={hotel.wifiSsid || ''} onChange={(e) => setHotel({ ...hotel, wifiSsid: e.target.value })} className="p-2 text-xs border rounded-xl" />
+                      <input type="text" placeholder={t.lblWifiPass} value={hotel.wifiPass || ''} onChange={(e) => setHotel({ ...hotel, wifiPass: e.target.value })} className="p-2 text-xs border rounded-xl" />
                     </div>
                   )}
                 </div>
@@ -1291,7 +1300,7 @@ export default function App() {
                     </button>
                   </div>
                   {hotel.showParking && (
-                    <input type="text" placeholder={t.lblParkingInfo} value={hotel.parkingInfo} onChange={(e) => setHotel({ ...hotel, parkingInfo: e.target.value })} className="w-full p-2 text-xs border rounded-xl mt-2" />
+                    <input type="text" placeholder={t.lblParkingInfo} value={hotel.parkingInfo || ''} onChange={(e) => setHotel({ ...hotel, parkingInfo: e.target.value })} className="w-full p-2 text-xs border rounded-xl mt-2" />
                   )}
                 </div>
 
@@ -1304,7 +1313,7 @@ export default function App() {
                     </button>
                   </div>
                   {hotel.showBreakfast && (
-                    <input type="text" placeholder={t.lblBreakfastTime} value={hotel.breakfastTime} onChange={(e) => setHotel({ ...hotel, breakfastTime: e.target.value })} className="w-full p-2 text-xs border rounded-xl mt-2" />
+                    <input type="text" placeholder={t.lblBreakfastTime} value={hotel.breakfastTime || ''} onChange={(e) => setHotel({ ...hotel, breakfastTime: e.target.value })} className="w-full p-2 text-xs border rounded-xl mt-2" />
                   )}
                 </div>
 
@@ -1317,7 +1326,7 @@ export default function App() {
                     </button>
                   </div>
                   {hotel.showCheckInOut && (
-                    <input type="text" placeholder={t.lblCheckInOut} value={hotel.checkInOut} onChange={(e) => setHotel({ ...hotel, checkInOut: e.target.value })} className="w-full p-2 text-xs border rounded-xl mt-2" />
+                    <input type="text" placeholder={t.lblCheckInOut} value={hotel.checkInOut || ''} onChange={(e) => setHotel({ ...hotel, checkInOut: e.target.value })} className="w-full p-2 text-xs border rounded-xl mt-2" />
                   )}
                 </div>
 
@@ -1337,9 +1346,9 @@ export default function App() {
                   <div key={groupName} className="space-y-3">
                     <h4 className={`text-xs font-black ${currentTheme.text} uppercase tracking-wider ${currentTheme.bgLight} px-3 py-1.5 rounded-lg border border-stone-200/60 inline-block`}>{groupName}</h4>
                     <div className="space-y-3">
-                      {groupItems.map((cat) => {
+                      {(groupItems || []).map((cat) => {
                         const presetObj = cat.presetData;
-                        const baseTitle = presetObj ? (presetObj.title[lang] || presetObj.title.de) : '';
+                        const baseTitle = presetObj ? ((presetObj.title && (presetObj.title[lang] || presetObj.title.de)) || 'Kategorie') : '';
                         const displayTitle = cat.customTitle || baseTitle;
 
                         return (
@@ -1401,13 +1410,13 @@ export default function App() {
     return (
       <div className="min-h-screen bg-slate-950 max-w-md mx-auto shadow-2xl relative overflow-hidden flex flex-col justify-between font-sans">
         <div className="absolute inset-0 z-0">
-          <img src={hotel.images[0]} alt="Welcome" className="w-full h-full object-cover brightness-75" />
+          <img src={(hotel.images && hotel.images[0]) || 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1000&q=80'} alt="Welcome" className="w-full h-full object-cover brightness-75" />
           <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-slate-950/20"></div>
         </div>
 
         <div className="relative z-10 p-6 flex justify-between items-center text-white">
           <div className="flex items-center gap-2">
-            {hotel.logoUrl ? <img src={hotel.logoUrl} alt="Logo" className="w-8 h-8 rounded-lg object-cover border border-white/20" /> : <div className={`w-8 h-8 rounded-lg ${currentTheme.bg} flex items-center justify-center font-bold text-xs`}>{hotel.name.charAt(0)}</div>}
+            {hotel.logoUrl ? <img src={hotel.logoUrl} alt="Logo" className="w-8 h-8 rounded-lg object-cover border border-white/20" /> : <div className={`w-8 h-8 rounded-lg ${currentTheme.bg} flex items-center justify-center font-bold text-xs`}>{(hotel.name || 'H').charAt(0)}</div>}
             <span className="text-xs font-bold tracking-wider uppercase opacity-90">{hotel.name}</span>
           </div>
           <select value={lang} onChange={(e) => setLang(e.target.value)} className="bg-black/40 border border-white/30 text-white text-xs font-semibold rounded-xl px-2.5 py-1.5 cursor-pointer">
@@ -1474,7 +1483,7 @@ export default function App() {
     <div className="min-h-screen bg-stone-50 font-sans text-slate-800 pb-32 max-w-md mx-auto shadow-2xl relative border-x border-slate-200">
       <header className="p-5 pt-6 pb-2 bg-stone-50 sticky top-0 z-40 flex justify-between items-center">
         <div className="flex items-center gap-2.5">
-          {hotel.logoUrl ? <img src={hotel.logoUrl} alt="Logo" className="w-9 h-9 rounded-xl object-cover border" /> : <div className={`w-9 h-9 rounded-xl ${currentTheme.bg} text-white flex items-center justify-center font-bold text-xs`}>{hotel.name.charAt(0)}</div>}
+          {hotel.logoUrl ? <img src={hotel.logoUrl} alt="Logo" className="w-9 h-9 rounded-xl object-cover border" /> : <div className={`w-9 h-9 rounded-xl ${currentTheme.bg} text-white flex items-center justify-center font-bold text-xs`}>{(hotel.name || 'H').charAt(0)}</div>}
           <span className="text-xs font-bold tracking-wider uppercase text-slate-800">{hotel.name}</span>
         </div>
 
@@ -1513,7 +1522,7 @@ export default function App() {
               </div>
 
               <div className="relative rounded-3xl overflow-hidden shadow-lg h-56 bg-slate-900 border border-stone-200">
-                <img src={hotel.images[currentSlide] || hotel.images[0]} alt="Slide" className="w-full h-full object-cover" />
+                <img src={(hotel.images && hotel.images[currentSlide]) || (hotel.images && hotel.images[0]) || ''} alt="Slide" className="w-full h-full object-cover" />
               </div>
 
               <div className="bg-white p-4 rounded-2xl shadow-sm border border-stone-200 flex items-center justify-between">
@@ -1540,12 +1549,12 @@ export default function App() {
                 <div key={groupName} className="space-y-2.5">
                   <h4 className={`text-xs font-black ${currentTheme.text} uppercase tracking-wider px-1`}>{groupName}</h4>
                   <div className="grid grid-cols-1 gap-2.5">
-                    {groupItems.map((cat) => {
+                    {(groupItems || []).map((cat) => {
                       const presetObj = cat.presetData;
-                      const title = cat.customTitle || (presetObj.title[lang] || presetObj.title.de);
-                      const sub = presetObj.subtitle[lang] || presetObj.subtitle.de;
+                      const title = cat.customTitle || (presetObj && presetObj.title && (presetObj.title[lang] || presetObj.title.de)) || 'Kategorie';
+                      const sub = (presetObj && presetObj.subtitle && (presetObj.subtitle[lang] || presetObj.subtitle.de)) || '';
                       
-                      const rawTpl = presetObj.contentTpl[lang] || presetObj.contentTpl.de;
+                      const rawTpl = (presetObj && presetObj.contentTpl && (presetObj.contentTpl[lang] || presetObj.contentTpl.de)) || '{val1} {val2}';
                       const content = rawTpl.replace('{val1}', cat.val1 || '').replace('{val2}', cat.val2 || '');
 
                       return (
@@ -1554,7 +1563,7 @@ export default function App() {
                             <div className={`w-10 h-10 rounded-xl ${currentTheme.bgLight} flex items-center justify-center`}>{renderSafeIcon(cat.icon, currentTheme)}</div>
                             <div>
                               <h5 className="text-sm font-extrabold text-slate-900">{title}</h5>
-                              <p className="text-xs text-slate-500">{sub}</p>
+                              {sub && <p className="text-xs text-slate-500">{sub}</p>}
                             </div>
                           </div>
                           <ChevronRight className="w-4 h-4 text-slate-400" />
@@ -1569,7 +1578,7 @@ export default function App() {
         )}
       </main>
 
-      {/* Bottom Bar - Tamamen Tema Rengi Uyumlu */}
+      {/* Bottom Navigation Bar */}
       <div className="fixed bottom-0 left-0 right-0 max-w-md mx-auto bg-white/95 backdrop-blur-md border-t border-stone-200/80 z-50 shadow-2xl">
         <nav className="px-3 py-2 flex justify-around items-center">
           <button onClick={() => { setActiveTab('home'); setSelectedCategory(null); }} className={`flex flex-col items-center gap-1 text-[10px] font-bold cursor-pointer ${activeTab === 'home' && !selectedCategory ? currentTheme.text : 'text-stone-400'}`}>
@@ -1581,7 +1590,7 @@ export default function App() {
           <a href={hotel.googleReviewUrl} target="_blank" rel="noreferrer" className={`flex flex-col items-center gap-1 text-[10px] font-bold cursor-pointer ${currentTheme.text} hover:opacity-80`}>
             <Star className="w-5 h-5 fill-current" /><span>{t.navReview}</span>
           </a>
-          <a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(hotel.address)}`} target="_blank" rel="noreferrer" className={`flex flex-col items-center gap-1 text-[10px] font-bold cursor-pointer ${currentTheme.text} hover:opacity-80`}>
+          <a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(hotel.address || '')}`} target="_blank" rel="noreferrer" className={`flex flex-col items-center gap-1 text-[10px] font-bold cursor-pointer ${currentTheme.text} hover:opacity-80`}>
             <Navigation className="w-5 h-5" /><span>{t.navRoute}</span>
           </a>
         </nav>
