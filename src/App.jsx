@@ -871,6 +871,26 @@ const categoryPresets = [
   }
 ];
 
+// Güvenli İkon Render Fonksiyonu (Beyaz Ekran / Crash Hatasını Kesin Çözer)
+const renderSafeIcon = (iconName, currentTheme) => {
+  const className = `w-5 h-5 ${currentTheme.text}`;
+  switch (iconName) {
+    case 'Building': return <Building className={className} />;
+    case 'Bed': return <Bed className={className} />;
+    case 'Key': return <Key className={className} />;
+    case 'Utensils': return <Utensils className={className} />;
+    case 'Coffee': return <Coffee className={className} />;
+    case 'Waves': return <Waves className={className} />;
+    case 'Sparkles': return <Sparkles className={className} />;
+    case 'Compass': return <Compass className={className} />;
+    case 'MapPin': return <MapPin className={className} />;
+    case 'Car': return <Car className={className} />;
+    case 'Phone': return <Phone className={className} />;
+    case 'ShieldCheck': return <ShieldCheck className={className} />;
+    default: return <Info className={className} />;
+  }
+};
+
 export default function App() {
   const [lang, setLang] = useState('de');
   const t = translations[lang] || translations.de;
@@ -1033,25 +1053,6 @@ export default function App() {
     }
   };
 
-  const renderIcon = (iconName) => {
-    const props = { className: `w-5 h-5 ${currentTheme.text}` };
-    switch (iconName) {
-      case 'Building': return <Building {...props} />;
-      case 'Bed': return <Bed {...props} />;
-      case 'Key': return <Key {...props} />;
-      case 'Utensils': return <Utensils {...props} />;
-      case 'Coffee': return <Coffee {...props} />;
-      case 'Waves': return <Waves {...props} />;
-      case 'Sparkles': return <Sparkles {...props} />;
-      case 'Compass': return <Compass {...props} />;
-      case 'MapPin': return <MapPin {...props} />;
-      case 'Car': return <Car {...props} />;
-      case 'Phone': return <Phone {...props} />;
-      case 'ShieldCheck': return <ShieldCheck {...props} />;
-      default: return <Info {...props} />;
-    }
-  };
-
   const groupedCategories = categories.reduce((acc, cat) => {
     const presetData = categoryPresets.find(p => p.id === cat.presetId);
     if (!presetData) return acc;
@@ -1064,13 +1065,13 @@ export default function App() {
   if (appMode === 'dashboard') {
     return (
       <div className="min-h-screen bg-[#FBF9F5] font-sans text-slate-800 p-6 md:p-10 space-y-8 relative pb-28">
-        {/* Katalog Modal - Z-Index ve Tam Uyumlu */}
+        {/* Katalog Modal - Z-[9999] ve Güvenli İkon Render ile Beyaz Ekran Hatası Kesin Çözüldü */}
         {isCatalogModalOpen && (
           <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[9999] flex items-center justify-center p-4">
             <div className="bg-white w-full max-w-2xl max-h-[85vh] overflow-y-auto p-6 rounded-3xl shadow-2xl space-y-6">
               <div className="flex items-center justify-between border-b pb-4">
                 <h2 className="font-extrabold text-lg text-slate-900">{t.modalTitle}</h2>
-                <button onClick={() => setIsCatalogModalOpen(false)} className="text-stone-400 font-bold p-1 cursor-pointer">✕</button>
+                <button onClick={() => setIsCatalogModalOpen(false)} className="text-stone-400 font-bold p-1 cursor-pointer hover:text-stone-700">✕</button>
               </div>
               <div className="space-y-6">
                 {Object.entries(
@@ -1089,7 +1090,7 @@ export default function App() {
                         return (
                           <div key={preset.id} className={`p-3 rounded-2xl border flex items-center justify-between transition bg-stone-50 hover:${currentTheme.border} cursor-pointer`}>
                             <div className="flex items-center gap-2.5">
-                              {renderIcon(preset.icon)}
+                              {renderSafeIcon(preset.icon, currentTheme)}
                               <div>
                                 <span className="font-bold block text-xs text-slate-900">{title}</span>
                                 <span className="text-[10px] text-stone-500 block">{sub}</span>
@@ -1345,7 +1346,7 @@ export default function App() {
                           <div key={cat.id} className="p-4 bg-stone-50 rounded-2xl border space-y-3 shadow-sm">
                             <div className="flex items-center justify-between border-b pb-2">
                               <div className="flex items-center gap-2">
-                                {renderIcon(cat.icon)}
+                                {renderSafeIcon(cat.icon, currentTheme)}
                                 <span className="font-bold text-xs text-slate-800">{displayTitle}</span>
                               </div>
                               <button onClick={() => handleDeleteCategory(cat.id)} className="bg-rose-50 text-rose-600 p-1.5 rounded-lg cursor-pointer hover:bg-rose-100"><Trash2 className="w-3.5 h-3.5" /></button>
@@ -1550,7 +1551,7 @@ export default function App() {
                       return (
                         <button key={cat.id} onClick={() => setSelectedCategory({ title, content })} className={`w-full bg-white p-4 rounded-2xl border border-stone-200 shadow-sm flex items-center justify-between text-left cursor-pointer hover:${currentTheme.border} transition`}>
                           <div className="flex items-center gap-3">
-                            <div className={`w-10 h-10 rounded-xl ${currentTheme.bgLight} flex items-center justify-center`}>{renderIcon(cat.icon)}</div>
+                            <div className={`w-10 h-10 rounded-xl ${currentTheme.bgLight} flex items-center justify-center`}>{renderSafeIcon(cat.icon, currentTheme)}</div>
                             <div>
                               <h5 className="text-sm font-extrabold text-slate-900">{title}</h5>
                               <p className="text-xs text-slate-500">{sub}</p>
