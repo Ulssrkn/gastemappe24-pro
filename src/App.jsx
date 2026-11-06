@@ -14,7 +14,7 @@ const supabaseUrl = 'https://YOUR-SUPABASE-URL.supabase.co';
 const supabaseAnonKey = 'YOUR-SUPABASE-ANON-KEY';
 export const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
-// --- 10 DİL ÇEVİRİ SİSTEMİ ---
+// --- 10 DİL ÇEVİRİ SİSTEMİ (EKSİKSİZ) ---
 const translations = {
   de: {
     welcomeBadge: "Digitale Gästemappe",
@@ -45,11 +45,11 @@ const translations = {
     printA5: "Druckvorlage A5",
     printCard: "Visitenkarte",
     sec1Title: "1. Unterkunft Informationen & Kontaktdaten",
-    sec2Title: "2. Design & Farb-Themen (8 Optionen)",
+    sec2Title: "2. Design & Farb-Themen",
     sec3Title: "3. Logo hochladen",
     sec4Title: "4. Bilderverwaltung (Slider)",
-    sec5Title: "5. Schnellzugriff (Aktivieren / Deaktivieren)",
-    sec6Title: "6. Dynamisches Preset & Kategorie-System",
+    sec5Title: "5. QR-Code & Print Center (Drucken erlaubt)",
+    sec6Title: "6. Dynamisches Preset & Kategorie-System (3-Schritte Editor)",
     lblHotelName: "Unterkunft Name",
     lblPhone: "Telefon",
     btnAddCategory: "Neuen Inhalt hinzufügen (3-Schritte Editor)",
@@ -97,10 +97,10 @@ const translations = {
     printA5: "Print Template A5",
     printCard: "Business Card",
     sec1Title: "1. Property Information & Contacts",
-    sec2Title: "2. Design & Color Themes (8 Options)",
+    sec2Title: "2. Design & Color Themes",
     sec3Title: "3. Upload Logo",
     sec4Title: "4. Image Management (Slider)",
-    sec5Title: "5. Quick Access (Enable / Disable Cards)",
+    sec5Title: "5. QR Code & Print Center (Printing allowed)",
     sec6Title: "6. Dynamic Preset & Category System",
     lblHotelName: "Property Name",
     lblPhone: "Phone",
@@ -136,7 +136,7 @@ const translations = {
     breakfastTitle: "Kahvaltı",
     checkInOutTitle: "Giriş / Çıkış",
     detailBack: "Geri Dön",
-    adminTitle: "Yönetim Paneli & Analitik (Dashboard)",
+    adminTitle: "Yönetim Paneli & Analitik",
     guestViewBtn: "Misafir Görünümünü Aç",
     saveBtn: "Değişiklikleri Kaydet",
     savedMsg: "Kaydedildi!",
@@ -149,10 +149,10 @@ const translations = {
     printA5: "A5 Baskı Şablonu",
     printCard: "Kartvizit Şablonu",
     sec1Title: "1. Tesis Bilgileri & İletişim",
-    sec2Title: "2. Renk Temaları (8 Seçenek)",
+    sec2Title: "2. Renk Temaları",
     sec3Title: "3. Logo Yükleme",
     sec4Title: "4. Resim Yönetimi (Slider)",
-    sec5Title: "5. Hızlı Erişim (Kartları Aç / Kapat)",
+    sec5Title: "5. QR Kod & Baskı Merkezi (Yazdırma Aktif)",
     sec6Title: "6. Dinamik Preset & Kategori Sistemi",
     lblHotelName: "Tesis / Otel Adı",
     lblPhone: "Telefon",
@@ -172,107 +172,13 @@ const translations = {
     searchPlaceholder: "Ara...",
     noPresetsFound: "Bu kategoride şablon bulunamadı."
   },
-  fr: {
-    welcomeBadge: "Guide numérique",
-    welcomeButton: "C'est parti",
-    greetingHello: "Bonjour,",
-    greetingWelcome: "bienvenue.",
-    navHome: "Accueil",
-    navGaestemappe: "Guide",
-    navReview: "Avis",
-    navRoute: "Itinéraire",
-    weatherTitle: "Ensoleillé",
-    weatherSub: "Météo actuelle",
-    wlanTitle: "Wi-Fi",
-    parkingTitle: "Parking",
-    breakfastTitle: "Petit-déjeuner",
-    checkInOutTitle: "Arrivée / Départ",
-    detailBack: "Retour",
-    adminTitle: "Administration",
-    guestViewBtn: "Vue invité",
-    saveBtn: "Enregistrer",
-    savedMsg: "Enregistré !",
-    trialTitle: "Essai 30 jours (PRO)",
-    trialDaysLeft: "Jours restants",
-    statsScans: "Scans QR (Total)",
-    statsActiveRooms: "Accès chambres actifs",
-    qrTitle: "Centre d'impression QR",
-    printA4: "Modèle A4",
-    printA5: "Modèle A5",
-    printCard: "Carte de visite",
-    sec1Title: "1. Infos et contacts",
-    sec2Title: "2. Thèmes de couleurs",
-    sec3Title: "3. Logo",
-    sec4Title: "4. Gestion des images",
-    sec5Title: "5. Accès rapide",
-    sec6Title: "6. Système de Préréglage",
-    lblHotelName: "Nom de l'établissement",
-    lblPhone: "Téléphone",
-    btnAddCategory: "Ajouter du contenu",
-    modalTitle: "Ajouter / Modifier",
-    step1Title: "Étape 1: Catégorie",
-    step2Title: "Étape 2: Modèle",
-    step3Title: "Étape 3: Détails",
-    addBtn: "Ajouter",
-    editTitle: "Titre",
-    customTextLabel: "Remarques",
-    yesLabel: "Oui / Disponible",
-    noLabel: "Non / Indisponible",
-    moreInfo: "Infos supplémentaires",
-    cancel: "Annuler",
-    saveAndClose: "Enregistrer",
-    searchPlaceholder: "Rechercher...",
-    noPresetsFound: "Aucun modèle trouvé."
-  },
-  hr: {
-    welcomeBadge: "Digitalni vodič",
-    welcomeButton: "Započnimo",
-    greetingHello: "Pozdrav,",
-    greetingWelcome: "dobrodošli.",
-    navHome: "Početna",
-    navGaestemappe: "Vodič",
-    navReview: "Ocijeni",
-    navRoute: "Upute",
-    weatherTitle: "Sunčano",
-    weatherSub: "Trenutno vrijeme",
-    wlanTitle: "Wi-Fi",
-    parkingTitle: "Parkiralište",
-    breakfastTitle: "Doručak",
-    checkInOutTitle: "Prijava / Odjava",
-    detailBack: "Natrag",
-    adminTitle: "Upravljanje",
-    guestViewBtn: "Prikaz za goste",
-    saveBtn: "Spremi",
-    savedMsg: "Spremljeno!",
-    trialTitle: "Probno razdoblje",
-    trialDaysLeft: "preostalih dana",
-    statsScans: "QR skeniranja",
-    statsActiveRooms: "Aktivne sobe",
-    qrTitle: "QR centar",
-    sec1Title: "1. Info o objektu",
-    sec2Title: "2. Teme boja",
-    sec3Title: "3. Logotip",
-    sec4Title: "4. Slike",
-    sec5Title: "5. Brzi pristup",
-    sec6Title: "6. Sustav predložaka",
-    lblHotelName: "Naziv objekta",
-    lblPhone: "Telefon",
-    btnAddCategory: "Dodaj sadržaj",
-    modalTitle: "Dodaj / Uredi",
-    step1Title: "1. korak: Kategorija",
-    step2Title: "2. korak: Predložak",
-    step3Title: "3. korak: Detalji",
-    addBtn: "Dodaj",
-    editTitle: "Naziv",
-    customTextLabel: "Napomene",
-    yesLabel: "Da / Dostupno",
-    noLabel: "Ne / Nije dostupno",
-    moreInfo: "Dodatne informacije",
-    cancel: "Odustani",
-    saveAndClose: "Spremi",
-    searchPlaceholder: "Traži...",
-    noPresetsFound: "Nema predložaka."
-  }
+  fr: { welcomeBadge: "Guide", welcomeButton: "C'est parti", greetingHello: "Bonjour,", greetingWelcome: "bienvenue.", navHome: "Accueil", navGaestemappe: "Guide", navReview: "Avis", navRoute: "Itinéraire", weatherTitle: "Ensoleillé", weatherSub: "Météo", wlanTitle: "Wi-Fi", parkingTitle: "Parking", breakfastTitle: "Petit-déj", checkInOutTitle: "Arrivée/Départ", detailBack: "Retour", adminTitle: "Admin", guestViewBtn: "Vue invité", saveBtn: "Enregistrer", savedMsg: "Enregistré !", trialTitle: "Essai PRO", trialDaysLeft: "Jours restants", statsScans: "Scans QR", statsActiveRooms: "Chambres actives", qrTitle: "QR & Impression", printA4: "A4", printA5: "A5", printCard: "Carte", sec1Title: "1. Infos", sec2Title: "2. Couleurs", sec3Title: "3. Logo", sec4Title: "4. Images", sec5Title: "5. QR Center", sec6Title: "6. Préréglages", lblHotelName: "Nom", lblPhone: "Tél", btnAddCategory: "Ajouter", modalTitle: "Modifier", step1Title: "1. Catégorie", step2Title: "2. Modèle", step3Title: "3. Détails", addBtn: "Ajouter", editTitle: "Titre", customTextLabel: "Notes", yesLabel: "Oui", noLabel: "Non", moreInfo: "Plus", cancel: "Annuler", saveAndClose: "Fermer", searchPlaceholder: "Rechercher...", noPresetsFound: "Aucun." },
+  hr: { welcomeBadge: "Vodič", welcomeButton: "Kreni", greetingHello: "Pozdrav,", greetingWelcome: "dobrodošli.", navHome: "Početna", navGaestemappe: "Vodič", navReview: "Ocijeni", navRoute: "Upute", weatherTitle: "Sunčano", weatherSub: "Vrijeme", wlanTitle: "Wi-Fi", parkingTitle: "Parking", breakfastTitle: "Doručak", checkInOutTitle: "Prijava", detailBack: "Natrag", adminTitle: "Admin", guestViewBtn: "Gosti", saveBtn: "Spremi", savedMsg: "Spremljeno!", trialTitle: "PRO probno", trialDaysLeft: "dana", statsScans: "QR skeniranja", statsActiveRooms: "Sobe", qrTitle: "QR centar", printA4: "A4", printA5: "A5", printCard: "Kartica", sec1Title: "1. Info", sec2Title: "2. Boje", sec3Title: "3. Logo", sec4Title: "4. Slike", sec5Title: "5. QR Center", sec6Title: "6. Predlošci", lblHotelName: "Naziv", lblPhone: "Tel", btnAddCategory: "Dodaj", modalTitle: "Uredi", step1Title: "1. Kategorija", step2Title: "2. Predložak", step3Title: "3. Detalji", addBtn: "Dodaj", editTitle: "Naslov", customTextLabel: "Bilješke", yesLabel: "Da", noLabel: "Ne", moreInfo: "Više", cancel: "Odustani", saveAndClose: "Zatvori", searchPlaceholder: "Traži...", noPresetsFound: "Nema." },
+  it: { welcomeBadge: "Guida", welcomeButton: "Inizia", greetingHello: "Ciao,", greetingWelcome: "benvenuto.", navHome: "Home", navGaestemappe: "Guida", navReview: "Recensioni", navRoute: "Percorso", weatherTitle: "Sereno", weatherSub: "Meteo", wlanTitle: "Wi-Fi", parkingTitle: "Parcheggio", breakfastTitle: "Colazione", checkInOutTitle: "Check-in", detailBack: "Indietro", adminTitle: "Admin", guestViewBtn: "Vista", saveBtn: "Salva", savedMsg: "Salvato!", trialTitle: "PRO", trialDaysLeft: "giorni", statsScans: "Scansioni", statsActiveRooms: "Camere", qrTitle: "QR Center", printA4: "A4", printA5: "A5", printCard: "Card", sec1Title: "1. Info", sec2Title: "2. Colori", sec3Title: "3. Logo", sec4Title: "4. Immagini", sec5Title: "5. QR", sec6Title: "6. Preset", lblHotelName: "Nome", lblPhone: "Tel", btnAddCategory: "Aggiungi", modalTitle: "Modifica", step1Title: "1. Categoria", step2Title: "2. Modello", step3Title: "3. Dettagli", addBtn: "Aggiungi", editTitle: "Titolo", customTextLabel: "Note", yesLabel: "Sì", noLabel: "No", moreInfo: "Altro", cancel: "Annulla", saveAndClose: "Chiudi", searchPlaceholder: "Cerca...", noPresetsFound: "Nulla." },
+  es: { welcomeBadge: "Guía", welcomeButton: "Empezar", greetingHello: "Hola,", greetingWelcome: "bienvenido.", navHome: "Inicio", navGaestemappe: "Guía", navReview: "Valorar", navRoute: "Ruta", weatherTitle: "Soleado", weatherSub: "Clima", wlanTitle: "Wi-Fi", parkingTitle: "Parking", breakfastTitle: "Desayuno", checkInOutTitle: "Entrada", detailBack: "Volver", adminTitle: "Admin", guestViewBtn: "Vista", saveBtn: "Guardar", savedMsg: "Guardado!", trialTitle: "PRO", trialDaysLeft: "días", statsScans: "Scans", statsActiveRooms: "Habitaciones", qrTitle: "QR Center", printA4: "A4", printA5: "A5", printCard: "Tarjeta", sec1Title: "1. Info", sec2Title: "2. Colores", sec3Title: "3. Logo", sec4Title: "4. Imágenes", sec5Title: "5. QR", sec6Title: "6. Plantillas", lblHotelName: "Nombre", lblPhone: "Tel", btnAddCategory: "Añadir", modalTitle: "Editar", step1Title: "1. Categoría", step2Title: "2. Plantilla", step3Title: "3. Detalles", addBtn: "Añadir", editTitle: "Título", customTextLabel: "Notas", yesLabel: "Sí", noLabel: "No", moreInfo: "Más", cancel: "Cancelar", saveAndClose: "Cerrar", searchPlaceholder: "Buscar...", noPresetsFound: "Nada." },
+  sv: { welcomeBadge: "Guide", welcomeButton: "Starta", greetingHello: "Hej,", greetingWelcome: "välkommen.", navHome: "Hem", navGaestemappe: "Guide", navReview: "Recension", navRoute: "Väg", weatherTitle: "Sol", weatherSub: "Väder", wlanTitle: "Wi-Fi", parkingTitle: "Parkering", breakfastTitle: "Frukost", checkInOutTitle: "Incheckning", detailBack: "Tillbaka", adminTitle: "Admin", guestViewBtn: "Gästvy", saveBtn: "Spara", savedMsg: "Sparat!", trialTitle: "PRO", trialDaysLeft: "dagar", statsScans: "Scans", statsActiveRooms: "Rum", qrTitle: "QR Center", printA4: "A4", printA5: "A5", printCard: "Kort", sec1Title: "1. Info", sec2Title: "2. Färg", sec3Title: "3. Logo", sec4Title: "4. Bilder", sec5Title: "5. QR", sec6Title: "6. Mallar", lblHotelName: "Namn", lblPhone: "Tel", btnAddCategory: "Lägg till", modalTitle: "Redigera", step1Title: "1. Kategori", step2Title: "2. Mall", step3Title: "3. Detaljer", addBtn: "Lägg till", editTitle: "Titel", customTextLabel: "Anteckningar", yesLabel: "Ja", noLabel: "Nej", moreInfo: "Mer", cancel: "Avbryt", saveAndClose: "Stäng", searchPlaceholder: "Sök...", noPresetsFound: "Inga." },
+  no: { welcomeBadge: "Guide", welcomeButton: "Start", greetingHello: "Hei,", greetingWelcome: "velkommen.", navHome: "Hjem", navGaestemappe: "Guide", navReview: "Omtale", navRoute: "Rute", weatherTitle: "Sol", weatherSub: "Vær", wlanTitle: "Wi-Fi", parkingTitle: "Parkering", breakfastTitle: "Frokost", checkInOutTitle: "Innsjekk", detailBack: "Tilbake", adminTitle: "Admin", guestViewBtn: "Visning", saveBtn: "Lagre", savedMsg: "Lagret!", trialTitle: "PRO", trialDaysLeft: "dager", statsScans: "Scans", statsActiveRooms: "Rom", qrTitle: "QR Center", printA4: "A4", printA5: "A5", printCard: "Kort", sec1Title: "1. Info", sec2Title: "2. Farge", sec3Title: "3. Logo", sec4Title: "4. Bilder", sec5Title: "5. QR", sec6Title: "6. Maler", lblHotelName: "Navn", lblPhone: "Tlf", btnAddCategory: "Legg til", modalTitle: "Rediger", step1Title: "1. Kategori", step2Title: "2. Mal", step3Title: "3. Detaljer", addBtn: "Legg til", editTitle: "Tittel", customTextLabel: "Notater", yesLabel: "Ja", noLabel: "Nei", moreInfo: "Mer", cancel: "Avbryt", saveAndClose: "Lukk", searchPlaceholder: "Søk...", noPresetsFound: "Ingen." },
+  sq: { welcomeBadge: "Udhëzues", welcomeButton: "Fillo", greetingHello: "Përshëndetje,", greetingWelcome: "mirë se erdhët.", navHome: "Kryefaqja", navGaestemappe: "Udhëzuesi", navReview: "Vlerëso", navRoute: "Udha", weatherTitle: "Diell", weatherSub: "Moti", wlanTitle: "Wi-Fi", parkingTitle: "Parkimi", breakfastTitle: "Mëngjesi", checkInOutTitle: "Hyrja", detailBack: "Kthehu", adminTitle: "Admin", guestViewBtn: "Pamja", saveBtn: "Ruaj", savedMsg: "U ruajt!", trialTitle: "PRO", trialDaysLeft: "ditë", statsScans: "Scans", statsActiveRooms: "Dhomat", qrTitle: "QR Center", printA4: "A4", printA5: "A5", printCard: "Kartë", sec1Title: "1. Info", sec2Title: "2. Ngjyrat", sec3Title: "3. Logo", sec4Title: "4. Fotografitë", sec5Title: "5. QR Center", sec6Title: "6. Shabllonet", lblHotelName: "Emri", lblPhone: "Tel", btnAddCategory: "Shto", modalTitle: "Ndrysho", step1Title: "1. Kategoria", step2Title: "2. Shablloni", step3Title: "3. Detajet", addBtn: "Shto", editTitle: "Titulli", customTextLabel: "Shënime", yesLabel: "Po", noLabel: "Jo", moreInfo: "Më shumë", cancel: "Anulo", saveAndClose: "Mbyll", searchPlaceholder: "Kërko...", noPresetsFound: "Asgjë." }
 };
 
 const themeColors = [
@@ -846,6 +752,21 @@ export default function App() {
     }
   };
 
+  const handleImageUpload = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => { 
+        setHotel(prev => ({ ...prev, images: [...(prev.images || []), reader.result] })); 
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const removeImage = (index) => {
+    setHotel(prev => ({ ...prev, images: prev.images.filter((_, i) => i !== index) }));
+  };
+
   const groupedCategories = (categories || []).reduce((acc, cat) => {
     if (!cat) return acc;
     const mainCatObj = mainCategories.find(mc => mc.id === cat.categoryId) || mainCategories[0];
@@ -996,7 +917,53 @@ export default function App() {
             </div>
           </div>
 
-          {/* 4. DİNAMİK PRESET KATEGORİLER (3-ADIMLI MODAL SİSTEMİ) */}
+          {/* 4. SLIDER FOTOĞRAF YÖNETİMİ */}
+          <div className="bg-white rounded-3xl p-6 border border-stone-200 shadow-sm space-y-4">
+            <div className="flex items-center justify-between">
+              <h3 className={`font-black text-xs ${currentTheme.text} uppercase tracking-wider`}>{t.sec4Title}</h3>
+              <label className={`px-4 py-2 rounded-xl text-xs font-bold text-white ${currentTheme.bg} cursor-pointer shadow hover:opacity-95 flex items-center gap-1.5`}>
+                <Plus className="w-4 h-4" /> Fotoğraf Ekle
+                <input type="file" accept="image/*" onChange={handleImageUpload} className="hidden" />
+              </label>
+            </div>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+              {(hotel.images || []).map((img, idx) => (
+                <div key={idx} className="relative rounded-2xl overflow-hidden border aspect-video group shadow-xs bg-stone-100">
+                  <img src={img} alt={`Slide ${idx}`} className="w-full h-full object-cover" />
+                  <button 
+                    onClick={() => removeImage(idx)} 
+                    className="absolute top-2 right-2 p-1.5 bg-rose-600 text-white rounded-xl opacity-0 group-hover:opacity-100 transition shadow cursor-pointer"
+                  >
+                    <Trash2 className="w-3.5 h-3.5" />
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* 5. QR-CODE & PRINT CENTER (YAZDIRMA MERKEZİ) */}
+          <div className="bg-white rounded-3xl p-6 border border-stone-200 shadow-sm space-y-4">
+            <div className="flex items-center gap-3">
+              <div className={`p-3 rounded-2xl ${currentTheme.bgLight} ${currentTheme.text}`}><QrCode className="w-6 h-6" /></div>
+              <div>
+                <h3 className={`font-black text-xs ${currentTheme.text} uppercase tracking-wider`}>{t.sec5Title}</h3>
+                <p className="text-xs text-stone-500">{t.qrTitle}</p>
+              </div>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
+              <button onClick={() => window.print()} className="p-4 rounded-2xl border border-stone-200 bg-stone-50 hover:bg-stone-100 transition flex items-center justify-center gap-2 text-xs font-bold text-slate-800 cursor-pointer shadow-xs">
+                <Printer className="w-4 h-4 text-stone-600" /> {t.printA4}
+              </button>
+              <button onClick={() => window.print()} className="p-4 rounded-2xl border border-stone-200 bg-stone-50 hover:bg-stone-100 transition flex items-center justify-center gap-2 text-xs font-bold text-slate-800 cursor-pointer shadow-xs">
+                <Printer className="w-4 h-4 text-stone-600" /> {t.printA5}
+              </button>
+              <button onClick={() => window.print()} className="p-4 rounded-2xl border border-stone-200 bg-stone-50 hover:bg-stone-100 transition flex items-center justify-center gap-2 text-xs font-bold text-slate-800 cursor-pointer shadow-xs">
+                <Printer className="w-4 h-4 text-stone-600" /> {t.printCard}
+              </button>
+            </div>
+          </div>
+
+          {/* 6. DİNAMİK PRESET KATEGORİLER (3-ADIMLI MODAL SİSTEMİ) */}
           <div className="bg-white rounded-3xl p-6 border border-stone-200 shadow-sm space-y-6">
             <div className="flex flex-wrap items-center justify-between gap-4">
               <h3 className={`font-black text-xs ${currentTheme.text} uppercase tracking-wider`}>{t.sec6Title}</h3>
@@ -1068,6 +1035,11 @@ export default function App() {
             <option value="tr">🇹🇷 TR</option>
             <option value="hr">🇭🇷 HR</option>
             <option value="fr">🇫🇷 FR</option>
+            <option value="it">🇮🇹 IT</option>
+            <option value="es">🇪🇸 ES</option>
+            <option value="sv">🇸🇪 SV</option>
+            <option value="no">🇳🇴 NO</option>
+            <option value="sq">🇦🇱 SQ</option>
           </select>
         </div>
 
@@ -1099,6 +1071,11 @@ export default function App() {
             <option value="tr">🇹🇷 TR</option>
             <option value="hr">🇭🇷 HR</option>
             <option value="fr">🇫🇷 FR</option>
+            <option value="it">🇮🇹 IT</option>
+            <option value="es">🇪🇸 ES</option>
+            <option value="sv">🇸🇪 SV</option>
+            <option value="no">🇳🇴 NO</option>
+            <option value="sq">🇦🇱 SQ</option>
           </select>
           <button onClick={() => setAppMode('dashboard')} className="text-stone-300 hover:text-stone-600 p-1 text-xs cursor-pointer">🔑</button>
         </div>
