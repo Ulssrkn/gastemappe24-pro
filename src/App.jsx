@@ -240,6 +240,106 @@ const categoryPresets = [
   ]}
 ];
 
+
+  // Additional information-only presets
+  { id: 'hotel_facilities', categoryId: 'cat_hotel', icon: 'Building', title: { de: 'Hotelausstattung', en: 'Hotel Facilities', tr: 'Otel Olanakları', fr: 'Équipements de l’hôtel', hr: 'Hotelski sadržaji' }, schema: [
+    { key: 'facility_list', type: 'text', label: { de: 'Einrichtungen', en: 'Facilities', tr: 'Olanaklar', fr: 'Équipements', hr: 'Sadržaji' }, default: '', primary: true },
+    { key: 'facility_location', type: 'text', label: { de: 'Standort', en: 'Location', tr: 'Konum', fr: 'Emplacement', hr: 'Lokacija' }, default: '', primary: true },
+    { key: 'facility_hours', type: 'text', label: { de: 'Öffnungszeiten', en: 'Opening hours', tr: 'Çalışma saatleri', fr: 'Horaires', hr: 'Radno vrijeme' }, default: '', primary: true }
+  ]},
+  { id: 'checkin_checkout', categoryId: 'cat_hotel', icon: 'Clock', title: { de: 'Check-in & Check-out', en: 'Check-in & Check-out', tr: 'Giriş & Çıkış', fr: 'Arrivée & départ', hr: 'Prijava i odjava' }, schema: [
+    { key: 'checkin_time', type: 'text', label: { de: 'Check-in ab', en: 'Check-in from', tr: 'Giriş saati', fr: 'Arrivée à partir de', hr: 'Prijava od' }, default: '15:00', primary: true },
+    { key: 'checkout_time', type: 'text', label: { de: 'Check-out bis', en: 'Check-out until', tr: 'Çıkış saati', fr: 'Départ avant', hr: 'Odjava do' }, default: '11:00', primary: true },
+    { key: 'checkin_details', type: 'text', label: { de: 'Weitere Informationen', en: 'Additional information', tr: 'Ek bilgiler', fr: 'Informations complémentaires', hr: 'Dodatne informacije' }, default: '', primary: false }
+  ]},
+  { id: 'restaurant_info', categoryId: 'cat_food', icon: 'Utensils', title: { de: 'Restaurant', en: 'Restaurant', tr: 'Restoran', fr: 'Restaurant', hr: 'Restoran' }, schema: [
+    { key: 'restaurant_hours', type: 'text', label: { de: 'Öffnungszeiten', en: 'Opening hours', tr: 'Çalışma saatleri', fr: 'Horaires', hr: 'Radno vrijeme' }, default: '', primary: true },
+    { key: 'restaurant_location', type: 'text', label: { de: 'Standort', en: 'Location', tr: 'Konum', fr: 'Emplacement', hr: 'Lokacija' }, default: '', primary: true },
+    { key: 'restaurant_description', type: 'text', label: { de: 'Beschreibung', en: 'Description', tr: 'Açıklama', fr: 'Description', hr: 'Opis' }, default: '', primary: false },
+    { key: 'restaurant_menu_url', type: 'text', label: { de: 'Speisekarte (Link)', en: 'Menu link', tr: 'Menü bağlantısı', fr: 'Lien du menu', hr: 'Poveznica jelovnika' }, default: '', primary: false }
+  ]},
+  { id: 'bar_lounge', categoryId: 'cat_food', icon: 'Wine', title: { de: 'Bar & Lounge', en: 'Bar & Lounge', tr: 'Bar & Lounge', fr: 'Bar & Lounge', hr: 'Bar i salon' }, schema: [
+    { key: 'bar_hours', type: 'text', label: { de: 'Öffnungszeiten', en: 'Opening hours', tr: 'Çalışma saatleri', fr: 'Horaires', hr: 'Radno vrijeme' }, default: '', primary: true },
+    { key: 'bar_location', type: 'text', label: { de: 'Standort', en: 'Location', tr: 'Konum', fr: 'Emplacement', hr: 'Lokacija' }, default: '', primary: true },
+    { key: 'bar_description', type: 'text', label: { de: 'Informationen', en: 'Information', tr: 'Bilgiler', fr: 'Informations', hr: 'Informacije' }, default: '', primary: false }
+  ]},
+  { id: 'allergens_diet', categoryId: 'cat_food', icon: 'Heart', title: { de: 'Allergene & Ernährung', en: 'Allergens & Dietary Information', tr: 'Alerjenler & Beslenme', fr: 'Allergènes & régime alimentaire', hr: 'Alergeni i prehrana' }, schema: [
+    { key: 'dietary_options', type: 'text', label: { de: 'Ernährungsoptionen', en: 'Dietary options', tr: 'Beslenme seçenekleri', fr: 'Options alimentaires', hr: 'Prehrambene opcije' }, default: '', primary: true },
+    { key: 'allergen_notes', type: 'text', label: { de: 'Allergenhinweise', en: 'Allergen notes', tr: 'Alerjen notları', fr: 'Notes sur les allergènes', hr: 'Napomene o alergenima' }, default: '', primary: true }
+  ]},
+  { id: 'pool_aqua', categoryId: 'cat_wellness', icon: 'Waves', title: { de: 'Pool & Aqua', en: 'Pool & Aqua', tr: 'Havuz & Aqua', fr: 'Piscine & Aqua', hr: 'Bazen i aqua' }, schema: [
+    { key: 'pool_hours', type: 'text', label: { de: 'Öffnungszeiten', en: 'Opening hours', tr: 'Çalışma saatleri', fr: 'Horaires', hr: 'Radno vrijeme' }, default: '', primary: true },
+    { key: 'pool_location', type: 'text', label: { de: 'Standort', en: 'Location', tr: 'Konum', fr: 'Emplacement', hr: 'Lokacija' }, default: '', primary: true },
+    { key: 'pool_rules', type: 'text', label: { de: 'Poolregeln', en: 'Pool rules', tr: 'Havuz kuralları', fr: 'Règles de la piscine', hr: 'Pravila bazena' }, default: '', primary: false }
+  ]},
+  { id: 'sauna', categoryId: 'cat_wellness', icon: 'Flame', title: { de: 'Sauna', en: 'Sauna', tr: 'Sauna', fr: 'Sauna', hr: 'Sauna' }, schema: [
+    { key: 'sauna_hours', type: 'text', label: { de: 'Öffnungszeiten', en: 'Opening hours', tr: 'Çalışma saatleri', fr: 'Horaires', hr: 'Radno vrijeme' }, default: '', primary: true },
+    { key: 'sauna_types', type: 'text', label: { de: 'Saunatypen', en: 'Sauna types', tr: 'Sauna türleri', fr: 'Types de sauna', hr: 'Vrste sauna' }, default: '', primary: true },
+    { key: 'sauna_rules', type: 'text', label: { de: 'Saunaregeln', en: 'Sauna rules', tr: 'Sauna kuralları', fr: 'Règles du sauna', hr: 'Pravila saune' }, default: '', primary: false }
+  ]},
+  { id: 'fitness_center', categoryId: 'cat_wellness', icon: 'Dumbbell', title: { de: 'Fitness Center', en: 'Fitness Center', tr: 'Fitness Merkezi', fr: 'Salle de fitness', hr: 'Fitness centar' }, schema: [
+    { key: 'fitness_hours', type: 'text', label: { de: 'Öffnungszeiten', en: 'Opening hours', tr: 'Çalışma saatleri', fr: 'Horaires', hr: 'Radno vrijeme' }, default: '24/7', primary: true },
+    { key: 'fitness_location', type: 'text', label: { de: 'Standort', en: 'Location', tr: 'Konum', fr: 'Emplacement', hr: 'Lokacija' }, default: '', primary: true },
+    { key: 'fitness_equipment', type: 'text', label: { de: 'Ausstattung', en: 'Equipment', tr: 'Ekipmanlar', fr: 'Équipement', hr: 'Oprema' }, default: '', primary: false }
+  ]},
+  { id: 'bike_info', categoryId: 'cat_leisure', icon: 'Compass', title: { de: 'Fahrradverleih – Informationen', en: 'Bike Rental Information', tr: 'Bisiklet Kiralama Bilgileri', fr: 'Informations location de vélos', hr: 'Informacije o najmu bicikala' }, schema: [
+    { key: 'bike_types', type: 'text', label: { de: 'Fahrradtypen', en: 'Bike types', tr: 'Bisiklet türleri', fr: 'Types de vélos', hr: 'Vrste bicikala' }, default: '', primary: true },
+    { key: 'bike_location', type: 'text', label: { de: 'Standort', en: 'Location', tr: 'Konum', fr: 'Emplacement', hr: 'Lokacija' }, default: '', primary: true },
+    { key: 'bike_prices', type: 'text', label: { de: 'Preisübersicht', en: 'Price information', tr: 'Fiyat bilgisi', fr: 'Tarifs', hr: 'Cjenik' }, default: '', primary: false }
+  ]},
+  { id: 'events_info', categoryId: 'cat_leisure', icon: 'Calendar', title: { de: 'Events & Veranstaltungen', en: 'Events & Activities', tr: 'Etkinlikler', fr: 'Événements', hr: 'Događaji' }, schema: [
+    { key: 'event_program', type: 'text', label: { de: 'Programm', en: 'Programme', tr: 'Program', fr: 'Programme', hr: 'Program' }, default: '', primary: true },
+    { key: 'event_location', type: 'text', label: { de: 'Veranstaltungsort', en: 'Venue', tr: 'Etkinlik yeri', fr: 'Lieu', hr: 'Mjesto održavanja' }, default: '', primary: true },
+    { key: 'event_url', type: 'text', label: { de: 'Weitere Informationen (Link)', en: 'More information (link)', tr: 'Daha fazla bilgi (link)', fr: 'Plus d’informations (lien)', hr: 'Više informacija (poveznica)' }, default: '', primary: false }
+  ]},
+  { id: 'sightseeing', categoryId: 'cat_leisure', icon: 'MapPin', title: { de: 'Sehenswürdigkeiten', en: 'Sightseeing', tr: 'Gezilecek Yerler', fr: 'Sites touristiques', hr: 'Znamenitosti' }, schema: [
+    { key: 'sight_name', type: 'text', label: { de: 'Name', en: 'Name', tr: 'Adı', fr: 'Nom', hr: 'Naziv' }, default: '', primary: true },
+    { key: 'sight_distance', type: 'text', label: { de: 'Entfernung', en: 'Distance', tr: 'Mesafe', fr: 'Distance', hr: 'Udaljenost' }, default: '', primary: true },
+    { key: 'sight_description', type: 'text', label: { de: 'Beschreibung', en: 'Description', tr: 'Açıklama', fr: 'Description', hr: 'Opis' }, default: '', primary: false }
+  ]},
+  { id: 'parking_info', categoryId: 'cat_mobility', icon: 'Car', title: { de: 'Parkmöglichkeiten', en: 'Parking', tr: 'Otopark', fr: 'Stationnement', hr: 'Parkiranje' }, schema: [
+    { key: 'parking_type', type: 'text', label: { de: 'Parkplatztyp', en: 'Parking type', tr: 'Otopark türü', fr: 'Type de stationnement', hr: 'Vrsta parkirališta' }, default: '', primary: true },
+    { key: 'parking_location', type: 'text', label: { de: 'Standort', en: 'Location', tr: 'Konum', fr: 'Emplacement', hr: 'Lokacija' }, default: '', primary: true },
+    { key: 'parking_price', type: 'text', label: { de: 'Preis', en: 'Price', tr: 'Ücret', fr: 'Prix', hr: 'Cijena' }, default: '', primary: false }
+  ]},
+  { id: 'public_transport', categoryId: 'cat_mobility', icon: 'Bus', title: { de: 'Öffentliche Verkehrsmittel', en: 'Public Transport', tr: 'Toplu Taşıma', fr: 'Transports en commun', hr: 'Javni prijevoz' }, schema: [
+    { key: 'transport_stops', type: 'text', label: { de: 'Haltestellen', en: 'Stops', tr: 'Duraklar', fr: 'Arrêts', hr: 'Stanice' }, default: '', primary: true },
+    { key: 'transport_link', type: 'text', label: { de: 'Fahrpläne (Link)', en: 'Timetables (link)', tr: 'Sefer saatleri (link)', fr: 'Horaires (lien)', hr: 'Vozni red (poveznica)' }, default: '', primary: true }
+  ]},
+  { id: 'accessibility_info', categoryId: 'cat_safety', icon: 'Accessibility', title: { de: 'Barrierefreiheit', en: 'Accessibility', tr: 'Erişilebilirlik', fr: 'Accessibilité', hr: 'Pristupačnost' }, schema: [
+    { key: 'step_free_entrance', type: 'boolean', label: { de: 'Stufenloser Eingang', en: 'Step-free entrance', tr: 'Basamaksız giriş', fr: 'Entrée sans marches', hr: 'Ulaz bez stepenica' }, default: false, primary: true },
+    { key: 'accessible_rooms', type: 'boolean', label: { de: 'Barrierefreie Zimmer', en: 'Accessible rooms', tr: 'Erişilebilir odalar', fr: 'Chambres accessibles', hr: 'Pristupačne sobe' }, default: false, primary: true },
+    { key: 'accessible_bathroom', type: 'boolean', label: { de: 'Barrierefreies Bad', en: 'Accessible bathroom', tr: 'Erişilebilir banyo', fr: 'Salle de bain accessible', hr: 'Pristupačna kupaonica' }, default: false, primary: true },
+    { key: 'accessible_parking', type: 'boolean', label: { de: 'Behindertenparkplätze', en: 'Accessible parking', tr: 'Engelli otoparkı', fr: 'Stationnement accessible', hr: 'Pristupačno parkiralište' }, default: false, primary: false },
+    { key: 'accessibility_details', type: 'text', label: { de: 'Weitere Hinweise', en: 'Additional details', tr: 'Ek bilgiler', fr: 'Détails supplémentaires', hr: 'Dodatne napomene' }, default: '', primary: false }
+  ]},
+  { id: 'cert_accessibility', categoryId: 'cat_certificates', icon: 'Award', title: { de: 'Zertifizierte Barrierefreiheit', en: 'Accessibility Certification', tr: 'Erişilebilirlik Sertifikası', fr: 'Certification accessibilité', hr: 'Certifikat pristupačnosti' }, schema: [
+    { key: 'access_cert_name', type: 'text', label: { de: 'Zertifikat', en: 'Certificate', tr: 'Sertifika', fr: 'Certificat', hr: 'Certifikat' }, default: '', primary: true },
+    { key: 'access_cert_issuer', type: 'text', label: { de: 'Ausstellende Organisation', en: 'Issuing organization', tr: 'Veren kuruluş', fr: 'Organisme émetteur', hr: 'Izdavatelj' }, default: '', primary: true },
+    { key: 'access_cert_validity', type: 'text', label: { de: 'Gültigkeit', en: 'Validity', tr: 'Geçerlilik', fr: 'Validité', hr: 'Valjanost' }, default: '', primary: false }
+  ]},
+  { id: 'cert_quality', categoryId: 'cat_certificates', icon: 'Award', title: { de: 'Qualitätsauszeichnungen', en: 'Quality Awards', tr: 'Kalite Ödülleri', fr: 'Distinctions qualité', hr: 'Nagrade za kvalitetu' }, schema: [
+    { key: 'quality_award_name', type: 'text', label: { de: 'Auszeichnung', en: 'Award', tr: 'Ödül', fr: 'Distinction', hr: 'Nagrada' }, default: '', primary: true },
+    { key: 'quality_award_org', type: 'text', label: { de: 'Verliehen von', en: 'Awarded by', tr: 'Veren kurum', fr: 'Décerné par', hr: 'Dodijelio' }, default: '', primary: true },
+    { key: 'quality_award_year', type: 'text', label: { de: 'Jahr', en: 'Year', tr: 'Yıl', fr: 'Année', hr: 'Godina' }, default: '', primary: false }
+  ]},
+  { id: 'eco_measures', categoryId: 'cat_sustainability', icon: 'Recycle', title: { de: 'Nachhaltige Maßnahmen', en: 'Sustainability Measures', tr: 'Sürdürülebilirlik Uygulamaları', fr: 'Mesures durables', hr: 'Mjere održivosti' }, schema: [
+    { key: 'energy_measures', type: 'text', label: { de: 'Energie & Strom', en: 'Energy', tr: 'Enerji', fr: 'Énergie', hr: 'Energija' }, default: '', primary: true },
+    { key: 'water_measures', type: 'text', label: { de: 'Wassersparen', en: 'Water saving', tr: 'Su tasarrufu', fr: 'Économie d’eau', hr: 'Ušteda vode' }, default: '', primary: true },
+    { key: 'waste_measures', type: 'text', label: { de: 'Abfall & Recycling', en: 'Waste & recycling', tr: 'Atık & geri dönüşüm', fr: 'Déchets & recyclage', hr: 'Otpad i recikliranje' }, default: '', primary: false }
+  ]},
+  { id: 'house_rules', categoryId: 'cat_safety', icon: 'ShieldCheck', title: { de: 'Hausordnung', en: 'House Rules', tr: 'Otel Kuralları', fr: 'Règlement intérieur', hr: 'Kućni red' }, schema: [
+    { key: 'quiet_hours', type: 'text', label: { de: 'Ruhezeiten', en: 'Quiet hours', tr: 'Sessizlik saatleri', fr: 'Heures de calme', hr: 'Vrijeme tišine' }, default: '22:00–07:00', primary: true },
+    { key: 'house_rules_text', type: 'text', label: { de: 'Regeln', en: 'Rules', tr: 'Kurallar', fr: 'Règles', hr: 'Pravila' }, default: '', primary: true }
+  ]},
+  { id: 'pets_policy', categoryId: 'cat_safety', icon: 'Heart', title: { de: 'Haustiere', en: 'Pets', tr: 'Evcil Hayvanlar', fr: 'Animaux domestiques', hr: 'Kućni ljubimci' }, schema: [
+    { key: 'pets_allowed', type: 'boolean', label: { de: 'Haustiere erlaubt', en: 'Pets allowed', tr: 'Evcil hayvan kabul edilir', fr: 'Animaux acceptés', hr: 'Kućni ljubimci dozvoljeni' }, default: false, primary: true },
+    { key: 'pet_rules', type: 'text', label: { de: 'Hinweise', en: 'Information', tr: 'Bilgiler', fr: 'Informations', hr: 'Informacije' }, default: '', primary: true }
+  ]},
+  { id: 'smoking_policy', categoryId: 'cat_safety', icon: 'Info', title: { de: 'Raucherregelungen', en: 'Smoking Policy', tr: 'Sigara Kuralları', fr: 'Politique tabac', hr: 'Pravila pušenja' }, schema: [
+    { key: 'smoking_areas', type: 'text', label: { de: 'Raucherbereiche', en: 'Smoking areas', tr: 'Sigara alanları', fr: 'Zones fumeurs', hr: 'Prostori za pušenje' }, default: '', primary: true },
+    { key: 'smoking_rules', type: 'text', label: { de: 'Regelungen', en: 'Rules', tr: 'Kurallar', fr: 'Règles', hr: 'Pravila' }, default: '', primary: true }
+  ]}
 const renderSafeIconByName = (iconName, currentTheme) => {
   const themeClass = currentTheme ? currentTheme.text : 'text-slate-800';
   const className = `w-5 h-5 ${themeClass}`;
@@ -260,6 +360,11 @@ const renderSafeIconByName = (iconName, currentTheme) => {
     case 'Clock': return <Clock className={className} />;
     case 'Recycle': return <Recycle className={className} />;
     case 'Award': return <Award className={className} />;
+    case 'Accessibility': return <Accessibility className={className} />;
+    case 'Dumbbell': return <Dumbbell className={className} />;
+    case 'Wine': return <Wine className={className} />;
+    case 'Calendar': return <Calendar className={className} />;
+    case 'Bus': return <Bus className={className} />;
     case 'Baby': return <Baby className={className} />;
     default: return <Info className={className} />;
   }
@@ -367,16 +472,16 @@ const CompactPresetEditorModal = ({ isOpen, onClose, onSave, currentTheme, lang,
 
         <div className="p-4 sm:p-6 overflow-y-auto flex-1 space-y-4">
           {step === 1 && (
-            <div className="grid grid-cols-2 gap-2.5 sm:gap-3">
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
               {mainCategories.map(mainCat => {
                 const name = mainCat.name[lang] || mainCat.name.de;
                 return (
                   <button
                     key={mainCat.id}
                     onClick={() => handleSelectCategory(mainCat.id)}
-                    className={`p-3.5 rounded-2xl border text-left transition flex items-center gap-3 cursor-pointer bg-white hover:${currentTheme.border} hover:shadow-md group`}
+                    className={`p-2.5 sm:p-3 rounded-xl border text-left transition flex items-center gap-2.5 cursor-pointer bg-white hover:${currentTheme.border} hover:shadow-md group min-w-0`}
                   >
-                    <div className={`p-2.5 rounded-xl ${currentTheme.bgLight} group-hover:scale-105 transition`}>
+                    <div className={`p-2 rounded-lg ${currentTheme.bgLight} group-hover:scale-105 transition shrink-0`}>
                       {renderSafeIconByName(mainCat.icon, currentTheme)}
                     </div>
                     <span className="text-xs font-bold text-slate-800 group-hover:text-slate-950 truncate">{name}</span>
@@ -450,7 +555,7 @@ const CompactPresetEditorModal = ({ isOpen, onClose, onSave, currentTheme, lang,
                 />
               </div>
 
-              <div className="space-y-3 bg-stone-50/60 p-4 rounded-2xl border border-stone-200/80">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-3 gap-y-2.5 bg-stone-50/60 p-3 sm:p-4 rounded-2xl border border-stone-200/80">
                 {primaryFields.map(field => {
                   const val = fieldValues[field.key] !== undefined ? fieldValues[field.key] : field.default;
                   const label = field.label[lang] || field.label.de;
@@ -487,14 +592,13 @@ const CompactPresetEditorModal = ({ isOpen, onClose, onSave, currentTheme, lang,
                   }
 
                   return (
-                    <div key={field.key} className="space-y-1">
+                    <div key={field.key} className={`space-y-1 ${field.type === 'textarea' ? 'sm:col-span-2' : ''}`}>
                       <label className="block text-[10px] font-extrabold text-stone-500 uppercase">{label}</label>
-                      <input
-                        type="text"
-                        value={val !== undefined ? val : ''}
-                        onChange={(e) => handleFieldValueChange(field.key, e.target.value)}
-                        className="w-full p-2.5 text-xs border border-stone-200 rounded-xl bg-white font-medium"
-                      />
+                      {field.type === 'textarea' ? (
+                        <textarea rows={3} value={val !== undefined ? val : ''} onChange={(e) => handleFieldValueChange(field.key, e.target.value)} className="w-full p-2.5 text-xs border border-stone-200 rounded-xl bg-white font-medium resize-y" />
+                      ) : (
+                        <input type={field.type === 'number' ? 'number' : 'text'} value={val !== undefined ? val : ''} onChange={(e) => handleFieldValueChange(field.key, e.target.value)} className="w-full p-2.5 text-xs border border-stone-200 rounded-xl bg-white font-medium" />
+                      )}
                     </div>
                   );
                 })}
@@ -512,7 +616,7 @@ const CompactPresetEditorModal = ({ isOpen, onClose, onSave, currentTheme, lang,
                   </button>
 
                   {showMoreInfo && (
-                    <div className="p-4 space-y-3 bg-white border-t border-stone-200">
+                    <div className="p-3 sm:p-4 grid grid-cols-1 sm:grid-cols-2 gap-x-3 gap-y-2.5 bg-white border-t border-stone-200">
                       {secondaryFields.map(field => {
                         const val = fieldValues[field.key] !== undefined ? fieldValues[field.key] : field.default;
                         const label = field.label[lang] || field.label.de;
@@ -520,12 +624,11 @@ const CompactPresetEditorModal = ({ isOpen, onClose, onSave, currentTheme, lang,
                         return (
                           <div key={field.key} className="space-y-1">
                             <label className="block text-[10px] font-extrabold text-stone-500 uppercase">{label}</label>
-                            <input
-                              type="text"
-                              value={val !== undefined ? val : ''}
-                              onChange={(e) => handleFieldValueChange(field.key, e.target.value)}
-                              className="w-full p-2.5 text-xs border border-stone-200 rounded-xl bg-white font-medium"
-                            />
+                            {field.type === 'textarea' ? (
+                              <textarea rows={3} value={val !== undefined ? val : ''} onChange={(e) => handleFieldValueChange(field.key, e.target.value)} className="w-full p-2.5 text-xs border border-stone-200 rounded-xl bg-white font-medium resize-y" />
+                            ) : (
+                              <input type={field.type === 'number' ? 'number' : 'text'} value={val !== undefined ? val : ''} onChange={(e) => handleFieldValueChange(field.key, e.target.value)} className="w-full p-2.5 text-xs border border-stone-200 rounded-xl bg-white font-medium" />
+                            )}
                           </div>
                         );
                       })}
