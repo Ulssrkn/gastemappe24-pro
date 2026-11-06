@@ -187,6 +187,10 @@ const translations = {
   sq: { welcomeBadge: "Udhëzues", welcomeButton: "Fillo", greetingHello: "Përshëndetje,", greetingWelcome: "mirë se erdhët.", navHome: "Kryefaqja", navGaestemappe: "Udhëzuesi", navReview: "Vlerëso", navRoute: "Udha", weatherTitle: "Diell", weatherSub: "Moti", wlanTitle: "Wi-Fi", parkingTitle: "Parkimi", breakfastTitle: "Mëngjesi", checkInOutTitle: "Hyrja", detailBack: "Kthehu", adminTitle: "Admin", guestViewBtn: "Pamja", saveBtn: "Ruaj", savedMsg: "U ruajt!", trialTitle: "PRO", trialDaysLeft: "ditë", statsScans: "Scans", statsActiveRooms: "Dhomat", analyticsTitle: "Analitika", qrTitle: "QR Center", printA4: "A4", printA5: "A5", printCard: "Kartë", sec1Title: "1. Info", sec2Title: "2. Ngjyrat", sec3Title: "3. Logo", sec4Title: "4. Fotografitë", sec5Title: "5. QR Center", sec6Title: "6. Shabllonet", lblHotelName: "Emri", lblPhone: "Tel", btnAddCategory: "Shto", modalTitle: "Ndrysho", step1Title: "1. Kategoria", step2Title: "2. Shablloni", step3Title: "3. Detajet", addBtn: "Shto", editTitle: "Titulli", customTextLabel: "Shënime", yesLabel: "Po", noLabel: "Jo", moreInfo: "Më shumë", cancel: "Anulo", saveAndClose: "Mbyll", searchPlaceholder: "Kërko...", noPresetsFound: "Asgjë." }
 };
 
+// Czech and Norwegian Bokmål UI chrome use English fallback until their full UI copy is curated.
+translations.cs = translations.en;
+translations.nb = translations.no;
+
 const themeColors = [
   { id: 'amber', name: 'Amber Warm', bg: 'bg-amber-900', text: 'text-amber-900', bgLight: 'bg-amber-50', border: 'border-amber-900/40' },
   { id: 'emerald', name: 'Forest Emerald', bg: 'bg-emerald-800', text: 'text-emerald-800', bgLight: 'bg-emerald-50', border: 'border-emerald-800/40' },
@@ -584,7 +588,7 @@ const GuestCategoryDisplay = ({ category, currentTheme, lang, t }) => {
             const rawVal = fieldValues[field.key] !== undefined ? fieldValues[field.key] : field.default;
             const fieldLabel = (field.label && (field.label[lang] || field.label.de)) || field.key;
 
-            if (rawVal === undefined || rawVal === null || rawVal === '') return null;
+            if (rawVal === undefined || rawVal === null || rawVal === '' || (Array.isArray(rawVal) && rawVal.length === 0)) return null;
 
             return (
               <div key={field.key} className="border-b border-stone-100 last:border-0 pb-3.5 last:pb-0 flex flex-col gap-1.5">
