@@ -1069,12 +1069,12 @@ export default function App() {
             <option value="en">🇬🇧 EN</option>
             <option value="tr">🇹🇷 TR</option>
             <option value="fr">🇫🇷 FR</option>
-            <option value="it">🇮🇹 IT</option>
             <option value="es">🇪🇸 ES</option>
-            <option value="sv">🇸🇪 SV</option>
             <option value="cs">🇨🇿 CS</option>
             <option value="sq">🇦🇱 SQ</option>
+            <option value="sv">🇸🇪 SV</option>
             <option value="nb">🇳🇴 NB</option>
+            <option value="it">🇮🇹 IT</option>
           </select>
         </div>
 
@@ -1105,12 +1105,12 @@ export default function App() {
             <option value="en">🇬🇧 EN</option>
             <option value="tr">🇹🇷 TR</option>
             <option value="fr">🇫🇷 FR</option>
-            <option value="it">🇮🇹 IT</option>
             <option value="es">🇪🇸 ES</option>
-            <option value="sv">🇸🇪 SV</option>
             <option value="cs">🇨🇿 CS</option>
             <option value="sq">🇦🇱 SQ</option>
+            <option value="sv">🇸🇪 SV</option>
             <option value="nb">🇳🇴 NB</option>
+            <option value="it">🇮🇹 IT</option>
           </select>
           <button onClick={() => setAppMode('dashboard')} className="text-stone-300 hover:text-stone-600 p-1 text-xs cursor-pointer">🔑</button>
         </div>
