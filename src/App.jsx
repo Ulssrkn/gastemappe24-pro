@@ -6,7 +6,7 @@ import {
   Check, Image as ImageIcon, Copy,
   ChevronRight, ArrowRight, Upload, AlertCircle, Lock, Unlock,
   Utensils, Heart, Compass, Coffee, Car, Clock, ShieldCheck, Edit3, Mail, Globe, ExternalLink, QrCode, Printer, BarChart3, Star, Navigation, Sun, LogOut, User,
-  Wine, Sparkles, Tv, Waves, Dumbbell, Key, Bed, Building, ShoppingBag, Landmark, Map, Bus, Plane, Scroll, Save, Eye, EyeOff, Palette, TrendingUp, Users, Activity
+  Wine, Sparkles, Tv, Waves, Dumbbell, Key, Bed, Building, ShoppingBag, Landmark, Map, Bus, Plane, Scroll, Save, Eye, EyeOff, Palette, TrendingUp, Users, Activity, HelpCircle
 } from 'lucide-react';
 
 const supabaseUrl = 'https://YOUR-SUPABASE-URL.supabase.co';
@@ -25,7 +25,6 @@ const translations = {
     navRoute: "Anfahrt",
     weatherTitle: "Heiter",
     weatherSub: "Aktuelles Wetter vor Ort",
-    schnellzugriffTitle: "Schnellzugriff",
     wlanTitle: "WLAN",
     parkingTitle: "Parkplatz",
     breakfastTitle: "Frühstück",
@@ -35,7 +34,6 @@ const translations = {
     guestViewBtn: "Gastansicht öffnen",
     saveBtn: "Änderungen speichern",
     savedMsg: "Gespeichert!",
-    logoutBtn: "Abmelden",
     trialTitle: "30-Tage Testversion (PRO)",
     trialDaysLeft: "Tage verbleibend",
     statsScans: "QR-Code Scans (Gesamt)",
@@ -51,7 +49,7 @@ const translations = {
     sec3Title: "3. Logo hochladen",
     sec4Title: "4. Bilderverwaltung (Slider)",
     sec5Title: "5. Schnellzugriff (Aktivieren / Deaktivieren)",
-    sec6Title: "6. Gästemappe Kategorien (Vollständiger Katalog)",
+    sec6Title: "6. Gästemappe Kategorien (Dinamik Preset System)",
     lblHotelName: "Unterkunft Name",
     lblPhone: "Telefon",
     lblEmailField: "E-Mail",
@@ -65,12 +63,9 @@ const translations = {
     lblParkingInfo: "Parkplatz Info",
     btnLogoUpload: "Logo Wählen / Ändern",
     btnAddCategory: "Kategorie aus Katalog hinzufügen",
-    modalTitle: "Katalog: Kategorie auswählen",
+    modalTitle: "Katalog: Kategorie & Inhaltsvorlage auswählen",
     addBtn: "Hinzufügen",
     editTitle: "Name / Titel",
-    presetScenarioLabel: "Vordefiniertes Szenario / Textvariante wählen",
-    featuresLabel: "Ausstattung & Services auswählen (Booking-Style)",
-    customTextLabel: "Eigener Text (Keine Übersetzung)",
     customTextWarning: "⚠️ Dieser eigene Text wird für alle 10 Sprachen unverändert übernommen (keine automatische Übersetzung).",
     activeCard: "Karte anzeigen",
     inactiveCard: "Karte ausblenden"
@@ -86,7 +81,6 @@ const translations = {
     navRoute: "Route",
     weatherTitle: "Sunny",
     weatherSub: "Current local weather",
-    schnellzugriffTitle: "Quick Access",
     wlanTitle: "WiFi",
     parkingTitle: "Parking",
     breakfastTitle: "Breakfast",
@@ -96,7 +90,6 @@ const translations = {
     guestViewBtn: "Open Guest View",
     saveBtn: "Save Changes",
     savedMsg: "Saved!",
-    logoutBtn: "Log out",
     trialTitle: "30-Day Trial (PRO)",
     trialDaysLeft: "Days remaining",
     statsScans: "QR Code Scans (Total)",
@@ -112,7 +105,7 @@ const translations = {
     sec3Title: "3. Upload Logo",
     sec4Title: "4. Image Management (Slider)",
     sec5Title: "5. Quick Access (Enable / Disable Cards)",
-    sec6Title: "6. Directory Categories (Full Catalog)",
+    sec6Title: "6. Directory Categories (Dynamic Preset System)",
     lblHotelName: "Property Name",
     lblPhone: "Phone",
     lblEmailField: "E-Mail",
@@ -126,12 +119,9 @@ const translations = {
     lblParkingInfo: "Parking Info",
     btnLogoUpload: "Select / Change Logo",
     btnAddCategory: "Add Category from Catalog",
-    modalTitle: "Catalog: Select Category",
+    modalTitle: "Catalog: Select Category & Preset Template",
     addBtn: "Add",
     editTitle: "Name / Title",
-    presetScenarioLabel: "Select Preset Text Scenario",
-    featuresLabel: "Select Features & Amenities (Booking Style)",
-    customTextLabel: "Custom Text (No Translation)",
     customTextWarning: "⚠️ This custom text is kept as-is across all 10 languages (no automatic translation).",
     activeCard: "Show Card",
     inactiveCard: "Hide Card"
@@ -147,7 +137,6 @@ const translations = {
     navRoute: "Yol Tarifi",
     weatherTitle: "Güneşli",
     weatherSub: "Güncel Konum Havası",
-    schnellzugriffTitle: "Hızlı Erişim",
     wlanTitle: "WLAN",
     parkingTitle: "Otopark",
     breakfastTitle: "Kahvaltı",
@@ -157,7 +146,6 @@ const translations = {
     guestViewBtn: "Misafir Görünümünü Aç",
     saveBtn: "Değişiklikleri Kaydet",
     savedMsg: "Kaydedildi!",
-    logoutBtn: "Çıkış Yap",
     trialTitle: "30 Günlük Deneme (PRO)",
     trialDaysLeft: "Gün kaldı",
     statsScans: "QR Kod Taramaları (Toplam)",
@@ -173,7 +161,7 @@ const translations = {
     sec3Title: "3. Logo Yükleme",
     sec4Title: "4. Resim Yönetimi (Slider)",
     sec5Title: "5. Hızlı Erişim (Kartları Aç / Kapat)",
-    sec6Title: "6. Rehber Kategorileri (Tam Katalog)",
+    sec6Title: "6. Rehber Kategorileri (Dinamik Preset Mapping)",
     lblHotelName: "Tesis / Otel Adı",
     lblPhone: "Telefon",
     lblEmailField: "E-Posta",
@@ -187,442 +175,12 @@ const translations = {
     lblParkingInfo: "Otopark Bilgisi",
     btnLogoUpload: "Logo Seç / Değiştir",
     btnAddCategory: "Katalogdan Kategori Ekle",
-    modalTitle: "Hazır Katalog: Kategori Seçin",
+    modalTitle: "Katalog: Kategori ve İçerik Şablonu Seçin",
     addBtn: "Ekle",
     editTitle: "İsim / Başlık",
-    presetScenarioLabel: "Hazır Senaryo Metni Seçin (Dropdown)",
-    featuresLabel: "Özellik Seçimi (Booking.com Tarzı Kutucuklar)",
-    customTextLabel: "Özel Metin (Çevrilmez)",
     customTextWarning: "⚠️ Bu özel metin 10 dilde de aynı kalacaktır (otomatik çeviri yapılmaz).",
     activeCard: "Kartı Göster",
     inactiveCard: "Kartı Gizle"
-  },
-  it: {
-    welcomeBadge: "Guida digitale",
-    welcomeButton: "Inizia",
-    greetingHello: "Ciao,",
-    greetingWelcome: "benvenuto.",
-    navHome: "Home",
-    navGaestemappe: "Guida",
-    navReview: "Recensisci",
-    navRoute: "Percorso",
-    weatherTitle: "Sereno",
-    weatherSub: "Meteo attuale locale",
-    schnellzugriffTitle: "Accesso rapido",
-    wlanTitle: "Wi-Fi",
-    parkingTitle: "Parcheggio",
-    breakfastTitle: "Colazione",
-    checkInOutTitle: "Check-in / Out",
-    detailBack: "Torna alla panoramica",
-    adminTitle: "Gestione e Analisi",
-    guestViewBtn: "Apri vista ospiti",
-    saveBtn: "Salva modifiche",
-    savedMsg: "Salvato!",
-    logoutBtn: "Esci",
-    trialTitle: "Prova di 30 giorni (PRO)",
-    trialDaysLeft: "Giorni rimanenti",
-    statsScans: "Scansioni QR",
-    statsActiveRooms: "Accessi attivi",
-    statsTopCategory: "Categoria top",
-    statsPeakTime: "Orario di punta",
-    qrTitle: "Centro stampa QR",
-    printA4: "Modello A4",
-    printA5: "Modello A5",
-    printCard: "Biglietto da visita",
-    sec1Title: "1. Info struttura e contatti",
-    sec2Title: "2. Temi di colore",
-    sec3Title: "3. Carica logo",
-    sec4Title: "4. Gestione immagini",
-    sec5Title: "5. Accesso rapido",
-    sec6Title: "6. Categorie guida",
-    lblHotelName: "Nome struttura",
-    lblPhone: "Telefono",
-    lblEmailField: "E-mail",
-    lblAddress: "Indirizzo",
-    lblWebsite: "Sito web",
-    lblGoogleReview: "Link recensioni Google",
-    lblWifiSsid: "SSID Wi-Fi",
-    lblWifiPass: "Password Wi-Fi",
-    lblBreakfastTime: "Orari colazione",
-    lblCheckInOut: "Info Check-in / Check-out",
-    lblParkingInfo: "Info parcheggio",
-    btnLogoUpload: "Seleziona logo",
-    btnAddCategory: "Aggiungi categoria",
-    modalTitle: "Catalogo: seleziona categoria",
-    addBtn: "Aggiungi",
-    editTitle: "Nome / Titolo",
-    presetScenarioLabel: "Seleziona uno scenario di testo predefinito",
-    featuresLabel: "Seleziona caratteristiche (Stile Booking)",
-    customTextLabel: "Testo personalizzato (Senza traduzione)",
-    customTextWarning: "⚠️ Questo testo personalizzato rimane invariato in tutte le 10 lingue.",
-    activeCard: "Mostra carta",
-    inactiveCard: "Nascondi carta"
-  },
-  fr: {
-    welcomeBadge: "Guide numérique",
-    welcomeButton: "C'est parti",
-    greetingHello: "Bonjour,",
-    greetingWelcome: "bienvenue.",
-    navHome: "Accueil",
-    navGaestemappe: "Guide",
-    navReview: "Donner un avis",
-    navRoute: "Itinéraire",
-    weatherTitle: "Ensoleillé",
-    weatherSub: "Météo actuelle",
-    schnellzugriffTitle: "Accès rapide",
-    wlanTitle: "Wi-Fi",
-    parkingTitle: "Parking",
-    breakfastTitle: "Petit-déjeuner",
-    checkInOutTitle: "Arrivée / Départ",
-    detailBack: "Retour",
-    adminTitle: "Administration et Analyses",
-    guestViewBtn: "Ouvrir la vue invité",
-    saveBtn: "Enregistrer",
-    savedMsg: "Enregistré !",
-    logoutBtn: "Déconnexion",
-    trialTitle: "Essai 30 jours (PRO)",
-    trialDaysLeft: "jours restants",
-    statsScans: "Scans QR",
-    statsActiveRooms: "Accès actifs",
-    statsTopCategory: "Catégorie principale",
-    statsPeakTime: "Heures de pointe",
-    qrTitle: "Centre d'impression QR",
-    printA4: "Modèle A4",
-    printA5: "Modèle A5",
-    printCard: "Carte de visite",
-    sec1Title: "1. Infos et contacts",
-    sec2Title: "2. Thèmes de couleurs",
-    sec3Title: "3. Télécharger le logo",
-    sec4Title: "4. Gestion des images",
-    sec5Title: "5. Accès rapide",
-    sec6Title: "6. Catégories",
-    lblHotelName: "Nom de l'établissement",
-    lblPhone: "Téléphone",
-    lblEmailField: "E-mail",
-    lblAddress: "Adresse",
-    lblWebsite: "Site web",
-    lblGoogleReview: "Lien avis Google",
-    lblWifiSsid: "SSID Wi-Fi",
-    lblWifiPass: "Mot de passe Wi-Fi",
-    lblBreakfastTime: "Heures de petit-déjeuner",
-    lblCheckInOut: "Infos Check-in / Check-out",
-    lblParkingInfo: "Infos parking",
-    btnLogoUpload: "Choisir le logo",
-    btnAddCategory: "Ajouter une catégorie",
-    modalTitle: "Catalogue : Choisir une catégorie",
-    addBtn: "Ajouter",
-    editTitle: "Nom / Titre",
-    presetScenarioLabel: "Choisir un scénario de texte prédéfini",
-    featuresLabel: "Sélectionner les équipements (Style Booking)",
-    customTextLabel: "Texte personnalisé (Sans traduction)",
-    customTextWarning: "⚠️ Ce texte personnalisé reste identique dans les 10 langues.",
-    activeCard: "Afficher",
-    inactiveCard: "Masquer"
-  },
-  es: {
-    welcomeBadge: "Guía digital",
-    welcomeButton: "Empezar",
-    greetingHello: "Hola,",
-    greetingWelcome: "bienvenido.",
-    navHome: "Inicio",
-    navGaestemappe: "Guía",
-    navReview: "Valorar",
-    navRoute: "Ruta",
-    weatherTitle: "Soleado",
-    weatherSub: "Clima actual",
-    schnellzugriffTitle: "Acceso rápido",
-    wlanTitle: "Wi-Fi",
-    parkingTitle: "Aparcamiento",
-    breakfastTitle: "Desayuno",
-    checkInOutTitle: "Entrada / Salida",
-    detailBack: "Volver",
-    adminTitle: "Gestión y Analítica",
-    guestViewBtn: "Abrir vista de huésped",
-    saveBtn: "Guardar cambios",
-    savedMsg: "¡Guardado!",
-    logoutBtn: "Cerrar sesión",
-    trialTitle: "Prueba de 30 días (PRO)",
-    trialDaysLeft: "días restantes",
-    statsScans: "Escaneos QR",
-    statsActiveRooms: "Accesos activos",
-    statsTopCategory: "Categoría principal",
-    statsPeakTime: "Hora punta",
-    qrTitle: "Centro de impresión QR",
-    printA4: "Plantilla A4",
-    printA5: "Plantilla A5",
-    printCard: "Tarjeta de visita",
-    sec1Title: "1. Info y contactos",
-    sec2Title: "2. Temas de color",
-    sec3Title: "3. Subir logo",
-    sec4Title: "4. Gestión de imágenes",
-    sec5Title: "5. Acceso rápido",
-    sec6Title: "6. Categorías de la guía",
-    lblHotelName: "Nombre del alojamiento",
-    lblPhone: "Teléfono",
-    lblEmailField: "Correo electrónico",
-    lblAddress: "Dirección",
-    lblWebsite: "Sitio web",
-    lblGoogleReview: "Enlace de reseñas de Google",
-    lblWifiSsid: "SSID de Wi-Fi",
-    lblWifiPass: "Contraseña de Wi-Fi",
-    lblBreakfastTime: "Horario de desayuno",
-    lblCheckInOut: "Info de entrada / salida",
-    lblParkingInfo: "Info de aparcamiento",
-    btnLogoUpload: "Seleccionar logo",
-    btnAddCategory: "Añadir categoría",
-    modalTitle: "Catálogo: Seleccionar categoría",
-    addBtn: "Añadir",
-    editTitle: "Nombre / Título",
-    presetScenarioLabel: "Seleccionar escenario de texto predefinido",
-    featuresLabel: "Seleccionar servicios (Estilo Booking)",
-    customTextLabel: "Texto personalizado (Sin traducción)",
-    customTextWarning: "⚠️ Este texto personalizado se mantiene igual en los 10 idiomas.",
-    activeCard: "Mostrar tarjeta",
-    inactiveCard: "Ocultar tarjeta"
-  },
-  sv: {
-    welcomeBadge: "Digital gästguide",
-    welcomeButton: "Sätt igång",
-    greetingHello: "Hej,",
-    greetingWelcome: "välkommen.",
-    navHome: "Hem",
-    navGaestemappe: "Guide",
-    navReview: "Recensera",
-    navRoute: "Vägbeskrivning",
-    weatherTitle: "Soligt",
-    weatherSub: "Aktuellt väder",
-    schnellzugriffTitle: "Snabba åtgärder",
-    wlanTitle: "Wi-Fi",
-    parkingTitle: "Parkering",
-    breakfastTitle: "Frukost",
-    checkInOutTitle: "Incheckning / Utcheckning",
-    detailBack: "Tillbaka",
-    adminTitle: "Administration & Analys",
-    guestViewBtn: "Öppna gästvy",
-    saveBtn: "Spara ändringar",
-    savedMsg: "Sparat!",
-    logoutBtn: "Logga ut",
-    trialTitle: "30 dagars provperiod (PRO)",
-    trialDaysLeft: "dagar kvar",
-    statsScans: "QR-skanningar",
-    statsActiveRooms: "Aktiva rum",
-    statsTopCategory: "Populäraste kategori",
-    statsPeakTime: "Pikatid",
-    qrTitle: "QR-utskriftscenter",
-    printA4: "Utskrift A4",
-    printA5: "Utskrift A5",
-    printCard: "Visiterkort",
-    sec1Title: "1. Boendeinformation",
-    sec2Title: "2. Färgteman",
-    sec3Title: "3. Ladda upp logotyp",
-    sec4Title: "4. Bildhantering",
-    sec5Title: "5. Snabbåtkomst",
-    sec6Title: "6. Kategorier",
-    lblHotelName: "Boendets namn",
-    lblPhone: "Telefon",
-    lblEmailField: "E-post",
-    lblAddress: "Adress",
-    lblWebsite: "Webbplats",
-    lblGoogleReview: "Google recensionslänk",
-    lblWifiSsid: "Wi-Fi SSID",
-    lblWifiPass: "Wi-Fi lösenord",
-    lblBreakfastTime: "Frukosttider",
-    lblCheckInOut: "In- / Utcheckningsinfo",
-    lblParkingInfo: "Parkeringsinfo",
-    btnLogoUpload: "Välj logotyp",
-    btnAddCategory: "Lägg till kategori",
-    modalTitle: "Katalog: Välj kategori",
-    addBtn: "Lägg till",
-    editTitle: "Namn / Titel",
-    presetScenarioLabel: "Välj fördefinierat textscenario",
-    featuresLabel: "Välj bekvämligheter (Booking-stil)",
-    customTextLabel: "Anpassad text (Ingen översättning)",
-    customTextWarning: "⚠️ Denna anpassade text förblir oförändrad på alla 10 språk.",
-    activeCard: "Visa kort",
-    inactiveCard: "Dölj kort"
-  },
-  no: {
-    welcomeBadge: "Digital gjesteguide",
-    welcomeButton: "Sett i gang",
-    greetingHello: "Hei,",
-    greetingWelcome: "velkommen.",
-    navHome: "Hjem",
-    navGaestemappe: "Guide",
-    navReview: "Gi tilbakemelding",
-    navRoute: "Rute",
-    weatherTitle: "Sol",
-    weatherSub: "Aktuelt vær",
-    schnellzugriffTitle: "Hurtigtilgang",
-    wlanTitle: "Wi-Fi",
-    parkingTitle: "Parkering",
-    breakfastTitle: "Frokost",
-    checkInOutTitle: "Inn- / Utsjekking",
-    detailBack: "Tilbake",
-    adminTitle: "Administrasjon og Analyse",
-    guestViewBtn: "Åpne gjestevisning",
-    saveBtn: "Lagre endringer",
-    savedMsg: "Lagret!",
-    logoutBtn: "Logg ut",
-    trialTitle: "30 dagers prøveperiode (PRO)",
-    trialDaysLeft: "dager igjen",
-    statsScans: "QR-skanninger",
-    statsActiveRooms: "Aktive rom",
-    statsTopCategory: "Toppkategori",
-    statsPeakTime: "Mest aktiv tid",
-    qrTitle: "QR-utskriftssenter",
-    printA4: "Utskrift A4",
-    printA5: "Utskrift A5",
-    printCard: "Visittkort",
-    sec1Title: "1. Boliginformasjon",
-    sec2Title: "2. Fargetemaer",
-    sec3Title: "3. Last opp logo",
-    sec4Title: "4. Bildebehandling",
-    sec5Title: "5. Hurtigtilgang",
-    sec6Title: "6. Kategorier",
-    lblHotelName: "Boligens navn",
-    lblPhone: "Telefon",
-    lblEmailField: "E-post",
-    lblAddress: "Adresse",
-    lblWebsite: "Nettsted",
-    lblGoogleReview: "Google Omtale-link",
-    lblWifiSsid: "Wi-Fi SSID",
-    lblWifiPass: "Wi-Fi passord",
-    lblBreakfastTime: "Frokosttider",
-    lblCheckInOut: "Inn- / Utsjekk info",
-    lblParkingInfo: "Parkeringsinfo",
-    btnLogoUpload: "Velg logo",
-    btnAddCategory: "Legg till kategori",
-    modalTitle: "Katalog: Velg kategori",
-    addBtn: "Legg til",
-    editTitle: "Navn / Tittel",
-    presetScenarioLabel: "Velg forhåndsdefinert tekstscenario",
-    featuresLabel: "Velg fasiliteter (Booking-stil)",
-    customTextLabel: "Egendefinert tekst (Ingen oversettelse)",
-    customTextWarning: "⚠️ Denne egendefinerte teksten forblir uendret på alle 10 språk.",
-    activeCard: "Vis kort",
-    inactiveCard: "Skjul kort"
-  },
-  hr: {
-    welcomeBadge: "Digitalni vodič",
-    welcomeButton: "Započnimo",
-    greetingHello: "Pozdrav,",
-    greetingWelcome: "dobrodošli.",
-    navHome: "Početna",
-    navGaestemappe: "Vodič",
-    navReview: "Ocijeni",
-    navRoute: "Upute",
-    weatherTitle: "Sunčano",
-    weatherSub: "Trenutno vrijeme",
-    schnellzugriffTitle: "Brzi pristup",
-    wlanTitle: "Wi-Fi",
-    parkingTitle: "Parkiralište",
-    breakfastTitle: "Doručak",
-    checkInOutTitle: "Prijava / Odjava",
-    detailBack: "Natrag",
-    adminTitle: "Upravljanje i Analitika",
-    guestViewBtn: "Otvori prikaz za goste",
-    saveBtn: "Spremi promjene",
-    savedMsg: "Spremljeno!",
-    logoutBtn: "Odjava",
-    trialTitle: "30-dnevno probno razdoblje",
-    trialDaysLeft: "preostalih dana",
-    statsScans: "QR skeniranja",
-    statsActiveRooms: "Aktivne sobe",
-    statsTopCategory: "Najpopularnija kategorija",
-    statsPeakTime: "Najaktivnije vrijeme",
-    qrTitle: "QR centar za ispis",
-    printA4: "Predložak A4",
-    printA5: "Predložak A5",
-    printCard: "Vizitka",
-    sec1Title: "1. Informacije o objektu",
-    sec2Title: "2. Teme boja",
-    sec3Title: "3. Učitaj logotip",
-    sec4Title: "4. Upravljanje slikama",
-    sec5Title: "5. Brzi pristup",
-    sec6Title: "6. Kategorije vodiča",
-    lblHotelName: "Naziv objekta",
-    lblPhone: "Telefon",
-    lblEmailField: "E-pošta",
-    lblAddress: "Adresa",
-    lblWebsite: "Web stranica",
-    lblGoogleReview: "Google poveznica recenzije",
-    lblWifiSsid: "Wi-Fi SSID",
-    lblWifiPass: "Wi-Fi lozinka",
-    lblBreakfastTime: "Vrijeme doručka",
-    lblCheckInOut: "Info prijave / odjave",
-    lblParkingInfo: "Info o parkiranju",
-    btnLogoUpload: "Odaberi logotip",
-    btnAddCategory: "Dodaj kategoriju",
-    modalTitle: "Katalog: Odaberi kategoriju",
-    addBtn: "Dodaj",
-    editTitle: "Naziv / Naslov",
-    presetScenarioLabel: "Odaberite unaprijed definiran scenarij teksta",
-    featuresLabel: "Odaberite sadržaje (Booking stil)",
-    customTextLabel: "Prilagođeni tekst (Bez prevođenja)",
-    customTextWarning: "⚠️ Ovaj prilagođeni tekst ostaje neizmijenjen na svih 10 jezika.",
-    activeCard: "Prikaži karticu",
-    inactiveCard: "Sakrij karticu"
-  },
-  sq: {
-    welcomeBadge: "Udhëzues dixhital",
-    welcomeButton: "Le të fillojmë",
-    greetingHello: "Përshëndetje,",
-    greetingWelcome: "mirë se erdhët.",
-    navHome: "Kryefaqja",
-    navGaestemappe: "Udhëzuesi",
-    navReview: "Vlerëso",
-    navRoute: "Udha",
-    weatherTitle: "Me diell",
-    weatherSub: "Moti aktual",
-    schnellzugriffTitle: "Qasje e shpejtë",
-    wlanTitle: "Wi-Fi",
-    parkingTitle: "Parkimi",
-    breakfastTitle: "Mëngjesi",
-    checkInOutTitle: "Check-in / Out",
-    detailBack: "Kthehu prapa",
-    adminTitle: "Administrimi dhe Analitika",
-    guestViewBtn: "Hap pamjen e mysafirit",
-    saveBtn: "Ruaj ndryshimet",
-    savedMsg: "U ruajt!",
-    logoutBtn: "Dil",
-    trialTitle: "Provë 30-ditore (PRO)",
-    trialDaysLeft: "ditë të mbetura",
-    statsScans: "Skanime QR",
-    statsActiveRooms: "Dhoma aktive",
-    statsTopCategory: "Kategoria kryesore",
-    statsPeakTime: "Orari i pikut",
-    qrTitle: "Qendra e printimit QR",
-    printA4: "Modeli A4",
-    printA5: "Modeli A5",
-    printCard: "Kard vizite",
-    sec1Title: "1. Informacioni i pronës",
-    sec2Title: "2. Temat e ngjyrave",
-    sec3Title: "3. Ngarko logon",
-    sec4Title: "4. Menaxhimi i imazheve",
-    sec5Title: "5. Qasja e shpejtë",
-    sec6Title: "6. Kategoritë",
-    lblHotelName: "Emri i pronës",
-    lblPhone: "Telefoni",
-    lblEmailField: "E-mail",
-    lblAddress: "Adresa",
-    lblWebsite: "Faqja e internetit",
-    lblGoogleReview: "Linku i vlerësimeve Google",
-    lblWifiSsid: "Wi-Fi SSID",
-    lblWifiPass: "Fjalëkalimi Wi-Fi",
-    lblBreakfastTime: "Orari i mëngjesit",
-    lblCheckInOut: "Info Check-in / Check-out",
-    lblParkingInfo: "Info e parkimit",
-    btnLogoUpload: "Zgjidh logo",
-    btnAddCategory: "Shto kategori",
-    modalTitle: "Katalogu: Zgjidh kategorinë",
-    addBtn: "Shto",
-    editTitle: "Emri / Titulli",
-    presetScenarioLabel: "Zgjidhni një skenar teksti të paracaktuar",
-    featuresLabel: "Zgjidhni pajisjet (Stili Booking)",
-    customTextLabel: "Tekst i personalizuar (Pa përkthim)",
-    customTextWarning: "⚠️ Ky tekst i personalizuar mbetet i njëjtë në të 10 gjuhët.",
-    activeCard: "Shfaq kartelën",
-    inactiveCard: "Fshih kartelën"
   }
 };
 
@@ -637,138 +195,165 @@ const themeColors = [
   { id: 'orange', name: 'Sunset Orange', bg: 'bg-orange-700', text: 'text-orange-700', bgLight: 'bg-orange-50', border: 'border-orange-700/40', hex: '#c2410c' }
 ];
 
-// Orijinal 12 Şablon Kategori + Booking.com Usulü Kutucuk (Features) ve 3 Hazır Senaryo
+// DİNAMİK PRESET MAPPING SİSTEMİ (İstediğin 8 Ana Grup ve Özel Alan Haritalamaları)
 const categoryPresets = [
+  // 1. 🏨 Hotel & Unterkunft
   { 
     id: 'hotel_info', 
-    group: 'Hotel & Unterkunft', 
-    title: { de: 'Hotelinformationen', en: 'Hotel Information', tr: 'Otel Bilgileri', it: 'Informazioni sull\'hotel', fr: 'Informations sur l\'hôtel', es: 'Información del hotel', sv: 'Hotellinformation', no: 'Hotellinformasjon', hr: 'Informacije o hotelu', sq: 'Informacione për hotelin' }, 
-    subtitle: { de: 'Rezeption & Zeiten', en: 'Reception & hours', tr: 'Resepsiyon ve saatler', it: 'Ricezione e orari', fr: 'Réception et horaires', es: 'Recepción y horarios', sv: 'Reception & tider', no: 'Resepsjon og tider', hr: 'Recepcija i radno vrijeme', sq: 'Recepsioni dhe oraret' }, 
-    scenarios: [
-      { id: 's1', label: { de: 'Standard 24/7 Service', en: 'Standard 24/7 Service', tr: 'Standart 24/7 Servis' }, text: { de: 'Unsere Rezeption ist rund um die Uhr (24/7) für Sie besetzt. Notfall-Hotline jederzeit erreichbar.', en: 'Our reception is open 24/7 for you. Emergency hotline available anytime.', tr: 'Resepsiyonumuz 24 saat hizmetinizdedir. Acil hat 7/24 aktiftir.' } },
-      { id: 's2', label: { de: 'Feste Rezeptionszeiten', en: 'Fixed Reception Hours', tr: 'Belirli Resepsiyon Saatleri' }, text: { de: 'Unsere Rezeption ist täglich von 07:00 bis 22:00 Uhr besetzt. Bei Spätanreise nutzen Sie bitte den Keybox-Code.', en: 'Our reception is open daily from 07:00 to 22:00. For late arrival please use keybox.', tr: 'Resepsiyonumuz 07:00 - 22:00 arası açıktır. Geç giriş için lütfen şifreli anahtar kutusunu kullanın.' } },
-      { id: 's3', label: { de: 'Kontaktloser Digital-Express Check-in', en: 'Contactless Digital Check-in', tr: 'Temassız Dijital Giriş' }, text: { de: 'Unser Haus wird digital geführt. Bei Fragen erreichen Sie unseren Support per Telefon oder WhatsApp.', en: 'Our property is digitally managed. Reach out via phone or WhatsApp anytime.', tr: 'Tesisimiz dijital yönetilmektedir. Sorularınız için telefon veya WhatsApp üzerinden bize ulaşabilirsiniz.' } }
-    ],
-    features: ['24h Rezeption', 'Gepäckaufbewahrung', 'Aufzug', 'Express Check-in', 'Mehrsprachiges Personal'],
+    group: '🏨 Hotel & Unterkunft', 
+    title: { de: 'Hotelinformationen', en: 'Hotel Information', tr: 'Otel Bilgileri' }, 
+    subtitle: { de: 'Rezeption & Erreichbarkeit', en: 'Reception & Access', tr: 'Resepsiyon ve Ulaşılabilirlik' },
+    fieldsType: 'rezeption',
+    features: ['24h Rezeption', 'Gepäckaufbewahrung', 'Aufzug', 'Mehrsprachiges Personal'],
     icon: 'Building' 
   },
   { 
+    id: 'wifi_internet', 
+    group: '🏨 Hotel & Unterkunft', 
+    title: { de: 'WLAN & Internet', en: 'WiFi & Internet', tr: 'WLAN ve İnternet' }, 
+    subtitle: { de: 'Zugangsdaten & Highspeed', en: 'Credentials & Highspeed', tr: 'Giriş Bilgileri ve Yüksek Hız' },
+    fieldsType: 'wifi',
+    features: ['Kostenloses WLAN', 'Im gesamten Hotel', 'Highspeed Glasfaser', 'Passwort erforderlich'],
+    icon: 'Wifi' 
+  },
+  { 
+    id: 'checkin_checkout', 
+    group: '🏨 Hotel & Unterkunft', 
+    title: { de: 'Check-in & Check-out', en: 'Check-in & Check-out', tr: 'Giriş ve Çıkış Saatleri' }, 
+    subtitle: { de: 'Zeiten & Express Abwicklung', en: 'Times & Express Departure', tr: 'Saatler ve Hızlı Çıkış' },
+    fieldsType: 'checkinout',
+    features: ['Express Check-out', 'Schlüsselabgabe an Rezeption', 'Gepäckaufbewahrung bei Abreise', 'Late Check-out auf Anfrage'],
+    icon: 'Clock' 
+  },
+  { 
     id: 'room_info', 
-    group: 'Hotel & Unterkunft', 
-    title: { de: 'Zimmerinformationen', en: 'Room Information', tr: 'Oda Bilgileri', it: 'Informazioni sulle camere', fr: 'Informations sur les chambres', es: 'Información de la habitación', sv: 'Rumsinformation', no: 'Romsinformasjon', hr: 'Informacije o sobama', sq: 'Informacione për dhomat' }, 
-    subtitle: { de: 'Ausstattung & Safe', en: 'Amenities & safe', tr: 'Oda özellikleri ve kasa', it: 'Servizi e cassaforte', fr: 'Équipements et coffre', es: 'Servicios y caja fuerte', sv: 'Bekvämligheter & kassaskåp', no: 'Fasiliteter og safe', hr: 'Sadržaji i sef', sq: 'Pajisjet dhe kasaforta' }, 
-    scenarios: [
-      { id: 's1', label: { de: 'Komfort-Ausstattung', en: 'Comfort Amenities', tr: 'Konfor Donanımı' }, text: { de: 'Alle Zimmer verfügen über Zimmersafe, Haartrockner, Kaffeemaschine und Flachbild-TV.', en: 'All rooms feature room safe, hairdryer, coffee machine, and flat-screen TV.', tr: 'Tüm odalarda kasa, saç kurutma makinesi, kahve makinesi ve TV mevcuttur.' } },
-      { id: 's2', label: { de: 'Umwelt- & Handtuchwechsel', en: 'Eco & Towel Change', tr: 'Çevre & Havlu Değişimi' }, text: { de: 'Der Umwelt zuliebe wechseln wir Handtücher auf Wunsch. Bitte legen Sie benutzte Tücher auf den Boden.', en: 'For the environment, towel change is on request. Please leave used towels on the floor.', tr: 'Doğayı korumak adına havlular isteğe bağlı değiştirilir. Değişim için lütfen yere bırakın.' } },
-      { id: 's3', label: { de: 'Klimaanlage & Heizung', en: 'AC & Heating Info', tr: 'Klima & Isıtma Bilgisi' }, text: { de: 'Die Raumtemperatur lässt sich individuell über das Thermostat regeln. Bitte Fenster bei AC schließen.', en: 'Room temperature can be controlled individually. Please close windows while AC is running.', tr: 'Oda sıcaklığı termostat ile ayarlanabilir. Klima çalışırken lütfen pencereleri kapalı tutun.' } }
-    ],
-    features: ['Zimmersafe', 'Klimaanlage', 'Flachbild-TV', 'Haartrockner', 'Wasserkocher / Kaffemaschine', 'Nichtraucherzimmer'],
+    group: '🏨 Hotel & Unterkunft', 
+    title: { de: 'Zimmerinformationen', en: 'Room Information', tr: 'Oda Bilgileri' }, 
+    subtitle: { de: 'Klimaanlage, Safe & TV', en: 'AC, Safe & TV', tr: 'Klima, Kasa ve TV' },
+    fieldsType: 'room',
+    features: ['Zimmersafe', 'Klimaanlage', 'Flachbild-TV', 'Haartrockner', 'Wasserkocher', 'Nichtraucherzimmer'],
     icon: 'Bed' 
   },
   { 
-    id: 'keys_access', 
-    group: 'Hotel & Unterkunft', 
-    title: { de: 'Zimmerschlüssel & Zugang', en: 'Keys & Access', tr: 'Anahtar ve Erişim', it: 'Chiavi e accesso', fr: 'Clés et accès', es: 'Llaves y acceso', sv: 'Nycklar & åtkomst', no: 'Nøkler og tilgang', hr: 'Ključevi i pristup', sq: 'Çelësat dhe qasja' }, 
-    subtitle: { de: 'Karte & Schließzeiten', en: 'Keycard & locking times', tr: 'Anahtar kartı ve kapı saatleri', it: 'Scheda chiave e orari', fr: 'Carte clé et horaires', es: 'Tarjeta llave y horarios', sv: 'Nyckelkort & tider', no: 'Nøkkelkort og tider', hr: 'Ključ kartica i vremena', sq: 'Kardçelës dhe oraret' }, 
-    scenarios: [
-      { id: 's1', label: { de: 'Elektronische Schlüsselkarte', en: 'Keycard System', tr: 'Elektronik Kartlı Sistem' }, text: { de: 'Ihre Karte öffnet das Zimmer sowie den Haupteingang nach 22:00 Uhr.', en: 'Your card opens the room and the main entrance after 22:00.', tr: 'Kartınız 22:00 sonrasında ana kapıyı ve odanızı açar.' } },
-      { id: 's2', label: { de: 'PIN-Code / Smart Lock', en: 'PIN Code Lock', tr: 'Şifreli / Akıllı Kilit' }, text: { de: 'Nutzen Sie Ihren persönlichen 6-stelligen PIN-Code für den schlüssellosen Zugang.', en: 'Use your personal 6-digit PIN code for keyless entry.', tr: 'Anahtarsız giriş için kişisel 6 haneli PIN kodunuzu kullanın.' } },
-      { id: 's3', label: { de: 'Klassischer Schlüssel', en: 'Classic Key', tr: 'Klasik Anahtar' }, text: { de: 'Bitte geben Sie den Zimmerschlüssel bei Abwesenheit an der Rezeption ab.', en: 'Please leave room key at reception when leaving.', tr: 'Dışarı çıkarken lütfen anahtarınızı resepsiyona bırakın.' } }
-    ],
-    features: ['Keycard-Zugang', '24h Nachteingang', 'PIN-Code Türschloss', 'Keybox Spät-Check-in'],
-    icon: 'Key' 
+    id: 'house_rules', 
+    group: '🏨 Hotel & Unterkunft', 
+    title: { de: 'Hausordnung', en: 'House Rules', tr: 'Ev Kuralları' }, 
+    subtitle: { de: 'Ruhezeiten & Richtlinien', en: 'Quiet Hours & Policies', tr: 'Sessizlik Saatleri ve Kurallar' },
+    fieldsType: 'houserules',
+    features: ['Nachtruhe ab 22:00 Uhr', '100% Nichtraucherhotel', 'Keine Partys gestattet'],
+    icon: 'ShieldCheck' 
   },
+
+  // 2. 🍽️ Essen & Trinken
   { 
-    id: 'restaurant_dining', 
-    group: 'Essen & Trinken', 
-    title: { de: 'Restaurant & Bar', en: 'Restaurant & Bar', tr: 'Restoran ve Bar', it: 'Ristorante e Bar', fr: 'Restaurant et Bar', es: 'Restaurante y Bar', sv: 'Restaurang & Bar', no: 'Restaurant og Bar', hr: 'Restoran i Bar', sq: 'Restorant dhe Bar' }, 
-    subtitle: { de: 'Öffnungszeiten & Menü', en: 'Hours & menu', tr: 'Çalışma saatleri ve menü', it: 'Orari e menu', fr: 'Horaires et menu', es: 'Horarios y menú', sv: 'Öppettider & meny', no: 'Åpningstider og meny', hr: 'Radno vrijeme i jelovnik', sq: 'Oraret dhe menyja' }, 
-    scenarios: [
-      { id: 's1', label: { de: 'À la carte & Halbpension', en: 'À la carte & Half Board', tr: 'A la Carte ve Yarım Pansiyon' }, text: { de: 'Unser Restaurant serviert regionale und internationale Spezialitäten von 18:00 - 22:00 Uhr.', en: 'Our restaurant serves regional and international cuisine from 18:00 to 22:00.', tr: 'Restoranımız 18:00 - 22:00 arası yöresel ve uluslararası lezzetler sunar.' } },
-      { id: 's2', label: { de: 'Bar & Lounge', en: 'Bar & Lounge Focus', tr: 'Bar ve Dinlenme Konsepti' }, text: { de: 'Lassen Sie den Tag bei Cocktails, Weinen und kleinen Snacks in unserer Lounge ausklingen.', en: 'Unwind your evening with cocktails, wines, and snacks at our lounge.', tr: 'Akşamınızı loungemuzda kokteyl ve şaraplar eşliğinde tamamlayın.' } },
-      { id: 's3', label: { de: 'Room Service', en: 'Room Service Option', tr: 'Oda Servisi Olanağı' }, text: { de: 'Gerne liefern wir Speisen und Getränke direkt auf Ihr Zimmer (07:00 - 22:00 Uhr).', en: 'Food and drinks delivered directly to your room upon request.', tr: 'Yiyecek ve içeceklerinizi odaya sipariş edebilirsiniz.' } }
-    ],
-    features: ['À la carte Restaurant', 'Hotelbar', 'Vegetarische Optionen', 'Vegan & Glutenfrei', 'Zimmerservice', 'Außenterrasse'],
-    icon: 'Utensils' 
-  },
-  { 
-    id: 'cafe_snacks', 
-    group: 'Essen & Trinken', 
-    title: { de: 'Café & Lounge', en: 'Café & Lounge', tr: 'Kafe ve Lounge', it: 'Caffè e Lounge', fr: 'Café et Salon', es: 'Café y Salón', sv: 'Café & Lounge', no: 'Café og Lounge', hr: 'Kafić i Salon', sq: 'Kafe dhe Lounge' }, 
-    scenarios: [
-      { id: 's1', label: { de: 'Nachmittagskaffee', en: 'Afternoon Coffee', tr: 'Öğleden Sonra Kahvesi' }, text: { de: 'Täglich frisch gebackener Kuchen und Kaffeespezialitäten von 14:00 bis 17:00 Uhr.', en: 'Freshly baked cakes and coffee specialties daily from 14:00 to 17:00.', tr: 'Her gün 14:00 - 17:00 arası taze pasta ve kahve çeşitleri.' } }
-    ],
-    features: ['Kaffeespezialitäten', 'Hausgemachter Kuchen', 'Snacks & Toast', 'Kostenloses WLAN in Lounge'],
+    id: 'fruehstueck', 
+    group: '🍽️ Essen & Trinken', 
+    title: { de: 'Frühstück', en: 'Breakfast', tr: 'Kahvaltı' }, 
+    subtitle: { de: 'Zeiten & Buffetangebot', en: 'Hours & Buffet Menu', tr: 'Saatler ve Açık Büfe' },
+    fieldsType: 'dining',
+    features: ['Reichhaltiges Buffet', 'Bio-Produkte', 'Glutenfreie Optionen', 'Vegan & Laktosefrei', 'Kaffee inklusive'],
     icon: 'Coffee' 
   },
   { 
+    id: 'restaurant', 
+    group: '🍽️ Essen & Trinken', 
+    title: { de: 'Restaurant', en: 'Restaurant', tr: 'Restoran' }, 
+    subtitle: { de: 'Speisekarte & Küchenzeiten', en: 'Menu & Kitchen Hours', tr: 'Menü ve Mutfak Saatleri' },
+    fieldsType: 'dining',
+    features: ['À la carte', 'Regionale Küche', 'Saisonale Spezialitäten', 'Kindergerichte', 'Außenterrasse'],
+    icon: 'Utensils' 
+  },
+  { 
+    id: 'bar_lounge', 
+    group: '🍽️ Essen & Trinken', 
+    title: { de: 'Bar & Lounge', en: 'Bar & Lounge', tr: 'Bar ve Lounge' }, 
+    subtitle: { de: 'Cocktails & Abendausklang', en: 'Cocktails & Evening Lounge', tr: 'Kokteyller ve Gece İçecekleri' },
+    fieldsType: 'dining',
+    features: ['Cocktailkarte', 'Lokale Weine', 'Snacks', 'Hintergrundmusik'],
+    icon: 'Wine' 
+  },
+
+  // 3. 🧖 Wellness & Spa
+  { 
     id: 'pool_aqua', 
-    group: 'Wellness & Spa', 
-    title: { de: 'Pool & Wellnessbereich', en: 'Pool & Wellness Area', tr: 'Havuz ve Wellness', it: 'Piscina e Benessere', fr: 'Piscine et Bien-être', es: 'Piscina y Bienestar', sv: 'Pool & Wellness', no: 'Basseng og Velvære', hr: 'Bazen i Wellness', sq: 'Pishina dhe Wellness' }, 
-    scenarios: [
-      { id: 's1', label: { de: 'Indoor- & Outdoor Pool', en: 'Indoor & Outdoor Pool', tr: 'Açık ve Kapalı Havuz' }, text: { de: 'Unser beheizter Poolbereich steht Ihnen täglich von 07:00 bis 21:00 Uhr zur Verfügung.', en: 'Our heated pool area is open daily from 07:00 to 21:00.', tr: 'Isıtmalı havuzumuz her gün 07:00 - 21:00 arası hizmetinizdedir.' } }
-    ],
-    features: ['Beheizter Pool', 'Liegestühle', 'Pool-Handtücher gratis', 'Kinderbecken'],
+    group: '🧖 Wellness & Spa', 
+    title: { de: 'Pool & Aqua', en: 'Pool & Aqua Area', tr: 'Havuz ve Aqua' }, 
+    subtitle: { de: 'Beheizter Pool & Liegen', en: 'Heated Pool & Sunbeds', tr: 'Isıtmalı Havuz ve Şezlonglar' },
+    fieldsType: 'generic_hours',
+    features: ['Beheizter Indoor-Pool', 'Outdoor Sunbeds', 'Pool-Handtücher inklusive', 'Kinderbecken'],
     icon: 'Waves' 
   },
   { 
     id: 'sauna_spa', 
-    group: 'Wellness & Spa', 
-    title: { de: 'Sauna & Massagen', en: 'Sauna & Massages', tr: 'Sauna ve Masaj', it: 'Sauna e Massaggi', fr: 'Sauna et Massages', es: 'Sauna y Masajes', sv: 'Sauna & Massage', no: 'Sauna og Massasje', hr: 'Sauna i Masaže', sq: 'Sauna dhe Masazhet' }, 
-    scenarios: [
-      { id: 's1', label: { de: 'Finnische Sauna & Dampfbad', en: 'Sauna & Steam Bath', tr: 'Sauna ve Buhar Odası' }, text: { de: 'Saunabereich täglich ab 16:00 Uhr geheizt. Massagen bitte an der Rezeption buchen.', en: 'Sauna open daily from 16:00. Book massages at reception.', tr: 'Saunalar saat 16:00 itibarıyla aktiftir. Masaj randevusunu resepsiyondan alabilirsiniz.' } }
-    ],
-    features: ['Finnische Sauna', 'Bio-Sauna', 'Dampfbad', 'Ruheraum', 'Massage-Angebote'],
+    group: '🧖 Wellness & Spa', 
+    title: { de: 'Sauna & Spa', en: 'Sauna & Spa', tr: 'Sauna ve Spa' }, 
+    subtitle: { de: 'Finnische Sauna & Dampfbad', en: 'Finnish Sauna & Steam Room', tr: 'Fin Saunası ve Buhar Odası' },
+    fieldsType: 'generic_hours',
+    features: ['Finnische Sauna', 'Bio-Sauna', 'Dampfbad', 'Ruheraum mit Teebar'],
     icon: 'Sparkles' 
   },
   { 
-    id: 'bike_rental', 
-    group: 'Freizeit & Aktivitäten', 
-    title: { de: 'Fahrradverleih', en: 'Bike Rental', tr: 'Bisiklet Kiralama', it: 'Noleggio biciclette', fr: 'Location de vélos', es: 'Alquiler de bicicletas', sv: 'Cykeluthyrning', no: 'Sykkelutleie', hr: 'Najam bicikala', sq: 'Qira biçikletash' }, 
-    scenarios: [
-      { id: 's1', label: { de: 'E-Bike & Trekkingverleih', en: 'E-Bike Rental', tr: 'E-Bisiklet Kiralama' }, text: { de: 'Erkunden Sie die Region mit unseren modernen E-Bikes. Helm und Tourenkarte inklusive.', en: 'Explore the region with our modern e-bikes. Helmet and trail map included.', tr: 'Bölgeyi e-bisikletlerimizle keşfedin. Kask ve rota haritası dahildir.' } }
-    ],
-    features: ['E-Bikes', 'Trekking-Räder', 'Fahrrad-Garagestellplatz', 'Helmverleih', 'Ladestation für E-Bikes'],
+    id: 'fitness', 
+    group: '🧖 Wellness & Spa', 
+    title: { de: 'Fitness Center', en: 'Fitness Center', tr: 'Fitness Merkezi' }, 
+    subtitle: { de: 'Geräte & Öffnungszeiten', en: 'Equipment & Hours', tr: 'Ekipmanlar ve Çalışma Saatleri' },
+    fieldsType: 'generic_hours',
+    features: ['Cardio-Geräte', 'Hantelbereich', 'Yogamatten', '24/7 Zugang'],
+    icon: 'Dumbbell' 
+  },
+
+  // 4. 🎯 Freizeit & Aktivitäten
+  { 
+    id: 'fahrradverleih', 
+    group: '🎯 Freizeit & Aktivitäten', 
+    title: { de: 'Fahrradverleih', en: 'Bike Rental', tr: 'Bisiklet Kiralama' }, 
+    subtitle: { de: 'E-Bikes & Touren', en: 'E-Bikes & Routes', tr: 'E-Bisiklet ve Rotalar' },
+    fieldsType: 'rental',
+    features: ['E-Bikes verfūgbar', 'Trekkingbikes', 'Helmverleih inklusive', 'Radwanderkarten'],
     icon: 'Compass' 
   },
+
+  // 5. 📍 Umgebung & Ausflüge
   { 
-    id: 'sightseeing', 
-    group: 'Umgebung & Ausflüge', 
-    title: { de: 'Sehenswürdigkeiten', en: 'Sights & Attractions', tr: 'Görülecek Yerler', it: 'Attrazioni turistiche', fr: 'Sites touristiques', es: 'Lugares de interés', sv: 'Sevärdheter', no: 'Severdigheter', hr: 'Znamenitosti', sq: 'Vende interesi' }, 
-    scenarios: [
-      { id: 's1', label: { de: 'Highlights der Region', en: 'Regional Highlights', tr: 'Bölgesel Önemli Noktalar' }, text: { de: 'Entdecken Sie historische Altstädte, Wanderwege und Weinberge direkt vor der Tür.', en: 'Discover historic old towns, hiking trails, and vineyards right outside.', tr: 'Tarihi şehir merkezini ve doğa yollarını keşfedin.' } }
-    ],
-    features: ['Historische Orte', 'Wanderwege', 'Weinberge & Weingüter', 'Stadtpläne an Rezeption'],
+    id: 'sehenswuerdigkeiten', 
+    group: '📍 Umgebung & Ausflüge', 
+    title: { de: 'Sehenswürdigkeiten', en: 'Attractions', tr: 'Görülecek Yerler' }, 
+    subtitle: { de: 'Highlights & Altstadt', en: 'Highlights & Old Town', tr: 'Bölgesel Görülecek Yerler' },
+    fieldsType: 'generic_info',
+    features: ['Historische Altstadt', 'Wanderwege', 'Weinberge', 'Stadtpläne an Rezeption'],
     icon: 'MapPin' 
   },
+
+  // 6. 🚗 Anreise & Mobilität
   { 
-    id: 'parking_mobility', 
-    group: 'Anreise & Mobilität', 
-    title: { de: 'Parkmöglichkeiten', en: 'Parking Facilities', tr: 'Otopark İmkanları', it: 'Parcheggio', fr: 'Parking', es: 'Aparcamiento', sv: 'Parkering', no: 'Parkering', hr: 'Parkiralište', sq: 'Parkimi' }, 
-    scenarios: [
-      { id: 's1', label: { de: 'Kostenfrei & E-Ladestation', en: 'Free Parking & EV', tr: 'Ücretsiz Otopark ve Şarj' }, text: { de: 'Kostenfreie Gästeparkplätze am Haus. 22kW E-Ladesäulen stehen zur Verfügung.', en: 'Free parking on site. 22kW EV chargers available.', tr: 'Tesis önünde ücretsiz otopark ve elektrikli araç şarj istasyonu mevcuttur.' } }
-    ],
-    features: ['Kostenfreie Parkplätze', 'Tiefgarage', 'E-Auto Ladestation', 'Motorrad-Stellplätze', 'Busparkplatz'],
+    id: 'parkplatz_ev', 
+    group: '🚗 Anreise & Mobilität', 
+    title: { de: 'Parkplatz & E-Laden', en: 'Parking & EV Charging', tr: 'Otopark ve Şarj' }, 
+    subtitle: { de: 'Stellplätze & Ladestation', en: 'Spaces & Charger', tr: 'Park Yerleri ve Şarj İstasyonu' },
+    fieldsType: 'parking',
+    features: ['Kostenfreie Parkplätze', 'Tiefgarage', 'E-Ladesäule 22kW', 'Motorrad-Stellplätze'],
     icon: 'Car' 
   },
+
+  // 7. ℹ️ Service & Informationen
   { 
-    id: 'reception_service', 
-    group: 'Service & Informationen', 
-    title: { de: 'Rezeption & Service', en: 'Reception & Service', tr: 'Resepsiyon ve Servis', it: 'Ricezione e Servizio', fr: 'Réception et Service', es: 'Recepción y Servicio', sv: 'Reception & Service', no: 'Resepsjon og Service', hr: 'Recepcija i Usluge', sq: 'Recepsioni dhe Shërbimi' }, 
-    scenarios: [
-      { id: 's1', label: { de: 'Rundum-Service', en: 'Full Service', tr: 'Tam Servis' }, text: { de: 'Weckruf, Wäscheservice, Druckservice für Tickets und Taxi-Bestellungen jederzeit möglich.', en: 'Wake-up calls, laundry service, ticket printing, and taxi bookings available.', tr: 'Uyandırma servisi, çamaşır yıkama, bilet yazdırımı ve taksi çağırımı yapılır.' } }
-    ],
-    features: ['Weckdienst', 'Wäscheservice', 'Ticket-Druckservice', 'Taxi-Rufservice', 'Bügelset auf Wunsch'],
+    id: 'rezeption_service', 
+    group: 'ℹ️ Service & Informationen', 
+    title: { de: 'Rezeption & Service', en: 'Reception Service', tr: 'Resepsiyon ve Hizmetler' }, 
+    subtitle: { de: 'Wäsche, Taxi & Weckruf', en: 'Laundry, Taxi & Alarm', tr: 'Çamaşır, Taksi ve Uyandırma' },
+    fieldsType: 'rezeption',
+    features: ['Weckdienst', 'Wäscheservice', 'Taxi-Rufservice', 'Ticket-Druckservice'],
     icon: 'Phone' 
   },
+
+  // 8. 📋 Regeln & Sicherheit
   { 
-    id: 'house_rules', 
-    group: 'Regeln & Wissenswertes', 
-    title: { de: 'Hausordnung & Ruhezeiten', en: 'House Rules & Quiet Hours', tr: 'Ev Kuralları ve Sessizlik', it: 'Regolamento e Orari di silencio', fr: 'Règlement et Heures de calme', es: 'Normas y Horas de silencio', sv: 'Ordningsregler & Tystnad', no: 'Husordensregler og Ro', hr: 'Kućni red i tišina', sq: 'Rregullat dhe Qetësia' }, 
-    scenarios: [
-      { id: 's1', label: { de: 'Nachtruhe & Rauchverbot', en: 'Quiet Hours & No Smoking', tr: 'Gece Sessizliği ve Sigara Yasağı' }, text: { de: 'Nachtruhe gilt von 22:00 bis 07:00 Uhr. Das gesamte Gebäude ist ein Nichtraucherbereich.', en: 'Quiet hours 22:00 - 07:00. The entire property is non-smoking.', tr: '22:00 - 07:00 arası sessizlik esastır. Tüm kapalı alanlarda sigara içmek yasaktır.' } }
-    ],
-    features: ['Nachtruhe ab 22:00', '100% Nichtraucherhotel', 'Haustiere auf Anfrage', 'Sicherheitskameras'],
+    id: 'sicherheit_notfall', 
+    group: '📋 Regeln & Sicherheit', 
+    title: { de: 'Sicherheit & Notfall', en: 'Safety & Emergency', tr: 'Güvenlik ve Acil Durum' }, 
+    subtitle: { de: 'Notruf & Brandschutz', en: 'Emergency Contacts & Fire Safety', tr: 'Acil Numaralar ve Yangın Güvenliği' },
+    fieldsType: 'emergency',
+    features: ['24/7 Notfalltelefon', 'Feuerlöscher auf allen Etagen', 'Erste-Hilfe-Kasten an Rezeption'],
     icon: 'ShieldCheck' 
   }
 ];
@@ -790,6 +375,10 @@ const renderSafeIcon = (iconName, currentTheme) => {
     case 'Car': return <Car className={className} />;
     case 'Phone': return <Phone className={className} />;
     case 'ShieldCheck': return <ShieldCheck className={className} />;
+    case 'Wifi': return <Wifi className={className} />;
+    case 'Clock': return <Clock className={className} />;
+    case 'Wine': return <Wine className={className} />;
+    case 'Dumbbell': return <Dumbbell className={className} />;
     default: return <Info className={className} />;
   }
 };
@@ -845,8 +434,24 @@ export default function App() {
   const [categories, setCategories] = useState(() => {
     const saved = localStorage.getItem('gm24_categories');
     return saved ? JSON.parse(saved) : [
-      { id: '1', presetId: 'hotel_info', icon: 'Building', customTitle: '', selectedScenarioId: 's1', selectedFeatures: ['24h Rezeption', 'Gepäckaufbewahrung'], customText: '' },
-      { id: '2', presetId: 'restaurant_dining', icon: 'Utensils', customTitle: '', selectedScenarioId: 's1', selectedFeatures: ['À la carte Restaurant', 'Hotelbar'], customText: '' }
+      { 
+        id: '1', 
+        presetId: 'wifi_internet', 
+        icon: 'Wifi', 
+        customTitle: '', 
+        fieldValues: { ssid: 'Hotel_Guest_WiFi', pass: 'welcome2026', type: 'Kostenlos im gesamten Hotel' },
+        selectedFeatures: ['Kostenloses WLAN', 'Im gesamten Hotel', 'Highspeed Glasfaser'], 
+        customText: 'Bei Verbindungsproblemen wenden Sie sich bitte an die Rezeption.' 
+      },
+      { 
+        id: '2', 
+        presetId: 'fruehstueck', 
+        icon: 'Coffee', 
+        customTitle: '', 
+        fieldValues: { startTime: '07:30', endTime: '10:30', note: 'Frühstücksraum im Erdgeschoss' },
+        selectedFeatures: ['Reichhaltiges Buffet', 'Kaffee inklusive'], 
+        customText: 'Gerne bereiten wir Ihnen auch vegane Alternativen frisch zu.' 
+      }
     ];
   });
 
@@ -928,7 +533,7 @@ export default function App() {
       presetId: presetObj.id, 
       icon: presetObj.icon || 'Info',
       customTitle: '',
-      selectedScenarioId: presetObj.scenarios && presetObj.scenarios[0] ? presetObj.scenarios[0].id : '',
+      fieldValues: {},
       selectedFeatures: presetObj.features ? [presetObj.features[0]] : [],
       customText: ''
     };
@@ -942,6 +547,19 @@ export default function App() {
 
   const handleUpdateCategoryField = (id, field, value) => {
     setCategories(prev => prev.map(cat => cat.id === id ? { ...cat, [field]: value } : cat));
+  };
+
+  const handleUpdateFieldValue = (catId, subKey, val) => {
+    setCategories(prev => prev.map(cat => {
+      if (cat.id !== catId) return cat;
+      return {
+        ...cat,
+        fieldValues: {
+          ...(cat.fieldValues || {}),
+          [subKey]: val
+        }
+      };
+    }));
   };
 
   const handleToggleFeature = (catId, featureName) => {
@@ -981,12 +599,103 @@ export default function App() {
     return acc;
   }, {});
 
+  // DİNAMİK PRESET İÇERİK EDİTÖRÜ (Kategoriye Göre Yüklenen Alanlar)
+  const renderDynamicPresetFields = (cat, presetObj) => {
+    const fVals = cat.fieldValues || {};
+
+    switch (presetObj.fieldsType) {
+      case 'wifi':
+        return (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 bg-white p-3 rounded-xl border border-stone-200">
+            <div>
+              <label className="block text-[9px] font-extrabold text-stone-500 uppercase mb-0.5">WLAN Netz-Name (SSID)</label>
+              <input type="text" placeholder="Hotel-Guest-WiFi" value={fVals.ssid || ''} onChange={(e) => handleUpdateFieldValue(cat.id, 'ssid', e.target.value)} className="w-full p-2 text-xs border rounded-lg" />
+            </div>
+            <div>
+              <label className="block text-[9px] font-extrabold text-stone-500 uppercase mb-0.5">WLAN Passwort</label>
+              <input type="text" placeholder="welcome2026" value={fVals.pass || ''} onChange={(e) => handleUpdateFieldValue(cat.id, 'pass', e.target.value)} className="w-full p-2 text-xs border rounded-lg" />
+            </div>
+          </div>
+        );
+
+      case 'dining':
+        return (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3 bg-white p-3 rounded-xl border border-stone-200">
+            <div>
+              <label className="block text-[9px] font-extrabold text-stone-500 uppercase mb-0.5">Öffnung von (Uhrzeit)</label>
+              <input type="text" placeholder="07:30" value={fVals.startTime || ''} onChange={(e) => handleUpdateFieldValue(cat.id, 'startTime', e.target.value)} className="w-full p-2 text-xs border rounded-lg" />
+            </div>
+            <div>
+              <label className="block text-[9px] font-extrabold text-stone-500 uppercase mb-0.5">Öffnung bis (Uhrzeit)</label>
+              <input type="text" placeholder="10:30" value={fVals.endTime || ''} onChange={(e) => handleUpdateFieldValue(cat.id, 'endTime', e.target.value)} className="w-full p-2 text-xs border rounded-lg" />
+            </div>
+            <div>
+              <label className="block text-[9px] font-extrabold text-stone-500 uppercase mb-0.5">Küche / Hinweis</label>
+              <input type="text" placeholder="Mutfak son sipariş 21:30" value={fVals.note || ''} onChange={(e) => handleUpdateFieldValue(cat.id, 'note', e.target.value)} className="w-full p-2 text-xs border rounded-lg" />
+            </div>
+          </div>
+        );
+
+      case 'checkinout':
+        return (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 bg-white p-3 rounded-xl border border-stone-200">
+            <div>
+              <label className="block text-[9px] font-extrabold text-stone-500 uppercase mb-0.5">Check-in Zeit (ab)</label>
+              <input type="text" placeholder="ab 15:00 Uhr" value={fVals.checkIn || ''} onChange={(e) => handleUpdateFieldValue(cat.id, 'checkIn', e.target.value)} className="w-full p-2 text-xs border rounded-lg" />
+            </div>
+            <div>
+              <label className="block text-[9px] font-extrabold text-stone-500 uppercase mb-0.5">Check-out Zeit (bis)</label>
+              <input type="text" placeholder="bis 11:00 Uhr" value={fVals.checkOut || ''} onChange={(e) => handleUpdateFieldValue(cat.id, 'checkOut', e.target.value)} className="w-full p-2 text-xs border rounded-lg" />
+            </div>
+          </div>
+        );
+
+      case 'rezeption':
+        return (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 bg-white p-3 rounded-xl border border-stone-200">
+            <div>
+              <label className="block text-[9px] font-extrabold text-stone-500 uppercase mb-0.5">Rezeptions-Zeiten</label>
+              <input type="text" placeholder="07:00 - 22:00 Uhr (oder 24/7)" value={fVals.hours || ''} onChange={(e) => handleUpdateFieldValue(cat.id, 'hours', e.target.value)} className="w-full p-2 text-xs border rounded-lg" />
+            </div>
+            <div>
+              <label className="block text-[9px] font-extrabold text-stone-500 uppercase mb-0.5">Notfall-Telefonnummer</label>
+              <input type="text" placeholder="+49 123 456789" value={fVals.phone || ''} onChange={(e) => handleUpdateFieldValue(cat.id, 'phone', e.target.value)} className="w-full p-2 text-xs border rounded-lg" />
+            </div>
+          </div>
+        );
+
+      case 'parking':
+        return (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 bg-white p-3 rounded-xl border border-stone-200">
+            <div>
+              <label className="block text-[9px] font-extrabold text-stone-500 uppercase mb-0.5">Parkplatz Gebühr / Info</label>
+              <input type="text" placeholder="Kostenfrei am Haus" value={fVals.fee || ''} onChange={(e) => handleUpdateFieldValue(cat.id, 'fee', e.target.value)} className="w-full p-2 text-xs border rounded-lg" />
+            </div>
+            <div>
+              <label className="block text-[9px] font-extrabold text-stone-500 uppercase mb-0.5">Schranken-Code / E-Ladesäule</label>
+              <input type="text" placeholder="Code: 1234 | 22kW Lader" value={fVals.extra || ''} onChange={(e) => handleUpdateFieldValue(cat.id, 'extra', e.target.value)} className="w-full p-2 text-xs border rounded-lg" />
+            </div>
+          </div>
+        );
+
+      default:
+        return (
+          <div className="bg-white p-3 rounded-xl border border-stone-200">
+            <label className="block text-[9px] font-extrabold text-stone-500 uppercase mb-0.5">Öffnungszeiten / Details</label>
+            <input type="text" placeholder="Täglich von 08:00 bis 20:00 Uhr" value={fVals.general || ''} onChange={(e) => handleUpdateFieldValue(cat.id, 'general', e.target.value)} className="w-full p-2 text-xs border rounded-lg" />
+          </div>
+        );
+    }
+  };
+
   if (appMode === 'dashboard') {
     return (
       <div className="min-h-screen bg-[#FBF9F5] font-sans text-slate-800 p-6 md:p-10 space-y-8 relative pb-28">
+        
+        {/* Katalog Modal */}
         {isCatalogModalOpen && (
           <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[9999] flex items-center justify-center p-4">
-            <div className="bg-white w-full max-w-2xl max-h-[85vh] overflow-y-auto p-6 rounded-3xl shadow-2xl space-y-6">
+            <div className="bg-white w-full max-w-3xl max-h-[85vh] overflow-y-auto p-6 rounded-3xl shadow-2xl space-y-6">
               <div className="flex items-center justify-between border-b pb-4">
                 <h2 className="font-extrabold text-lg text-slate-900">{t.modalTitle}</h2>
                 <button onClick={() => setIsCatalogModalOpen(false)} className="text-stone-400 font-bold p-1 cursor-pointer hover:text-stone-700">✕</button>
@@ -1109,6 +818,7 @@ export default function App() {
 
           <div className="bg-white rounded-3xl p-6 border border-stone-200 shadow-sm space-y-8">
             
+            {/* 1. Tesis İletişim Bilgileri */}
             <div className="space-y-4">
               <h3 className={`font-bold text-xs ${currentTheme.text} uppercase tracking-wider`}>{t.sec1Title}</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -1139,6 +849,7 @@ export default function App() {
               </div>
             </div>
 
+            {/* 2. Renk Temaları */}
             <div className="space-y-3 pt-4 border-t">
               <h3 className={`font-bold text-xs ${currentTheme.text} uppercase tracking-wider flex items-center gap-1.5`}><Palette className="w-4 h-4" /> {t.sec2Title}</h3>
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
@@ -1159,6 +870,7 @@ export default function App() {
               </div>
             </div>
 
+            {/* 3. Logo & Slider */}
             <div className="space-y-3 pt-4 border-t">
               <h3 className={`font-bold text-xs ${currentTheme.text} uppercase tracking-wider`}>{t.sec3Title}</h3>
               <div className="flex items-center gap-4">
@@ -1170,79 +882,7 @@ export default function App() {
               </div>
             </div>
 
-            <div className="space-y-3 pt-4 border-t">
-              <h3 className={`font-bold text-xs ${currentTheme.text} uppercase tracking-wider`}>{t.sec4Title}</h3>
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-                {(hotel.images || []).map((img, idx) => (
-                  <div key={idx} className="relative rounded-xl overflow-hidden h-24 border">
-                    <img src={img} alt="Slider" className="w-full h-full object-cover" />
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div className="space-y-4 pt-4 border-t">
-              <h3 className={`font-bold text-xs ${currentTheme.text} uppercase tracking-wider`}>{t.sec5Title}</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                
-                <div className={`p-4 rounded-2xl border transition ${hotel.showWifi ? 'bg-white border-stone-200' : 'bg-stone-100 border-stone-200 opacity-60'}`}>
-                  <div className="flex justify-between items-center mb-2">
-                    <span className="font-bold text-xs text-slate-900 flex items-center gap-2"><Wifi className={`w-4 h-4 ${currentTheme.text}`} /> {t.wlanTitle}</span>
-                    <button onClick={() => setHotel({ ...hotel, showWifi: !hotel.showWifi })} className={`px-2.5 py-1 rounded-lg text-[10px] font-bold cursor-pointer flex items-center gap-1 ${hotel.showWifi ? 'bg-emerald-100 text-emerald-800' : 'bg-stone-200 text-stone-600'}`}>
-                      {hotel.showWifi ? <Eye className="w-3 h-3" /> : <EyeOff className="w-3 h-3" />}
-                      {hotel.showWifi ? t.activeCard : t.inactiveCard}
-                    </button>
-                  </div>
-                  {hotel.showWifi && (
-                    <div className="grid grid-cols-2 gap-2 mt-2">
-                      <input type="text" placeholder={t.lblWifiSsid} value={hotel.wifiSsid || ''} onChange={(e) => setHotel({ ...hotel, wifiSsid: e.target.value })} className="p-2 text-xs border rounded-xl" />
-                      <input type="text" placeholder={t.lblWifiPass} value={hotel.wifiPass || ''} onChange={(e) => setHotel({ ...hotel, wifiPass: e.target.value })} className="p-2 text-xs border rounded-xl" />
-                    </div>
-                  )}
-                </div>
-
-                <div className={`p-4 rounded-2xl border transition ${hotel.showParking ? 'bg-white border-stone-200' : 'bg-stone-100 border-stone-200 opacity-60'}`}>
-                  <div className="flex justify-between items-center mb-2">
-                    <span className="font-bold text-xs text-slate-900 flex items-center gap-2"><Car className={`w-4 h-4 ${currentTheme.text}`} /> {t.parkingTitle}</span>
-                    <button onClick={() => setHotel({ ...hotel, showParking: !hotel.showParking })} className={`px-2.5 py-1 rounded-lg text-[10px] font-bold cursor-pointer flex items-center gap-1 ${hotel.showParking ? 'bg-emerald-100 text-emerald-800' : 'bg-stone-200 text-stone-600'}`}>
-                      {hotel.showParking ? <Eye className="w-3 h-3" /> : <EyeOff className="w-3 h-3" />}
-                      {hotel.showParking ? t.activeCard : t.inactiveCard}
-                    </button>
-                  </div>
-                  {hotel.showParking && (
-                    <input type="text" placeholder={t.lblParkingInfo} value={hotel.parkingInfo || ''} onChange={(e) => setHotel({ ...hotel, parkingInfo: e.target.value })} className="w-full p-2 text-xs border rounded-xl mt-2" />
-                  )}
-                </div>
-
-                <div className={`p-4 rounded-2xl border transition ${hotel.showBreakfast ? 'bg-white border-stone-200' : 'bg-stone-100 border-stone-200 opacity-60'}`}>
-                  <div className="flex justify-between items-center mb-2">
-                    <span className="font-bold text-xs text-slate-900 flex items-center gap-2"><Coffee className={`w-4 h-4 ${currentTheme.text}`} /> {t.breakfastTitle}</span>
-                    <button onClick={() => setHotel({ ...hotel, showBreakfast: !hotel.showBreakfast })} className={`px-2.5 py-1 rounded-lg text-[10px] font-bold cursor-pointer flex items-center gap-1 ${hotel.showBreakfast ? 'bg-emerald-100 text-emerald-800' : 'bg-stone-200 text-stone-600'}`}>
-                      {hotel.showBreakfast ? <Eye className="w-3 h-3" /> : <EyeOff className="w-3 h-3" />}
-                      {hotel.showBreakfast ? t.activeCard : t.inactiveCard}
-                    </button>
-                  </div>
-                  {hotel.showBreakfast && (
-                    <input type="text" placeholder={t.lblBreakfastTime} value={hotel.breakfastTime || ''} onChange={(e) => setHotel({ ...hotel, breakfastTime: e.target.value })} className="w-full p-2 text-xs border rounded-xl mt-2" />
-                  )}
-                </div>
-
-                <div className={`p-4 rounded-2xl border transition ${hotel.showCheckInOut ? 'bg-white border-stone-200' : 'bg-stone-100 border-stone-200 opacity-60'}`}>
-                  <div className="flex justify-between items-center mb-2">
-                    <span className="font-bold text-xs text-slate-900 flex items-center gap-2"><Clock className={`w-4 h-4 ${currentTheme.text}`} /> {t.checkInOutTitle}</span>
-                    <button onClick={() => setHotel({ ...hotel, showCheckInOut: !hotel.showCheckInOut })} className={`px-2.5 py-1 rounded-lg text-[10px] font-bold cursor-pointer flex items-center gap-1 ${hotel.showCheckInOut ? 'bg-emerald-100 text-emerald-800' : 'bg-stone-200 text-stone-600'}`}>
-                      {hotel.showCheckInOut ? <Eye className="w-3 h-3" /> : <EyeOff className="w-3 h-3" />}
-                      {hotel.showCheckInOut ? t.activeCard : t.inactiveCard}
-                    </button>
-                  </div>
-                  {hotel.showCheckInOut && (
-                    <input type="text" placeholder={t.lblCheckInOut} value={hotel.checkInOut || ''} onChange={(e) => setHotel({ ...hotel, checkInOut: e.target.value })} className="w-full p-2 text-xs border rounded-xl mt-2" />
-                  )}
-                </div>
-
-              </div>
-            </div>
-
+            {/* 6. Dinamik Preset Mapping Alanı */}
             <div className="space-y-4 pt-4 border-t">
               <div className="flex justify-between items-center">
                 <h3 className={`font-bold text-xs ${currentTheme.text} uppercase tracking-wider`}>{t.sec6Title}</h3>
@@ -1273,7 +913,7 @@ export default function App() {
 
                             {/* 1. Başlık Düzenleme */}
                             <div>
-                              <label className="block text-[9px] font-bold text-stone-500 uppercase mb-0.5">{t.editTitle}</label>
+                              <label className="block text-[9px] font-extrabold text-stone-500 uppercase mb-0.5">{t.editTitle}</label>
                               <input 
                                 type="text" 
                                 placeholder={baseTitle}
@@ -1283,28 +923,13 @@ export default function App() {
                               />
                             </div>
 
-                            {/* 2. Hazır Senaryo Dropdown Menüsü */}
-                            {presetObj && presetObj.scenarios && presetObj.scenarios.length > 0 && (
-                              <div className="space-y-1">
-                                <label className="block text-[9px] font-extrabold text-stone-600 uppercase">{t.presetScenarioLabel}</label>
-                                <select 
-                                  value={cat.selectedScenarioId || ''} 
-                                  onChange={(e) => handleUpdateCategoryField(cat.id, 'selectedScenarioId', e.target.value)}
-                                  className="w-full p-2 text-xs border border-stone-200 rounded-xl bg-white cursor-pointer font-medium"
-                                >
-                                  {presetObj.scenarios.map((sc) => (
-                                    <option key={sc.id} value={sc.id}>
-                                      {sc.label[lang] || sc.label.de || sc.id}
-                                    </option>
-                                  ))}
-                                </select>
-                              </div>
-                            )}
+                            {/* 2. Kategoriye Özel Yüklenen Dinamik Alanlar */}
+                            {presetObj && renderDynamicPresetFields(cat, presetObj)}
 
                             {/* 3. Booking.com Usulü Özellik İşaretleme Kutucukları (Checkboxes) */}
                             {presetObj && presetObj.features && presetObj.features.length > 0 && (
                               <div className="space-y-1.5 pt-1">
-                                <label className="block text-[9px] font-extrabold text-stone-600 uppercase">{t.featuresLabel}</label>
+                                <label className="block text-[9px] font-extrabold text-stone-600 uppercase">Ausstattung & Services (Auswählen)</label>
                                 <div className="flex flex-wrap gap-1.5">
                                   {presetObj.features.map((feat) => {
                                     const isSelected = (cat.selectedFeatures || []).includes(feat);
@@ -1326,12 +951,12 @@ export default function App() {
 
                             {/* 4. Alan: Custom Text (Çeviri yapılmaz uyarısıyla) */}
                             <div className="pt-2 border-t border-stone-200/60 space-y-1">
-                              <label className="block text-[9px] font-extrabold text-amber-700 uppercase">{t.customTextLabel}</label>
+                              <label className="block text-[9px] font-extrabold text-amber-700 uppercase">Eigene Beschreibung / Hinweistext (Keine Übersetzung)</label>
                               <textarea 
                                 rows="2"
                                 value={cat.customText || ''} 
                                 onChange={(e) => handleUpdateCategoryField(cat.id, 'customText', e.target.value)} 
-                                placeholder="Individueller Hinweistext..."
+                                placeholder="Individueller Hinweistext für Ihre Gäste..."
                                 className="w-full p-2.5 text-xs border border-amber-300 rounded-xl bg-amber-50/50" 
                               />
                               <p className="text-[10px] text-amber-800 font-semibold">{t.customTextWarning}</p>
@@ -1368,14 +993,7 @@ export default function App() {
           <select value={lang} onChange={(e) => setLang(e.target.value)} className="bg-black/40 border border-white/30 text-white text-xs font-semibold rounded-xl px-2.5 py-1.5 cursor-pointer">
             <option value="de">🇩🇪 DE</option>
             <option value="en">🇬🇧 EN</option>
-            <option value="it">🇮🇹 IT</option>
-            <option value="fr">🇫🇷 FR</option>
-            <option value="es">🇪🇸 ES</option>
             <option value="tr">🇹🇷 TR</option>
-            <option value="sv">🇸🇪 SV</option>
-            <option value="no">🇳🇴 NO</option>
-            <option value="hr">🇭🇷 HR</option>
-            <option value="sq">🇦🇱 SQ</option>
           </select>
         </div>
 
@@ -1437,14 +1055,7 @@ export default function App() {
           <select value={lang} onChange={(e) => setLang(e.target.value)} className="bg-white border border-stone-200 text-slate-700 text-xs font-semibold rounded-xl px-2.5 py-1.5 cursor-pointer shadow-sm">
             <option value="de">🇩🇪 DE</option>
             <option value="en">🇬🇧 EN</option>
-            <option value="it">🇮🇹 IT</option>
-            <option value="fr">🇫🇷 FR</option>
-            <option value="es">🇪🇸 ES</option>
             <option value="tr">🇹🇷 TR</option>
-            <option value="sv">🇸🇪 SV</option>
-            <option value="no">🇳🇴 NO</option>
-            <option value="hr">🇭🇷 HR</option>
-            <option value="sq">🇦🇱 SQ</option>
           </select>
           <button onClick={() => setAppMode('dashboard')} className="text-stone-300 hover:text-stone-600 p-1 text-xs cursor-pointer" title="Admin">🔑</button>
         </div>
@@ -1457,9 +1068,19 @@ export default function App() {
             <div className="bg-white p-6 rounded-2xl shadow-sm border space-y-4">
               <h2 className="text-lg font-black text-slate-900">{selectedCategory.title}</h2>
               <div className="text-xs text-slate-700 leading-relaxed whitespace-pre-line space-y-3">
-                <p>{selectedCategory.content}</p>
+                {selectedCategory.fieldValues && Object.keys(selectedCategory.fieldValues).length > 0 && (
+                  <div className="bg-stone-50 p-3 rounded-xl border border-stone-200 space-y-1">
+                    {Object.entries(selectedCategory.fieldValues).map(([k, v]) => (
+                      <div key={k} className="flex justify-between text-[11px]">
+                        <span className="font-bold text-slate-500 uppercase">{k}:</span>
+                        <span className="font-semibold text-slate-900">{v}</span>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
                 {selectedCategory.features && selectedCategory.features.length > 0 && (
-                  <div className="pt-3 border-t border-stone-100">
+                  <div className="pt-2">
                     <span className="font-bold text-[11px] block mb-1 text-slate-900">Ausstattung / Service:</span>
                     <div className="flex flex-wrap gap-1">
                       {selectedCategory.features.map(f => (
@@ -1470,6 +1091,7 @@ export default function App() {
                     </div>
                   </div>
                 )}
+
                 {selectedCategory.customText && (
                   <div className="pt-3 border-t border-stone-100">
                     <p className="italic text-stone-600 bg-amber-50/60 p-2.5 rounded-xl border border-amber-200/50">{selectedCategory.customText}</p>
@@ -1518,12 +1140,9 @@ export default function App() {
                       const presetObj = cat.presetData;
                       const title = cat.customTitle || (presetObj && presetObj.title && (presetObj.title[lang] || presetObj.title.de)) || 'Kategorie';
                       const sub = (presetObj && presetObj.subtitle && (presetObj.subtitle[lang] || presetObj.subtitle.de)) || '';
-                      
-                      const selectedScenario = presetObj && presetObj.scenarios ? presetObj.scenarios.find(s => s.id === cat.selectedScenarioId) : null;
-                      const content = selectedScenario ? (selectedScenario.text[lang] || selectedScenario.text.de) : '';
 
                       return (
-                        <button key={cat.id} onClick={() => setSelectedCategory({ title, content, features: cat.selectedFeatures, customText: cat.customText })} className={`w-full bg-white p-4 rounded-2xl border border-stone-200 shadow-sm flex items-center justify-between text-left cursor-pointer hover:${currentTheme.border} transition`}>
+                        <button key={cat.id} onClick={() => setSelectedCategory({ title, fieldValues: cat.fieldValues, features: cat.selectedFeatures, customText: cat.customText })} className={`w-full bg-white p-4 rounded-2xl border border-stone-200 shadow-sm flex items-center justify-between text-left cursor-pointer hover:${currentTheme.border} transition`}>
                           <div className="flex items-center gap-3">
                             <div className={`w-10 h-10 rounded-xl ${currentTheme.bgLight} flex items-center justify-center`}>{renderSafeIcon(cat.icon, currentTheme)}</div>
                             <div>
