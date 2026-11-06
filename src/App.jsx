@@ -36,12 +36,6 @@ const translations = {
     guestViewBtn: "Gastansicht öffnen",
     saveBtn: "Änderungen speichern",
     savedMsg: "Gespeichert!",
-    trialTitle: "30-Tage Testversion (PRO)",
-    trialDaysLeft: "Tage verbleibend",
-    statsScans: "QR-Code Scans (Gesamt)",
-    statsActiveRooms: "Aktive Zimmer-Zugriffe",
-    statsTopCategory: "Beliebteste Kategorie",
-    statsPeakTime: "Besuchs-Spitzenzeit",
     qrTitle: "QR-Code & Print-Center",
     printA4: "Druckvorlage A4",
     printA5: "Druckvorlage A5",
@@ -49,27 +43,15 @@ const translations = {
     sec1Title: "1. Unterkunft Informationen & Kontaktdaten",
     sec2Title: "2. Design & Farb-Themen (8 Optionen)",
     sec3Title: "3. Logo hochladen",
-    sec4Title: "4. Bilderverwaltung (Slider)",
-    sec5Title: "5. Schnellzugriff (Aktivieren / Deaktivieren)",
     sec6Title: "6. Dynamisches Preset & Kategorie-System",
     lblHotelName: "Unterkunft Name",
     lblPhone: "Telefon",
-    lblEmailField: "E-Mail",
-    lblAddress: "Adresse",
-    lblWebsite: "Webseite",
-    lblGoogleReview: "Google Review Link",
-    lblWifiSsid: "WLAN SSID",
-    lblWifiPass: "WLAN Passwort",
-    lblBreakfastTime: "Frühstückszeiten",
-    lblCheckInOut: "Check-in / Check-out Infos",
-    lblParkingInfo: "Parkplatz Info",
-    btnLogoUpload: "Logo Wählen / Ändern",
     btnAddCategory: "Kategorie aus Preset-Katalog hinzufügen",
     modalTitle: "Dynamischer Preset-Katalog: Kategorie & Inhaltsvorlage auswählen",
     addBtn: "Hinzufügen",
     editTitle: "Name / Titel der Kategorie",
     customTextLabel: "Eigene Beschreibung (optional)",
-    customTextWarning: "⚠️ Dieser eigene Text wird für alle 10 Sprachen unverändert übernommen (keine automatische Übersetzung).",
+    customTextWarning: "⚠️ Dieser eigene Text wird für alle 10 Sprachen unverändert übernommen.",
     yesLabel: "Ja / Verfügbar",
     noLabel: "Nein / Nicht verfügbar",
     createCustomCatBtn: "Eigene benutzerdefinierte Kategorie erstellen"
@@ -94,12 +76,6 @@ const translations = {
     guestViewBtn: "Open Guest View",
     saveBtn: "Save Changes",
     savedMsg: "Saved!",
-    trialTitle: "30-Day Trial (PRO)",
-    trialDaysLeft: "Days remaining",
-    statsScans: "QR Code Scans (Total)",
-    statsActiveRooms: "Active Room Access",
-    statsTopCategory: "Top Category",
-    statsPeakTime: "Peak Hours",
     qrTitle: "QR Code & Print Center",
     printA4: "Print Template A4",
     printA5: "Print Template A5",
@@ -107,27 +83,15 @@ const translations = {
     sec1Title: "1. Property Information & Contacts",
     sec2Title: "2. Design & Color Themes (8 Options)",
     sec3Title: "3. Upload Logo",
-    sec4Title: "4. Image Management (Slider)",
-    sec5Title: "5. Quick Access (Enable / Disable Cards)",
     sec6Title: "6. Dynamic Preset & Category System",
     lblHotelName: "Property Name",
     lblPhone: "Phone",
-    lblEmailField: "E-Mail",
-    lblAddress: "Address",
-    lblWebsite: "Website",
-    lblGoogleReview: "Google Review Link",
-    lblWifiSsid: "WiFi SSID",
-    lblWifiPass: "WiFi Password",
-    lblBreakfastTime: "Breakfast Hours",
-    lblCheckInOut: "Check-in / Check-out Info",
-    lblParkingInfo: "Parking Info",
-    btnLogoUpload: "Select / Change Logo",
     btnAddCategory: "Add Category from Preset Catalog",
     modalTitle: "Dynamic Preset Catalog: Select Category & Template",
     addBtn: "Add",
     editTitle: "Category Name / Title",
     customTextLabel: "Custom Description (optional)",
-    customTextWarning: "⚠️ This custom text is kept as-is across all 10 languages (no automatic translation).",
+    customTextWarning: "⚠️ This custom text is kept as-is across all 10 languages.",
     yesLabel: "Yes / Available",
     noLabel: "No / Not Available",
     createCustomCatBtn: "Create Custom Category"
@@ -148,47 +112,65 @@ const translations = {
     breakfastTitle: "Kahvaltı",
     checkInOutTitle: "Giriş / Çıkış",
     detailBack: "Geri Dön",
-    adminTitle: "Yönetim Paneli & Analitik (Dashboard)",
+    adminTitle: "Yönetim Paneli & Analitik",
     guestViewBtn: "Misafir Görünümünü Aç",
     saveBtn: "Değişiklikleri Kaydet",
     savedMsg: "Kaydedildi!",
-    trialTitle: "30 Günlük Deneme (PRO)",
-    trialDaysLeft: "Gün kaldı",
-    statsScans: "QR Kod Taramaları (Toplam)",
-    statsActiveRooms: "Aktif Oda Erişimi",
-    statsTopCategory: "En Çok Tıklanan Kategori",
-    statsPeakTime: "Yoğun Kullanım Saati",
     qrTitle: "QR Kod & Baskı Merkezi",
     printA4: "A4 Baskı Şablonu",
     printA5: "A5 Baskı Şablonu",
     printCard: "Kartvizit Şablonu",
     sec1Title: "1. Tesis Bilgileri & İletişim",
-    sec2Title: "2. Renk Temaları (8 Seçenek)",
+    sec2Title: "2. Renk Temaları",
     sec3Title: "3. Logo Yükleme",
-    sec4Title: "4. Resim Yönetimi (Slider)",
-    sec5Title: "5. Hızlı Erişim (Kartları Aç / Kapat)",
     sec6Title: "6. Dinamik Preset & Kategori Sistemi",
     lblHotelName: "Tesis / Otel Adı",
     lblPhone: "Telefon",
-    lblEmailField: "E-Posta",
-    lblAddress: "Adres",
-    lblWebsite: "Web Sitesi",
-    lblGoogleReview: "Google Yorum Linki",
-    lblWifiSsid: "WiFi Ağ Adı (SSID)",
-    lblWifiPass: "WiFi Şifresi",
-    lblBreakfastTime: "Kahvaltı Saatleri",
-    lblCheckInOut: "Giriş / Çıkış Bilgileri",
-    lblParkingInfo: "Otopark Bilgisi",
-    btnLogoUpload: "Logo Seç / Değiştir",
     btnAddCategory: "Preset Katalogundan Kategori Ekle",
     modalTitle: "Dinamik Preset Kataloğu: Kategori ve İçerik Şablonu Seçin",
     addBtn: "Ekle",
     editTitle: "Kategori Adı / Başlığı",
     customTextLabel: "Özel Açıklama (İsteğe bağlı)",
-    customTextWarning: "⚠️ Bu özel metin 10 dilde de aynı kalacaktır (otomatik çeviri yapılmaz).",
+    customTextWarning: "⚠️ Bu özel metin 10 dilde de aynı kalacaktır.",
     yesLabel: "Evet / Mevcut",
     noLabel: "Hayır / Mevcut Değil",
     createCustomCatBtn: "Özel Kategori Oluştur"
+  },
+  fr: {
+    welcomeBadge: "Guide numérique",
+    welcomeButton: "C'est parti",
+    greetingHello: "Bonjour,",
+    greetingWelcome: "bienvenue.",
+    navHome: "Accueil",
+    navGaestemappe: "Guide",
+    navReview: "Avis",
+    navRoute: "Itinéraire",
+    weatherTitle: "Ensoleillé",
+    weatherSub: "Météo actuelle",
+    detailBack: "Retour",
+    adminTitle: "Administration",
+    guestViewBtn: "Vue invité",
+    saveBtn: "Enregistrer",
+    savedMsg: "Enregistré !",
+    qrTitle: "Centre d'impression QR",
+    printA4: "Modèle A4",
+    printA5: "Modèle A5",
+    printCard: "Carte de visite",
+    sec1Title: "1. Infos et contacts",
+    sec2Title: "2. Thèmes de couleurs",
+    sec3Title: "3. Télécharger le logo",
+    sec6Title: "6. Système de Préréglage",
+    lblHotelName: "Nom de l'établissement",
+    lblPhone: "Téléphone",
+    btnAddCategory: "Ajouter une catégorie",
+    modalTitle: "Catalogue de Préréglages",
+    addBtn: "Ajouter",
+    editTitle: "Titre de la catégorie",
+    customTextLabel: "Description personnalisée",
+    customTextWarning: "⚠️ Ce texte reste identique dans les 10 langues.",
+    yesLabel: "Oui / Disponible",
+    noLabel: "Non / Indisponible",
+    createCustomCatBtn: "Créer une catégorie"
   },
   hr: {
     welcomeBadge: "Digitalni vodič",
@@ -201,49 +183,22 @@ const translations = {
     navRoute: "Upute",
     weatherTitle: "Sunčano",
     weatherSub: "Trenutno vrijeme",
-    wlanTitle: "Wi-Fi",
-    parkingTitle: "Parkiralište",
-    breakfastTitle: "Doručak",
-    checkInOutTitle: "Prijava / Odjava",
     detailBack: "Natrag",
-    adminTitle: "Upravljanje i Analitika",
-    guestViewBtn: "Otvori prikaz za goste",
-    saveBtn: "Spremi promjene",
+    adminTitle: "Upravljanje",
+    guestViewBtn: "Prikaz za goste",
+    saveBtn: "Spremi",
     savedMsg: "Spremljeno!",
-    trialTitle: "30-dnevno probno razdoblje",
-    trialDaysLeft: "preostalih dana",
-    statsScans: "QR skeniranja",
-    statsActiveRooms: "Aktivne sobe",
-    statsTopCategory: "Najpopularnija kategorija",
-    statsPeakTime: "Najaktivnije vrijeme",
-    qrTitle: "QR centar za ispis",
-    printA4: "Predložak A4",
-    printA5: "Predložak A5",
-    printCard: "Vizitka",
-    sec1Title: "1. Informacije o objektu",
-    sec2Title: "2. Teme boja",
-    sec3Title: "3. Učitaj logotip",
-    sec4Title: "4. Upravljanje slikama",
-    sec5Title: "5. Brzi pristup",
-    sec6Title: "6. Sustav dinamičkih predložaka",
+    qrTitle: "QR centar",
+    sec1Title: "1. Info o objektu",
+    sec6Title: "6. Sustav predložaka",
     lblHotelName: "Naziv objekta",
     lblPhone: "Telefon",
-    lblEmailField: "E-pošta",
-    lblAddress: "Adresa",
-    lblWebsite: "Web stranica",
-    lblGoogleReview: "Google poveznica recenzije",
-    lblWifiSsid: "Wi-Fi SSID",
-    lblWifiPass: "Wi-Fi lozinka",
-    lblBreakfastTime: "Vrijeme doručka",
-    lblCheckInOut: "Info prijave / odjave",
-    lblParkingInfo: "Info o parkiranju",
-    btnLogoUpload: "Odaberi logotip",
     btnAddCategory: "Dodaj kategoriju",
-    modalTitle: "Katalog predložaka: Odaberi",
+    modalTitle: "Katalog predložaka",
     addBtn: "Dodaj",
     editTitle: "Naziv kategorije",
     customTextLabel: "Prilagođeni opis",
-    customTextWarning: "⚠️ Ovaj tekst ostaje neizmijenjen na svih 10 jezika.",
+    customTextWarning: "⚠️ Ovaj tekst ostaje neizmijenjen.",
     yesLabel: "Da / Dostupno",
     noLabel: "Ne / Nije dostupno",
     createCustomCatBtn: "Stvori prilagođenu kategoriju"
@@ -266,39 +221,13 @@ const translations = {
     savedMsg: "Salvato!",
     yesLabel: "Sì / Disponibile",
     noLabel: "No / Non disponibile",
-    createCustomCatBtn: "Crea categoria personalizzata",
+    createCustomCatBtn: "Crea categoria",
     sec1Title: "1. Info struttura",
     sec6Title: "6. Sistema Preset",
     addBtn: "Aggiungi",
-    editTitle: "Titolo categoria",
+    editTitle: "Titolo",
     customTextLabel: "Descrizione",
     customTextWarning: "⚠️ Invariato in tutte le 10 lingue."
-  },
-  fr: {
-    welcomeBadge: "Guide numérique",
-    welcomeButton: "Commencer",
-    greetingHello: "Bonjour,",
-    greetingWelcome: "bienvenue.",
-    navHome: "Accueil",
-    navGaestemappe: "Guide",
-    navReview: "Avis",
-    navRoute: "Itinéraire",
-    weatherTitle: "Ensoleillé",
-    weatherSub: "Météo actuelle",
-    detailBack: "Retour",
-    adminTitle: "Administration",
-    guestViewBtn: "Vue invité",
-    saveBtn: "Enregistrer",
-    savedMsg: "Enregistré !",
-    yesLabel: "Oui / Disponible",
-    noLabel: "Non / Indisponible",
-    createCustomCatBtn: "Créer une catégorie",
-    sec1Title: "1. Infos structure",
-    sec6Title: "6. Système de Préréglage",
-    addBtn: "Ajouter",
-    editTitle: "Titre",
-    customTextLabel: "Description",
-    customTextWarning: "⚠️ Inchangé dans les 10 langues."
   },
   es: {
     welcomeBadge: "Guía digital",
@@ -318,7 +247,7 @@ const translations = {
     savedMsg: "¡Guardado!",
     yesLabel: "Sí / Disponible",
     noLabel: "No / No disponible",
-    createCustomCatBtn: "Crear categoría personalizada",
+    createCustomCatBtn: "Crear categoría",
     sec1Title: "1. Info del alojamiento",
     sec6Title: "6. Sistema de Plantillas",
     addBtn: "Añadir",
@@ -373,7 +302,7 @@ const translations = {
     createCustomCatBtn: "Opprett kategori",
     sec1Title: "1. Boliginfo",
     sec6Title: "6. Forhåndsinnstilt system",
-    addBtn: "Legg til",
+    addBtn: "Legg till",
     editTitle: "Tittel",
     customTextLabel: "Beskrivelse",
     customTextWarning: "⚠️ Uendret på alle 10 språk."
@@ -418,45 +347,45 @@ const themeColors = [
 ];
 
 const mainCategories = [
-  { id: 'cat_hotel', name: { de: 'Hotel & Unterkunft', en: 'Hotel & Accommodation', tr: 'Otel & Konaklama', hr: 'Hotel i smještaj' }, icon: 'Building' },
-  { id: 'cat_food', name: { de: 'Essen & Trinken', en: 'Food & Drinks', tr: 'Yeme & İçme', hr: 'Hrana i piće' }, icon: 'Utensils' },
-  { id: 'cat_wellness', name: { de: 'Wellness & Spa', en: 'Wellness & Spa', tr: 'Wellness & Spa', hr: 'Wellness i spa' }, icon: 'Waves' },
-  { id: 'cat_leisure', name: { de: 'Freizeit & Aktivitäten', en: 'Leisure & Activities', tr: 'Eğlence & Aktiviteler', hr: 'Slobodno vrijeme' }, icon: 'Compass' },
-  { id: 'cat_surroundings', name: { de: 'Umgebung & Ausflüge', en: 'Surroundings & Excursions', tr: 'Çevre & Geziler', hr: 'Okolica i izleti' }, icon: 'MapPin' },
-  { id: 'cat_mobility', name: { de: 'Anreise & Mobilität', en: 'Arrival & Mobility', tr: 'Ulaşım & Mobilite', hr: 'Dolazak i mobilnost' }, icon: 'Car' },
-  { id: 'cat_service', name: { de: 'Service & Informationen', en: 'Service & Information', tr: 'Servis & Bilgiler', hr: 'Usluge i informacije' }, icon: 'Phone' },
-  { id: 'cat_safety', name: { de: 'Regeln & Sicherheit', en: 'Rules & Safety', tr: 'Kurallar & Güvenlik', hr: 'Pravila i sigurnost' }, icon: 'ShieldCheck' }
+  { id: 'cat_hotel', name: { de: 'Hotel & Unterkunft', en: 'Hotel & Accommodation', tr: 'Otel & Konaklama', fr: 'Hôtel & Hébergement', hr: 'Hotel i smještaj', it: 'Hotel e alloggio', es: 'Hotel y Alojamiento', sv: 'Hotell & Boende', no: 'Hotell og overnatting', sq: 'Hotel & Akomodim' }, icon: 'Building' },
+  { id: 'cat_food', name: { de: 'Essen & Trinken', en: 'Food & Drinks', tr: 'Yeme & İçme', fr: 'Restauration', hr: 'Hrana i piće', it: 'Cibo e bevande', es: 'Comida y Bebida', sv: 'Mat & Dryck', no: 'Mat og drikke', sq: 'Ushqim & Pije' }, icon: 'Utensils' },
+  { id: 'cat_wellness', name: { de: 'Wellness & Spa', en: 'Wellness & Spa', tr: 'Wellness & Spa', fr: 'Bien-être & Spa', hr: 'Wellness i spa', it: 'Benessere e Spa', es: 'Bienestar y Spa', sv: 'Wellness & Spa', no: 'Velvære og spa', sq: 'Wellness & Spa' }, icon: 'Waves' },
+  { id: 'cat_leisure', name: { de: 'Freizeit & Aktivitäten', en: 'Leisure & Activities', tr: 'Eğlence & Aktiviteler', fr: 'Loisirs & Activités', hr: 'Slobodno vrijeme', it: 'Tempo libero', es: 'Ocio y Actividades', sv: 'Fritid & Aktiviteter', no: 'Fritid og aktiviteter', sq: 'Koha e Lirë & Aktivitete' }, icon: 'Compass' },
+  { id: 'cat_surroundings', name: { de: 'Umgebung & Ausflüge', en: 'Surroundings & Excursions', tr: 'Çevre & Geziler', fr: 'Environs & Excursions', hr: 'Okolica i izleti', it: 'Dintorni ed escursioni', es: 'Entorno y Excursiones', sv: 'Omgivning & Utflykter', no: 'Omgivelser og utflukter', sq: 'Rrethina & Ekskursione' }, icon: 'MapPin' },
+  { id: 'cat_mobility', name: { de: 'Anreise & Mobilität', en: 'Arrival & Mobility', tr: 'Ulaşım & Mobilite', fr: 'Arrivée & Mobilité', hr: 'Dolazak i mobilnost', it: 'Arrivo e mobilità', es: 'Llegada y Movilidad', sv: 'Ankomst & Mobilitet', no: 'Ankomst og mobilitet', sq: 'Arritja & Mobiliteti' }, icon: 'Car' },
+  { id: 'cat_service', name: { de: 'Service & Informationen', en: 'Service & Information', tr: 'Servis & Bilgiler', fr: 'Service & Informations', hr: 'Usluge i informacije', it: 'Servizi e informazioni', es: 'Servicio e Información', sv: 'Service & Information', no: 'Tjenester og informasjon', sq: 'Shërbim & Informacion' }, icon: 'Phone' },
+  { id: 'cat_safety', name: { de: 'Regeln & Sicherheit', en: 'Rules & Safety', tr: 'Kurallar & Güvenlik', fr: 'Règles & Sécurité', hr: 'Pravila i sigurnost', it: 'Regole e sicurezza', es: 'Reglas y Seguridad', sv: 'Regler & Säkerhet', no: 'Regler og sikkerhet', sq: 'Rregulla & Siguria' }, icon: 'ShieldCheck' }
 ];
 
 const categoryPresets = [
-  { id: 'hotel_info', categoryId: 'cat_hotel', icon: 'Building', title: { de: 'Hotelinformationen', en: 'Hotel Information', tr: 'Otel Bilgileri', hr: 'Informacije o hotelu' }, schema: [
-    { key: 'reception_hours', type: 'text', label: { de: 'Rezeptionszeiten', en: 'Reception Hours', tr: 'Resepsiyon Saatleri', hr: 'Radno vrijeme recepcije' }, default: '07:00 - 22:00 Uhr' },
-    { key: 'emergency_phone', type: 'text', label: { de: 'Notfallnummer', en: 'Emergency Phone', tr: 'Acil Durum Telefonu', hr: 'Broj za hitne slučajeve' }, default: '+49 123 456789' },
-    { key: 'multilingual_staff', type: 'boolean', label: { de: 'Mehrsprachiges Personal', en: 'Multilingual Staff', tr: 'Çok Dilli Personel', hr: 'Osoblje koje govori više jezika' }, default: true }
+  { id: 'hotel_info', categoryId: 'cat_hotel', icon: 'Building', title: { de: 'Hotelinformationen', en: 'Hotel Information', tr: 'Otel Bilgileri', fr: "Informations sur l'hôtel", hr: 'Informacije o hotelu', it: 'Informazioni sull\'hotel', es: 'Información del Hotel', sv: 'Hotellinformation', no: 'Hotellinformasjon', sq: 'Informacione mbi Hotelin' }, schema: [
+    { key: 'reception_hours', type: 'text', label: { de: 'Rezeptionszeiten', en: 'Reception Hours', tr: 'Resepsiyon Saatleri', fr: 'Horaires de réception', hr: 'Radno vrijeme recepcije', it: 'Orari della reception', es: 'Horario de recepción', sv: 'Receptionstider', no: 'Resepsjonstider', sq: 'Orari i Recepsionit' }, default: '07:00 - 22:00 Uhr' },
+    { key: 'emergency_phone', type: 'text', label: { de: 'Notfallnummer', en: 'Emergency Phone', tr: 'Acil Durum Telefonu', fr: "Numéro d'urgence", hr: 'Broj za hitne slučajeve', it: 'Numero di emergenza', es: 'Número de emergencia', sv: 'Nödnummer', no: 'Nødnummer', sq: 'Numri i Urgjencës' }, default: '+49 123 456789' },
+    { key: 'multilingual_staff', type: 'boolean', label: { de: 'Mehrsprachiges Personal', en: 'Multilingual Staff', tr: 'Çok Dilli Personel', fr: 'Personnel multilingue', hr: 'Osoblje koje govori više jezika', it: 'Personale multilingue', es: 'Personal multilingüe', sv: 'Flerspråkig personal', no: 'Flerspråklig personale', sq: 'Staf Shumëgjuhësh' }, default: true }
   ]},
-  { id: 'room_info', categoryId: 'cat_hotel', icon: 'Bed', title: { de: 'Zimmerinformationen', en: 'Room Information', tr: 'Oda Bilgileri', hr: 'Informacije o sobi' }, schema: [
-    { key: 'room_features', type: 'multiselect', label: { de: 'Zimmerausstattung', en: 'Room Features', tr: 'Oda Özellikleri', hr: 'Sadržaj sobe' }, options: ['Safe', 'Klimaanlage', 'Flachbild-TV', 'Haartrockner', 'Kaffeemaschine'], default: ['Safe', 'Klimaanlage', 'Flachbild-TV'] },
-    { key: 'balcony_status', type: 'boolean', label: { de: 'Balkon / Terrasse', en: 'Balcony / Terrace', tr: 'Balkon / Teras', hr: 'Balkon / Terasa' }, default: false }
+  { id: 'room_info', categoryId: 'cat_hotel', icon: 'Bed', title: { de: 'Zimmerinformationen', en: 'Room Information', tr: 'Oda Bilgileri', fr: 'Informations sur la chambre', hr: 'Informacije o sobi', it: 'Informazioni sulla camera', es: 'Información de la Habitación', sv: 'Rumsinformation', no: 'Rominformasjon', sq: 'Informacione mbi Dhomën' }, schema: [
+    { key: 'room_features', type: 'multiselect', label: { de: 'Zimmerausstattung', en: 'Room Features', tr: 'Oda Özellikleri', fr: 'Équipements de la chambre', hr: 'Sadržaj sobe', it: 'Dotazione della camera', es: 'Equipamiento de la habitación', sv: 'Rumsfaciliteter', no: 'Romfasiliteter', sq: 'Pajisjet e Dhomës' }, options: ['Safe', 'Klimaanlage', 'Flachbild-TV', 'Haartrockner', 'Kaffeemaschine'], default: ['Safe', 'Klimaanlage', 'Flachbild-TV'] },
+    { key: 'balcony_status', type: 'boolean', label: { de: 'Balkon / Terrasse', en: 'Balcony / Terrace', tr: 'Balkon / Teras', fr: 'Balcon / Terrasse', hr: 'Balkon / Terasa', it: 'Balcone / Terrazza', es: 'Balcón / Terraza', sv: 'Balkong / Terrass', no: 'Balkong / Terrasse', sq: 'Ballkon / Tarracë' }, default: false }
   ]},
-  { id: 'wifi_internet', categoryId: 'cat_hotel', icon: 'Wifi', title: { de: 'WLAN & Internet', en: 'WiFi & Internet', tr: 'WLAN & İnternet', hr: 'Wi-Fi i internet' }, schema: [
-    { key: 'wifi_available', type: 'boolean', label: { de: 'WLAN verfügbar', en: 'WiFi Available', tr: 'WLAN Mevcut', hr: 'Wi-Fi dostupan' }, default: true },
-    { key: 'network_name', type: 'text', label: { de: 'Netzwerkname (SSID)', en: 'Network Name (SSID)', tr: 'Ağ Adı (SSID)', hr: 'Naziv mreže (SSID)' }, default: 'Hotel-Guest-WiFi' },
-    { key: 'wifi_password', type: 'text', label: { de: 'Passwort', en: 'Password', tr: 'Şifre', hr: 'Lozinka' }, default: 'welcome2026' },
-    { key: 'coverage', type: 'select', label: { de: 'Verfügbarkeit', en: 'Coverage', tr: 'Kapsama Alanı', hr: 'Pokrivenost' }, options: ['Gesamtes Hotel', 'Gästezimmer', 'Öffentliche Bereiche'], default: 'Gesamtes Hotel' }
+  { id: 'wifi_internet', categoryId: 'cat_hotel', icon: 'Wifi', title: { de: 'WLAN & Internet', en: 'WiFi & Internet', tr: 'WLAN & İnternet', fr: 'Wi-Fi & Internet', hr: 'Wi-Fi i internet', it: 'Wi-Fi e Internet', es: 'Wi-Fi e Internet', sv: 'Wi-Fi & Internet', no: 'Wi-Fi og Internett', sq: 'Wi-Fi & Internet' }, schema: [
+    { key: 'wifi_available', type: 'boolean', label: { de: 'WLAN verfügbar', en: 'WiFi Available', tr: 'WLAN Mevcut', fr: 'Wi-Fi disponible', hr: 'Wi-Fi dostupan', it: 'Wi-Fi disponibile', es: 'Wi-Fi disponible', sv: 'Wi-Fi tillgängligt', no: 'Wi-Fi tilgjengelig', sq: 'Wi-Fi i disponueshëm' }, default: true },
+    { key: 'network_name', type: 'text', label: { de: 'Netzwerkname (SSID)', en: 'Network Name (SSID)', tr: 'Ağ Adı (SSID)', fr: 'Nom du réseau (SSID)', hr: 'Naziv mreže (SSID)', it: 'Nome rete (SSID)', es: 'Nombre de red (SSID)', sv: 'Nätverksnamn (SSID)', no: 'Nettverksnavn (SSID)', sq: 'Emri i Rrjetit (SSID)' }, default: 'Hotel-Guest-WiFi' },
+    { key: 'wifi_password', type: 'text', label: { de: 'Passwort', en: 'Password', tr: 'Şifre', fr: 'Mot de passe', hr: 'Lozinka', it: 'Password', es: 'Contraseña', sv: 'Lösenord', no: 'Passord', sq: 'Fjalëkalimi' }, default: 'welcome2026' },
+    { key: 'coverage', type: 'select', label: { de: 'Verfügbarkeit', en: 'Coverage', tr: 'Kapsama Alanı', fr: 'Couverture', hr: 'Pokrivenost', it: 'Copertura', es: 'Cobertura', sv: 'Täckning', no: 'Dekning', sq: 'Mbulimi' }, options: ['Gesamtes Hotel', 'Gästezimmer', 'Öffentliche Bereiche'], default: 'Gesamtes Hotel' }
   ]},
-  { id: 'checkin_checkout', categoryId: 'cat_hotel', icon: 'Clock', title: { de: 'Check-in & Check-out', en: 'Check-in & Check-out', tr: 'Giriş & Çıkış', hr: 'Prijava i odjava' }, schema: [
-    { key: 'checkin_time', type: 'text', label: { de: 'Check-in-Zeit', en: 'Check-in Time', tr: 'Giriş Saati', hr: 'Vrijeme prijave' }, default: 'ab 15:00 Uhr' },
-    { key: 'checkout_time', type: 'text', label: { de: 'Check-out-Zeit', en: 'Check-out Time', tr: 'Çıkış Saati', hr: 'Vrijeme odjave' }, default: 'bis 11:00 Uhr' },
-    { key: 'express_checkout', type: 'boolean', label: { de: 'Express Check-out', en: 'Express Check-out', tr: 'Hızlı Çıkış', hr: 'Brza odjava' }, default: true }
+  { id: 'checkin_checkout', categoryId: 'cat_hotel', icon: 'Clock', title: { de: 'Check-in & Check-out', en: 'Check-in & Check-out', tr: 'Giriş & Çıkış', fr: "Arrivée & Départ", hr: 'Prijava i odjava', it: 'Check-in e Check-out', es: 'Check-in y Check-out', sv: 'Incheckning & Utcheckning', no: 'Inn- og utsjekking', sq: 'Check-in & Check-out' }, schema: [
+    { key: 'checkin_time', type: 'text', label: { de: 'Check-in-Zeit', en: 'Check-in Time', tr: 'Giriş Saati', fr: "Heure d'arrivée", hr: 'Vrijeme prijave', it: 'Orario di check-in', es: 'Hora de check-in', sv: 'Incheckningstid', no: 'Innsjekkingstid', sq: 'Koha e Check-in' }, default: 'ab 15:00 Uhr' },
+    { key: 'checkout_time', type: 'text', label: { de: 'Check-out-Zeit', en: 'Check-out Time', tr: 'Çıkış Saati', fr: 'Heure de départ', hr: 'Vrijeme odjave', it: 'Orario di check-out', es: 'Hora de check-out', sv: 'Utcheckningstid', no: 'Utsjekkingstid', sq: 'Koha e Check-out' }, default: 'bis 11:00 Uhr' },
+    { key: 'express_checkout', type: 'boolean', label: { de: 'Express Check-out', en: 'Express Check-out', tr: 'Hızlı Çıkış', fr: 'Départ express', hr: 'Brza odjava', it: 'Check-out express', es: 'Check-out exprés', sv: 'Expressutcheckning', no: 'Ekspressutsjekk', sq: 'Check-out Ekspres' }, default: true }
   ]},
-  { id: 'room_keys', categoryId: 'cat_hotel', icon: 'Key', title: { de: 'Zimmerschlüssel & Zugang', en: 'Room Keys & Access', tr: 'Oda Anahtarları & Erişim', hr: 'Ključevi sobe i pristup' }, schema: [
-    { key: 'key_type', type: 'select', label: { de: 'Schlüsseltyp', en: 'Key Type', tr: 'Anahtar Tipi', hr: 'Vrsta ključa' }, options: ['Elektronische Schlüsselkarte', 'PIN-Code / Smart Lock', 'Klassischer Schlüssel'], default: 'Elektronische Schlüsselkarte' },
-    { key: 'night_entrance', type: 'boolean', label: { de: 'Nachteingang per Karte', en: 'Night Entrance via Card', tr: 'Kart ile Gece Girişi', hr: 'Noćni ulaz karticom' }, default: true }
+  { id: 'room_keys', categoryId: 'cat_hotel', icon: 'Key', title: { de: 'Zimmerschlüssel & Zugang', en: 'Room Keys & Access', tr: 'Oda Anahtarları & Erişim', fr: "Clés de chambre & Accès", hr: 'Ključevi sobe i pristup', it: 'Chiavi e accesso', es: 'Llaves de habitación y acceso', sv: 'Rummsnycklar & Åtkomst', no: 'Nøkler og adgang', sq: 'Çelësat e Dhomës & Qasja' }, schema: [
+    { key: 'key_type', type: 'select', label: { de: 'Schlüsseltyp', en: 'Key Type', tr: 'Anahtar Tipi', fr: 'Type de clé', hr: 'Vrsta ključa', it: 'Tipo di chiave', es: 'Tipo de llave', sv: 'Nyckeltyp', no: 'Nøkkeltype', sq: 'Lloji i Çelësit' }, options: ['Elektronische Schlüsselkarte', 'PIN-Code / Smart Lock', 'Klassischer Schlüssel'], default: 'Elektronische Schlüsselkarte' },
+    { key: 'night_entrance', type: 'boolean', label: { de: 'Nachteingang per Karte', en: 'Night Entrance via Card', tr: 'Kart ile Gece Girişi', fr: 'Entrée de nuit par carte', hr: 'Noćni ulaz karticom', it: 'Ingresso notturno con tessera', es: 'Entrada nocturna con tarjeta', sv: 'Nattentré via kort', no: 'Nattinngang med kort', sq: 'Hyrja e Natës me Kartë' }, default: true }
   ]},
-  { id: 'breakfast', categoryId: 'cat_food', icon: 'Coffee', title: { de: 'Frühstück', en: 'Breakfast', tr: 'Kahvaltı', hr: 'Doručak' }, schema: [
-    { key: 'breakfast_hours', type: 'text', label: { de: 'Frühstückszeiten', en: 'Breakfast Hours', tr: 'Kahvaltı Saatleri', hr: 'Vrijeme doručka' }, default: '07:00 - 10:30 Uhr' },
-    { key: 'breakfast_type', type: 'select', label: { de: 'Frühstücksart', en: 'Breakfast Type', tr: 'Kahvaltı Türü', hr: 'Vrsta doručka' }, options: ['Reichhaltiges Buffet', 'Kontinental', 'À la carte'], default: 'Reichhaltiges Buffet' },
-    { key: 'location', type: 'text', label: { de: 'Frühstücksort', en: 'Location', tr: 'Konum', hr: 'Lokacija' }, default: 'Hauptrestaurant (Erdgeschoss)' }
+  { id: 'breakfast', categoryId: 'cat_food', icon: 'Coffee', title: { de: 'Frühstück', en: 'Breakfast', tr: 'Kahvaltı', fr: 'Petit-déjeuner', hr: 'Doručak', it: 'Colazione', es: 'Desayuno', sv: 'Frukost', no: 'Frokost', sq: 'Mëngjesi' }, schema: [
+    { key: 'breakfast_hours', type: 'text', label: { de: 'Frühstückszeiten', en: 'Breakfast Hours', tr: 'Kahvaltı Saatleri', fr: 'Horaires du petit-déjeuner', hr: 'Vrijeme doručka', it: 'Orari della colazione', es: 'Horario de desayuno', sv: 'Frukosttider', no: 'Frokosttider', sq: 'Orari i Mëngjesit' }, default: '07:00 - 10:30 Uhr' },
+    { key: 'breakfast_type', type: 'select', label: { de: 'Frühstücksart', en: 'Breakfast Type', tr: 'Kahvaltı Türü', fr: 'Type de petit-déjeuner', hr: 'Vrsta doručka', it: 'Tipo di colazione', es: 'Tipo de desayuno', sv: 'Frukosttyp', no: 'Frokosttype', sq: 'Lloji i Mëngjesit' }, options: ['Reichhaltiges Buffet', 'Kontinental', 'À la carte'], default: 'Reichhaltiges Buffet' },
+    { key: 'location', type: 'text', label: { de: 'Frühstücksort', en: 'Location', tr: 'Konum', fr: 'Emplacement', hr: 'Lokacija', it: 'Posizione', es: 'Ubicación', sv: 'Plats', no: 'Sted', sq: 'Vendndodhja' }, default: 'Hauptrestaurant (Erdgeschoss)' }
   ]}
 ];
 
@@ -544,7 +473,7 @@ const DynamicFormRenderer = ({ presetSchema, fieldValues, onChangeField, current
   );
 };
 
-// --- MİSAFİR GÖRÜNÜMÜ: TEMA RENKLERİNE UYUMLU, MOBİL UYUMLU ŞIK BİLGİ KARTI ---
+// --- MİSAFİR GÖRÜNÜMÜ: TEMA VE DİL DESTEKLİ ŞIK KARTLAR ---
 const GuestCategoryDisplay = ({ category, currentTheme, lang, t }) => {
   const presetObj = categoryPresets.find(p => p.id === category.presetId);
   const fieldValues = category.fieldValues || {};
@@ -1031,8 +960,8 @@ export default function App() {
             <option value="en">🇬🇧 EN</option>
             <option value="tr">🇹🇷 TR</option>
             <option value="hr">🇭🇷 HR</option>
-            <option value="it">🇮🇹 IT</option>
             <option value="fr">🇫🇷 FR</option>
+            <option value="it">🇮🇹 IT</option>
             <option value="es">🇪🇸 ES</option>
             <option value="sv">🇸🇪 SV</option>
             <option value="no">🇳🇴 NO</option>
@@ -1060,8 +989,8 @@ export default function App() {
             <option value="en">🇬🇧 EN</option>
             <option value="tr">🇹🇷 TR</option>
             <option value="hr">🇭🇷 HR</option>
-            <option value="it">🇮🇹 IT</option>
             <option value="fr">🇫🇷 FR</option>
+            <option value="it">🇮🇹 IT</option>
             <option value="es">🇪🇸 ES</option>
             <option value="sv">🇸🇪 SV</option>
             <option value="no">🇳🇴 NO</option>
