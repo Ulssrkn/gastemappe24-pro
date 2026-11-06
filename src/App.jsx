@@ -14,7 +14,7 @@ const supabaseUrl = 'https://YOUR-SUPABASE-URL.supabase.co';
 const supabaseAnonKey = 'YOUR-SUPABASE-ANON-KEY';
 export const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
-// --- 10 DİL ÇEVİRİ SİSTEMİ (EKSİKSİZ) ---
+// --- 10 DİL ÇEVİRİ SİSTEMİ ---
 const translations = {
   de: {
     welcomeBadge: "Digitale Gästemappe",
@@ -40,6 +40,7 @@ const translations = {
     trialDaysLeft: "Tage verbleibend",
     statsScans: "QR-Code Scans (Gesamt)",
     statsActiveRooms: "Aktive Zimmer-Zugriffe",
+    analyticsTitle: "Kategorie-Analytik (Meistgeklickte Inhalte)",
     qrTitle: "QR-Code & Print-Center",
     printA4: "Druckvorlage A4",
     printA5: "Druckvorlage A5",
@@ -92,6 +93,7 @@ const translations = {
     trialDaysLeft: "Days remaining",
     statsScans: "QR Code Scans (Total)",
     statsActiveRooms: "Active Room Access",
+    analyticsTitle: "Category Analytics (Most Clicked)",
     qrTitle: "QR Code & Print Center",
     printA4: "Print Template A4",
     printA5: "Print Template A5",
@@ -100,7 +102,7 @@ const translations = {
     sec2Title: "2. Design & Color Themes",
     sec3Title: "3. Upload Logo",
     sec4Title: "4. Image Management (Slider)",
-    sec5Title: "5. QR Code & Print Center (Printing allowed)",
+    sec5Title: "5. QR Code & Print Center",
     sec6Title: "6. Dynamic Preset & Category System",
     lblHotelName: "Property Name",
     lblPhone: "Phone",
@@ -144,6 +146,7 @@ const translations = {
     trialDaysLeft: "Gün kaldı",
     statsScans: "QR Kod Taramaları (Toplam)",
     statsActiveRooms: "Aktif Oda Erişimi",
+    analyticsTitle: "Kategori Analitiği (En Çok Tıklananlar)",
     qrTitle: "QR Kod & Baskı Merkezi",
     printA4: "A4 Baskı Şablonu",
     printA5: "A5 Baskı Şablonu",
@@ -152,7 +155,7 @@ const translations = {
     sec2Title: "2. Renk Temaları",
     sec3Title: "3. Logo Yükleme",
     sec4Title: "4. Resim Yönetimi (Slider)",
-    sec5Title: "5. QR Kod & Baskı Merkezi (Yazdırma Aktif)",
+    sec5Title: "5. QR Kod & Baskı Merkezi",
     sec6Title: "6. Dinamik Preset & Kategori Sistemi",
     lblHotelName: "Tesis / Otel Adı",
     lblPhone: "Telefon",
@@ -172,13 +175,13 @@ const translations = {
     searchPlaceholder: "Ara...",
     noPresetsFound: "Bu kategoride şablon bulunamadı."
   },
-  fr: { welcomeBadge: "Guide", welcomeButton: "C'est parti", greetingHello: "Bonjour,", greetingWelcome: "bienvenue.", navHome: "Accueil", navGaestemappe: "Guide", navReview: "Avis", navRoute: "Itinéraire", weatherTitle: "Ensoleillé", weatherSub: "Météo", wlanTitle: "Wi-Fi", parkingTitle: "Parking", breakfastTitle: "Petit-déj", checkInOutTitle: "Arrivée/Départ", detailBack: "Retour", adminTitle: "Admin", guestViewBtn: "Vue invité", saveBtn: "Enregistrer", savedMsg: "Enregistré !", trialTitle: "Essai PRO", trialDaysLeft: "Jours restants", statsScans: "Scans QR", statsActiveRooms: "Chambres actives", qrTitle: "QR & Impression", printA4: "A4", printA5: "A5", printCard: "Carte", sec1Title: "1. Infos", sec2Title: "2. Couleurs", sec3Title: "3. Logo", sec4Title: "4. Images", sec5Title: "5. QR Center", sec6Title: "6. Préréglages", lblHotelName: "Nom", lblPhone: "Tél", btnAddCategory: "Ajouter", modalTitle: "Modifier", step1Title: "1. Catégorie", step2Title: "2. Modèle", step3Title: "3. Détails", addBtn: "Ajouter", editTitle: "Titre", customTextLabel: "Notes", yesLabel: "Oui", noLabel: "Non", moreInfo: "Plus", cancel: "Annuler", saveAndClose: "Fermer", searchPlaceholder: "Rechercher...", noPresetsFound: "Aucun." },
-  hr: { welcomeBadge: "Vodič", welcomeButton: "Kreni", greetingHello: "Pozdrav,", greetingWelcome: "dobrodošli.", navHome: "Početna", navGaestemappe: "Vodič", navReview: "Ocijeni", navRoute: "Upute", weatherTitle: "Sunčano", weatherSub: "Vrijeme", wlanTitle: "Wi-Fi", parkingTitle: "Parking", breakfastTitle: "Doručak", checkInOutTitle: "Prijava", detailBack: "Natrag", adminTitle: "Admin", guestViewBtn: "Gosti", saveBtn: "Spremi", savedMsg: "Spremljeno!", trialTitle: "PRO probno", trialDaysLeft: "dana", statsScans: "QR skeniranja", statsActiveRooms: "Sobe", qrTitle: "QR centar", printA4: "A4", printA5: "A5", printCard: "Kartica", sec1Title: "1. Info", sec2Title: "2. Boje", sec3Title: "3. Logo", sec4Title: "4. Slike", sec5Title: "5. QR Center", sec6Title: "6. Predlošci", lblHotelName: "Naziv", lblPhone: "Tel", btnAddCategory: "Dodaj", modalTitle: "Uredi", step1Title: "1. Kategorija", step2Title: "2. Predložak", step3Title: "3. Detalji", addBtn: "Dodaj", editTitle: "Naslov", customTextLabel: "Bilješke", yesLabel: "Da", noLabel: "Ne", moreInfo: "Više", cancel: "Odustani", saveAndClose: "Zatvori", searchPlaceholder: "Traži...", noPresetsFound: "Nema." },
-  it: { welcomeBadge: "Guida", welcomeButton: "Inizia", greetingHello: "Ciao,", greetingWelcome: "benvenuto.", navHome: "Home", navGaestemappe: "Guida", navReview: "Recensioni", navRoute: "Percorso", weatherTitle: "Sereno", weatherSub: "Meteo", wlanTitle: "Wi-Fi", parkingTitle: "Parcheggio", breakfastTitle: "Colazione", checkInOutTitle: "Check-in", detailBack: "Indietro", adminTitle: "Admin", guestViewBtn: "Vista", saveBtn: "Salva", savedMsg: "Salvato!", trialTitle: "PRO", trialDaysLeft: "giorni", statsScans: "Scansioni", statsActiveRooms: "Camere", qrTitle: "QR Center", printA4: "A4", printA5: "A5", printCard: "Card", sec1Title: "1. Info", sec2Title: "2. Colori", sec3Title: "3. Logo", sec4Title: "4. Immagini", sec5Title: "5. QR", sec6Title: "6. Preset", lblHotelName: "Nome", lblPhone: "Tel", btnAddCategory: "Aggiungi", modalTitle: "Modifica", step1Title: "1. Categoria", step2Title: "2. Modello", step3Title: "3. Dettagli", addBtn: "Aggiungi", editTitle: "Titolo", customTextLabel: "Note", yesLabel: "Sì", noLabel: "No", moreInfo: "Altro", cancel: "Annulla", saveAndClose: "Chiudi", searchPlaceholder: "Cerca...", noPresetsFound: "Nulla." },
-  es: { welcomeBadge: "Guía", welcomeButton: "Empezar", greetingHello: "Hola,", greetingWelcome: "bienvenido.", navHome: "Inicio", navGaestemappe: "Guía", navReview: "Valorar", navRoute: "Ruta", weatherTitle: "Soleado", weatherSub: "Clima", wlanTitle: "Wi-Fi", parkingTitle: "Parking", breakfastTitle: "Desayuno", checkInOutTitle: "Entrada", detailBack: "Volver", adminTitle: "Admin", guestViewBtn: "Vista", saveBtn: "Guardar", savedMsg: "Guardado!", trialTitle: "PRO", trialDaysLeft: "días", statsScans: "Scans", statsActiveRooms: "Habitaciones", qrTitle: "QR Center", printA4: "A4", printA5: "A5", printCard: "Tarjeta", sec1Title: "1. Info", sec2Title: "2. Colores", sec3Title: "3. Logo", sec4Title: "4. Imágenes", sec5Title: "5. QR", sec6Title: "6. Plantillas", lblHotelName: "Nombre", lblPhone: "Tel", btnAddCategory: "Añadir", modalTitle: "Editar", step1Title: "1. Categoría", step2Title: "2. Plantilla", step3Title: "3. Detalles", addBtn: "Añadir", editTitle: "Título", customTextLabel: "Notas", yesLabel: "Sí", noLabel: "No", moreInfo: "Más", cancel: "Cancelar", saveAndClose: "Cerrar", searchPlaceholder: "Buscar...", noPresetsFound: "Nada." },
-  sv: { welcomeBadge: "Guide", welcomeButton: "Starta", greetingHello: "Hej,", greetingWelcome: "välkommen.", navHome: "Hem", navGaestemappe: "Guide", navReview: "Recension", navRoute: "Väg", weatherTitle: "Sol", weatherSub: "Väder", wlanTitle: "Wi-Fi", parkingTitle: "Parkering", breakfastTitle: "Frukost", checkInOutTitle: "Incheckning", detailBack: "Tillbaka", adminTitle: "Admin", guestViewBtn: "Gästvy", saveBtn: "Spara", savedMsg: "Sparat!", trialTitle: "PRO", trialDaysLeft: "dagar", statsScans: "Scans", statsActiveRooms: "Rum", qrTitle: "QR Center", printA4: "A4", printA5: "A5", printCard: "Kort", sec1Title: "1. Info", sec2Title: "2. Färg", sec3Title: "3. Logo", sec4Title: "4. Bilder", sec5Title: "5. QR", sec6Title: "6. Mallar", lblHotelName: "Namn", lblPhone: "Tel", btnAddCategory: "Lägg till", modalTitle: "Redigera", step1Title: "1. Kategori", step2Title: "2. Mall", step3Title: "3. Detaljer", addBtn: "Lägg till", editTitle: "Titel", customTextLabel: "Anteckningar", yesLabel: "Ja", noLabel: "Nej", moreInfo: "Mer", cancel: "Avbryt", saveAndClose: "Stäng", searchPlaceholder: "Sök...", noPresetsFound: "Inga." },
-  no: { welcomeBadge: "Guide", welcomeButton: "Start", greetingHello: "Hei,", greetingWelcome: "velkommen.", navHome: "Hjem", navGaestemappe: "Guide", navReview: "Omtale", navRoute: "Rute", weatherTitle: "Sol", weatherSub: "Vær", wlanTitle: "Wi-Fi", parkingTitle: "Parkering", breakfastTitle: "Frokost", checkInOutTitle: "Innsjekk", detailBack: "Tilbake", adminTitle: "Admin", guestViewBtn: "Visning", saveBtn: "Lagre", savedMsg: "Lagret!", trialTitle: "PRO", trialDaysLeft: "dager", statsScans: "Scans", statsActiveRooms: "Rom", qrTitle: "QR Center", printA4: "A4", printA5: "A5", printCard: "Kort", sec1Title: "1. Info", sec2Title: "2. Farge", sec3Title: "3. Logo", sec4Title: "4. Bilder", sec5Title: "5. QR", sec6Title: "6. Maler", lblHotelName: "Navn", lblPhone: "Tlf", btnAddCategory: "Legg til", modalTitle: "Rediger", step1Title: "1. Kategori", step2Title: "2. Mal", step3Title: "3. Detaljer", addBtn: "Legg til", editTitle: "Tittel", customTextLabel: "Notater", yesLabel: "Ja", noLabel: "Nei", moreInfo: "Mer", cancel: "Avbryt", saveAndClose: "Lukk", searchPlaceholder: "Søk...", noPresetsFound: "Ingen." },
-  sq: { welcomeBadge: "Udhëzues", welcomeButton: "Fillo", greetingHello: "Përshëndetje,", greetingWelcome: "mirë se erdhët.", navHome: "Kryefaqja", navGaestemappe: "Udhëzuesi", navReview: "Vlerëso", navRoute: "Udha", weatherTitle: "Diell", weatherSub: "Moti", wlanTitle: "Wi-Fi", parkingTitle: "Parkimi", breakfastTitle: "Mëngjesi", checkInOutTitle: "Hyrja", detailBack: "Kthehu", adminTitle: "Admin", guestViewBtn: "Pamja", saveBtn: "Ruaj", savedMsg: "U ruajt!", trialTitle: "PRO", trialDaysLeft: "ditë", statsScans: "Scans", statsActiveRooms: "Dhomat", qrTitle: "QR Center", printA4: "A4", printA5: "A5", printCard: "Kartë", sec1Title: "1. Info", sec2Title: "2. Ngjyrat", sec3Title: "3. Logo", sec4Title: "4. Fotografitë", sec5Title: "5. QR Center", sec6Title: "6. Shabllonet", lblHotelName: "Emri", lblPhone: "Tel", btnAddCategory: "Shto", modalTitle: "Ndrysho", step1Title: "1. Kategoria", step2Title: "2. Shablloni", step3Title: "3. Detajet", addBtn: "Shto", editTitle: "Titulli", customTextLabel: "Shënime", yesLabel: "Po", noLabel: "Jo", moreInfo: "Më shumë", cancel: "Anulo", saveAndClose: "Mbyll", searchPlaceholder: "Kërko...", noPresetsFound: "Asgjë." }
+  fr: { welcomeBadge: "Guide", welcomeButton: "C'est parti", greetingHello: "Bonjour,", greetingWelcome: "bienvenue.", navHome: "Accueil", navGaestemappe: "Guide", navReview: "Avis", navRoute: "Itinéraire", weatherTitle: "Ensoleillé", weatherSub: "Météo", wlanTitle: "Wi-Fi", parkingTitle: "Parking", breakfastTitle: "Petit-déj", checkInOutTitle: "Arrivée/Départ", detailBack: "Retour", adminTitle: "Admin", guestViewBtn: "Vue invité", saveBtn: "Enregistrer", savedMsg: "Enregistré !", trialTitle: "Essai PRO", trialDaysLeft: "Jours restants", statsScans: "Scans QR", statsActiveRooms: "Chambres actives", analyticsTitle: "Analytique", qrTitle: "QR & Impression", printA4: "A4", printA5: "A5", printCard: "Carte", sec1Title: "1. Infos", sec2Title: "2. Couleurs", sec3Title: "3. Logo", sec4Title: "4. Images", sec5Title: "5. QR Center", sec6Title: "6. Préréglages", lblHotelName: "Nom", lblPhone: "Tél", btnAddCategory: "Ajouter", modalTitle: "Modifier", step1Title: "1. Catégorie", step2Title: "2. Modèle", step3Title: "3. Détails", addBtn: "Ajouter", editTitle: "Titre", customTextLabel: "Notes", yesLabel: "Oui", noLabel: "Non", moreInfo: "Plus", cancel: "Annuler", saveAndClose: "Fermer", searchPlaceholder: "Rechercher...", noPresetsFound: "Aucun." },
+  hr: { welcomeBadge: "Vodič", welcomeButton: "Kreni", greetingHello: "Pozdrav,", greetingWelcome: "dobrodošli.", navHome: "Početna", navGaestemappe: "Vodič", navReview: "Ocijeni", navRoute: "Upute", weatherTitle: "Sunčano", weatherSub: "Vrijeme", wlanTitle: "Wi-Fi", parkingTitle: "Parking", breakfastTitle: "Doručak", checkInOutTitle: "Prijava", detailBack: "Natrag", adminTitle: "Admin", guestViewBtn: "Gosti", saveBtn: "Spremi", savedMsg: "Spremljeno!", trialTitle: "PRO probno", trialDaysLeft: "dana", statsScans: "QR skeniranja", statsActiveRooms: "Sobe", analyticsTitle: "Analitika", qrTitle: "QR centar", printA4: "A4", printA5: "A5", printCard: "Kartica", sec1Title: "1. Info", sec2Title: "2. Boje", sec3Title: "3. Logo", sec4Title: "4. Slike", sec5Title: "5. QR Center", sec6Title: "6. Predlošci", lblHotelName: "Naziv", lblPhone: "Tel", btnAddCategory: "Dodaj", modalTitle: "Uredi", step1Title: "1. Kategorija", step2Title: "2. Predložak", step3Title: "3. Detalji", addBtn: "Dodaj", editTitle: "Naslov", customTextLabel: "Bilješke", yesLabel: "Da", noLabel: "Ne", moreInfo: "Više", cancel: "Odustani", saveAndClose: "Zatvori", searchPlaceholder: "Traži...", noPresetsFound: "Nema." },
+  it: { welcomeBadge: "Guida", welcomeButton: "Inizia", greetingHello: "Ciao,", greetingWelcome: "benvenuto.", navHome: "Home", navGaestemappe: "Guida", navReview: "Recensioni", navRoute: "Percorso", weatherTitle: "Sereno", weatherSub: "Meteo", wlanTitle: "Wi-Fi", parkingTitle: "Parcheggio", breakfastTitle: "Colazione", checkInOutTitle: "Check-in", detailBack: "Indietro", adminTitle: "Admin", guestViewBtn: "Vista", saveBtn: "Salva", savedMsg: "Salvato!", trialTitle: "PRO", trialDaysLeft: "giorni", statsScans: "Scansioni", statsActiveRooms: "Camere", analyticsTitle: "Analitica", qrTitle: "QR Center", printA4: "A4", printA5: "A5", printCard: "Card", sec1Title: "1. Info", sec2Title: "2. Colori", sec3Title: "3. Logo", sec4Title: "4. Immagini", sec5Title: "5. QR", sec6Title: "6. Preset", lblHotelName: "Nome", lblPhone: "Tel", btnAddCategory: "Aggiungi", modalTitle: "Modifica", step1Title: "1. Categoria", step2Title: "2. Modello", step3Title: "3. Dettagli", addBtn: "Aggiungi", editTitle: "Titolo", customTextLabel: "Note", yesLabel: "Sì", noLabel: "No", moreInfo: "Altro", cancel: "Annulla", saveAndClose: "Chiudi", searchPlaceholder: "Cerca...", noPresetsFound: "Nulla." },
+  es: { welcomeBadge: "Guía", welcomeButton: "Empezar", greetingHello: "Hola,", greetingWelcome: "bienvenido.", navHome: "Inicio", navGaestemappe: "Guía", navReview: "Valorar", navRoute: "Ruta", weatherTitle: "Soleado", weatherSub: "Clima", wlanTitle: "Wi-Fi", parkingTitle: "Parking", breakfastTitle: "Desayuno", checkInOutTitle: "Entrada", detailBack: "Volver", adminTitle: "Admin", guestViewBtn: "Vista", saveBtn: "Guardar", savedMsg: "Guardado!", trialTitle: "PRO", trialDaysLeft: "días", statsScans: "Scans", statsActiveRooms: "Habitaciones", analyticsTitle: "Analítica", qrTitle: "QR Center", printA4: "A4", printA5: "A5", printCard: "Tarjeta", sec1Title: "1. Info", sec2Title: "2. Colores", sec3Title: "3. Logo", sec4Title: "4. Imágenes", sec5Title: "5. QR", sec6Title: "6. Plantillas", lblHotelName: "Nombre", lblPhone: "Tel", btnAddCategory: "Añadir", modalTitle: "Editar", step1Title: "1. Categoría", step2Title: "2. Plantilla", step3Title: "3. Detalles", addBtn: "Añadir", editTitle: "Título", customTextLabel: "Notas", yesLabel: "Sí", noLabel: "No", moreInfo: "Más", cancel: "Cancelar", saveAndClose: "Cerrar", searchPlaceholder: "Buscar...", noPresetsFound: "Nada." },
+  sv: { welcomeBadge: "Guide", welcomeButton: "Starta", greetingHello: "Hej,", greetingWelcome: "välkommen.", navHome: "Hem", navGaestemappe: "Guide", navReview: "Recension", navRoute: "Väg", weatherTitle: "Sol", weatherSub: "Väder", wlanTitle: "Wi-Fi", parkingTitle: "Parkering", breakfastTitle: "Frukost", checkInOutTitle: "Incheckning", detailBack: "Tillbaka", adminTitle: "Admin", guestViewBtn: "Gästvy", saveBtn: "Spara", savedMsg: "Sparat!", trialTitle: "PRO", trialDaysLeft: "dagar", statsScans: "Scans", statsActiveRooms: "Rum", analyticsTitle: "Analys", qrTitle: "QR Center", printA4: "A4", printA5: "A5", printCard: "Kort", sec1Title: "1. Info", sec2Title: "2. Färg", sec3Title: "3. Logo", sec4Title: "4. Bilder", sec5Title: "5. QR", sec6Title: "6. Mallar", lblHotelName: "Namn", lblPhone: "Tel", btnAddCategory: "Lägg till", modalTitle: "Redigera", step1Title: "1. Kategori", step2Title: "2. Mall", step3Title: "3. Detaljer", addBtn: "Lägg till", editTitle: "Titel", customTextLabel: "Anteckningar", yesLabel: "Ja", noLabel: "Nej", moreInfo: "Mer", cancel: "Avbryt", saveAndClose: "Stäng", searchPlaceholder: "Sök...", noPresetsFound: "Inga." },
+  no: { welcomeBadge: "Guide", welcomeButton: "Start", greetingHello: "Hei,", greetingWelcome: "velkommen.", navHome: "Hjem", navGaestemappe: "Guide", navReview: "Omtale", navRoute: "Rute", weatherTitle: "Sol", weatherSub: "Vær", wlanTitle: "Wi-Fi", parkingTitle: "Parkering", breakfastTitle: "Frokost", checkInOutTitle: "Innsjekk", detailBack: "Tilbake", adminTitle: "Admin", guestViewBtn: "Visning", saveBtn: "Lagre", savedMsg: "Lagret!", trialTitle: "PRO", trialDaysLeft: "dager", statsScans: "Scans", statsActiveRooms: "Rom", analyticsTitle: "Analytisk", qrTitle: "QR Center", printA4: "A4", printA5: "A5", printCard: "Kort", sec1Title: "1. Info", sec2Title: "2. Farge", sec3Title: "3. Logo", sec4Title: "4. Bilder", sec5Title: "5. QR", sec6Title: "6. Maler", lblHotelName: "Navn", lblPhone: "Tlf", btnAddCategory: "Legg til", modalTitle: "Rediger", step1Title: "1. Kategori", step2Title: "2. Mal", step3Title: "3. Detaljer", addBtn: "Legg till", editTitle: "Tittel", customTextLabel: "Notater", yesLabel: "Ja", noLabel: "Nei", moreInfo: "Mer", cancel: "Avbryt", saveAndClose: "Lukk", searchPlaceholder: "Søk...", noPresetsFound: "Ingen." },
+  sq: { welcomeBadge: "Udhëzues", welcomeButton: "Fillo", greetingHello: "Përshëndetje,", greetingWelcome: "mirë se erdhët.", navHome: "Kryefaqja", navGaestemappe: "Udhëzuesi", navReview: "Vlerëso", navRoute: "Udha", weatherTitle: "Diell", weatherSub: "Moti", wlanTitle: "Wi-Fi", parkingTitle: "Parkimi", breakfastTitle: "Mëngjesi", checkInOutTitle: "Hyrja", detailBack: "Kthehu", adminTitle: "Admin", guestViewBtn: "Pamja", saveBtn: "Ruaj", savedMsg: "U ruajt!", trialTitle: "PRO", trialDaysLeft: "ditë", statsScans: "Scans", statsActiveRooms: "Dhomat", analyticsTitle: "Analitika", qrTitle: "QR Center", printA4: "A4", printA5: "A5", printCard: "Kartë", sec1Title: "1. Info", sec2Title: "2. Ngjyrat", sec3Title: "3. Logo", sec4Title: "4. Fotografitë", sec5Title: "5. QR Center", sec6Title: "6. Shabllonet", lblHotelName: "Emri", lblPhone: "Tel", btnAddCategory: "Shto", modalTitle: "Ndrysho", step1Title: "1. Kategoria", step2Title: "2. Shablloni", step3Title: "3. Detajet", addBtn: "Shto", editTitle: "Titulli", customTextLabel: "Shënime", yesLabel: "Po", noLabel: "Jo", moreInfo: "Më shumë", cancel: "Anulo", saveAndClose: "Mbyll", searchPlaceholder: "Kërko...", noPresetsFound: "Asgjë." }
 };
 
 const themeColors = [
@@ -204,7 +207,9 @@ const mainCategories = [
   { id: 'cat_safety', name: { de: 'Regeln & Sicherheit', en: 'Rules & Safety', tr: 'Kurallar & Güvenlik', fr: 'Règles & Sécurité', hr: 'Pravila i sigurnost' }, icon: 'ShieldCheck' }
 ];
 
+// --- EKSİKSİZ PRESET HAVUZU (TÜM KATEGORİLER DOLU) ---
 const categoryPresets = [
+  // HOTEL & UNTERKUNFT
   { id: 'hotel_info', categoryId: 'cat_hotel', icon: 'Building', title: { de: 'Hotelinformationen', en: 'Hotel Information', tr: 'Otel Bilgileri', fr: "Informations hôtel", hr: 'Informacije o hotelu' }, schema: [
     { key: 'reception_hours', type: 'text', label: { de: 'Rezeptionszeiten', en: 'Reception Hours', tr: 'Resepsiyon Saatleri', fr: 'Horaires réception', hr: 'Radno vrijeme recepcije' }, default: '07:00 - 22:00 Uhr', primary: true },
     { key: 'emergency_phone', type: 'text', label: { de: 'Notfallnummer', en: 'Emergency Phone', tr: 'Acil Durum Telefonu', fr: "Numéro d'urgence", hr: 'Broj za hitne slučajeve' }, default: '+49 123 456789', primary: true },
@@ -218,128 +223,64 @@ const categoryPresets = [
     { key: 'pillow_menu', type: 'boolean', label: { de: 'Kissenmenü verfügbar', en: 'Pillows Menu Available', tr: 'Yastık Menüsü Mevcut', fr: 'Menu d\'oreillers', hr: 'Meni jastuka' }, default: true, primary: true },
     { key: 'mattress_type', type: 'text', label: { de: 'Matratzenart', en: 'Mattress Type', tr: 'Yatak Tipi', fr: 'Type de matelas', hr: 'Vrsta madraca' }, default: 'Orthopädisch / Premium', primary: true }
   ]},
-  { id: 'baby_kids_equip', categoryId: 'cat_hotel', icon: 'Baby', title: { de: 'Baby- & Kleinkindausstattung', en: 'Baby & Toddler Equipment', tr: 'Bebek & Çocuk Ekipmanı', fr: 'Équipement bébé', hr: 'Oprema za bebe' }, schema: [
-    { key: 'baby_cot', type: 'boolean', label: { de: 'Babybett verfügbar', en: 'Baby Cot Available', tr: 'Bebek Yatağı Mevcut', fr: 'Lit bébé disponible', hr: 'Dječji krevetić' }, default: true, primary: true },
-    { key: 'high_chair', type: 'boolean', label: { de: 'Hochstuhl', en: 'High Chair', tr: 'Mama Sandalyesi', fr: 'Chaise haute', hr: 'Hranilica za bebe' }, default: true, primary: true }
-  ]},
   { id: 'wifi_internet', categoryId: 'cat_hotel', icon: 'Wifi', title: { de: 'WLAN & Internet', en: 'WiFi & Internet', tr: 'WLAN & İnternet', fr: 'Wi-Fi & Internet', hr: 'Wi-Fi i internet' }, schema: [
     { key: 'wifi_available', type: 'boolean', label: { de: 'WLAN verfügbar', en: 'WiFi Available', tr: 'WLAN Mevcut', fr: 'Wi-Fi disponible', hr: 'Wi-Fi dostupan' }, default: true, primary: true },
     { key: 'network_name', type: 'text', label: { de: 'Netzwerkname (SSID)', en: 'Network Name (SSID)', tr: 'Ağ Adı (SSID)', fr: 'Nom du réseau (SSID)', hr: 'Naziv mreže (SSID)' }, default: 'Hotel-Guest-WiFi', primary: true },
     { key: 'wifi_password', type: 'text', label: { de: 'Passwort', en: 'Password', tr: 'Şifre', fr: 'Mot de passe', hr: 'Lozinka' }, default: 'welcome2026', primary: true }
   ]},
-  { id: 'sustainability_concept', categoryId: 'cat_sustainability', icon: 'Recycle', title: { de: 'Nachhaltigkeitskonzept', en: 'Sustainability Concept', tr: 'Sürdürülebilirlik Konsepti', fr: 'Concept de durabilité', hr: 'Koncepcija održivosti' }, schema: [
-    { key: 'concept_description', type: 'text', label: { de: 'Kurzbeschreibung', en: 'Short Description', tr: 'Kısa Açıklama', fr: 'Brève description', hr: 'Kratak opis' }, default: 'Wir setzen auf 100% Ökostrom und vermeiden Einwegplastik.', primary: true }
-  ]},
-  { id: 'cert_sustainability', categoryId: 'cat_certificates', icon: 'Award', title: { de: 'Nachhaltigkeitszertifikate', en: 'Sustainability Certificates', tr: 'Sürdürülebilirlik Sertifikaları', fr: 'Certificats de durabilité', hr: 'Certifikati održivosti' }, schema: [
-    { key: 'cert_name', type: 'text', label: { de: 'Zertifikat Name', en: 'Certificate Name', tr: 'Sertifika Adı', fr: 'Nom du certificat', hr: 'Naziv certifikata' }, default: 'Green Sign / Green Key', primary: true },
-    { key: 'cert_number', type: 'text', label: { de: 'Zertifikatsnummer', en: 'Certificate Number', tr: 'Sertifika No', fr: 'Numéro de certificat', hr: 'Broj certifikata' }, default: 'GK-2026-9876', primary: false }
-  ]},
+
+  // ESSEN & TRINKEN
   { id: 'breakfast', categoryId: 'cat_food', icon: 'Coffee', title: { de: 'Frühstück', en: 'Breakfast', tr: 'Kahvaltı', fr: 'Petit-déjeuner', hr: 'Doručak' }, schema: [
-    { key: 'breakfast_hours', type: 'text', label: { de: 'Frühstückszeiten', en: 'Breakfast Hours', tr: 'Kahvaltı Saatleri', fr: 'Horaires du petit-déjeuner', hr: 'Vrijeme doručka' }, default: '07:00 - 10:30 Uhr', primary: true },
-    { key: 'breakfast_type', type: 'select', label: { de: 'Frühstücksart', en: 'Breakfast Type', tr: 'Kahvaltı Türü', fr: 'Type de petit-déjeuner', hr: 'Vrsta doručka' }, options: ['Reichhaltiges Buffet', 'Kontinental', 'À la carte'], default: 'Reichhaltiges Buffet', primary: true }
+    { key: 'breakfast_hours', type: 'text', label: { de: 'Frühstückszeiten', en: 'Breakfast Hours', tr: 'Kahvaltı Saatleri', fr: 'Horaires', hr: 'Vrijeme doručka' }, default: '07:00 - 10:30 Uhr', primary: true },
+    { key: 'breakfast_type', type: 'select', label: { de: 'Frühstücksart', en: 'Breakfast Type', tr: 'Kahvaltı Türü', fr: 'Type', hr: 'Vrsta' }, options: ['Reichhaltiges Buffet', 'Kontinental', 'À la carte'], default: 'Reichhaltiges Buffet', primary: true }
+  ]},
+  { id: 'restaurant_bar', categoryId: 'cat_food', icon: 'Utensils', title: { de: 'Restaurant & Bar', en: 'Restaurant & Bar', tr: 'Restoran & Bar', fr: 'Restaurant & Bar', hr: 'Restoran i bar' }, schema: [
+    { key: 'opening_hours', type: 'text', label: { de: 'Öffnungszeiten', en: 'Opening Hours', tr: 'Çalışma Saatleri', fr: 'Horaires', hr: 'Radno vrijeme' }, default: '12:00 - 23:00 Uhr', primary: true },
+    { key: 'kitchen_warm', type: 'text', label: { de: 'Warme Küche bis', en: 'Hot food until', tr: 'Sıcak Yemek Bitiş', fr: 'Cuisine chaude jusqu\'à', hr: 'Topla kuhinja do' }, default: '21:30 Uhr', primary: false }
+  ]},
+
+  // NACHHALTIGKEIT & UMWELT
+  { id: 'sustainability_concept', categoryId: 'cat_sustainability', icon: 'Recycle', title: { de: 'Nachhaltigkeitskonzept', en: 'Sustainability Concept', tr: 'Sürdürülebilirlik Konsepti', fr: 'Concept durable', hr: 'Održivost' }, schema: [
+    { key: 'concept_description', type: 'text', label: { de: 'Kurzbeschreibung', en: 'Short Description', tr: 'Kısa Açıklama', fr: 'Description', hr: 'Opis' }, default: 'Wir setzen auf 100% Ökostrom und vermeiden Einwegplastik.', primary: true }
+  ]},
+
+  // ZERTIFIKATE & AUSZEICHNUNGEN
+  { id: 'cert_sustainability', categoryId: 'cat_certificates', icon: 'Award', title: { de: 'Nachhaltigkeitszertifikate', en: 'Sustainability Certificates', tr: 'Sürdürülebilirlik Sertifikaları', fr: 'Certificats', hr: 'Certifikati' }, schema: [
+    { key: 'cert_name', type: 'text', label: { de: 'Zertifikat Name', en: 'Certificate Name', tr: 'Sertifika Adı', fr: 'Nom', hr: 'Naziv' }, default: 'Green Sign / Green Key', primary: true },
+    { key: 'cert_number', type: 'text', label: { de: 'Zertifikatsnummer', en: 'Certificate Number', tr: 'Sertifika No', fr: 'Numéro', hr: 'Broj' }, default: 'GK-2026-9876', primary: false }
+  ]},
+
+  // WELLNESS & SPA
+  { id: 'wellness_spa', categoryId: 'cat_wellness', icon: 'Waves', title: { de: 'Wellness & Sauna', en: 'Wellness & Sauna', tr: 'Wellness & Sauna', fr: 'Wellness & Sauna', hr: 'Wellness i sauna' }, schema: [
+    { key: 'spa_hours', type: 'text', label: { de: 'Öffnungszeiten Sauna', en: 'Sauna Hours', tr: 'Sauna Çalışma Saatleri', fr: 'Horaires sauna', hr: 'Radno vrijeme saune' }, default: '10:00 - 20:00 Uhr', primary: true },
+    { key: 'bathrobe_service', type: 'boolean', label: { de: 'Bademantelservice auf Zimmer', en: 'Bathrobe Service', tr: 'Odalarda Bademantel Hizmeti', fr: 'Service de peignoir', hr: 'Usluga ogrtača' }, default: true, primary: true }
+  ]},
+
+  // FREIZEIT & AKTIVITÄTEN
+  { id: 'leisure_activities', categoryId: 'cat_leisure', icon: 'Compass', title: { de: 'Freizeit & Ausflugsziele', en: 'Leisure & Excursions', tr: 'Eğlence & Gezilecek Yerler', fr: 'Loisirs', hr: 'Slobodno vrijeme' }, schema: [
+    { key: 'bike_rental', type: 'boolean', label: { de: 'Fahrradverleih im Haus', en: 'Bike Rental Available', tr: 'Bisiklet Kiralama', fr: 'Location de vélos', hr: 'Najam bicikala' }, default: true, primary: true },
+    { key: 'hiking_tips', type: 'text', label: { de: 'Wandertipps Region', en: 'Hiking Tips', tr: 'Yürüyüş Rotaları Önerisi', fr: 'Conseils rando', hr: 'Pješačke staze' }, default: 'Direktstart ab Hoteleingang in die Weinberge.', primary: false }
+  ]},
+
+  // ANREISE & MOBILITÄT
+  { id: 'arrival_mobility', categoryId: 'cat_mobility', icon: 'Car', title: { de: 'Anreise & Parken', en: 'Arrival & Parking', tr: 'Ulaşım & Otopark', fr: 'Arrivée & Parking', hr: 'Dolazak i parking' }, schema: [
+    { key: 'charging_station', type: 'boolean', label: { de: 'E-Ladestation vorhanden', en: 'EV Charging Station', tr: 'Elektrikli Araç Şarj İstasyonu', fr: 'Bornes de recharge EV', hr: 'Punionica za električna vozila' }, default: true, primary: true },
+    { key: 'public_transport', type: 'text', label: { de: 'Öffentliche Verkehrsmittel', en: 'Public Transport', tr: 'Toplu Taşıma Bilgisi', fr: 'Transport en commun', hr: 'Javni prijevoz' }, default: 'Bahnhof in 500m Entfernung (Buslinie 501)', primary: false }
+  ]},
+
+  // SERVICE & INFORMATIONEN
+  { id: 'service_info', categoryId: 'cat_service', icon: 'Phone', title: { de: 'Wichtige Services', en: 'Important Services', tr: 'Önemli Servisler', fr: 'Services', hr: 'Usluge' }, schema: [
+    { key: 'laundry_service', type: 'boolean', label: { de: 'Wäscheservice / Reinigung', en: 'Laundry Service', tr: 'Çamaşırhane / Kuru Temizleme', fr: 'Service de blanchisserie', hr: 'Usluga pranja rublja' }, default: true, primary: true },
+    { key: 'luggage_storage', type: 'boolean', label: { de: 'Gepäckaufbewahrung', en: 'Luggage Storage', tr: 'Emanet Bagaj Odası', fr: 'Bagagerie', hr: 'Skladištenje prtljage' }, default: true, primary: true }
+  ]},
+
+  // REGELN & SICHERHEIT
+  { id: 'rules_safety', categoryId: 'cat_safety', icon: 'ShieldCheck', title: { de: 'Hausordnung & Sicherheit', en: 'House Rules & Safety', tr: 'Otel Kuralları & Güvenlik', fr: 'Règlement & Sécurité', hr: 'Pravila kuće i sigurnost' }, schema: [
+    { key: 'smoking_policy', type: 'boolean', label: { de: 'Nichtraucherhotel (Rauchverbot in Zimmern)', en: 'Non-smoking Hotel', tr: 'Sigara İçilmeyen Tesis', fr: 'Hôtel non-fumeur', hr: 'Hotel nepušača' }, default: true, primary: true },
+    { key: 'pet_policy', type: 'boolean', label: { de: 'Haustiere erlaubt', en: 'Pets Allowed', tr: 'Evcil Hayvan Kabul Edilir', fr: 'Animaux acceptés', hr: 'Kućni ljubimci dozvoljeni' }, default: false, primary: true }
   ]}
 ];
 
-
-  // Additional information-only presets
-  { id: 'hotel_facilities', categoryId: 'cat_hotel', icon: 'Building', title: { de: 'Hotelausstattung', en: 'Hotel Facilities', tr: 'Otel Olanakları', fr: 'Équipements de l’hôtel', hr: 'Hotelski sadržaji' }, schema: [
-    { key: 'facility_list', type: 'text', label: { de: 'Einrichtungen', en: 'Facilities', tr: 'Olanaklar', fr: 'Équipements', hr: 'Sadržaji' }, default: '', primary: true },
-    { key: 'facility_location', type: 'text', label: { de: 'Standort', en: 'Location', tr: 'Konum', fr: 'Emplacement', hr: 'Lokacija' }, default: '', primary: true },
-    { key: 'facility_hours', type: 'text', label: { de: 'Öffnungszeiten', en: 'Opening hours', tr: 'Çalışma saatleri', fr: 'Horaires', hr: 'Radno vrijeme' }, default: '', primary: true }
-  ]},
-  { id: 'checkin_checkout', categoryId: 'cat_hotel', icon: 'Clock', title: { de: 'Check-in & Check-out', en: 'Check-in & Check-out', tr: 'Giriş & Çıkış', fr: 'Arrivée & départ', hr: 'Prijava i odjava' }, schema: [
-    { key: 'checkin_time', type: 'text', label: { de: 'Check-in ab', en: 'Check-in from', tr: 'Giriş saati', fr: 'Arrivée à partir de', hr: 'Prijava od' }, default: '15:00', primary: true },
-    { key: 'checkout_time', type: 'text', label: { de: 'Check-out bis', en: 'Check-out until', tr: 'Çıkış saati', fr: 'Départ avant', hr: 'Odjava do' }, default: '11:00', primary: true },
-    { key: 'checkin_details', type: 'text', label: { de: 'Weitere Informationen', en: 'Additional information', tr: 'Ek bilgiler', fr: 'Informations complémentaires', hr: 'Dodatne informacije' }, default: '', primary: false }
-  ]},
-  { id: 'restaurant_info', categoryId: 'cat_food', icon: 'Utensils', title: { de: 'Restaurant', en: 'Restaurant', tr: 'Restoran', fr: 'Restaurant', hr: 'Restoran' }, schema: [
-    { key: 'restaurant_hours', type: 'text', label: { de: 'Öffnungszeiten', en: 'Opening hours', tr: 'Çalışma saatleri', fr: 'Horaires', hr: 'Radno vrijeme' }, default: '', primary: true },
-    { key: 'restaurant_location', type: 'text', label: { de: 'Standort', en: 'Location', tr: 'Konum', fr: 'Emplacement', hr: 'Lokacija' }, default: '', primary: true },
-    { key: 'restaurant_description', type: 'text', label: { de: 'Beschreibung', en: 'Description', tr: 'Açıklama', fr: 'Description', hr: 'Opis' }, default: '', primary: false },
-    { key: 'restaurant_menu_url', type: 'text', label: { de: 'Speisekarte (Link)', en: 'Menu link', tr: 'Menü bağlantısı', fr: 'Lien du menu', hr: 'Poveznica jelovnika' }, default: '', primary: false }
-  ]},
-  { id: 'bar_lounge', categoryId: 'cat_food', icon: 'Wine', title: { de: 'Bar & Lounge', en: 'Bar & Lounge', tr: 'Bar & Lounge', fr: 'Bar & Lounge', hr: 'Bar i salon' }, schema: [
-    { key: 'bar_hours', type: 'text', label: { de: 'Öffnungszeiten', en: 'Opening hours', tr: 'Çalışma saatleri', fr: 'Horaires', hr: 'Radno vrijeme' }, default: '', primary: true },
-    { key: 'bar_location', type: 'text', label: { de: 'Standort', en: 'Location', tr: 'Konum', fr: 'Emplacement', hr: 'Lokacija' }, default: '', primary: true },
-    { key: 'bar_description', type: 'text', label: { de: 'Informationen', en: 'Information', tr: 'Bilgiler', fr: 'Informations', hr: 'Informacije' }, default: '', primary: false }
-  ]},
-  { id: 'allergens_diet', categoryId: 'cat_food', icon: 'Heart', title: { de: 'Allergene & Ernährung', en: 'Allergens & Dietary Information', tr: 'Alerjenler & Beslenme', fr: 'Allergènes & régime alimentaire', hr: 'Alergeni i prehrana' }, schema: [
-    { key: 'dietary_options', type: 'text', label: { de: 'Ernährungsoptionen', en: 'Dietary options', tr: 'Beslenme seçenekleri', fr: 'Options alimentaires', hr: 'Prehrambene opcije' }, default: '', primary: true },
-    { key: 'allergen_notes', type: 'text', label: { de: 'Allergenhinweise', en: 'Allergen notes', tr: 'Alerjen notları', fr: 'Notes sur les allergènes', hr: 'Napomene o alergenima' }, default: '', primary: true }
-  ]},
-  { id: 'pool_aqua', categoryId: 'cat_wellness', icon: 'Waves', title: { de: 'Pool & Aqua', en: 'Pool & Aqua', tr: 'Havuz & Aqua', fr: 'Piscine & Aqua', hr: 'Bazen i aqua' }, schema: [
-    { key: 'pool_hours', type: 'text', label: { de: 'Öffnungszeiten', en: 'Opening hours', tr: 'Çalışma saatleri', fr: 'Horaires', hr: 'Radno vrijeme' }, default: '', primary: true },
-    { key: 'pool_location', type: 'text', label: { de: 'Standort', en: 'Location', tr: 'Konum', fr: 'Emplacement', hr: 'Lokacija' }, default: '', primary: true },
-    { key: 'pool_rules', type: 'text', label: { de: 'Poolregeln', en: 'Pool rules', tr: 'Havuz kuralları', fr: 'Règles de la piscine', hr: 'Pravila bazena' }, default: '', primary: false }
-  ]},
-  { id: 'sauna', categoryId: 'cat_wellness', icon: 'Flame', title: { de: 'Sauna', en: 'Sauna', tr: 'Sauna', fr: 'Sauna', hr: 'Sauna' }, schema: [
-    { key: 'sauna_hours', type: 'text', label: { de: 'Öffnungszeiten', en: 'Opening hours', tr: 'Çalışma saatleri', fr: 'Horaires', hr: 'Radno vrijeme' }, default: '', primary: true },
-    { key: 'sauna_types', type: 'text', label: { de: 'Saunatypen', en: 'Sauna types', tr: 'Sauna türleri', fr: 'Types de sauna', hr: 'Vrste sauna' }, default: '', primary: true },
-    { key: 'sauna_rules', type: 'text', label: { de: 'Saunaregeln', en: 'Sauna rules', tr: 'Sauna kuralları', fr: 'Règles du sauna', hr: 'Pravila saune' }, default: '', primary: false }
-  ]},
-  { id: 'fitness_center', categoryId: 'cat_wellness', icon: 'Dumbbell', title: { de: 'Fitness Center', en: 'Fitness Center', tr: 'Fitness Merkezi', fr: 'Salle de fitness', hr: 'Fitness centar' }, schema: [
-    { key: 'fitness_hours', type: 'text', label: { de: 'Öffnungszeiten', en: 'Opening hours', tr: 'Çalışma saatleri', fr: 'Horaires', hr: 'Radno vrijeme' }, default: '24/7', primary: true },
-    { key: 'fitness_location', type: 'text', label: { de: 'Standort', en: 'Location', tr: 'Konum', fr: 'Emplacement', hr: 'Lokacija' }, default: '', primary: true },
-    { key: 'fitness_equipment', type: 'text', label: { de: 'Ausstattung', en: 'Equipment', tr: 'Ekipmanlar', fr: 'Équipement', hr: 'Oprema' }, default: '', primary: false }
-  ]},
-  { id: 'bike_info', categoryId: 'cat_leisure', icon: 'Compass', title: { de: 'Fahrradverleih – Informationen', en: 'Bike Rental Information', tr: 'Bisiklet Kiralama Bilgileri', fr: 'Informations location de vélos', hr: 'Informacije o najmu bicikala' }, schema: [
-    { key: 'bike_types', type: 'text', label: { de: 'Fahrradtypen', en: 'Bike types', tr: 'Bisiklet türleri', fr: 'Types de vélos', hr: 'Vrste bicikala' }, default: '', primary: true },
-    { key: 'bike_location', type: 'text', label: { de: 'Standort', en: 'Location', tr: 'Konum', fr: 'Emplacement', hr: 'Lokacija' }, default: '', primary: true },
-    { key: 'bike_prices', type: 'text', label: { de: 'Preisübersicht', en: 'Price information', tr: 'Fiyat bilgisi', fr: 'Tarifs', hr: 'Cjenik' }, default: '', primary: false }
-  ]},
-  { id: 'events_info', categoryId: 'cat_leisure', icon: 'Calendar', title: { de: 'Events & Veranstaltungen', en: 'Events & Activities', tr: 'Etkinlikler', fr: 'Événements', hr: 'Događaji' }, schema: [
-    { key: 'event_program', type: 'text', label: { de: 'Programm', en: 'Programme', tr: 'Program', fr: 'Programme', hr: 'Program' }, default: '', primary: true },
-    { key: 'event_location', type: 'text', label: { de: 'Veranstaltungsort', en: 'Venue', tr: 'Etkinlik yeri', fr: 'Lieu', hr: 'Mjesto održavanja' }, default: '', primary: true },
-    { key: 'event_url', type: 'text', label: { de: 'Weitere Informationen (Link)', en: 'More information (link)', tr: 'Daha fazla bilgi (link)', fr: 'Plus d’informations (lien)', hr: 'Više informacija (poveznica)' }, default: '', primary: false }
-  ]},
-  { id: 'sightseeing', categoryId: 'cat_leisure', icon: 'MapPin', title: { de: 'Sehenswürdigkeiten', en: 'Sightseeing', tr: 'Gezilecek Yerler', fr: 'Sites touristiques', hr: 'Znamenitosti' }, schema: [
-    { key: 'sight_name', type: 'text', label: { de: 'Name', en: 'Name', tr: 'Adı', fr: 'Nom', hr: 'Naziv' }, default: '', primary: true },
-    { key: 'sight_distance', type: 'text', label: { de: 'Entfernung', en: 'Distance', tr: 'Mesafe', fr: 'Distance', hr: 'Udaljenost' }, default: '', primary: true },
-    { key: 'sight_description', type: 'text', label: { de: 'Beschreibung', en: 'Description', tr: 'Açıklama', fr: 'Description', hr: 'Opis' }, default: '', primary: false }
-  ]},
-  { id: 'parking_info', categoryId: 'cat_mobility', icon: 'Car', title: { de: 'Parkmöglichkeiten', en: 'Parking', tr: 'Otopark', fr: 'Stationnement', hr: 'Parkiranje' }, schema: [
-    { key: 'parking_type', type: 'text', label: { de: 'Parkplatztyp', en: 'Parking type', tr: 'Otopark türü', fr: 'Type de stationnement', hr: 'Vrsta parkirališta' }, default: '', primary: true },
-    { key: 'parking_location', type: 'text', label: { de: 'Standort', en: 'Location', tr: 'Konum', fr: 'Emplacement', hr: 'Lokacija' }, default: '', primary: true },
-    { key: 'parking_price', type: 'text', label: { de: 'Preis', en: 'Price', tr: 'Ücret', fr: 'Prix', hr: 'Cijena' }, default: '', primary: false }
-  ]},
-  { id: 'public_transport', categoryId: 'cat_mobility', icon: 'Bus', title: { de: 'Öffentliche Verkehrsmittel', en: 'Public Transport', tr: 'Toplu Taşıma', fr: 'Transports en commun', hr: 'Javni prijevoz' }, schema: [
-    { key: 'transport_stops', type: 'text', label: { de: 'Haltestellen', en: 'Stops', tr: 'Duraklar', fr: 'Arrêts', hr: 'Stanice' }, default: '', primary: true },
-    { key: 'transport_link', type: 'text', label: { de: 'Fahrpläne (Link)', en: 'Timetables (link)', tr: 'Sefer saatleri (link)', fr: 'Horaires (lien)', hr: 'Vozni red (poveznica)' }, default: '', primary: true }
-  ]},
-  { id: 'accessibility_info', categoryId: 'cat_safety', icon: 'Accessibility', title: { de: 'Barrierefreiheit', en: 'Accessibility', tr: 'Erişilebilirlik', fr: 'Accessibilité', hr: 'Pristupačnost' }, schema: [
-    { key: 'step_free_entrance', type: 'boolean', label: { de: 'Stufenloser Eingang', en: 'Step-free entrance', tr: 'Basamaksız giriş', fr: 'Entrée sans marches', hr: 'Ulaz bez stepenica' }, default: false, primary: true },
-    { key: 'accessible_rooms', type: 'boolean', label: { de: 'Barrierefreie Zimmer', en: 'Accessible rooms', tr: 'Erişilebilir odalar', fr: 'Chambres accessibles', hr: 'Pristupačne sobe' }, default: false, primary: true },
-    { key: 'accessible_bathroom', type: 'boolean', label: { de: 'Barrierefreies Bad', en: 'Accessible bathroom', tr: 'Erişilebilir banyo', fr: 'Salle de bain accessible', hr: 'Pristupačna kupaonica' }, default: false, primary: true },
-    { key: 'accessible_parking', type: 'boolean', label: { de: 'Behindertenparkplätze', en: 'Accessible parking', tr: 'Engelli otoparkı', fr: 'Stationnement accessible', hr: 'Pristupačno parkiralište' }, default: false, primary: false },
-    { key: 'accessibility_details', type: 'text', label: { de: 'Weitere Hinweise', en: 'Additional details', tr: 'Ek bilgiler', fr: 'Détails supplémentaires', hr: 'Dodatne napomene' }, default: '', primary: false }
-  ]},
-  { id: 'cert_accessibility', categoryId: 'cat_certificates', icon: 'Award', title: { de: 'Zertifizierte Barrierefreiheit', en: 'Accessibility Certification', tr: 'Erişilebilirlik Sertifikası', fr: 'Certification accessibilité', hr: 'Certifikat pristupačnosti' }, schema: [
-    { key: 'access_cert_name', type: 'text', label: { de: 'Zertifikat', en: 'Certificate', tr: 'Sertifika', fr: 'Certificat', hr: 'Certifikat' }, default: '', primary: true },
-    { key: 'access_cert_issuer', type: 'text', label: { de: 'Ausstellende Organisation', en: 'Issuing organization', tr: 'Veren kuruluş', fr: 'Organisme émetteur', hr: 'Izdavatelj' }, default: '', primary: true },
-    { key: 'access_cert_validity', type: 'text', label: { de: 'Gültigkeit', en: 'Validity', tr: 'Geçerlilik', fr: 'Validité', hr: 'Valjanost' }, default: '', primary: false }
-  ]},
-  { id: 'cert_quality', categoryId: 'cat_certificates', icon: 'Award', title: { de: 'Qualitätsauszeichnungen', en: 'Quality Awards', tr: 'Kalite Ödülleri', fr: 'Distinctions qualité', hr: 'Nagrade za kvalitetu' }, schema: [
-    { key: 'quality_award_name', type: 'text', label: { de: 'Auszeichnung', en: 'Award', tr: 'Ödül', fr: 'Distinction', hr: 'Nagrada' }, default: '', primary: true },
-    { key: 'quality_award_org', type: 'text', label: { de: 'Verliehen von', en: 'Awarded by', tr: 'Veren kurum', fr: 'Décerné par', hr: 'Dodijelio' }, default: '', primary: true },
-    { key: 'quality_award_year', type: 'text', label: { de: 'Jahr', en: 'Year', tr: 'Yıl', fr: 'Année', hr: 'Godina' }, default: '', primary: false }
-  ]},
-  { id: 'eco_measures', categoryId: 'cat_sustainability', icon: 'Recycle', title: { de: 'Nachhaltige Maßnahmen', en: 'Sustainability Measures', tr: 'Sürdürülebilirlik Uygulamaları', fr: 'Mesures durables', hr: 'Mjere održivosti' }, schema: [
-    { key: 'energy_measures', type: 'text', label: { de: 'Energie & Strom', en: 'Energy', tr: 'Enerji', fr: 'Énergie', hr: 'Energija' }, default: '', primary: true },
-    { key: 'water_measures', type: 'text', label: { de: 'Wassersparen', en: 'Water saving', tr: 'Su tasarrufu', fr: 'Économie d’eau', hr: 'Ušteda vode' }, default: '', primary: true },
-    { key: 'waste_measures', type: 'text', label: { de: 'Abfall & Recycling', en: 'Waste & recycling', tr: 'Atık & geri dönüşüm', fr: 'Déchets & recyclage', hr: 'Otpad i recikliranje' }, default: '', primary: false }
-  ]},
-  { id: 'house_rules', categoryId: 'cat_safety', icon: 'ShieldCheck', title: { de: 'Hausordnung', en: 'House Rules', tr: 'Otel Kuralları', fr: 'Règlement intérieur', hr: 'Kućni red' }, schema: [
-    { key: 'quiet_hours', type: 'text', label: { de: 'Ruhezeiten', en: 'Quiet hours', tr: 'Sessizlik saatleri', fr: 'Heures de calme', hr: 'Vrijeme tišine' }, default: '22:00–07:00', primary: true },
-    { key: 'house_rules_text', type: 'text', label: { de: 'Regeln', en: 'Rules', tr: 'Kurallar', fr: 'Règles', hr: 'Pravila' }, default: '', primary: true }
-  ]},
-  { id: 'pets_policy', categoryId: 'cat_safety', icon: 'Heart', title: { de: 'Haustiere', en: 'Pets', tr: 'Evcil Hayvanlar', fr: 'Animaux domestiques', hr: 'Kućni ljubimci' }, schema: [
-    { key: 'pets_allowed', type: 'boolean', label: { de: 'Haustiere erlaubt', en: 'Pets allowed', tr: 'Evcil hayvan kabul edilir', fr: 'Animaux acceptés', hr: 'Kućni ljubimci dozvoljeni' }, default: false, primary: true },
-    { key: 'pet_rules', type: 'text', label: { de: 'Hinweise', en: 'Information', tr: 'Bilgiler', fr: 'Informations', hr: 'Informacije' }, default: '', primary: true }
-  ]},
-  { id: 'smoking_policy', categoryId: 'cat_safety', icon: 'Info', title: { de: 'Raucherregelungen', en: 'Smoking Policy', tr: 'Sigara Kuralları', fr: 'Politique tabac', hr: 'Pravila pušenja' }, schema: [
-    { key: 'smoking_areas', type: 'text', label: { de: 'Raucherbereiche', en: 'Smoking areas', tr: 'Sigara alanları', fr: 'Zones fumeurs', hr: 'Prostori za pušenje' }, default: '', primary: true },
-    { key: 'smoking_rules', type: 'text', label: { de: 'Regelungen', en: 'Rules', tr: 'Kurallar', fr: 'Règles', hr: 'Pravila' }, default: '', primary: true }
-  ]}
 const renderSafeIconByName = (iconName, currentTheme) => {
   const themeClass = currentTheme ? currentTheme.text : 'text-slate-800';
   const className = `w-5 h-5 ${themeClass}`;
@@ -360,11 +301,6 @@ const renderSafeIconByName = (iconName, currentTheme) => {
     case 'Clock': return <Clock className={className} />;
     case 'Recycle': return <Recycle className={className} />;
     case 'Award': return <Award className={className} />;
-    case 'Accessibility': return <Accessibility className={className} />;
-    case 'Dumbbell': return <Dumbbell className={className} />;
-    case 'Wine': return <Wine className={className} />;
-    case 'Calendar': return <Calendar className={className} />;
-    case 'Bus': return <Bus className={className} />;
     case 'Baby': return <Baby className={className} />;
     default: return <Info className={className} />;
   }
@@ -472,16 +408,16 @@ const CompactPresetEditorModal = ({ isOpen, onClose, onSave, currentTheme, lang,
 
         <div className="p-4 sm:p-6 overflow-y-auto flex-1 space-y-4">
           {step === 1 && (
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+            <div className="grid grid-cols-2 gap-2.5 sm:gap-3">
               {mainCategories.map(mainCat => {
                 const name = mainCat.name[lang] || mainCat.name.de;
                 return (
                   <button
                     key={mainCat.id}
                     onClick={() => handleSelectCategory(mainCat.id)}
-                    className={`p-2.5 sm:p-3 rounded-xl border text-left transition flex items-center gap-2.5 cursor-pointer bg-white hover:${currentTheme.border} hover:shadow-md group min-w-0`}
+                    className={`p-3.5 rounded-2xl border text-left transition flex items-center gap-3 cursor-pointer bg-white hover:${currentTheme.border} hover:shadow-md group`}
                   >
-                    <div className={`p-2 rounded-lg ${currentTheme.bgLight} group-hover:scale-105 transition shrink-0`}>
+                    <div className={`p-2.5 rounded-xl ${currentTheme.bgLight} group-hover:scale-105 transition`}>
                       {renderSafeIconByName(mainCat.icon, currentTheme)}
                     </div>
                     <span className="text-xs font-bold text-slate-800 group-hover:text-slate-950 truncate">{name}</span>
@@ -555,7 +491,7 @@ const CompactPresetEditorModal = ({ isOpen, onClose, onSave, currentTheme, lang,
                 />
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-3 gap-y-2.5 bg-stone-50/60 p-3 sm:p-4 rounded-2xl border border-stone-200/80">
+              <div className="space-y-3 bg-stone-50/60 p-4 rounded-2xl border border-stone-200/80">
                 {primaryFields.map(field => {
                   const val = fieldValues[field.key] !== undefined ? fieldValues[field.key] : field.default;
                   const label = field.label[lang] || field.label.de;
@@ -592,13 +528,14 @@ const CompactPresetEditorModal = ({ isOpen, onClose, onSave, currentTheme, lang,
                   }
 
                   return (
-                    <div key={field.key} className={`space-y-1 ${field.type === 'textarea' ? 'sm:col-span-2' : ''}`}>
+                    <div key={field.key} className="space-y-1">
                       <label className="block text-[10px] font-extrabold text-stone-500 uppercase">{label}</label>
-                      {field.type === 'textarea' ? (
-                        <textarea rows={3} value={val !== undefined ? val : ''} onChange={(e) => handleFieldValueChange(field.key, e.target.value)} className="w-full p-2.5 text-xs border border-stone-200 rounded-xl bg-white font-medium resize-y" />
-                      ) : (
-                        <input type={field.type === 'number' ? 'number' : 'text'} value={val !== undefined ? val : ''} onChange={(e) => handleFieldValueChange(field.key, e.target.value)} className="w-full p-2.5 text-xs border border-stone-200 rounded-xl bg-white font-medium" />
-                      )}
+                      <input
+                        type="text"
+                        value={val !== undefined ? val : ''}
+                        onChange={(e) => handleFieldValueChange(field.key, e.target.value)}
+                        className="w-full p-2.5 text-xs border border-stone-200 rounded-xl bg-white font-medium"
+                      />
                     </div>
                   );
                 })}
@@ -616,7 +553,7 @@ const CompactPresetEditorModal = ({ isOpen, onClose, onSave, currentTheme, lang,
                   </button>
 
                   {showMoreInfo && (
-                    <div className="p-3 sm:p-4 grid grid-cols-1 sm:grid-cols-2 gap-x-3 gap-y-2.5 bg-white border-t border-stone-200">
+                    <div className="p-4 space-y-3 bg-white border-t border-stone-200">
                       {secondaryFields.map(field => {
                         const val = fieldValues[field.key] !== undefined ? fieldValues[field.key] : field.default;
                         const label = field.label[lang] || field.label.de;
@@ -624,11 +561,12 @@ const CompactPresetEditorModal = ({ isOpen, onClose, onSave, currentTheme, lang,
                         return (
                           <div key={field.key} className="space-y-1">
                             <label className="block text-[10px] font-extrabold text-stone-500 uppercase">{label}</label>
-                            {field.type === 'textarea' ? (
-                              <textarea rows={3} value={val !== undefined ? val : ''} onChange={(e) => handleFieldValueChange(field.key, e.target.value)} className="w-full p-2.5 text-xs border border-stone-200 rounded-xl bg-white font-medium resize-y" />
-                            ) : (
-                              <input type={field.type === 'number' ? 'number' : 'text'} value={val !== undefined ? val : ''} onChange={(e) => handleFieldValueChange(field.key, e.target.value)} className="w-full p-2.5 text-xs border border-stone-200 rounded-xl bg-white font-medium" />
-                            )}
+                            <input
+                              type="text"
+                              value={val !== undefined ? val : ''}
+                              onChange={(e) => handleFieldValueChange(field.key, e.target.value)}
+                              className="w-full p-2.5 text-xs border border-stone-200 rounded-xl bg-white font-medium"
+                            />
                           </div>
                         );
                       })}
@@ -744,6 +682,14 @@ export default function App() {
   const [scanCount] = useState(184);
   const [daysLeft] = useState(24);
   const [activeRooms] = useState(12);
+
+  const [analyticsClicks] = useState([
+    { category: 'Hotelinformationen', clicks: 84 },
+    { category: 'WLAN & Internet', clicks: 72 },
+    { category: 'Frühstück', clicks: 59 },
+    { category: 'Wellness & Sauna', clicks: 43 },
+    { category: 'Anreise & Parken', dl: 31 }
+  ]);
 
   const [hotel, setHotel] = useState(() => {
     const saved = localStorage.getItem('gm24_hotel');
@@ -965,6 +911,30 @@ export default function App() {
               <h4 className="text-xl font-black text-amber-950">{daysLeft} {t.trialDaysLeft}</h4>
             </div>
             <Zap className="w-7 h-7 text-amber-600" />
+          </div>
+        </div>
+
+        {/* ANALYTİK / TIKLANMA GRAFİK / LİSTE BÖLÜMÜ */}
+        <div className="max-w-5xl mx-auto bg-white rounded-3xl p-6 border border-stone-200 shadow-sm space-y-4">
+          <div className="flex items-center gap-3">
+            <div className={`p-3 rounded-2xl ${currentTheme.bgLight} ${currentTheme.text}`}><TrendingUp className="w-6 h-6" /></div>
+            <div>
+              <h3 className={`font-black text-xs ${currentTheme.text} uppercase tracking-wider`}>{t.analyticsTitle}</h3>
+              <p className="text-xs text-stone-500">Live Telemetrie & Gast-Interaktionen</p>
+            </div>
+          </div>
+          <div className="space-y-3 pt-2">
+            {analyticsClicks.map((item, idx) => (
+              <div key={idx} className="space-y-1">
+                <div className="flex justify-between text-xs font-bold text-slate-700">
+                  <span>{item.category}</span>
+                  <span className={currentTheme.text}>{item.clicks} Klicks</span>
+                </div>
+                <div className="w-full bg-stone-100 h-2 rounded-full overflow-hidden">
+                  <div className={`h-full ${currentTheme.bg}`} style={{ width: `${(item.clicks / 100) * 100}%` }}></div>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
 
