@@ -123,7 +123,9 @@ const translations = {
     searchPlaceholder: "Search...",
     noPresetsFound: "No presets found in this category."
   },
-  tr: {
+  cs:{welcomeBadge:"Digitální průvodce pro hosty",welcomeButton:"Začít",greetingHello:"Dobrý den,",greetingWelcome:"vítejte.",navHome:"Domů",navGaestemappe:"Průvodce",navReview:"Hodnocení",navRoute:"Trasa",weatherTitle:"Slunečno",weatherSub:"Aktuální počasí",wlanTitle:"Wi-Fi",parkingTitle:"Parkování",breakfastTitle:"Snídaně",checkInOutTitle:"Příjezd / Odjezd",detailBack:"Zpět na přehled",adminTitle:"Správa a analytika",guestViewBtn:"Otevřít náhled hosta",saveBtn:"Uložit změny",savedMsg:"Uloženo!",trialTitle:"30denní zkušební verze (PRO)",trialDaysLeft:"Zbývající dny",statsScans:"Celkem skenování QR",statsActiveRooms:"Aktivní přístupy pokojů",analyticsTitle:"Analytika kategorií",qrTitle:"QR kód a tisk",printA4:"Tisk A4",printA5:"Tisk A5",printCard:"Vizitka",sec1Title:"1. Informace o ubytování",sec2Title:"2. Barvy a motivy",sec3Title:"3. Nahrát logo",sec4Title:"4. Správa obrázků",sec5Title:"5. QR kód a tisk",sec6Title:"6. Kategorie průvodce",lblHotelName:"Název ubytování",lblPhone:"Telefon",btnAddCategory:"Přidat obsah",modalTitle:"Přidat / upravit obsah",step1Title:"1. Vyberte kategorii",step2Title:"2. Vyberte šablonu",step3Title:"3. Zadejte informace",addBtn:"Přidat",editTitle:"Název / označení",customTextLabel:"Doplňující poznámky (volitelné)",yesLabel:"Ano / Dostupné",noLabel:"Ne / Nedostupné",moreInfo:"Další informace",cancel:"Zrušit",saveAndClose:"Uložit a zavřít",searchPlaceholder:"Hledat...",noPresetsFound:"V této kategorii nebyly nalezeny žádné šablony."},
+  nb:{welcomeBadge:"Digital gjestemappe",welcomeButton:"Kom i gang",greetingHello:"Hei,",greetingWelcome:"hyggelig at du er her.",navHome:"Hjem",navGaestemappe:"Gjestemappe",navReview:"Vurdering",navRoute:"Veibeskrivelse",weatherTitle:"Sol",weatherSub:"Lokalt vær",wlanTitle:"Wi-Fi",parkingTitle:"Parkering",breakfastTitle:"Frokost",checkInOutTitle:"Innsjekking / utsjekking",detailBack:"Tilbake til oversikten",adminTitle:"Administrasjon og analyse",guestViewBtn:"Åpne gjestevisning",saveBtn:"Lagre endringer",savedMsg:"Lagret!",trialTitle:"30 dagers prøveperiode (PRO)",trialDaysLeft:"Dager igjen",statsScans:"QR-skanninger totalt",statsActiveRooms:"Aktive romtilganger",analyticsTitle:"Kategorianalyse",qrTitle:"QR-kode og utskrift",printA4:"Utskrift A4",printA5:"Utskrift A5",printCard:"Visittkort",sec1Title:"1. Overnattingsinformasjon",sec2Title:"2. Design og fargetema",sec3Title:"3. Last opp logo",sec4Title:"4. Bildeadministrasjon",sec5Title:"5. QR-kode og utskrift",sec6Title:"6. Gjestemappekategorier",lblHotelName:"Overnattingsstedets navn",lblPhone:"Telefon",btnAddCategory:"Legg til innhold",modalTitle:"Legg til / rediger innhold",step1Title:"1. Velg kategori",step2Title:"2. Velg mal",step3Title:"3. Legg inn informasjon",addBtn:"Legg til",editTitle:"Tittel / etikett",customTextLabel:"Ekstra merknader (valgfritt)",yesLabel:"Ja / Tilgjengelig",noLabel:"Nei / Ikke tilgjengelig",moreInfo:"Mer informasjon",cancel:"Avbryt",saveAndClose:"Lagre og lukk",searchPlaceholder:"Søk...",noPresetsFound:"Ingen maler funnet i denne kategorien."},
+  tr:{
     welcomeBadge: "Dijital Misafir Rehberi",
     welcomeButton: "Başlayalım",
     greetingHello: "Merhaba,",
@@ -395,7 +397,7 @@ const CompactPresetEditorModal = ({ isOpen, onClose, onSave, currentTheme, lang,
     onClose();
   };
 
-  const availablePresets = categoryPresets.filter(p => p.categoryId === selectedMainCat)
+  const availablePresets = categoryPresets.filter(p => p.categoryId === selectedMainCat || (selectedMainCat === 'cat_safety' && (p.categoryId === 'cat_sustainability' || p.categoryId === 'cat_certificates')))
     .filter(p => {
       if (!searchQuery) return true;
       const title = (p.title && (p.title[lang] || p.title.de)) || '';
@@ -515,8 +517,7 @@ const CompactPresetEditorModal = ({ isOpen, onClose, onSave, currentTheme, lang,
               <div className="space-y-3 bg-stone-50/60 p-4 rounded-2xl border border-stone-200/80">
 {primaryFields.map(field=><PresetFieldEditor key={field.key} field={field} value={fieldValues[field.key]} fieldValues={fieldValues} lang={lang} onChange={value=>handleFieldValueChange(field.key,value)} onCustomTextChange={handleFieldValueChange}/>)}
 </div>
-
-              secondaryFields.length > 0 && (
+              {secondaryFields.length > 0 && (
                 <div className="border border-stone-200 rounded-2xl overflow-hidden bg-white">
                   <button
                     type="button"
@@ -771,7 +772,8 @@ export default function App() {
 
   const groupedCategories = (categories || []).reduce((acc, cat) => {
     if (!cat) return acc;
-    const mainCatObj = mainCategories.find(mc => mc.id === cat.categoryId) || mainCategories[0];
+    const normalizedCategoryId = (cat.categoryId === 'cat_sustainability' || cat.categoryId === 'cat_certificates') ? 'cat_safety' : cat.categoryId;
+    const mainCatObj = mainCategories.find(mc => mc.id === normalizedCategoryId) || mainCategories[0];
     const groupName = mainCatObj.name[lang] || mainCatObj.name.de;
     if (!acc[groupName]) acc[groupName] = [];
     const presetData = categoryPresets.find(p => p.id === cat.presetId);
@@ -1059,12 +1061,10 @@ export default function App() {
             <option value="de">🇩🇪 DE</option>
             <option value="en">🇬🇧 EN</option>
             <option value="tr">🇹🇷 TR</option>
-            <option value="hr">🇭🇷 HR</option>
             <option value="fr">🇫🇷 FR</option>
             <option value="it">🇮🇹 IT</option>
             <option value="es">🇪🇸 ES</option>
             <option value="sv">🇸🇪 SV</option>
-            <option value="no">🇳🇴 NO</option>
             <option value="cs">🇨🇿 CS</option>
             <option value="sq">🇦🇱 SQ</option>
             <option value="nb">🇳🇴 NB</option>
@@ -1097,12 +1097,10 @@ export default function App() {
             <option value="de">🇩🇪 DE</option>
             <option value="en">🇬🇧 EN</option>
             <option value="tr">🇹🇷 TR</option>
-            <option value="hr">🇭🇷 HR</option>
             <option value="fr">🇫🇷 FR</option>
             <option value="it">🇮🇹 IT</option>
             <option value="es">🇪🇸 ES</option>
             <option value="sv">🇸🇪 SV</option>
-            <option value="no">🇳🇴 NO</option>
             <option value="cs">🇨🇿 CS</option>
             <option value="sq">🇦🇱 SQ</option>
             <option value="nb">🇳🇴 NB</option>
