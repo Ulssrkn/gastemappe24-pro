@@ -22,6 +22,7 @@ const OPT={
  balcony:L('Privater Balkon','Private balcony','Özel balkon','Balcon privé','Balcón privado','Soukromý balkon','Ballkon privat','Privat balkong','Privat balkong','Balcone privato'),
  garden:L('Gartenzugang','Garden access','Bahçeye erişim','Accès au jardin','Acceso al jardín','Přístup do zahrady','Hyrje në kopsht','Tillgång till trädgård','Tilgang til hage','Accesso al giardino'),
  noSmoke:L('Nichtraucherzimmer','Non-smoking rooms','Sigara içilmeyen odalar','Chambres non-fumeurs','Habitaciones para no fumadores','Nekuřácké pokoje','Dhoma pa duhan','Rökfria rum','Røykfrie rom','Camere non fumatori'),
+ smoke:L('Raucherzimmer','Smoking rooms','Sigara içilen odalar','Chambres fumeurs','Habitaciones para fumadores','Kuřácké pokoje','Dhoma për duhanpirës','Rökrum','Røykerom','Camere fumatori'),
  pets:L('Haustiere erlaubt','Pets allowed','Evcil hayvan kabul edilir','Animaux acceptés','Se admiten mascotas','Domácí mazlíčci povoleni','Lejohen kafshët','Husdjur tillåtna','Kjæledyr tillatt','Animali ammessi'),
  noPets:L('Keine Haustiere','Pets not allowed','Evcil hayvan kabul edilmez','Animaux non acceptés','No se admiten mascotas','Domácí mazlíčci nejsou povoleni','Nuk lejohen kafshët','Husdjur ej tillåtna','Kjæledyr ikke tillatt','Animali non ammessi'),
  baby:L('Babybett','Baby cot','Bebek yatağı','Lit bébé','Cuna','Dětská postýlka','Krevat për bebe','Babysäng','Babyseng','Lettino'),
