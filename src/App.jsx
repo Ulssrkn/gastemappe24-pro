@@ -247,6 +247,162 @@ const translations = {
     yesLabel: "Da / Dostupno",
     noLabel: "Ne / Nije dostupno",
     createCustomCatBtn: "Stvori prilagođenu kategoriju"
+  },
+  it: {
+    welcomeBadge: "Guida digitale",
+    welcomeButton: "Inizia",
+    greetingHello: "Ciao,",
+    greetingWelcome: "benvenuto.",
+    navHome: "Home",
+    navGaestemappe: "Guida",
+    navReview: "Recensisci",
+    navRoute: "Percorso",
+    weatherTitle: "Sereno",
+    weatherSub: "Meteo attuale",
+    detailBack: "Torna",
+    adminTitle: "Amministrazione",
+    guestViewBtn: "Vista ospiti",
+    saveBtn: "Salva",
+    savedMsg: "Salvato!",
+    yesLabel: "Sì / Disponibile",
+    noLabel: "No / Non disponibile",
+    createCustomCatBtn: "Crea categoria personalizzata",
+    sec1Title: "1. Info struttura",
+    sec6Title: "6. Sistema Preset",
+    addBtn: "Aggiungi",
+    editTitle: "Titolo categoria",
+    customTextLabel: "Descrizione",
+    customTextWarning: "⚠️ Invariato in tutte le 10 lingue."
+  },
+  fr: {
+    welcomeBadge: "Guide numérique",
+    welcomeButton: "Commencer",
+    greetingHello: "Bonjour,",
+    greetingWelcome: "bienvenue.",
+    navHome: "Accueil",
+    navGaestemappe: "Guide",
+    navReview: "Avis",
+    navRoute: "Itinéraire",
+    weatherTitle: "Ensoleillé",
+    weatherSub: "Météo actuelle",
+    detailBack: "Retour",
+    adminTitle: "Administration",
+    guestViewBtn: "Vue invité",
+    saveBtn: "Enregistrer",
+    savedMsg: "Enregistré !",
+    yesLabel: "Oui / Disponible",
+    noLabel: "Non / Indisponible",
+    createCustomCatBtn: "Créer une catégorie",
+    sec1Title: "1. Infos structure",
+    sec6Title: "6. Système de Préréglage",
+    addBtn: "Ajouter",
+    editTitle: "Titre",
+    customTextLabel: "Description",
+    customTextWarning: "⚠️ Inchangé dans les 10 langues."
+  },
+  es: {
+    welcomeBadge: "Guía digital",
+    welcomeButton: "Empezar",
+    greetingHello: "Hola,",
+    greetingWelcome: "bienvenido.",
+    navHome: "Inicio",
+    navGaestemappe: "Guía",
+    navReview: "Valorar",
+    navRoute: "Ruta",
+    weatherTitle: "Soleado",
+    weatherSub: "Clima actual",
+    detailBack: "Volver",
+    adminTitle: "Administración",
+    guestViewBtn: "Vista de huésped",
+    saveBtn: "Guardar",
+    savedMsg: "¡Guardado!",
+    yesLabel: "Sí / Disponible",
+    noLabel: "No / No disponible",
+    createCustomCatBtn: "Crear categoría personalizada",
+    sec1Title: "1. Info del alojamiento",
+    sec6Title: "6. Sistema de Plantillas",
+    addBtn: "Añadir",
+    editTitle: "Título",
+    customTextLabel: "Descripción",
+    customTextWarning: "⚠️ Idéntico en los 10 idiomas."
+  },
+  sv: {
+    welcomeBadge: "Digital gästguide",
+    welcomeButton: "Sätt igång",
+    greetingHello: "Hej,",
+    greetingWelcome: "välkommen.",
+    navHome: "Hem",
+    navGaestemappe: "Guide",
+    navReview: "Recensera",
+    navRoute: "Vägbeskrivning",
+    weatherTitle: "Soligt",
+    weatherSub: "Aktuellt väder",
+    detailBack: "Tillbaka",
+    adminTitle: "Administration",
+    guestViewBtn: "Gästvy",
+    saveBtn: "Spara",
+    savedMsg: "Sparat!",
+    yesLabel: "Ja / Tillgänglig",
+    noLabel: "Nej / Ej tillgänglig",
+    createCustomCatBtn: "Skapa kategori",
+    sec1Title: "1. Boendeinformation",
+    sec6Title: "6. Förinställningssystem",
+    addBtn: "Lägg till",
+    editTitle: "Titel",
+    customTextLabel: "Beskrivning",
+    customTextWarning: "⚠️ Oförändrad på alla 10 språk."
+  },
+  no: {
+    welcomeBadge: "Digital gjesteguide",
+    welcomeButton: "Sett i gang",
+    greetingHello: "Hei,",
+    greetingWelcome: "velkommen.",
+    navHome: "Hjem",
+    navGaestemappe: "Guide",
+    navReview: "Omtale",
+    navRoute: "Rute",
+    weatherTitle: "Sol",
+    weatherSub: "Aktuelt vær",
+    detailBack: "Tilbake",
+    adminTitle: "Administrasjon",
+    guestViewBtn: "Gjestevisning",
+    saveBtn: "Lagre",
+    savedMsg: "Lagret!",
+    yesLabel: "Ja / Tilgjengelig",
+    noLabel: "Nei / Ikke tilgjengelig",
+    createCustomCatBtn: "Opprett kategori",
+    sec1Title: "1. Boliginfo",
+    sec6Title: "6. Forhåndsinnstilt system",
+    addBtn: "Legg til",
+    editTitle: "Tittel",
+    customTextLabel: "Beskrivelse",
+    customTextWarning: "⚠️ Uendret på alle 10 språk."
+  },
+  sq: {
+    welcomeBadge: "Udhëzues dixhital",
+    welcomeButton: "Le të fillojmë",
+    greetingHello: "Përshëndetje,",
+    greetingWelcome: "mirë se erdhët.",
+    navHome: "Kryefaqja",
+    navGaestemappe: "Udhëzuesi",
+    navReview: "Vlerëso",
+    navRoute: "Udha",
+    weatherTitle: "Me diell",
+    weatherSub: "Moti aktual",
+    detailBack: "Kthehu",
+    adminTitle: "Administrimi",
+    guestViewBtn: "Pamja e mysafirit",
+    saveBtn: "Ruaj",
+    savedMsg: "U ruajt!",
+    yesLabel: "Po / E disponueshme",
+    noLabel: "Jo / E padisponueshme",
+    createCustomCatBtn: "Krijo kategori",
+    sec1Title: "1. Info e pronës",
+    sec6Title: "6. Sistemi i shablloneve",
+    addBtn: "Shto",
+    editTitle: "Titulli",
+    customTextLabel: "Përshkrimi",
+    customTextWarning: "⚠️ I pandryshuar në të 10 gjuhët."
   }
 };
 
@@ -304,7 +460,6 @@ const categoryPresets = [
   ]}
 ];
 
-// --- DYNAMIC FORM RENDERER (ADMIN) ---
 const DynamicFormRenderer = ({ presetSchema, fieldValues, onChangeField, currentTheme, lang }) => {
   if (!presetSchema || !Array.isArray(presetSchema)) return null;
 
@@ -389,7 +544,7 @@ const DynamicFormRenderer = ({ presetSchema, fieldValues, onChangeField, current
   );
 };
 
-// --- GUEST DISPLAY COMPONENT (MOBİL UYUMLU, TEMA UYUMLU ŞIK KARTLAR) ---
+// --- MİSAFİR GÖRÜNÜMÜ: TEMA RENKLERİNE UYUMLU, MOBİL UYUMLU ŞIK BİLGİ KARTI ---
 const GuestCategoryDisplay = ({ category, currentTheme, lang, t }) => {
   const presetObj = categoryPresets.find(p => p.id === category.presetId);
   const fieldValues = category.fieldValues || {};
@@ -397,7 +552,7 @@ const GuestCategoryDisplay = ({ category, currentTheme, lang, t }) => {
   return (
     <div className="space-y-4">
       {presetObj && presetObj.schema && presetObj.schema.length > 0 && (
-        <div className={`bg-white p-4 rounded-3xl shadow-md border ${currentTheme.border} space-y-3.5`}>
+        <div className={`bg-white p-5 rounded-3xl shadow-lg border ${currentTheme.border} space-y-4`}>
           {presetObj.schema.map(field => {
             const rawVal = fieldValues[field.key] !== undefined ? fieldValues[field.key] : field.default;
             const fieldLabel = (field.label && (field.label[lang] || field.label.de)) || field.key;
@@ -405,17 +560,17 @@ const GuestCategoryDisplay = ({ category, currentTheme, lang, t }) => {
             if (rawVal === undefined || rawVal === null || rawVal === '') return null;
 
             return (
-              <div key={field.key} className="border-b border-stone-100 last:border-0 pb-3 last:pb-0 flex flex-col gap-1">
-                <span className={`text-[10px] font-black uppercase tracking-wider ${currentTheme.text} opacity-80`}>{fieldLabel}</span>
+              <div key={field.key} className="border-b border-stone-100 last:border-0 pb-3.5 last:pb-0 flex flex-col gap-1.5">
+                <span className={`text-[10px] font-black uppercase tracking-wider ${currentTheme.text} opacity-90`}>{fieldLabel}</span>
                 
                 {field.type === 'boolean' ? (
                   <div className="flex items-center gap-1.5 text-xs font-bold pt-0.5">
                     {rawVal ? (
-                      <span className="text-emerald-700 bg-emerald-50 px-3 py-1.5 rounded-xl border border-emerald-200 flex items-center gap-1.5 shadow-xs">
+                      <span className="text-emerald-700 bg-emerald-50 px-3.5 py-2 rounded-2xl border border-emerald-200 flex items-center gap-2 shadow-xs">
                         <CheckCircle2 className="w-4 h-4 text-emerald-600" /> {t.yesLabel}
                       </span>
                     ) : (
-                      <span className="text-stone-600 bg-stone-100 px-3 py-1.5 rounded-xl border border-stone-200 flex items-center gap-1.5 shadow-xs">
+                      <span className="text-stone-600 bg-stone-100 px-3.5 py-2 rounded-2xl border border-stone-200 flex items-center gap-2 shadow-xs">
                         <XCircle className="w-4 h-4 text-stone-400" /> {t.noLabel}
                       </span>
                     )}
@@ -423,13 +578,13 @@ const GuestCategoryDisplay = ({ category, currentTheme, lang, t }) => {
                 ) : field.type === 'multiselect' && Array.isArray(rawVal) ? (
                   <div className="flex flex-wrap gap-1.5 pt-1">
                     {rawVal.map(item => (
-                      <span key={item} className={`px-3 py-1.5 rounded-xl text-xs font-bold ${currentTheme.bgLight} ${currentTheme.text} border border-stone-200/60 shadow-xs flex items-center gap-1`}>
+                      <span key={item} className={`px-3 py-1.5 rounded-xl text-xs font-bold ${currentTheme.bgLight} ${currentTheme.text} border border-stone-200/60 shadow-xs flex items-center gap-1.5`}>
                         <Check className="w-3.5 h-3.5" /> {item}
                       </span>
                     ))}
                   </div>
                 ) : (
-                  <div className={`text-xs font-extrabold text-slate-900 bg-stone-50 px-3.5 py-2.5 rounded-xl border border-stone-200/70`}>
+                  <div className="text-xs font-extrabold text-slate-900 bg-stone-50 px-4 py-3 rounded-2xl border border-stone-200/70 shadow-xs">
                     {String(rawVal)}
                   </div>
                 )}
@@ -440,7 +595,7 @@ const GuestCategoryDisplay = ({ category, currentTheme, lang, t }) => {
       )}
 
       {category.customText && (
-        <div className={`p-4 rounded-3xl border border-amber-300/80 bg-amber-50/80 shadow-sm text-slate-800 text-xs leading-relaxed space-y-1`}>
+        <div className="p-5 rounded-3xl border border-amber-300/80 bg-amber-50/90 shadow-sm text-slate-800 text-xs leading-relaxed space-y-1.5">
           <span className="text-[10px] font-black uppercase text-amber-900 tracking-wider block">Hinweis / Notice</span>
           <p className="whitespace-pre-line font-medium">{category.customText}</p>
         </div>
@@ -655,6 +810,39 @@ export default function App() {
     }
   };
 
+  const activeQuickCards = [
+    hotel.showWifi && (
+      <div key="wifi" className="bg-white p-4 rounded-2xl shadow-sm border border-stone-200 space-y-2">
+        <div className={`flex items-center gap-2 ${currentTheme.text}`}><Wifi className="w-5 h-5" /><span className="font-bold text-xs text-slate-900">{t.wlanTitle}</span></div>
+        <div className="text-[11px] text-slate-500 font-mono bg-stone-50 p-2 rounded-lg border">
+          <div><b>{hotel.wifiSsid}</b></div>
+          <div className="flex justify-between items-center mt-1">
+            <span>{hotel.wifiPass}</span>
+            <button onClick={copyWifiPassword} className={`${currentTheme.bgLight} ${currentTheme.text} p-1 rounded cursor-pointer`}>{copiedWifi ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}</button>
+          </div>
+        </div>
+      </div>
+    ),
+    hotel.showParking && (
+      <div key="parking" className="bg-white p-4 rounded-2xl shadow-sm border border-stone-200 space-y-2">
+        <div className={`flex items-center gap-2 ${currentTheme.text}`}><Car className="w-5 h-5" /><span className="font-bold text-xs text-slate-900">{t.parkingTitle}</span></div>
+        <p className="text-[11px] text-slate-600">{hotel.parkingInfo}</p>
+      </div>
+    ),
+    hotel.showBreakfast && (
+      <div key="breakfast" className="bg-white p-4 rounded-2xl shadow-sm border border-stone-200 space-y-2">
+        <div className={`flex items-center gap-2 ${currentTheme.text}`}><Coffee className="w-5 h-5" /><span className="font-bold text-xs text-slate-900">{t.breakfastTitle}</span></div>
+        <p className="text-[11px] text-slate-600">{hotel.breakfastTime}</p>
+      </div>
+    ),
+    hotel.showCheckInOut && (
+      <div key="checkinout" className="bg-white p-4 rounded-2xl shadow-sm border border-stone-200 space-y-2">
+        <div className={`flex items-center gap-2 ${currentTheme.text}`}><Clock className="w-5 h-5" /><span className="font-bold text-xs text-slate-900">{t.checkInOutTitle}</span></div>
+        <p className="text-[11px] text-slate-600">{hotel.checkInOut}</p>
+      </div>
+    )
+  ].filter(Boolean);
+
   if (appMode === 'dashboard') {
     return (
       <div className="min-h-screen bg-[#FBF9F5] font-sans text-slate-800 p-6 md:p-10 space-y-8 relative pb-28">
@@ -832,7 +1020,7 @@ export default function App() {
     return (
       <div className="min-h-screen bg-slate-950 max-w-md mx-auto shadow-2xl relative overflow-hidden flex flex-col justify-between font-sans">
         <div className="absolute inset-0 z-0">
-          <img src={(hotel.images && hotel.images[0]) || ''} alt="Welcome" className="w-full h-full object-cover brightness-75" />
+          <img src={(hotel.images && hotel.images[0]) || 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1000&q=80'} alt="Welcome" className="w-full h-full object-cover brightness-75" />
           <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-slate-950/20"></div>
         </div>
 
@@ -843,6 +1031,12 @@ export default function App() {
             <option value="en">🇬🇧 EN</option>
             <option value="tr">🇹🇷 TR</option>
             <option value="hr">🇭🇷 HR</option>
+            <option value="it">🇮🇹 IT</option>
+            <option value="fr">🇫🇷 FR</option>
+            <option value="es">🇪🇸 ES</option>
+            <option value="sv">🇸🇪 SV</option>
+            <option value="no">🇳🇴 NO</option>
+            <option value="sq">🇦🇱 SQ</option>
           </select>
         </div>
 
@@ -866,6 +1060,12 @@ export default function App() {
             <option value="en">🇬🇧 EN</option>
             <option value="tr">🇹🇷 TR</option>
             <option value="hr">🇭🇷 HR</option>
+            <option value="it">🇮🇹 IT</option>
+            <option value="fr">🇫🇷 FR</option>
+            <option value="es">🇪🇸 ES</option>
+            <option value="sv">🇸🇪 SV</option>
+            <option value="no">🇳🇴 NO</option>
+            <option value="sq">🇦🇱 SQ</option>
           </select>
           <button onClick={() => setAppMode('dashboard')} className="text-stone-300 hover:text-stone-600 p-1 text-xs cursor-pointer">🔑</button>
         </div>
@@ -897,14 +1097,31 @@ export default function App() {
         ) : (
           activeTab === 'home' ? (
             <div className="space-y-4 animate-fade-in">
-              <h1 className="text-2xl font-black text-slate-900">{t.greetingHello}<br /><span className={currentTheme.text}>{t.greetingWelcome}</span></h1>
-              <div className="bg-white p-4 rounded-2xl border flex items-center justify-between">
-                <div>
-                  <div className="text-xs font-bold">{t.weatherTitle}</div>
-                  <div className="text-[11px] text-stone-500">{t.weatherSub}</div>
-                </div>
-                <div className="text-2xl font-black">16°C</div>
+              <div className="space-y-0.5 pt-1">
+                <span className="text-[11px] font-extrabold uppercase tracking-widest text-stone-500 block">{hotel.locationTitle}</span>
+                <h1 className="text-2xl font-black text-slate-900 tracking-tight leading-snug">{t.greetingHello}<br /><span className={currentTheme.text}>{t.greetingWelcome}</span></h1>
               </div>
+
+              <div className="relative rounded-3xl overflow-hidden shadow-lg h-56 bg-slate-900 border border-stone-200">
+                <img src={(hotel.images && hotel.images[currentSlide]) || (hotel.images && hotel.images[0]) || ''} alt="Slide" className="w-full h-full object-cover" />
+              </div>
+
+              <div className="bg-white p-4 rounded-2xl shadow-sm border border-stone-200 flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className={`p-3 ${currentTheme.bgLight} rounded-xl ${currentTheme.text}`}><Sun className="w-6 h-6" /></div>
+                  <div>
+                    <div className="text-xs font-extrabold text-slate-900 uppercase">{t.weatherTitle}</div>
+                    <div className="text-[11px] text-stone-500">{t.weatherSub}</div>
+                  </div>
+                </div>
+                <div className="text-right"><div className="text-2xl font-black text-slate-900">16°C</div></div>
+              </div>
+
+              {activeQuickCards.length > 0 && (
+                <div className="grid grid-cols-2 gap-3 pt-2">
+                  {activeQuickCards}
+                </div>
+              )}
             </div>
           ) : (
             <div className="space-y-6 animate-fade-in">
@@ -946,6 +1163,12 @@ export default function App() {
           <button onClick={() => { setActiveTab('services'); setSelectedCategory(null); }} className={`flex flex-col items-center gap-1 text-[10px] font-bold cursor-pointer ${activeTab === 'services' || selectedCategory ? currentTheme.text : 'text-stone-400'}`}>
             <Compass className="w-5 h-5" /><span>{t.navGaestemappe}</span>
           </button>
+          <a href={hotel.googleReviewUrl} target="_blank" rel="noreferrer" className={`flex flex-col items-center gap-1 text-[10px] font-bold cursor-pointer ${currentTheme.text} hover:opacity-80`}>
+            <Star className="w-5 h-5 fill-current" /><span>{t.navReview}</span>
+          </a>
+          <a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(hotel.address || '')}`} target="_blank" rel="noreferrer" className={`flex flex-col items-center gap-1 text-[10px] font-bold cursor-pointer ${currentTheme.text} hover:opacity-80`}>
+            <Navigation className="w-5 h-5" /><span>{t.navRoute}</span>
+          </a>
         </nav>
       </div>
     </div>
