@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { hotelPresets } from './hotelPresets.js';
+import { hotelPresets, additionalPresets } from './hotelPresets.js';
 import { createClient } from '@supabase/supabase-js';
 import { 
   Wifi, Info, MapPin, Calendar, MessageSquare, 
@@ -287,7 +287,7 @@ const legacyCategoryPresets = [
   ]}
 ];
 
-const categoryPresets = [...legacyCategoryPresets, ...hotelPresets];
+const categoryPresets = [...legacyCategoryPresets, ...hotelPresets, ...additionalPresets];
 const renderSafeIconByName = (iconName, currentTheme) => {
   const themeClass = currentTheme ? currentTheme.text : 'text-slate-800';
   const className = `w-5 h-5 ${themeClass}`;
