@@ -305,6 +305,13 @@ const renderSafeIconByName = (iconName, currentTheme) => {
     case 'Recycle': return <Recycle className={className} />;
     case 'Award': return <Award className={className} />;
     case 'Baby': return <Baby className={className} />;
+    case 'Accessibility': return <Accessibility className={className} />;
+    case 'ShoppingBag': return <ShoppingBag className={className} />;
+    case 'Lock': return <Lock className={className} />;
+    case 'Sun': return <Sun className={className} />;
+    case 'Flame': return <Flame className={className} />;
+    case 'Heart': return <Heart className={className} />;
+    case 'Users': return <Users className={className} />;
     default: return <Info className={className} />;
   }
 };
