@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { hotelPresets, additionalPresets } from './hotelPresets.js';
 import { createClient } from '@supabase/supabase-js';
 import { 
   Wifi, Info, MapPin, Calendar, MessageSquare, 
@@ -122,7 +123,9 @@ const translations = {
     searchPlaceholder: "Search...",
     noPresetsFound: "No presets found in this category."
   },
-  tr: {
+  cs:{welcomeBadge:"Digitální průvodce pro hosty",welcomeButton:"Začít",greetingHello:"Dobrý den,",greetingWelcome:"vítejte.",navHome:"Domů",navGaestemappe:"Průvodce",navReview:"Hodnocení",navRoute:"Trasa",weatherTitle:"Slunečno",weatherSub:"Aktuální počasí",wlanTitle:"Wi-Fi",parkingTitle:"Parkování",breakfastTitle:"Snídaně",checkInOutTitle:"Příjezd / Odjezd",detailBack:"Zpět na přehled",adminTitle:"Správa a analytika",guestViewBtn:"Otevřít náhled hosta",saveBtn:"Uložit změny",savedMsg:"Uloženo!",trialTitle:"30denní zkušební verze (PRO)",trialDaysLeft:"Zbývající dny",statsScans:"Celkem skenování QR",statsActiveRooms:"Aktivní přístupy pokojů",analyticsTitle:"Analytika kategorií",qrTitle:"QR kód a tisk",printA4:"Tisk A4",printA5:"Tisk A5",printCard:"Vizitka",sec1Title:"1. Informace o ubytování",sec2Title:"2. Barvy a motivy",sec3Title:"3. Nahrát logo",sec4Title:"4. Správa obrázků",sec5Title:"5. QR kód a tisk",sec6Title:"6. Kategorie průvodce",lblHotelName:"Název ubytování",lblPhone:"Telefon",btnAddCategory:"Přidat obsah",modalTitle:"Přidat / upravit obsah",step1Title:"1. Vyberte kategorii",step2Title:"2. Vyberte šablonu",step3Title:"3. Zadejte informace",addBtn:"Přidat",editTitle:"Název / označení",customTextLabel:"Doplňující poznámky (volitelné)",yesLabel:"Ano / Dostupné",noLabel:"Ne / Nedostupné",moreInfo:"Další informace",cancel:"Zrušit",saveAndClose:"Uložit a zavřít",searchPlaceholder:"Hledat...",noPresetsFound:"V této kategorii nebyly nalezeny žádné šablony."},
+  nb:{welcomeBadge:"Digital gjestemappe",welcomeButton:"Kom i gang",greetingHello:"Hei,",greetingWelcome:"hyggelig at du er her.",navHome:"Hjem",navGaestemappe:"Gjestemappe",navReview:"Vurdering",navRoute:"Veibeskrivelse",weatherTitle:"Sol",weatherSub:"Lokalt vær",wlanTitle:"Wi-Fi",parkingTitle:"Parkering",breakfastTitle:"Frokost",checkInOutTitle:"Innsjekking / utsjekking",detailBack:"Tilbake til oversikten",adminTitle:"Administrasjon og analyse",guestViewBtn:"Åpne gjestevisning",saveBtn:"Lagre endringer",savedMsg:"Lagret!",trialTitle:"30 dagers prøveperiode (PRO)",trialDaysLeft:"Dager igjen",statsScans:"QR-skanninger totalt",statsActiveRooms:"Aktive romtilganger",analyticsTitle:"Kategorianalyse",qrTitle:"QR-kode og utskrift",printA4:"Utskrift A4",printA5:"Utskrift A5",printCard:"Visittkort",sec1Title:"1. Overnattingsinformasjon",sec2Title:"2. Design og fargetema",sec3Title:"3. Last opp logo",sec4Title:"4. Bildeadministrasjon",sec5Title:"5. QR-kode og utskrift",sec6Title:"6. Gjestemappekategorier",lblHotelName:"Overnattingsstedets navn",lblPhone:"Telefon",btnAddCategory:"Legg til innhold",modalTitle:"Legg til / rediger innhold",step1Title:"1. Velg kategori",step2Title:"2. Velg mal",step3Title:"3. Legg inn informasjon",addBtn:"Legg til",editTitle:"Tittel / etikett",customTextLabel:"Ekstra merknader (valgfritt)",yesLabel:"Ja / Tilgjengelig",noLabel:"Nei / Ikke tilgjengelig",moreInfo:"Mer informasjon",cancel:"Avbryt",saveAndClose:"Lagre og lukk",searchPlaceholder:"Søk...",noPresetsFound:"Ingen maler funnet i denne kategorien."},
+  tr:{
     welcomeBadge: "Dijital Misafir Rehberi",
     welcomeButton: "Başlayalım",
     greetingHello: "Merhaba,",
@@ -184,6 +187,10 @@ const translations = {
   sq: { welcomeBadge: "Udhëzues", welcomeButton: "Fillo", greetingHello: "Përshëndetje,", greetingWelcome: "mirë se erdhët.", navHome: "Kryefaqja", navGaestemappe: "Udhëzuesi", navReview: "Vlerëso", navRoute: "Udha", weatherTitle: "Diell", weatherSub: "Moti", wlanTitle: "Wi-Fi", parkingTitle: "Parkimi", breakfastTitle: "Mëngjesi", checkInOutTitle: "Hyrja", detailBack: "Kthehu", adminTitle: "Admin", guestViewBtn: "Pamja", saveBtn: "Ruaj", savedMsg: "U ruajt!", trialTitle: "PRO", trialDaysLeft: "ditë", statsScans: "Scans", statsActiveRooms: "Dhomat", analyticsTitle: "Analitika", qrTitle: "QR Center", printA4: "A4", printA5: "A5", printCard: "Kartë", sec1Title: "1. Info", sec2Title: "2. Ngjyrat", sec3Title: "3. Logo", sec4Title: "4. Fotografitë", sec5Title: "5. QR Center", sec6Title: "6. Shabllonet", lblHotelName: "Emri", lblPhone: "Tel", btnAddCategory: "Shto", modalTitle: "Ndrysho", step1Title: "1. Kategoria", step2Title: "2. Shablloni", step3Title: "3. Detajet", addBtn: "Shto", editTitle: "Titulli", customTextLabel: "Shënime", yesLabel: "Po", noLabel: "Jo", moreInfo: "Më shumë", cancel: "Anulo", saveAndClose: "Mbyll", searchPlaceholder: "Kërko...", noPresetsFound: "Asgjë." }
 };
 
+// Czech and Norwegian Bokmål UI chrome use English fallback until their full UI copy is curated.
+translations.cs = translations.en;
+translations.nb = translations.no;
+
 const themeColors = [
   { id: 'amber', name: 'Amber Warm', bg: 'bg-amber-900', text: 'text-amber-900', bgLight: 'bg-amber-50', border: 'border-amber-900/40' },
   { id: 'emerald', name: 'Forest Emerald', bg: 'bg-emerald-800', text: 'text-emerald-800', bgLight: 'bg-emerald-50', border: 'border-emerald-800/40' },
@@ -196,19 +203,18 @@ const themeColors = [
 ];
 
 const mainCategories = [
-  { id: 'cat_hotel', name: { de: 'Hotel & Unterkunft', en: 'Hotel & Accommodation', tr: 'Otel & Konaklama', fr: 'Hôtel & Hébergement', hr: 'Hotel i smještaj' }, icon: 'Building' },
-  { id: 'cat_food', name: { de: 'Essen & Trinken', en: 'Food & Drinks', tr: 'Yeme & İçme', fr: 'Restauration', hr: 'Hrana i piće' }, icon: 'Utensils' },
-  { id: 'cat_sustainability', name: { de: 'Nachhaltigkeit & Umwelt', en: 'Sustainability & Environment', tr: 'Sürdürülebilirlik & Çevre', fr: 'Développement durable', hr: 'Održivost i okoliš' }, icon: 'Recycle' },
-  { id: 'cat_certificates', name: { de: 'Zertifikate & Auszeichnungen', en: 'Certificates & Awards', tr: 'Sertifikalar & Ödüller', fr: 'Certificats & Prix', hr: 'Certifikati i nagrade' }, icon: 'Award' },
-  { id: 'cat_wellness', name: { de: 'Wellness & Spa', en: 'Wellness & Spa', tr: 'Wellness & Spa', fr: 'Bien-être & Spa', hr: 'Wellness i spa' }, icon: 'Waves' },
-  { id: 'cat_leisure', name: { de: 'Freizeit & Aktivitäten', en: 'Leisure & Activities', tr: 'Eğlence & Aktiviteler', fr: 'Loisirs & Activités', hr: 'Slobodno vrijeme' }, icon: 'Compass' },
-  { id: 'cat_mobility', name: { de: 'Anreise & Mobilität', en: 'Arrival & Mobility', tr: 'Ulaşım & Mobilite', fr: 'Arrivée & Mobilité', hr: 'Dolazak i mobilnost' }, icon: 'Car' },
-  { id: 'cat_service', name: { de: 'Service & Informationen', en: 'Service & Information', tr: 'Servis & Bilgiler', fr: 'Service & Informations', hr: 'Usluge i informacije' }, icon: 'Phone' },
-  { id: 'cat_safety', name: { de: 'Regeln & Sicherheit', en: 'Rules & Safety', tr: 'Kurallar & Güvenlik', fr: 'Règles & Sécurité', hr: 'Pravila i sigurnost' }, icon: 'ShieldCheck' }
+{id:'cat_hotel',name:{de:'Hotel & Unterkunft',en:'Hotel & Accommodation',tr:'Hotel & Konaklama',fr:'Hôtel & hébergement',es:'Hotel y alojamiento',cs:'Hotel a ubytování',sq:'Hotel dhe akomodim',sv:'Hotell och boende',nb:'Hotell og overnatting',it:'Hotel e alloggio'},icon:'Building'},
+{id:'cat_food',name:{de:'Essen & Trinken',en:'Food & Drinks',tr:'Yeme & İçme',fr:'Restauration',es:'Comida y bebidas',cs:'Jídlo a nápoje',sq:'Ushqim dhe pije',sv:'Mat och dryck',nb:'Mat og drikke',it:'Cibo e bevande'},icon:'Utensils'},
+{id:'cat_wellness',name:{de:'Wellness & Spa',en:'Wellness & Spa',tr:'Wellness & Spa',fr:'Bien-être & spa',es:'Bienestar y spa',cs:'Wellness a spa',sq:'Wellness dhe spa',sv:'Wellness och spa',nb:'Velvære og spa',it:'Benessere e spa'},icon:'Waves'},
+{id:'cat_leisure',name:{de:'Freizeit & Aktivitäten',en:'Leisure & Activities',tr:'Boş Zaman & Aktiviteler',fr:'Loisirs & activités',es:'Ocio y actividades',cs:'Volný čas a aktivity',sq:'Kohë e lirë dhe aktivitete',sv:'Fritid och aktiviteter',nb:'Fritid og aktiviteter',it:'Tempo libero e attività'},icon:'Compass'},
+{id:'cat_environment',name:{de:'Umgebung & Ausflüge',en:'Area & Excursions',tr:'Çevre & Geziler',fr:'Environs & excursions',es:'Entorno y excursiones',cs:'Okolí a výlety',sq:'Rrethina dhe ekskursione',sv:'Område och utflykter',nb:'Område og utflukter',it:'Dintorni ed escursioni'},icon:'MapPin'},
+{id:'cat_mobility',name:{de:'Anreise & Mobilität',en:'Arrival & Mobility',tr:'Ulaşım & Mobilite',fr:'Arrivée & mobilité',es:'Llegada y movilidad',cs:'Příjezd a mobilita',sq:'Mbërritja dhe lëvizshmëria',sv:'Ankomst och mobilitet',nb:'Ankomst og mobilitet',it:'Arrivo e mobilità'},icon:'Car'},
+{id:'cat_service',name:{de:'Service & Informationen',en:'Service & Information',tr:'Hizmet & Bilgiler',fr:'Services & informations',es:'Servicios e información',cs:'Služby a informace',sq:'Shërbime dhe informacione',sv:'Service och information',nb:'Service og informasjon',it:'Servizi e informazioni'},icon:'Phone'},
+{id:'cat_safety',name:{de:'Regeln & Sicherheit',en:'Rules & Safety',tr:'Kurallar & Güvenlik',fr:'Règles & sécurité',es:'Normas y seguridad',cs:'Pravidla a bezpečnost',sq:'Rregulla dhe siguria',sv:'Regler och säkerhet',nb:'Regler og sikkerhet',it:'Regole e sicurezza'},icon:'ShieldCheck'}
 ];
 
 // --- EKSİKSİZ PRESET HAVUZU (TÜM KATEGORİLER DOLU) ---
-const categoryPresets = [
+const legacyCategoryPresets = [
   // HOTEL & UNTERKUNFT
   { id: 'hotel_info', categoryId: 'cat_hotel', icon: 'Building', title: { de: 'Hotelinformationen', en: 'Hotel Information', tr: 'Otel Bilgileri', fr: "Informations hôtel", hr: 'Informacije o hotelu' }, schema: [
     { key: 'reception_hours', type: 'text', label: { de: 'Rezeptionszeiten', en: 'Reception Hours', tr: 'Resepsiyon Saatleri', fr: 'Horaires réception', hr: 'Radno vrijeme recepcije' }, default: '07:00 - 22:00 Uhr', primary: true },
@@ -281,6 +287,7 @@ const categoryPresets = [
   ]}
 ];
 
+const categoryPresets = [...legacyCategoryPresets, ...hotelPresets, ...additionalPresets];
 const renderSafeIconByName = (iconName, currentTheme) => {
   const themeClass = currentTheme ? currentTheme.text : 'text-slate-800';
   const className = `w-5 h-5 ${themeClass}`;
@@ -302,8 +309,35 @@ const renderSafeIconByName = (iconName, currentTheme) => {
     case 'Recycle': return <Recycle className={className} />;
     case 'Award': return <Award className={className} />;
     case 'Baby': return <Baby className={className} />;
+    case 'Accessibility': return <Accessibility className={className} />;
+    case 'ShoppingBag': return <ShoppingBag className={className} />;
+    case 'Lock': return <Lock className={className} />;
+    case 'Sun': return <Sun className={className} />;
+    case 'Flame': return <Flame className={className} />;
+    case 'Heart': return <Heart className={className} />;
+    case 'Users': return <Users className={className} />;
     default: return <Info className={className} />;
   }
+};
+
+const OTHER_CUSTOM='OTHER_CUSTOM';
+const customTextLabels={de:'Sonstiges – Eigener Text',en:'Other – Custom Text',tr:'Diğer – Özel Metin',fr:'Autre – Texte personnalisé',es:'Otro – Texto personalizado',cs:'Jiné – Vlastní text',sq:'Tjetër – Tekst personal',sv:'Annat – Egen text',nb:'Annet – Egendefinert tekst',it:'Altro – Testo personalizzato'};
+const customTextFieldLabels={de:'Eigener Text (wird nicht übersetzt)',en:'Custom text (not translated)',tr:'Özel metin (çevrilmez)',fr:'Texte personnalisé (non traduit)',es:'Texto personalizado (no se traduce)',cs:'Vlastní text (nepřekládá se)',sq:'Tekst personal (nuk përkthehet)',sv:'Egen text (översätts inte)',nb:'Egendefinert tekst (oversettes ikke)',it:'Testo personalizzato (non tradotto)'};
+const optionId=o=>typeof o==='string'?o:o.id;
+const optionLabel=(o,lang)=>typeof o==='string'?o:((o.label&&(o.label[lang]||o.label.de))||o.id);
+const getFieldOptions=f=>[...(f.options||[]).filter(o=>optionId(o)!==OTHER_CUSTOM),{id:OTHER_CUSTOM,label:customTextLabels}];
+const PresetFieldEditor=({field,value,fieldValues,onChange,onCustomTextChange,lang})=>{
+const val=value!==undefined?value:field.default,options=getFieldOptions(field),customKey=field.key+'__customText',customValue=fieldValues[customKey]||'';
+const selected=field.type==='multiselect'?(Array.isArray(val)&&val.includes(OTHER_CUSTOM)):val===OTHER_CUSTOM;
+const label=(field.label&&(field.label[lang]||field.label.de))||field.key;
+const toggle=(id,checked)=>{const current=Array.isArray(val)?val:[];onChange(checked?[...current.filter(x=>x!==id),id]:current.filter(x=>x!==id));};
+return <div className="space-y-1.5"><label className="block text-[10px] font-extrabold text-stone-500 uppercase">{label}</label>
+{field.type==='boolean'?<input type="checkbox" checked={!!val} onChange={e=>onChange(e.target.checked)}/>:
+field.type==='select'?<select value={val||''} onChange={e=>onChange(e.target.value)} className="w-full p-2.5 text-xs border border-stone-200 rounded-xl bg-white">{options.map(o=><option key={optionId(o)} value={optionId(o)}>{optionLabel(o,lang)}</option>)}</select>:
+field.type==='multiselect'?<div className="grid grid-cols-1 sm:grid-cols-2 gap-2">{options.map(o=>{const id=optionId(o);return <label key={id} className="flex items-center gap-2 rounded-xl border border-stone-200 bg-white px-3 py-2 text-xs cursor-pointer"><input type="checkbox" checked={(Array.isArray(val)?val:[]).includes(id)} onChange={e=>toggle(id,e.target.checked)}/><span>{optionLabel(o,lang)}</span></label>;})}</div>:
+field.type==='textarea'?<textarea rows={3} maxLength={5000} value={val||''} onChange={e=>onChange(e.target.value)} className="w-full p-2.5 text-xs border border-stone-200 rounded-xl"/>:
+<input type="text" value={val??''} onChange={e=>onChange(e.target.value)} className="w-full p-2.5 text-xs border border-stone-200 rounded-xl"/>}
+{selected&&<div className="pt-2 space-y-1"><label className="block text-[10px] font-bold text-amber-800">{customTextFieldLabels[lang]||customTextFieldLabels.de}</label><textarea rows={3} maxLength={2000} value={customValue} onChange={e=>onCustomTextChange(customKey,e.target.value)} placeholder={customTextLabels[lang]||customTextLabels.de} className="w-full p-2.5 text-xs border border-amber-300 rounded-xl bg-amber-50/40"/><span className="text-[10px] text-stone-400">{customValue.length}/2000</span></div>}</div>;
 };
 
 // --- 3-ADIMLI SAAS EDITÖR MODALI ---
@@ -349,7 +383,7 @@ const CompactPresetEditorModal = ({ isOpen, onClose, onSave, currentTheme, lang,
     const initialVals = {};
     if (preset && preset.schema) {
       preset.schema.forEach(f => {
-        initialVals[f.key] = f.default;
+        initialVals[f.key] = f.default !== undefined ? f.default : (f.type === 'multiselect' ? [] : '');
       });
     }
     setFieldValues(initialVals);
@@ -374,7 +408,7 @@ const CompactPresetEditorModal = ({ isOpen, onClose, onSave, currentTheme, lang,
     onClose();
   };
 
-  const availablePresets = categoryPresets.filter(p => p.categoryId === selectedMainCat)
+  const availablePresets = categoryPresets.filter(p => p.categoryId === selectedMainCat || (selectedMainCat === 'cat_safety' && (p.categoryId === 'cat_sustainability' || p.categoryId === 'cat_certificates')))
     .filter(p => {
       if (!searchQuery) return true;
       const title = (p.title && (p.title[lang] || p.title.de)) || '';
@@ -492,55 +526,8 @@ const CompactPresetEditorModal = ({ isOpen, onClose, onSave, currentTheme, lang,
               </div>
 
               <div className="space-y-3 bg-stone-50/60 p-4 rounded-2xl border border-stone-200/80">
-                {primaryFields.map(field => {
-                  const val = fieldValues[field.key] !== undefined ? fieldValues[field.key] : field.default;
-                  const label = field.label[lang] || field.label.de;
-
-                  if (field.type === 'boolean') {
-                    return (
-                      <div key={field.key} className="flex items-center justify-between py-1">
-                        <span className="text-xs font-bold text-slate-800">{label}</span>
-                        <input
-                          type="checkbox"
-                          checked={!!val}
-                          onChange={(e) => handleFieldValueChange(field.key, e.target.checked)}
-                          className="w-4 h-4 accent-amber-800 rounded cursor-pointer"
-                        />
-                      </div>
-                    );
-                  }
-
-                  if (field.type === 'select') {
-                    return (
-                      <div key={field.key} className="space-y-1">
-                        <label className="block text-[10px] font-extrabold text-stone-500 uppercase">{label}</label>
-                        <select
-                          value={val || ''}
-                          onChange={(e) => handleFieldValueChange(field.key, e.target.value)}
-                          className="w-full p-2.5 text-xs border border-stone-200 rounded-xl bg-white font-medium cursor-pointer"
-                        >
-                          {field.options.map(opt => (
-                            <option key={opt} value={opt}>{opt}</option>
-                          ))}
-                        </select>
-                      </div>
-                    );
-                  }
-
-                  return (
-                    <div key={field.key} className="space-y-1">
-                      <label className="block text-[10px] font-extrabold text-stone-500 uppercase">{label}</label>
-                      <input
-                        type="text"
-                        value={val !== undefined ? val : ''}
-                        onChange={(e) => handleFieldValueChange(field.key, e.target.value)}
-                        className="w-full p-2.5 text-xs border border-stone-200 rounded-xl bg-white font-medium"
-                      />
-                    </div>
-                  );
-                })}
-              </div>
-
+{primaryFields.map(field=><PresetFieldEditor key={field.key} field={field} value={fieldValues[field.key]} fieldValues={fieldValues} lang={lang} onChange={value=>handleFieldValueChange(field.key,value)} onCustomTextChange={handleFieldValueChange}/>)}
+</div>
               {secondaryFields.length > 0 && (
                 <div className="border border-stone-200 rounded-2xl overflow-hidden bg-white">
                   <button
@@ -554,23 +541,8 @@ const CompactPresetEditorModal = ({ isOpen, onClose, onSave, currentTheme, lang,
 
                   {showMoreInfo && (
                     <div className="p-4 space-y-3 bg-white border-t border-stone-200">
-                      {secondaryFields.map(field => {
-                        const val = fieldValues[field.key] !== undefined ? fieldValues[field.key] : field.default;
-                        const label = field.label[lang] || field.label.de;
-
-                        return (
-                          <div key={field.key} className="space-y-1">
-                            <label className="block text-[10px] font-extrabold text-stone-500 uppercase">{label}</label>
-                            <input
-                              type="text"
-                              value={val !== undefined ? val : ''}
-                              onChange={(e) => handleFieldValueChange(field.key, e.target.value)}
-                              className="w-full p-2.5 text-xs border border-stone-200 rounded-xl bg-white font-medium"
-                            />
-                          </div>
-                        );
-                      })}
-                    </div>
+{secondaryFields.map(field=><PresetFieldEditor key={field.key} field={field} value={fieldValues[field.key]} fieldValues={fieldValues} lang={lang} onChange={value=>handleFieldValueChange(field.key,value)} onCustomTextChange={handleFieldValueChange}/>)}
+</div>
                   )}
                 </div>
               )}
@@ -616,7 +588,7 @@ const GuestCategoryDisplay = ({ category, currentTheme, lang, t }) => {
             const rawVal = fieldValues[field.key] !== undefined ? fieldValues[field.key] : field.default;
             const fieldLabel = (field.label && (field.label[lang] || field.label.de)) || field.key;
 
-            if (rawVal === undefined || rawVal === null || rawVal === '') return null;
+            if (rawVal === undefined || rawVal === null || rawVal === '' || (Array.isArray(rawVal) && rawVal.length === 0)) return null;
 
             return (
               <div key={field.key} className="border-b border-stone-100 last:border-0 pb-3.5 last:pb-0 flex flex-col gap-1.5">
@@ -636,16 +608,9 @@ const GuestCategoryDisplay = ({ category, currentTheme, lang, t }) => {
                   </div>
                 ) : field.type === 'multiselect' && Array.isArray(rawVal) ? (
                   <div className="flex flex-wrap gap-1.5 pt-1">
-                    {rawVal.map(item => (
-                      <span key={item} className={`px-3 py-1.5 rounded-xl text-xs font-bold ${currentTheme.bgLight} ${currentTheme.text} border border-stone-200/60 shadow-xs flex items-center gap-1.5`}>
-                        <Check className="w-3.5 h-3.5" /> {item}
-                      </span>
-                    ))}
-                  </div>
-                ) : (
-                  <div className="text-xs font-extrabold text-slate-900 bg-stone-50 px-4 py-3 rounded-2xl border border-stone-200/70 shadow-xs">
-                    {String(rawVal)}
-                  </div>
+                    {rawVal.filter(item=>item!==OTHER_CUSTOM).map(item=>{const option=(field.options||[]).find(candidate=>optionId(candidate)===item);return <span key={item} className={currentTheme.bgLight+' '+currentTheme.text+' px-3 py-1.5 rounded-xl text-xs font-bold border border-stone-200/60 shadow-xs'}>{option?optionLabel(option,lang):item}</span>;})}
+                    {rawVal.includes(OTHER_CUSTOM)&&fieldValues[field.key+'__customText']&&<p className="w-full mt-2 text-xs text-slate-700 whitespace-pre-line">{fieldValues[field.key+'__customText']}</p>}
+                  </div> ) : field.type === 'select' ? (<div className="text-xs font-extrabold text-slate-900 bg-stone-50 px-4 py-3 rounded-2xl border border-stone-200/70">{rawVal===OTHER_CUSTOM?(customTextLabels[lang]||customTextLabels.de):(()=>{const option=(field.options||[]).find(candidate=>optionId(candidate)===rawVal);return option?optionLabel(option,lang):String(rawVal);})()}{rawVal===OTHER_CUSTOM&&fieldValues[field.key+'__customText']&&<p className="mt-2 whitespace-pre-line font-medium">{fieldValues[field.key+'__customText']}</p>}</div>) : (<div className="text-xs font-extrabold text-slate-900 bg-stone-50 px-4 py-3 rounded-2xl border border-stone-200/70">{String(rawVal)}</div>
                 )}
               </div>
             );
@@ -818,7 +783,8 @@ export default function App() {
 
   const groupedCategories = (categories || []).reduce((acc, cat) => {
     if (!cat) return acc;
-    const mainCatObj = mainCategories.find(mc => mc.id === cat.categoryId) || mainCategories[0];
+    const normalizedCategoryId = (cat.categoryId === 'cat_sustainability' || cat.categoryId === 'cat_certificates') ? 'cat_safety' : cat.categoryId;
+    const mainCatObj = mainCategories.find(mc => mc.id === normalizedCategoryId) || mainCategories[0];
     const groupName = mainCatObj.name[lang] || mainCatObj.name.de;
     if (!acc[groupName]) acc[groupName] = [];
     const presetData = categoryPresets.find(p => p.id === cat.presetId);
@@ -1106,13 +1072,13 @@ export default function App() {
             <option value="de">🇩🇪 DE</option>
             <option value="en">🇬🇧 EN</option>
             <option value="tr">🇹🇷 TR</option>
-            <option value="hr">🇭🇷 HR</option>
             <option value="fr">🇫🇷 FR</option>
-            <option value="it">🇮🇹 IT</option>
             <option value="es">🇪🇸 ES</option>
-            <option value="sv">🇸🇪 SV</option>
-            <option value="no">🇳🇴 NO</option>
+            <option value="cs">🇨🇿 CS</option>
             <option value="sq">🇦🇱 SQ</option>
+            <option value="sv">🇸🇪 SV</option>
+            <option value="nb">🇳🇴 NB</option>
+            <option value="it">🇮🇹 IT</option>
           </select>
         </div>
 
@@ -1142,13 +1108,13 @@ export default function App() {
             <option value="de">🇩🇪 DE</option>
             <option value="en">🇬🇧 EN</option>
             <option value="tr">🇹🇷 TR</option>
-            <option value="hr">🇭🇷 HR</option>
             <option value="fr">🇫🇷 FR</option>
-            <option value="it">🇮🇹 IT</option>
             <option value="es">🇪🇸 ES</option>
-            <option value="sv">🇸🇪 SV</option>
-            <option value="no">🇳🇴 NO</option>
+            <option value="cs">🇨🇿 CS</option>
             <option value="sq">🇦🇱 SQ</option>
+            <option value="sv">🇸🇪 SV</option>
+            <option value="nb">🇳🇴 NB</option>
+            <option value="it">🇮🇹 IT</option>
           </select>
           <button onClick={() => setAppMode('dashboard')} className="text-stone-300 hover:text-stone-600 p-1 text-xs cursor-pointer">🔑</button>
         </div>
