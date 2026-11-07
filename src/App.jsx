@@ -669,6 +669,10 @@ export default function App() {
   const quickLabels = quickAccessLabels[lang] || quickAccessLabels.de;
 
   const [appMode, setAppMode] = useState('guest');
+  const guestSlug = typeof window !== 'undefined'
+    ? (window.location.pathname.match(/^\\/g\\/([a-z0-9-]+)\\/?$/i)?.[1] || null)
+    : null;
+  const [guestPageStatus, setGuestPageStatus] = useState('idle');
   const [authSession, setAuthSession] = useState(null);
   const [authLoading, setAuthLoading] = useState(true);
   const [hotelRecord, setHotelRecord] = useState(null);
@@ -699,7 +703,7 @@ export default function App() {
 
   useEffect(() => {
     const userId = authSession?.user?.id;
-    if (!supabase || !userId) {
+    if (!supabase || !userId || guestSlug) {
       setHotelRecord(null);
       setCloudDataStatus('idle');
       return undefined;
@@ -753,7 +757,7 @@ export default function App() {
 
     loadOrCreateHotel();
     return () => { active = false; };
-  }, [authSession?.user?.id]);
+  }, [authSession?.user?.id, guestSlug]);
 
   const [isEditorModalOpen, setIsEditorModalOpen] = useState(false);
   const [editingCategory, setEditingCategory] = useState(null);
@@ -767,7 +771,9 @@ export default function App() {
   const [copiedWifi, setCopiedWifi] = useState(false);
   const [qrPrintFormat, setQrPrintFormat] = useState('a4');
 
-  const guestPageUrl = typeof window !== 'undefined' ? `${window.location.origin}${window.location.pathname}` : '';
+  const guestPageUrl = typeof window !== 'undefined'
+    ? (hotelRecord?.slug ? `${window.location.origin}/g/${hotelRecord.slug}` : `${window.location.origin}${window.location.pathname}`)
+    : '';
 
   const quickAccessDefaults = {
     de:{wifi:{title:'WLAN',description:'Verbinden Sie sich mit unserem Gäste-WLAN.'},parking:{title:'Parkplatz',description:'Kostenfreie Parkplätze am Haus verfügbar.'},breakfast:{title:'Frühstück',description:'Frühstückszeiten: 07:30–10:30 Uhr.'},checkin:{title:'Check-in / Check-out',description:'Check-in ab 15:00 Uhr · Check-out bis 11:00 Uhr.'}},
@@ -914,6 +920,44 @@ export default function App() {
     ];
   });
 
+  useEffect(() => {
+    if (!guestSlug) {
+      setGuestPageStatus('idle');
+      return undefined;
+    }
+    if (!supabase) {
+      setGuestPageStatus('error');
+      return undefined;
+    }
+    let active = true;
+    const loadGuestPage = async () => {
+      setGuestPageStatus('loading');
+      try {
+        const { data, error } = await supabase
+          .from('gm24_guest_pages')
+          .select('slug, name, public_content')
+          .eq('slug', guestSlug)
+          .maybeSingle();
+        if (error) throw error;
+        if (!data || !data.public_content || typeof data.public_content !== 'object') {
+          if (active) setGuestPageStatus('not_found');
+          return;
+        }
+        if (!active) return;
+        const content = data.public_content;
+        if (content.hotel && typeof content.hotel === 'object') setHotel(content.hotel);
+        else setHotel(previous => ({ ...previous, name: data.name || previous.name }));
+        if (Array.isArray(content.categories)) setCategories(content.categories);
+        setGuestPageStatus('ready');
+      } catch (error) {
+        console.error('Public guest page could not be loaded:', error);
+        if (active) setGuestPageStatus('error');
+      }
+    };
+    loadGuestPage();
+    return () => { active = false; };
+  }, [guestSlug]);
+
   const copyWifiLabels = {
     de:{copy:'Kopieren',copied:'Kopiert'},en:{copy:'Copy',copied:'Copied'},tr:{copy:'Kopyala',copied:'Kopyalandı'},fr:{copy:'Copier',copied:'Copié'},hr:{copy:'Kopiraj',copied:'Kopirano'},it:{copy:'Copia',copied:'Copiato'},es:{copy:'Copiar',copied:'Copiado'},sv:{copy:'Kopiera',copied:'Kopierat'},no:{copy:'Kopier',copied:'Kopiert'},sq:{copy:'Kopjo',copied:'U kopjua'}
   };
@@ -1059,6 +1103,21 @@ export default function App() {
       </div>
     )
   ].filter(Boolean);
+
+  if (guestSlug && (guestPageStatus === 'loading' || guestPageStatus === 'idle')) {
+    return <main className="min-h-screen bg-stone-50 flex items-center justify-center text-sm text-stone-500">Gästemappe wird geladen …</main>;
+  }
+
+  if (guestSlug && guestPageStatus !== 'ready') {
+    return (
+      <main className="min-h-screen bg-stone-50 flex items-center justify-center p-5">
+        <section className="max-w-md bg-white border border-stone-200 rounded-3xl p-7 text-center space-y-3">
+          <h1 className="text-xl font-black text-slate-900">Gästemappe nicht verfügbar</h1>
+          <p className="text-sm text-stone-500">Dieser Link ist ungültig oder die Unterkunft hat ihre Gästemappe noch nicht veröffentlicht.</p>
+        </section>
+      </main>
+    );
+  }
 
   if (appMode === 'dashboard' && !isSupabaseConfigured) {
     return (
