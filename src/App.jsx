@@ -818,12 +818,13 @@ export default function App() {
 
         const { data: account, error: accountError } = await supabase
           .from('gm24_accounts')
-          .select('owner_id, plan_code, subscription_status, trial_started_at, trial_ends_at, paid_until')
+          .select('owner_id, plan_code, subscription_status, trial_started_at, trial_ends_at, paid_until, requested_plan_code')
           .eq('owner_id', userId)
           .maybeSingle();
         if (accountError) throw accountError;
         if (!active) return;
         setAccountRecord(account || null);
+        setRequestedPlanCode(account?.requested_plan_code || localStorage.getItem('gm24_requested_plan') || 'single');
         setCloudDataStatus('ready');
       } catch (error) {
         if (!active) return;
@@ -1166,7 +1167,7 @@ export default function App() {
       setCloudDataStatus('ready');
       const { data: refreshedAccount } = await supabase
         .from('gm24_accounts')
-        .select('owner_id, plan_code, subscription_status, trial_started_at, trial_ends_at, paid_until')
+        .select('owner_id, plan_code, subscription_status, trial_started_at, trial_ends_at, paid_until, requested_plan_code')
         .eq('owner_id', authSession.user.id)
         .maybeSingle();
       if (refreshedAccount) setAccountRecord(refreshedAccount);
@@ -1276,9 +1277,23 @@ export default function App() {
     }
   };
 
-  const chooseRequestedPlan = (planCode) => {
-    setRequestedPlanCode(planCode);
-    localStorage.setItem('gm24_requested_plan', planCode);
+  const chooseRequestedPlan = async (planCode) => {
+    if (!supabase || !authSession?.user?.id) return;
+    try {
+      const { data, error } = await supabase
+        .from('gm24_accounts')
+        .update({ requested_plan_code: planCode })
+        .eq('owner_id', authSession.user.id)
+        .select('owner_id, plan_code, subscription_status, trial_started_at, trial_ends_at, paid_until, requested_plan_code')
+        .single();
+      if (error) throw error;
+      setAccountRecord(data);
+      setRequestedPlanCode(planCode);
+      localStorage.setItem('gm24_requested_plan', planCode);
+    } catch (error) {
+      console.error('Package preference could not be saved:', error);
+      setCloudDataError('Die Paketvormerkung konnte nicht gespeichert werden. Bitte erneut versuchen.');
+    }
   };
 
   const trialEndsAt = accountRecord?.trial_ends_at ? new Date(accountRecord.trial_ends_at).getTime() : null;
