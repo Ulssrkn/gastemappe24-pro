@@ -728,6 +728,8 @@ export default function App() {
   const [selectedHotelId, setSelectedHotelId] = useState('');
   const [accountRecord, setAccountRecord] = useState(null);
   const [trialNow, setTrialNow] = useState(Date.now());
+  const [clonePreviewOpen, setClonePreviewOpen] = useState(false);
+  const [cloneOptions, setCloneOptions] = useState({ categories: true, texts: true, design: true });
   const [analyticsRows, setAnalyticsRows] = useState([]);
   const [analyticsLoading, setAnalyticsLoading] = useState(false);
   const [cloudDataStatus, setCloudDataStatus] = useState('idle');
@@ -1164,6 +1166,70 @@ export default function App() {
     }
   };
 
+  const cloneAccommodation = async () => {
+    if (!supabase || !authSession?.user?.id || !hotelRecord || !accountRecord || trialExpired) return;
+    const removePrivateFields = (value) => {
+      if (Array.isArray(value)) return value.map(removePrivateFields);
+      if (!value || typeof value !== 'object') return value;
+      return Object.fromEntries(Object.entries(value)
+        .filter(([key]) => !/^(id|.*(?:wifi|password|passwort|ssid|address|adresse|phone|telefon|mobile|email|contact|kontakt|slug|qr|analytics|owner).*)$/i.test(key))
+        .map(([key, nested]) => [key, removePrivateFields(nested)]));
+    };
+    const source = hotel || {};
+    const clonedHotel = {
+      ...source,
+      name: `Kopie von ${source.name || hotelRecord.name || 'Unterkunft'}`,
+      logoUrl: '',
+      address: '',
+      phone: '',
+      email: '',
+      website: '',
+      googleReviewUrl: '',
+      wifiSsid: '',
+      wifiPass: '',
+      images: [],
+      themeColor: cloneOptions.design ? source.themeColor : 'amber',
+      breakfastTime: cloneOptions.texts ? (source.breakfastTime || '') : '',
+      checkInOut: cloneOptions.texts ? (source.checkInOut || '') : '',
+      parkingInfo: cloneOptions.texts ? (source.parkingInfo || '') : '',
+      quickAccessContent: cloneOptions.texts ? removePrivateFields(source.quickAccessContent || {}) : {}
+    };
+    const clonedCategories = cloneOptions.categories
+      ? (categories || []).map(category => ({
+          ...removePrivateFields(category),
+          id: globalThis.crypto?.randomUUID?.() || `cat-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`
+        }))
+      : [];
+    const slug = 'kopie-' + (globalThis.crypto?.randomUUID?.() || Math.random().toString(36).slice(2, 12)).replace(/-/g, '').slice(0, 12).toLowerCase();
+    setCloudDataStatus('saving');
+    try {
+      const { data: created, error } = await supabase
+        .from('gm24_hotels')
+        .insert({
+          owner_id: authSession.user.id,
+          slug,
+          name: clonedHotel.name,
+          profile: { hotel: clonedHotel, categories: clonedCategories },
+          public_content: {}
+        })
+        .select('id, slug, name, profile, public_content, created_at')
+        .single();
+      if (error) throw error;
+      setHotelRecords(previous => [...previous, created]);
+      setHotelRecord(created);
+      setSelectedHotelId(created.id);
+      setHotel(clonedHotel);
+      setCategories(clonedCategories);
+      setSelectedCategory(null);
+      setClonePreviewOpen(false);
+      setCloudDataStatus('ready');
+    } catch (error) {
+      console.error('Accommodation clone failed:', error);
+      setCloudDataError(error?.message || 'Die Unterkunft konnte nicht kopiert werden.');
+      setCloudDataStatus('error');
+    }
+  };
+
   const trialEndsAt = accountRecord?.trial_ends_at ? new Date(accountRecord.trial_ends_at).getTime() : null;
   const trialDaysLeft = trialEndsAt ? Math.max(0, Math.ceil((trialEndsAt - trialNow) / 86400000)) : null;
   const trialExpired = accountRecord?.subscription_status === 'suspended'
@@ -1341,6 +1407,30 @@ export default function App() {
     return (
       <div className="min-h-screen w-full max-w-full overflow-x-hidden box-border bg-[#FBF9F5] font-sans text-slate-800 p-3 sm:p-6 md:p-10 space-y-6 sm:space-y-8 relative pb-28">
         
+        {clonePreviewOpen && (
+          <div className="fixed inset-0 z-[100] bg-slate-950/50 flex items-center justify-center p-4">
+            <section role="dialog" aria-modal="true" aria-labelledby="gm24-clone-title" className="w-full max-w-lg rounded-3xl bg-white p-6 shadow-2xl space-y-4">
+              <div>
+                <p className="text-[10px] font-black uppercase tracking-wider text-amber-700">Unterkunft kopieren</p>
+                <h2 id="gm24-clone-title" className="text-xl font-black text-slate-900 mt-1">Kopie vorbereiten</h2>
+                <p className="text-xs text-stone-500 mt-1">Quelle: {hotelRecord?.name || hotel.name}</p>
+              </div>
+              <div className="rounded-2xl border border-stone-200 bg-stone-50 p-3 space-y-3 text-sm">
+                <label className="flex items-start gap-3"><input type="checkbox" checked={cloneOptions.categories} onChange={e => setCloneOptions(previous => ({ ...previous, categories: e.target.checked }))} className="mt-1 accent-amber-700"/><span><strong>Kategorien und ausgewählte Presets</strong><span className="block text-xs text-stone-500">Die vorhandenen Kategorien werden in die neue Unterkunft kopiert.</span></span></label>
+                <label className="flex items-start gap-3"><input type="checkbox" checked={cloneOptions.texts} onChange={e => setCloneOptions(previous => ({ ...previous, texts: e.target.checked }))} className="mt-1 accent-amber-700"/><span><strong>Eigene Texte</strong><span className="block text-xs text-stone-500">Beschreibungen und allgemeine Informationstexte werden übernommen.</span></span></label>
+                <label className="flex items-start gap-3"><input type="checkbox" checked={cloneOptions.design} onChange={e => setCloneOptions(previous => ({ ...previous, design: e.target.checked }))} className="mt-1 accent-amber-700"/><span><strong>Design und Farbthema</strong><span className="block text-xs text-stone-500">Das aktuelle Farbthema wird übernommen.</span></span></label>
+              </div>
+              <div className="rounded-xl bg-amber-50 border border-amber-100 p-3 text-xs text-amber-900">
+                Nicht kopiert werden: WLAN-Zugangsdaten, Adresse, Telefonnummer, E-Mail, Website, Logo, Bilder, QR-Link und Statistiken. Die Original-Unterkunft bleibt unverändert.
+              </div>
+              <div className="flex justify-end gap-2">
+                <button onClick={() => setClonePreviewOpen(false)} className="rounded-xl border border-stone-200 px-4 py-2.5 text-xs font-bold text-stone-600">Abbrechen</button>
+                <button onClick={cloneAccommodation} className="rounded-xl bg-stone-900 px-4 py-2.5 text-xs font-bold text-white">Kopie erstellen</button>
+              </div>
+            </section>
+          </div>
+        )}
+
         <CompactPresetEditorModal
           isOpen={isEditorModalOpen}
           onClose={() => { setIsEditorModalOpen(false); setEditingCategory(null); }}
@@ -1381,7 +1471,10 @@ export default function App() {
                 {hotelRecords.map(item => <option key={item.id} value={item.id}>{item.name || 'Unbenannte Unterkunft'}</option>)}
               </select>
             </div>
-            <button onClick={createAccommodation} disabled={trialExpired || !accountRecord} className="rounded-xl bg-stone-900 text-white px-4 py-2.5 text-xs font-bold disabled:opacity-40 disabled:cursor-not-allowed">+ Unterkunft hinzufügen</button>
+            <div className="flex flex-wrap gap-2">
+              <button onClick={createAccommodation} disabled={trialExpired || !accountRecord} className="rounded-xl bg-stone-900 text-white px-4 py-2.5 text-xs font-bold disabled:opacity-40 disabled:cursor-not-allowed">+ Neu</button>
+              <button onClick={() => setClonePreviewOpen(true)} disabled={trialExpired || !hotelRecord} className="rounded-xl border border-stone-200 bg-white text-stone-700 px-4 py-2.5 text-xs font-bold disabled:opacity-40 disabled:cursor-not-allowed">Unterkunft kopieren</button>
+            </div>
           </div>
           <div className="rounded-xl bg-stone-50 border border-stone-100 p-3 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
             <div className="text-xs">
