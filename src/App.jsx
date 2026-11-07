@@ -729,6 +729,11 @@ export default function App() {
   const [accountRecord, setAccountRecord] = useState(null);
   const [trialNow, setTrialNow] = useState(Date.now());
   const [clonePreviewOpen, setClonePreviewOpen] = useState(false);
+  const [createAccommodationOpen, setCreateAccommodationOpen] = useState(false);
+  const [newAccommodationName, setNewAccommodationName] = useState('');
+  const [deleteAccommodationTarget, setDeleteAccommodationTarget] = useState(null);
+  const [requestedPlanCode, setRequestedPlanCode] = useState(() => localStorage.getItem('gm24_requested_plan') || 'single');
+
   const [cloneOptions, setCloneOptions] = useState({ categories: true, texts: true, design: true });
   const [analyticsRows, setAnalyticsRows] = useState([]);
   const [analyticsLoading, setAnalyticsLoading] = useState(false);
@@ -1120,7 +1125,7 @@ export default function App() {
     const base = hotel || {};
     const newHotel = {
       ...base,
-      name: 'Neue Unterkunft',
+      name: (newAccommodationName || '').trim() || 'Neue Unterkunft',
       logoUrl: '',
       locationTitle: '',
       address: '',
@@ -1236,6 +1241,44 @@ export default function App() {
       setCloudDataError(error?.message || 'Die Unterkunft konnte nicht kopiert werden.');
       setCloudDataStatus('error');
     }
+  };
+
+  const deleteAccommodation = async () => {
+    const target = deleteAccommodationTarget;
+    if (!supabase || !authSession?.user?.id || !target || hotelRecords.length <= 1) return;
+    setCloudDataStatus('saving');
+    setCloudDataError('');
+    try {
+      const { error } = await supabase
+        .from('gm24_hotels')
+        .delete()
+        .eq('id', target.id)
+        .eq('owner_id', authSession.user.id);
+      if (error) throw error;
+      const remaining = hotelRecords.filter(item => item.id !== target.id);
+      setHotelRecords(remaining);
+      setDeleteAccommodationTarget(null);
+      if (hotelRecord?.id === target.id) {
+        const next = remaining[0];
+        setHotelRecord(next);
+        setSelectedHotelId(next.id);
+        const profile = next.profile && typeof next.profile === 'object' ? next.profile : {};
+        if (profile.hotel && typeof profile.hotel === 'object') setHotel(profile.hotel);
+        else setHotel(previous => ({ ...previous, name: next.name || 'Meine Unterkunft', address: '', phone: '', email: '', website: '', wifiSsid: '', wifiPass: '' }));
+        setCategories(Array.isArray(profile.categories) ? profile.categories : []);
+        setSelectedCategory(null);
+      }
+      setCloudDataStatus('ready');
+    } catch (error) {
+      console.error('Accommodation could not be deleted:', error);
+      setCloudDataError(error?.message || 'Die Unterkunft konnte nicht gelöscht werden.');
+      setCloudDataStatus('error');
+    }
+  };
+
+  const chooseRequestedPlan = (planCode) => {
+    setRequestedPlanCode(planCode);
+    localStorage.setItem('gm24_requested_plan', planCode);
   };
 
   const trialEndsAt = accountRecord?.trial_ends_at ? new Date(accountRecord.trial_ends_at).getTime() : null;
@@ -1415,6 +1458,33 @@ export default function App() {
     return (
       <div className="min-h-screen w-full max-w-full overflow-x-hidden box-border bg-[#FBF9F5] font-sans text-slate-800 p-3 sm:p-6 md:p-10 space-y-6 sm:space-y-8 relative pb-28">
         
+        {createAccommodationOpen && (
+          <div className="fixed inset-0 z-[110] flex items-center justify-center bg-slate-950/60 p-4">
+            <section role="dialog" aria-modal="true" aria-labelledby="gm24-create-title" className="w-full max-w-md rounded-3xl bg-white p-6 shadow-2xl">
+              <p className="text-[10px] font-black uppercase tracking-wider text-amber-700">Neue Unterkunft</p>
+              <h2 id="gm24-create-title" className="mt-1 text-xl font-black text-slate-900">Was möchtest du hinzufügen?</h2>
+              <p className="mt-2 text-xs text-stone-500">Es wird eine leere, eigenständige Gästemappe angelegt. Du kannst den Namen später ändern.</p>
+              <input autoFocus value={newAccommodationName} onChange={e => setNewAccommodationName(e.target.value)} placeholder="z. B. Apartment Sonnengarten" className="mt-4 w-full rounded-xl border border-stone-200 bg-stone-50 px-4 py-3 text-sm outline-none focus:border-amber-400"/>
+              <div className="mt-5 flex justify-end gap-2">
+                <button onClick={() => setCreateAccommodationOpen(false)} className="rounded-xl border border-stone-200 px-4 py-2.5 text-xs font-bold text-stone-600">Abbrechen</button>
+                <button onClick={async () => { await createAccommodation(); setCreateAccommodationOpen(false); }} disabled={!newAccommodationName.trim()} className="rounded-xl bg-slate-900 px-4 py-2.5 text-xs font-bold text-white disabled:opacity-40">Unterkunft erstellen</button>
+              </div>
+            </section>
+          </div>
+        )}
+        {deleteAccommodationTarget && (
+          <div className="fixed inset-0 z-[120] flex items-center justify-center bg-slate-950/60 p-4">
+            <section role="alertdialog" aria-modal="true" aria-labelledby="gm24-delete-title" className="w-full max-w-md rounded-3xl bg-white p-6 shadow-2xl">
+              <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-red-50 text-red-600"><Trash2 className="h-5 w-5"/></div>
+              <h2 id="gm24-delete-title" className="mt-4 text-lg font-black text-slate-900">Unterkunft wirklich löschen?</h2>
+              <p className="mt-2 text-sm text-stone-600"><strong>{deleteAccommodationTarget.name || 'Unbenannte Unterkunft'}</strong> und die dazugehörigen Gästemappen-Inhalte werden dauerhaft gelöscht. Diese Aktion kann nicht rückgängig gemacht werden.</p>
+              <div className="mt-5 flex justify-end gap-2">
+                <button onClick={() => setDeleteAccommodationTarget(null)} className="rounded-xl border border-stone-200 px-4 py-2.5 text-xs font-bold text-stone-600">Abbrechen</button>
+                <button onClick={deleteAccommodation} disabled={cloudDataStatus === 'saving'} className="rounded-xl bg-red-600 px-4 py-2.5 text-xs font-bold text-white disabled:opacity-50">Endgültig löschen</button>
+              </div>
+            </section>
+          </div>
+        )}
         {clonePreviewOpen && (
           <div className="fixed inset-0 z-[100] bg-slate-950/50 flex items-center justify-center p-4">
             <section role="dialog" aria-modal="true" aria-labelledby="gm24-clone-title" className="w-full max-w-lg rounded-3xl bg-white p-6 shadow-2xl space-y-4">
@@ -1471,43 +1541,77 @@ export default function App() {
           </div>
         </div>
 
-        <div className="w-full max-w-5xl mx-auto rounded-2xl border border-stone-200 bg-white p-4 flex flex-col gap-3">
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-            <div className="flex-1 min-w-0">
-              <label className="block text-[10px] font-bold uppercase tracking-wider text-stone-400 mb-1" htmlFor="gm24-accommodation-select">Meine Unterkünfte</label>
-              <select id="gm24-accommodation-select" value={selectedHotelId} onChange={event => selectAccommodation(event.target.value)} className="w-full sm:max-w-sm rounded-xl border border-stone-200 bg-stone-50 px-3 py-2.5 text-sm font-semibold">
-                {hotelRecords.map(item => <option key={item.id} value={item.id}>{item.name || 'Unbenannte Unterkunft'}</option>)}
-              </select>
+        <section className="w-full max-w-5xl mx-auto space-y-4">
+          <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3">
+            <div>
+              <p className="text-[10px] font-black uppercase tracking-[0.22em] text-amber-700">Workspace</p>
+              <h2 className="text-xl sm:text-2xl font-black tracking-tight text-slate-900">Deine Unterkünfte</h2>
+              <p className="text-xs text-stone-500 mt-1">Wähle eine Unterkunft aus, um ihre Gästemappe zu bearbeiten.</p>
             </div>
             <div className="flex flex-wrap gap-2">
-              <button onClick={createAccommodation} disabled={trialExpired || !accountRecord} className="rounded-xl bg-stone-900 text-white px-4 py-2.5 text-xs font-bold disabled:opacity-40 disabled:cursor-not-allowed">+ Neu</button>
-              <button onClick={() => setClonePreviewOpen(true)} disabled={trialExpired || !hotelRecord} className="rounded-xl border border-stone-200 bg-white text-stone-700 px-4 py-2.5 text-xs font-bold disabled:opacity-40 disabled:cursor-not-allowed">Unterkunft kopieren</button>
+              <button onClick={() => { setNewAccommodationName(''); setCreateAccommodationOpen(true); }} disabled={trialExpired || !accountRecord} className="rounded-xl bg-slate-900 text-white px-4 py-2.5 text-xs font-bold shadow-lg shadow-slate-900/10 disabled:opacity-40">+ Unterkunft hinzufügen</button>
+              <button onClick={() => setClonePreviewOpen(true)} disabled={trialExpired || !hotelRecord} className="rounded-xl border border-stone-200 bg-white px-4 py-2.5 text-xs font-bold text-slate-700 hover:border-amber-300 disabled:opacity-40">Kopieren</button>
             </div>
           </div>
-          <div className="rounded-xl bg-stone-50 border border-stone-100 p-3 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+            {hotelRecords.map((item, index) => {
+              const active = item.id === selectedHotelId;
+              return <article key={item.id} className={`relative overflow-hidden rounded-2xl border p-4 transition-all ${active ? 'border-amber-400 bg-white shadow-lg shadow-amber-900/5 ring-1 ring-amber-200' : 'border-stone-200 bg-white/80 hover:border-stone-300 hover:shadow-md'}`}>
+                <div className="flex items-start justify-between gap-2">
+                  <button onClick={() => selectAccommodation(item.id)} className="min-w-0 flex-1 text-left">
+                    <span className={`inline-flex items-center rounded-full px-2 py-1 text-[9px] font-black uppercase tracking-wider ${active ? 'bg-amber-100 text-amber-800' : 'bg-stone-100 text-stone-500'}`}>{active ? 'Aktiv ausgewählt' : `Unterkunft ${index + 1}`}</span>
+                    <h3 className="mt-3 truncate text-base font-black text-slate-900">{item.name || 'Unbenannte Unterkunft'}</h3>
+                    <p className="mt-1 truncate text-[10px] text-stone-400">{item.slug}</p>
+                  </button>
+                  <button type="button" aria-label={`Unterkunft ${item.name || ''} löschen`} title="Unterkunft löschen" disabled={hotelRecords.length <= 1} onClick={() => setDeleteAccommodationTarget(item)} className="rounded-lg border border-stone-200 p-2 text-stone-400 hover:border-red-200 hover:bg-red-50 hover:text-red-600 disabled:opacity-20 disabled:cursor-not-allowed"><Trash2 className="h-4 w-4"/></button>
+                </div>
+                <div className="mt-4 flex items-center justify-between gap-2 border-t border-stone-100 pt-3">
+                  <span className="text-[10px] text-stone-500">Eigene Inhalte & QR-Adresse</span>
+                  <button onClick={() => selectAccommodation(item.id)} className={`rounded-lg px-3 py-2 text-[10px] font-bold ${active ? 'bg-amber-700 text-white' : 'bg-stone-100 text-slate-700 hover:bg-stone-200'}`}>{active ? 'Geöffnet' : 'Öffnen'}</button>
+                </div>
+              </article>;
+            })}
+          </div>
+          <div className="rounded-xl border border-stone-200 bg-white/80 p-3 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
             <div className="text-xs">
               <span className="font-bold text-stone-700">Cloud-Speicher: </span>
               <span className={cloudDataStatus === 'ready' ? 'text-emerald-700' : cloudDataStatus === 'error' ? 'text-red-700' : 'text-stone-500'}>
                 {cloudDataStatus === 'ready' ? 'Verbunden' : cloudDataStatus === 'loading' || cloudDataStatus === 'saving' ? 'Wird geladen …' : cloudDataStatus === 'error' ? 'Prüfung erforderlich' : 'Nicht verbunden'}
               </span>
-              {hotelRecord?.slug && <span className="ml-3 text-stone-400">Hotel-ID: {hotelRecord.slug}</span>}
+              {hotelRecord?.slug && <span className="ml-3 text-stone-400">Aktuelle ID: {hotelRecord.slug}</span>}
             </div>
             {cloudDataError && <p role="alert" className="text-[11px] text-red-700">{cloudDataError}</p>}
           </div>
-        </div>
+        </section>
 
-        <div className={`w-full max-w-5xl mx-auto rounded-2xl border p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 ${trialDaysLeft !== null && trialDaysLeft <= 7 ? 'border-amber-300 bg-amber-50' : 'border-stone-200 bg-white'}`}>
-          <div>
-            <div className="text-[10px] font-black uppercase tracking-wider text-stone-500">Dein Paket · 30 Tage kostenlos testen</div>
-            <div className="text-sm font-bold text-slate-900 mt-1">{accountRecord?.plan_code === 'trial' ? 'Kostenlose Testphase' : (accountRecord?.plan_code || 'Paket')}</div>
-            <div className="text-[11px] text-stone-500 mt-1">{accountRecord?.trial_started_at ? `Gestartet am ${new Date(accountRecord.trial_started_at).toLocaleDateString('de-DE')}` : 'Startet mit deiner ersten Unterkunft.'}</div>
+        <section className="w-full max-w-5xl mx-auto overflow-hidden rounded-3xl border border-slate-800 bg-gradient-to-br from-slate-950 via-slate-900 to-slate-800 p-5 sm:p-7 text-white shadow-xl shadow-slate-900/10">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div>
+              <p className="text-[10px] font-black uppercase tracking-[0.22em] text-amber-300">Mitgliedschaft</p>
+              <h2 className="mt-1 text-xl font-black">Dein Gastemappe24-Paket</h2>
+              <p className="mt-1 text-xs text-slate-300">Dein Konto ist aktuell in der kostenlosen Testphase.</p>
+            </div>
+            <div className="rounded-2xl border border-white/10 bg-white/10 px-4 py-3 sm:text-right">
+              <p className="text-[9px] font-bold uppercase tracking-wider text-slate-300">Testphase</p>
+              <p className="text-2xl font-black tabular-nums">{trialDaysLeft !== null ? `${trialDaysLeft} Tage` : 'Noch nicht gestartet'}</p>
+              {accountRecord?.trial_ends_at && <p className="text-[10px] text-slate-300">Bis {new Date(accountRecord.trial_ends_at).toLocaleDateString('de-DE')}</p>}
+            </div>
           </div>
-          <div className="sm:text-right">
-            {trialDaysLeft !== null ? <div className="text-2xl font-black tabular-nums text-slate-900">{trialDaysLeft} <span className="text-xs font-bold text-stone-500">Tage übrig</span></div> : <div className="text-sm font-bold text-stone-500">Noch nicht gestartet</div>}
-            {trialDaysLeft !== null && trialDaysLeft <= 7 && trialDaysLeft > 0 && <p className="text-[11px] font-semibold text-amber-800 mt-1">Deine Testphase endet bald. Bitte wähle rechtzeitig ein Paket.</p>}
-            {trialDaysLeft !== null && trialDaysLeft > 7 && <p className="text-[11px] text-stone-500 mt-1">Endet am {new Date(accountRecord.trial_ends_at).toLocaleDateString('de-DE')}</p>}
+          <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-3">
+            {[
+              {code:'single',name:'Single',capacity:'1 Unterkunft',desc:'Für einzelne Ferienwohnungen und kleine Gastgeber',features:['Eine digitale Gästemappe','Eigener QR-Code','Basis-Statistiken']},
+              {code:'multi',name:'Multi',capacity:'Bis zu 3 Unterkünfte',desc:'Für Gastgeber mit mehreren Apartments',features:['Bis zu 3 Gästemappen','Getrennte Inhalte & QR-Codes','Separate Statistiken'],featured:true},
+              {code:'business',name:'Business',capacity:'Bis zu 10 Unterkünfte',desc:'Für kleine Hotelbetriebe und Betreiber',features:['Bis zu 10 Gästemappen','Zentrale Verwaltung','Separate Statistiken']}
+            ].map(plan => <article key={plan.code} className={`rounded-2xl border p-4 ${plan.featured ? 'border-amber-300 bg-white text-slate-900 shadow-lg' : 'border-white/15 bg-white/5 text-white'}`}>
+              <div className="flex items-center justify-between gap-2"><h3 className="font-black">{plan.name}</h3>{plan.featured && <span className="rounded-full bg-amber-100 px-2 py-1 text-[8px] font-black uppercase tracking-wider text-amber-800">Beliebt</span>}</div>
+              <p className={`mt-1 text-xs font-bold ${plan.featured ? 'text-amber-800' : 'text-amber-200'}`}>{plan.capacity}</p>
+              <p className={`mt-2 min-h-[32px] text-[10px] ${plan.featured ? 'text-stone-500' : 'text-slate-300'}`}>{plan.desc}</p>
+              <ul className={`mt-3 space-y-1.5 text-[10px] ${plan.featured ? 'text-slate-700' : 'text-slate-200'}`}>{plan.features.map(feature => <li key={feature} className="flex gap-2"><span className={plan.featured ? 'text-amber-700' : 'text-amber-300'}>✓</span>{feature}</li>)}</ul>
+              <button onClick={() => chooseRequestedPlan(plan.code)} className={`mt-4 w-full rounded-xl px-3 py-2.5 text-[10px] font-black transition ${requestedPlanCode === plan.code ? 'bg-amber-600 text-white' : plan.featured ? 'bg-slate-900 text-white' : 'border border-white/20 text-white hover:bg-white/10'}`}>{requestedPlanCode === plan.code ? 'Als Wunsch ausgewählt' : 'Paket vormerken'}</button>
+            </article>)}
           </div>
-        </div>
+          <p className="mt-4 text-[10px] leading-relaxed text-slate-300">Paketvorschau: Preise, endgültige Leistungen und Aktivierung werden nach der Unternehmensgründung festgelegt. Die Auswahl ist unverbindlich; es wird keine Zahlung ausgelöst und dein aktueller Zugang nicht geändert.</p>
+        </section>
         {/* REAL ANALYTICS STATUS — do not display invented figures */}
         <div className="w-full max-w-5xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
           <div className="bg-white p-5 rounded-3xl border border-stone-200 shadow-sm">
