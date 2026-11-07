@@ -417,8 +417,8 @@ const CompactPresetEditorModal = ({ isOpen, onClose, onSave, currentTheme, lang,
   const secondaryFields = selectedPreset?.schema?.filter(f => !f.primary) || [];
 
   return (
-    <div className="fixed inset-0 bg-slate-950/70 backdrop-blur-sm z-[9999] flex items-center justify-center p-3 sm:p-6 animate-fade-in">
-      <div className="bg-white w-full max-w-2xl rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh] border border-stone-200">
+    <div className="fixed inset-0 bg-slate-950/70 backdrop-blur-sm z-[9999] flex items-center justify-center p-2 sm:p-6 animate-fade-in overflow-x-hidden">
+      <div className="bg-white w-full min-w-0 max-w-2xl rounded-2xl sm:rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[calc(100dvh-1rem)] sm:max-h-[90vh] border border-stone-200">
         
         <div className="p-4 sm:p-5 border-b border-stone-100 flex items-center justify-between bg-stone-50/80">
           <div>
@@ -438,21 +438,21 @@ const CompactPresetEditorModal = ({ isOpen, onClose, onSave, currentTheme, lang,
           <div className={`h-full transition-all duration-300 ${currentTheme.bg} ${step === 1 ? 'w-1/3' : step === 2 ? 'w-2/3' : 'w-full'}`}></div>
         </div>
 
-        <div className="p-4 sm:p-6 overflow-y-auto flex-1 space-y-4">
+        <div className="min-w-0 p-3 sm:p-6 overflow-y-auto overflow-x-hidden flex-1 space-y-4 overscroll-contain">
           {step === 1 && (
-            <div className="grid grid-cols-2 gap-2.5 sm:gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3 min-w-0">
               {mainCategories.map(mainCat => {
                 const name = mainCat.name[lang] || mainCat.name.de;
                 return (
                   <button
                     key={mainCat.id}
                     onClick={() => handleSelectCategory(mainCat.id)}
-                    className={`p-3.5 rounded-2xl border text-left transition flex items-center gap-3 cursor-pointer bg-white hover:${currentTheme.border} hover:shadow-md group`}
+                    className={`min-w-0 w-full p-3.5 rounded-2xl border text-left transition flex items-center gap-3 cursor-pointer bg-white hover:${currentTheme.border} hover:shadow-md group`}
                   >
                     <div className={`p-2.5 rounded-xl ${currentTheme.bgLight} group-hover:scale-105 transition`}>
                       {renderSafeIconByName(mainCat.icon, currentTheme)}
                     </div>
-                    <span className="text-xs font-bold text-slate-800 group-hover:text-slate-950 truncate">{name}</span>
+                    <span className="min-w-0 flex-1 text-xs font-bold text-slate-800 group-hover:text-slate-950 break-words">{name}</span>
                   </button>
                 );
               })}
@@ -571,11 +571,11 @@ const CompactPresetEditorModal = ({ isOpen, onClose, onSave, currentTheme, lang,
         </div>
 
         {step === 3 && (
-          <div className="p-4 border-t border-stone-100 bg-stone-50/80 flex items-center justify-end gap-2">
-            <button onClick={onClose} className="px-4 py-2 text-xs font-bold text-stone-600 hover:text-slate-900 cursor-pointer">
+          <div className="p-3 sm:p-4 border-t border-stone-100 bg-stone-50/95 flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-end gap-2 shrink-0">
+            <button onClick={onClose} className="w-full sm:w-auto px-4 py-3 sm:py-2 text-xs font-bold text-stone-600 hover:text-slate-900 cursor-pointer">
               {t.cancel}
             </button>
-            <button onClick={handleSave} className={`px-5 py-2.5 rounded-xl text-xs font-bold text-white shadow-md ${currentTheme.bg} hover:opacity-95 cursor-pointer flex items-center gap-1.5`}>
+            <button onClick={handleSave} className={`w-full sm:w-auto justify-center px-5 py-3 sm:py-2.5 rounded-xl text-xs font-bold text-white shadow-md ${currentTheme.bg} hover:opacity-95 cursor-pointer flex items-center gap-1.5`}>
               <Check className="w-4 h-4" /> {t.saveAndClose}
             </button>
           </div>
@@ -851,7 +851,7 @@ export default function App() {
         <p className="text-[11px] text-slate-600">{getQuickCardText('wifi','description')}</p>
         <div className="text-[11px] text-slate-500 font-mono bg-stone-50 p-2 rounded-lg border">
           <div><b>{hotel.wifiSsid}</b></div>
-          <div className="flex justify-between items-center mt-1 gap-2"><span className="break-all">{hotel.wifiPass}</span>
+          <div className="flex flex-col items-start mt-2 gap-2 min-w-0"><span className="block w-full min-w-0 whitespace-normal break-all leading-relaxed">{hotel.wifiPass}</span>
             <button type="button" onClick={copyWifiPassword} aria-label="Copy Wi-Fi password" title={copiedWifi ? copyWifiLabel.copied : copyWifiLabel.copy} className={`${currentTheme.bgLight} ${currentTheme.text} px-2 py-1.5 rounded-lg cursor-pointer inline-flex items-center gap-1 shrink-0`}>{copiedWifi ? <><Check className="w-3.5 h-3.5 text-emerald-600" /><span className="text-[10px]">{copyWifiLabel.copied}</span></> : <><Copy className="w-3.5 h-3.5" /><span className="text-[10px]">{copyWifiLabel.copy}</span></>}</button>
           </div>
         </div>
@@ -879,7 +879,7 @@ export default function App() {
 
   if (appMode === 'dashboard') {
     return (
-      <div className="min-h-screen bg-[#FBF9F5] font-sans text-slate-800 p-6 md:p-10 space-y-8 relative pb-28">
+      <div className="min-h-screen w-full max-w-full overflow-x-hidden box-border bg-[#FBF9F5] font-sans text-slate-800 p-3 sm:p-6 md:p-10 space-y-6 sm:space-y-8 relative pb-28">
         
         <CompactPresetEditorModal
           isOpen={isEditorModalOpen}
@@ -892,7 +892,7 @@ export default function App() {
         />
 
         {/* DASHBOARD HEADER */}
-        <div className="max-w-5xl mx-auto flex justify-between items-center pb-6 border-b border-stone-200">
+        <div className="w-full max-w-5xl mx-auto min-w-0 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 pb-5 sm:pb-6 border-b border-stone-200">
           <div className="flex items-center gap-2">
             <span className={`${currentTheme.bg} text-white font-black px-3 py-1.5 rounded-xl text-sm`}>G</span>
             <span className="font-extrabold text-lg tracking-tight">gastemappe24 <span className={`${currentTheme.text} text-xs uppercase px-1.5 py-0.5 ${currentTheme.bgLight} rounded-md`}>PRO</span></span>
@@ -911,7 +911,7 @@ export default function App() {
         </div>
 
         {/* REAL ANALYTICS STATUS — do not display invented figures */}
-        <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="w-full max-w-5xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
           <div className="bg-white p-5 rounded-3xl border border-stone-200 shadow-sm">
             <div className="flex items-center gap-3"><div className="p-3 rounded-2xl bg-stone-100 text-stone-500"><BarChart3 className="w-6 h-6"/></div><div><span className="text-[10px] font-extrabold text-stone-400 uppercase tracking-wider">QR-Scans</span><h4 className="text-lg font-black text-slate-900">Noch nicht verfügbar</h4></div></div>
             <p className="text-[11px] text-stone-500 mt-3">Echte Scan-Zahlen erscheinen, sobald die zentrale Ereigniserfassung eingerichtet ist.</p>
