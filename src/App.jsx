@@ -860,8 +860,10 @@ export default function App() {
   };
   useEffect(() => {
     const address = (hotel.address || '').trim();
+    const fallbackLocation = (hotel.locationTitle || '').trim();
     const isExampleAddress = /Musterstraße 1|12345 Musterstadt/i.test(address);
-    if (!address || isExampleAddress) {
+    const searchTerms = [...new Set([address, fallbackLocation].filter(value => value && !/Musterstraße 1|12345 Musterstadt/i.test(value)))];
+    if ((!address || isExampleAddress) && !fallbackLocation) {
       setWeather({ status: 'missing', temperature: null, code: null, place: '' });
       return;
     }
@@ -869,10 +871,16 @@ export default function App() {
     setWeather({ status: 'loading', temperature: null, code: null, place: '' });
     const loadWeather = async () => {
       try {
-        const geoResponse = await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(address)}&count=1&language=${lang === 'tr' ? 'tr' : lang === 'de' ? 'de' : 'en'}&format=json`, { signal: controller.signal });
-        if (!geoResponse.ok) throw new Error('Geocoding request failed');
-        const geoData = await geoResponse.json();
-        const place = geoData.results?.[0];
+        let place = null;
+        for (const term of searchTerms) {
+          const geoResponse = await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(term)}&count=5&language=${lang === 'tr' ? 'tr' : lang === 'de' ? 'de' : 'en'}&format=json`, { signal: controller.signal });
+          if (!geoResponse.ok) continue;
+          const geoData = await geoResponse.json();
+          const results = geoData.results || [];
+          const normalizedTerm = term.toLocaleLowerCase();
+          place = results.find(item => normalizedTerm.includes((item.name || '').toLocaleLowerCase()) || (item.name || '').toLocaleLowerCase().includes(normalizedTerm)) || results[0] || null;
+          if (place) break;
+        }
         if (!place) throw new Error('Hotel location not found');
         const weatherResponse = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${place.latitude}&longitude=${place.longitude}&current=temperature_2m,weather_code&timezone=auto`, { signal: controller.signal });
         if (!weatherResponse.ok) throw new Error('Weather request failed');
@@ -1219,10 +1227,10 @@ export default function App() {
                 {key:'phone',label:'Telefon',type:'tel'},
                 {key:'email',label:'E-Mail',type:'email'},
                 {key:'website',label:'Website',type:'url'},
-                {key:'address',label:'Vollständige Adresse',type:'text'},
+                {key:'address',label:'Vollständige Adresse',type:'text',autocomplete:true},
                 {key:'googleReviewUrl',label:'Google-Bewertungslink',type:'url'},
                 {key:'locationTitle',label:'Region / Standort',type:'text'}
-              ].map(field=><div key={field.key}><label className="block text-[10px] font-bold text-stone-500 uppercase mb-1">{field.label}</label><input type={field.type} value={hotel[field.key]||''} onChange={e=>setHotel(prev=>({...prev,[field.key]:e.target.value}))} className="w-full p-3 text-sm border border-stone-200 rounded-xl bg-stone-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-200"/></div>)}
+              ].map(field=><div key={field.key} className="relative"><label className="block text-[10px] font-bold text-stone-500 uppercase mb-1">{field.label}</label><input type={field.type} autoComplete={field.autocomplete ? 'street-address' : undefined} value={hotel[field.key]||''} onChange={e=>setHotel(prev=>({...prev,[field.key]:e.target.value}))} className="w-full p-3 text-sm border border-stone-200 rounded-xl bg-stone-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-200"/>{field.autocomplete && <p className="mt-1 text-[10px] text-stone-400">Tipp: Adresse möglichst mit Straße, PLZ und Ort eingeben. Die Wetterfunktion nutzt bei Bedarf den Region-/Standort-Eintrag.</p>}</div>)}
             </div>
             <p className="text-[11px] text-stone-500">Diese Angaben werden in der Gästemappe verwendet. Änderungen bitte oben rechts speichern.</p>
             <div className="border-t border-stone-100 pt-4 space-y-4">
