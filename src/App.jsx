@@ -709,6 +709,8 @@ export default function App() {
   const [authSession, setAuthSession] = useState(null);
   const [authLoading, setAuthLoading] = useState(true);
   const [hotelRecord, setHotelRecord] = useState(null);
+  const [analyticsRows, setAnalyticsRows] = useState([]);
+  const [analyticsLoading, setAnalyticsLoading] = useState(false);
   const [cloudDataStatus, setCloudDataStatus] = useState('idle');
   const [cloudDataError, setCloudDataError] = useState('');
 
@@ -791,6 +793,33 @@ export default function App() {
     loadOrCreateHotel();
     return () => { active = false; };
   }, [authSession?.user?.id, guestSlug]);
+
+  useEffect(() => {
+    const hotelId = hotelRecord?.id;
+    if (!supabase || !hotelId || guestSlug || !authSession?.user?.id) {
+      setAnalyticsRows([]);
+      return undefined;
+    }
+    let active = true;
+    const loadAnalytics = async () => {
+      setAnalyticsLoading(true);
+      const { data, error } = await supabase
+        .from('gm24_analytics_daily')
+        .select('event_date, page_key, views')
+        .order('event_date', { ascending: false })
+        .limit(90);
+      if (!active) return;
+      if (error) {
+        console.warn('Analytics could not be loaded:', error);
+        setAnalyticsRows([]);
+      } else {
+        setAnalyticsRows((data || []).filter(row => row && row.page_key));
+      }
+      setAnalyticsLoading(false);
+    };
+    loadAnalytics();
+    return () => { active = false; };
+  }, [hotelRecord?.id, authSession?.user?.id, guestSlug]);
 
   const [isEditorModalOpen, setIsEditorModalOpen] = useState(false);
   const [editingCategory, setEditingCategory] = useState(null);
@@ -990,6 +1019,8 @@ export default function App() {
         else setHotel(previous => ({ ...previous, name: data.name || previous.name }));
         if (Array.isArray(content.categories)) setCategories(content.categories);
         setGuestPageStatus('ready');
+        // Count every successfully opened guest guide view; no visitor identifiers are stored.
+        supabase.functions.invoke('track-view', { body: { slug: guestSlug, page_key: 'guest_home' } }).catch(error => console.warn('Analytics tracking unavailable:', error));
       } catch (error) {
         console.error('Public guest page could not be loaded:', error);
         if (active) setGuestPageStatus('error');
@@ -1230,8 +1261,8 @@ export default function App() {
         {/* REAL ANALYTICS STATUS — do not display invented figures */}
         <div className="w-full max-w-5xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
           <div className="bg-white p-5 rounded-3xl border border-stone-200 shadow-sm">
-            <div className="flex items-center gap-3"><div className="p-3 rounded-2xl bg-stone-100 text-stone-500"><BarChart3 className="w-6 h-6"/></div><div><span className="text-[10px] font-extrabold text-stone-400 uppercase tracking-wider">{(dashboardCopy[lang] || dashboardCopy.de).qrScans}</span><h4 className="text-lg font-black text-slate-900">{(dashboardCopy[lang] || dashboardCopy.de).unavailable}</h4></div></div>
-            <p className="text-[11px] text-stone-500 mt-3">{(dashboardCopy[lang] || dashboardCopy.de).scansNote}</p>
+            <div className="flex items-center gap-3"><div className="p-3 rounded-2xl bg-stone-100 text-stone-500"><BarChart3 className="w-6 h-6"/></div><div><span className="text-[10px] font-extrabold text-stone-400 uppercase tracking-wider">Seitenaufrufe</span><h4 className="text-lg font-black text-slate-900">{analyticsLoading ? '…' : analyticsRows.reduce((sum, row) => sum + Number(row.views || 0), 0)}</h4></div></div>
+            <p className="text-[11px] text-stone-500 mt-3">Jeder erfolgreiche Aufruf der Gästemappe zählt einzeln.</p>
           </div>
           <div className="bg-white p-5 rounded-3xl border border-stone-200 shadow-sm">
             <div className="flex items-center gap-3"><div className="p-3 rounded-2xl bg-stone-100 text-stone-500"><Users className="w-6 h-6"/></div><div><span className="text-[10px] font-extrabold text-stone-400 uppercase tracking-wider">{(dashboardCopy[lang] || dashboardCopy.de).configuredContent}</span><h4 className="text-lg font-black text-slate-900">{categories.length || '—'}</h4></div></div>
@@ -1244,7 +1275,14 @@ export default function App() {
         </div>
         <div className="max-w-5xl mx-auto bg-white rounded-3xl p-6 border border-stone-200 shadow-sm space-y-3">
           <div className="flex items-center gap-3"><div className="p-3 rounded-2xl bg-stone-100 text-stone-500"><TrendingUp className="w-6 h-6"/></div><div><h3 className="font-black text-xs text-slate-800 uppercase tracking-wider">{(dashboardCopy[lang] || dashboardCopy.de).analyticsTitle}</h3><p className="text-xs text-stone-500">{(dashboardCopy[lang] || dashboardCopy.de).analyticsIntro}</p></div></div>
-          <div className="rounded-2xl border border-dashed border-stone-300 bg-stone-50 p-5 text-sm text-stone-600">{(dashboardCopy[lang] || dashboardCopy.de).noAnalytics}</div>
+          <div className="rounded-2xl border border-stone-200 bg-stone-50 p-5 space-y-3">
+            <div className="flex items-center justify-between gap-3"><span className="text-sm font-bold text-slate-800">Gesamtaufrufe</span><span className="text-2xl font-black text-slate-900 tabular-nums">{analyticsLoading ? '…' : analyticsRows.reduce((sum, row) => sum + Number(row.views || 0), 0)}</span></div>
+            <div className="space-y-2">
+              {analyticsRows.slice(0, 7).map(row => <div key={row.event_date + row.page_key} className="flex items-center justify-between text-xs text-stone-600"><span>{new Date(row.event_date + 'T00:00:00').toLocaleDateString(lang === 'tr' ? 'tr-TR' : lang === 'de' ? 'de-DE' : 'en-GB')} · {row.page_key === 'guest_home' ? 'Gästemappe' : row.page_key}</span><strong className="text-slate-900 tabular-nums">{Number(row.views || 0)}</strong></div>)}
+              {!analyticsLoading && analyticsRows.length === 0 && <p className="text-xs text-stone-500">Noch keine Aufrufe erfasst. Öffne die Gästemappe einmal über den QR-Link.</p>}
+            </div>
+            <p className="text-[10px] text-stone-400">Anonyme Summenwerte. Jeder Seitenaufruf wird gezählt; keine IP-Adressen oder persönlichen Besucherprofile.</p>
+          </div>
         </div>
 
         {/* DASHBOARD CONTENT SECTIONS */}
