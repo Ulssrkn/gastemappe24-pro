@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { QRCodeSVG } from 'qrcode.react';
 import { hotelPresets, additionalPresets } from './hotelPresets.js';
+import dashboardWorkspaceCopy from './dashboardWorkspaceCopy.js';
 import AuthGate from './components/AuthGate.jsx';
 import { supabase, isSupabaseConfigured } from './lib/supabaseClient.js';
 import { 
@@ -620,7 +621,7 @@ const GuestCategoryDisplay = ({ category, currentTheme, lang, t }) => {
   return (
     <div className="space-y-4">
       {presetObj && presetObj.schema && presetObj.schema.length > 0 && (
-        <div className={`bg-white p-5 rounded-3xl shadow-lg border ${currentTheme.border} space-y-4`}>
+        <div className="bg-white p-5 rounded-3xl shadow-sm border border-slate-200 space-y-5">
           {(Array.isArray(presetObj.schema) ? presetObj.schema : []).map(field => {
             const rawVal = fieldValues[field.key] !== undefined ? fieldValues[field.key] : field.default;
             const fieldLabel = (field.label && (field.label[lang] || field.label.de)) || field.key;
@@ -628,8 +629,8 @@ const GuestCategoryDisplay = ({ category, currentTheme, lang, t }) => {
             if (rawVal === undefined || rawVal === null || rawVal === '' || (Array.isArray(rawVal) && rawVal.length === 0)) return null;
 
             return (
-              <div key={field.key} className="border-b border-stone-100 last:border-0 pb-3.5 last:pb-0 flex flex-col gap-1.5">
-                <span className={`text-[10px] font-black uppercase tracking-wider ${currentTheme.text} opacity-90`}>{fieldLabel}</span>
+              <div key={field.key} className="border-b border-slate-100 last:border-0 pb-4 last:pb-0 flex flex-col gap-2">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500">{fieldLabel}</span>
                 
                 {field.type === 'boolean' ? (
                   <div className="flex items-center gap-1.5 text-xs font-bold pt-0.5">
@@ -644,8 +645,8 @@ const GuestCategoryDisplay = ({ category, currentTheme, lang, t }) => {
                     )}
                   </div>
                 ) : field.type === 'multiselect' && Array.isArray(rawVal) ? (
-                  <div className="flex flex-wrap gap-1.5 pt-1">
-                    {rawVal.filter(item=>item!==OTHER_CUSTOM).map(item=>{const option=(field.options||[]).find(candidate=>optionId(candidate)===item);return <span key={item} className={currentTheme.bgLight+' '+currentTheme.text+' px-3 py-1.5 rounded-xl text-xs font-bold border border-stone-200/60 shadow-xs'}>{option?optionLabel(option,lang):item}</span>;})}
+                  <div className="grid grid-cols-1 gap-2 pt-1 sm:grid-cols-2">
+                    {rawVal.filter(item=>item!==OTHER_CUSTOM).map(item=>{const option=(field.options||[]).find(candidate=>optionId(candidate)===item);return <div key={item} className="flex items-center gap-2.5 rounded-xl border border-slate-100 bg-slate-50/70 px-3 py-2.5 text-xs font-semibold text-slate-700"><span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-white text-slate-500 ring-1 ring-slate-200"><Check className="h-3 w-3"/></span>{option?optionLabel(option,lang):item}</div>;})}
                     {rawVal.includes(OTHER_CUSTOM)&&fieldValues[field.key+'__customText']&&<p className="w-full mt-2 text-xs text-slate-700 whitespace-pre-line">{fieldValues[field.key+'__customText']}</p>}
                   </div> ) : field.type === 'select' ? (<div className="text-xs font-extrabold text-slate-900 bg-stone-50 px-4 py-3 rounded-2xl border border-stone-200/70">{rawVal===OTHER_CUSTOM?(customTextLabels[lang]||customTextLabels.de):(()=>{const option=(field.options||[]).find(candidate=>optionId(candidate)===rawVal);return option?optionLabel(option,lang):String(rawVal);})()}{rawVal===OTHER_CUSTOM&&fieldValues[field.key+'__customText']&&<p className="mt-2 whitespace-pre-line font-medium">{fieldValues[field.key+'__customText']}</p>}</div>) : (<div className="text-xs font-extrabold text-slate-900 bg-stone-50 px-4 py-3 rounded-2xl border border-stone-200/70">{String(rawVal)}</div>
                 )}
@@ -656,8 +657,8 @@ const GuestCategoryDisplay = ({ category, currentTheme, lang, t }) => {
       )}
 
       {category.customText && (
-        <div className="p-5 rounded-3xl border border-amber-300/80 bg-amber-50/90 shadow-sm text-slate-800 text-xs leading-relaxed space-y-1.5">
-          <span className="text-[10px] font-black uppercase text-amber-900 tracking-wider block">Hinweis / Notice</span>
+        <div className="p-5 rounded-2xl border border-slate-200 bg-slate-50 text-slate-700 text-sm leading-relaxed space-y-1.5">
+          <span className="text-[10px] font-bold uppercase text-slate-500 tracking-wider block">{t.moreInfo}</span>
           <p className="whitespace-pre-line font-medium">{category.customText}</p>
         </div>
       )}
@@ -701,6 +702,7 @@ const AddressAutocomplete = ({ value, onChange, className }) => {
 export default function App() {
   const [lang, setLang] = useState('de');
   const t = translations[lang] || translations.de;
+  const dw = dashboardWorkspaceCopy[lang] || dashboardWorkspaceCopy.de;
   const quickAccessLabels = {
     de: { title: 'Schnellzugriff anzeigen', wifi: 'WLAN-Karte', parking: 'Parkplatz-Karte', breakfast: 'Frühstücks-Karte', checkin: 'Check-in / Check-out-Karte' },
     en: { title: 'Show quick access cards', wifi: 'Wi-Fi card', parking: 'Parking card', breakfast: 'Breakfast card', checkin: 'Check-in / Check-out card' },
@@ -877,6 +879,37 @@ export default function App() {
   const [activeTab, setActiveTab] = useState('home');
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [showWelcomeScreen, setShowWelcomeScreen] = useState(true);
+  const guestNavigationRef = useRef({ activeTab: 'home', selectedCategory: null });
+  useEffect(() => { guestNavigationRef.current = { activeTab, selectedCategory }; }, [activeTab, selectedCategory]);
+  const navigateGuest = (tab, category = null) => {
+    if (typeof window !== 'undefined' && !window.location.hash.startsWith('#dashboard-') && !['#accommodations', '#analytics', '#editor', '#membership'].includes(window.location.hash)) {
+      window.history.pushState({ gm24Guest: true, activeTab: tab, selectedCategory: category }, '');
+    }
+    setActiveTab(tab);
+    setSelectedCategory(category);
+  };
+  useEffect(() => {
+    if (typeof window === 'undefined') return undefined;
+    const isDashboard = () => Boolean(document.getElementById('dashboard-overview')) || window.location.hash.startsWith('#dashboard-') || ['#accommodations', '#analytics', '#editor', '#membership'].includes(window.location.hash);
+    if (!isDashboard()) window.history.replaceState({ ...(window.history.state || {}), gm24Guest: true, activeTab: 'home', selectedCategory: null }, '');
+    const handlePopState = event => {
+      if (isDashboard()) {
+        if (!window.location.hash) window.location.hash = 'dashboard-overview';
+        return;
+      }
+      if (event.state?.gm24Guest) {
+        setActiveTab(event.state.activeTab === 'services' ? 'services' : 'home');
+        setSelectedCategory(event.state.selectedCategory || null);
+      } else {
+        const current = guestNavigationRef.current;
+        if (current.selectedCategory) setSelectedCategory(null);
+        else if (current.activeTab === 'services') setActiveTab('home');
+        else window.history.pushState({ gm24Guest: true, activeTab: 'home', selectedCategory: null }, '');
+      }
+    };
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
 
   const [currentSlide] = useState(0);
   const [copiedWifi, setCopiedWifi] = useState(false);
@@ -1339,6 +1372,9 @@ export default function App() {
     return totals;
   }, {});
   const mostVisitedPage = Object.entries(pageTotals).sort((a, b) => b[1] - a[1])[0] || null;
+  const analyticsToday = new Date();
+  const analyticsSevenDaysAgo = new Date(analyticsToday.getTime() - 6 * 86400000).toISOString().slice(0, 10);
+  const weeklyInteractionCount = analyticsRows.filter(row => row.event_date >= analyticsSevenDaysAgo).reduce((sum, row) => sum + Number(row.views || 0), 0);
   const getAnalyticsPageLabel = (pageKey) => {
     if (pageKey === 'guest_home') return t.navHome;
     if (pageKey === 'guest_services') return t.navGaestemappe;
@@ -1533,14 +1569,14 @@ export default function App() {
           </a>
           <div className="mt-10 px-3 text-[10px] font-extrabold uppercase tracking-[.18em] text-slate-400">Arbeitsbereich</div>
           <nav className="mt-3 space-y-1.5">
-            {[[LayoutDashboard,'Übersicht','#dashboard-overview'],[Building2,'Unterkünfte','#accommodations'],[BarChart3,'Analytik','#analytics'],[Settings,'Gästemappe bearbeiten','#editor']].map(([Icon,label,href])=><a key={label} href={href} className="flex items-center gap-3 rounded-xl px-3 py-3 text-[13px] font-semibold text-slate-600 transition hover:bg-slate-100 hover:text-slate-900"><Icon className="h-[17px] w-[17px]"/>{label}</a>)}
+            {[[LayoutDashboard,dw.nav.overview,'#dashboard-overview'],[Building2,dw.nav.accommodations,'#accommodations'],[BarChart3,dw.nav.analytics,'#analytics'],[Settings,dw.nav.editor,'#editor']].map(([Icon,label,href])=><a key={label} href={href} className="flex items-center gap-3 rounded-xl px-3 py-3 text-[13px] font-semibold text-slate-600 transition hover:bg-slate-100 hover:text-slate-900"><Icon className="h-[17px] w-[17px]"/>{label}</a>)}
           </nav>
           <div className="mt-8 px-3 text-[10px] font-extrabold uppercase tracking-[.18em] text-slate-400">Konto</div>
-          <a href="#membership" className="mt-3 flex items-center gap-3 rounded-xl px-3 py-3 text-[13px] font-semibold text-slate-600 transition hover:bg-slate-100 hover:text-slate-900"><CreditCard className="h-[17px] w-[17px]"/>Paket & Testphase</a>
-          <div className="mt-auto rounded-2xl border border-slate-200 bg-slate-50 p-4"><div className="flex items-center gap-2 text-xs font-bold text-slate-800"><span className="h-2 w-2 rounded-full bg-emerald-500"/>Dein Workspace</div><p className="mt-2 text-[11px] leading-relaxed text-slate-500">Deine Gästemappe und Unterkünfte an einem Ort.</p></div>
+          <a href="#membership" className="mt-3 flex items-center gap-3 rounded-xl px-3 py-3 text-[13px] font-semibold text-slate-600 transition hover:bg-slate-100 hover:text-slate-900"><CreditCard className="h-[17px] w-[17px]"/>{dw.nav.package}</a>
+          <div className="mt-auto rounded-2xl border border-slate-200 bg-slate-50 p-4"><div className="flex items-center gap-2 text-xs font-bold text-slate-800"><span className="h-2 w-2 rounded-full bg-emerald-500"/>{dw.hero.status}</div><p className="mt-2 text-[11px] leading-relaxed text-slate-500">{dw.hero.description}</p></div>
         </aside>
         <nav className="fixed inset-x-3 bottom-3 z-40 grid grid-cols-4 rounded-2xl border border-slate-200 bg-white/95 p-1.5 shadow-xl backdrop-blur md:hidden">
-          {[[LayoutDashboard,'Start','#dashboard-overview'],[Building2,'Unterkünfte','#accommodations'],[BarChart3,'Analytik','#analytics'],[Settings,'Bearbeiten','#editor']].map(([Icon,label,href])=><a key={label} href={href} className="flex flex-col items-center gap-1 rounded-xl py-2 text-[9px] font-semibold text-slate-500 hover:bg-slate-100 hover:text-slate-900"><Icon className="h-4 w-4"/>{label}</a>)}
+          {[[LayoutDashboard,dw.nav.start,'#dashboard-overview'],[Building2,dw.nav.accommodations,'#accommodations'],[BarChart3,dw.nav.analytics,'#analytics'],[Settings,dw.nav.edit,'#editor']].map(([Icon,label,href])=><a key={label} href={href} className="flex flex-col items-center gap-1 rounded-xl py-2 text-[9px] font-semibold text-slate-500 hover:bg-slate-100 hover:text-slate-900"><Icon className="h-4 w-4"/>{label}</a>)}
         </nav>
         
         {createAccommodationOpen && (
@@ -1629,14 +1665,14 @@ export default function App() {
         <section id="dashboard-overview" className="w-full max-w-6xl mx-auto overflow-hidden rounded-[28px] border border-slate-800 bg-gradient-to-br from-[#142536] via-[#1c3447] to-[#294456] px-6 py-7 text-white shadow-xl shadow-slate-900/10 sm:px-9 sm:py-9">
           <div className="flex flex-col justify-between gap-7 lg:flex-row lg:items-end">
             <div className="max-w-2xl">
-              <div className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-1.5 text-[10px] font-bold tracking-wide text-slate-200"><Sparkles className="h-3.5 w-3.5 text-amber-300"/>DEIN GASTGEBER-WORKSPACE</div>
-              <h1 className="mt-5 text-3xl font-semibold tracking-tight text-white sm:text-4xl">Alles für deine Gäste. An einem Ort.</h1>
-              <p className="mt-3 max-w-xl text-sm leading-6 text-slate-300">Verwalte deine digitalen Gästemappen, behalte die Nutzung im Blick und passe dein Gästeerlebnis ganz einfach an.</p>
+              <div className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-1.5 text-[10px] font-bold tracking-wide text-slate-200"><Sparkles className="h-3.5 w-3.5 text-amber-300"/>{dw.hero.badge}</div>
+              <h1 className="mt-5 text-3xl font-semibold tracking-tight text-white sm:text-4xl">{dw.hero.title}</h1>
+              <p className="mt-3 max-w-xl text-sm leading-6 text-slate-300">{dw.hero.description}</p>
             </div>
             <div className="min-w-[220px] rounded-2xl border border-white/15 bg-white/[0.08] p-4 backdrop-blur-sm">
-              <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-[.14em] text-slate-300"><span className={`h-2 w-2 rounded-full ${cloudDataStatus === 'ready' ? 'bg-emerald-400' : cloudDataStatus === 'error' ? 'bg-rose-400' : 'bg-amber-300'}`}/>{cloudDataStatus === 'ready' ? 'Cloud verbunden' : cloudDataStatus === 'error' ? 'Cloud-Prüfung nötig' : 'Workspace-Status'}</div>
+              <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-[.14em] text-slate-300"><span className={`h-2 w-2 rounded-full ${cloudDataStatus === 'ready' ? 'bg-emerald-400' : cloudDataStatus === 'error' ? 'bg-rose-400' : 'bg-amber-300'}`}/>{cloudDataStatus === 'ready' ? dw.hero.connected : cloudDataStatus === 'error' ? dw.hero.error : dw.hero.status}</div>
               <p className="mt-2 truncate text-base font-bold text-white">{hotelRecord?.name || hotel.name || 'Deine Unterkunft'}</p>
-              <p className="mt-1 text-xs text-slate-300">{hotelRecords.length} {hotelRecords.length === 1 ? 'Unterkunft' : 'Unterkünfte'} im Workspace</p>
+              <p className="mt-1 text-xs text-slate-300">{hotelRecords.length} {hotelRecords.length === 1 ? dw.hero.one : dw.hero.many}</p>
             </div>
           </div>
         </section>
@@ -1644,18 +1680,18 @@ export default function App() {
         <section id="setup-guide" className="w-full max-w-6xl mx-auto rounded-3xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div>
-              <p className="text-[10px] font-extrabold uppercase tracking-[.17em] text-amber-700">Einrichtung</p>
-              <h2 className="mt-1 text-lg font-bold tracking-tight text-slate-900">{setupProgress === 100 ? 'Deine Gästemappe ist startklar' : 'Bring deine Gästemappe auf 100 %'}</h2>
-              <p className="mt-1 text-xs text-slate-500">Ergänze die wichtigsten Angaben und Inhalte für deine Gäste.</p>
+              <p className="text-[10px] font-extrabold uppercase tracking-[.17em] text-amber-700">{dw.setup.label}</p>
+              <h2 className="mt-1 text-lg font-bold tracking-tight text-slate-900">{setupProgress === 100 ? dw.setup.ready : dw.setup.title}</h2>
+              <p className="mt-1 text-xs text-slate-500">{dw.setup.description}</p>
             </div>
             <div className="flex items-center gap-3 sm:min-w-[230px]">
-              <div className="min-w-0 flex-1"><div className="flex justify-between text-[10px] font-semibold text-slate-500"><span>{setupCompletedCount} von {setupSteps.length} Schritten</span><span className="font-extrabold text-slate-900">{setupProgress} %</span></div><div className="mt-2 h-2 overflow-hidden rounded-full bg-slate-100"><div className="h-full rounded-full bg-amber-500 transition-all duration-500" style={{width:`${setupProgress}%`}}/></div></div>
+              <div className="min-w-0 flex-1"><div className="flex justify-between text-[10px] font-semibold text-slate-500"><span>{setupCompletedCount} {dw.setup.of} {setupSteps.length} {dw.setup.steps}</span><span className="font-extrabold text-slate-900">{setupProgress} %</span></div><div className="mt-2 h-2 overflow-hidden rounded-full bg-slate-100"><div className="h-full rounded-full bg-amber-500 transition-all duration-500" style={{width:`${setupProgress}%`}}/></div></div>
             </div>
           </div>
           <div className="mt-5 grid grid-cols-1 gap-2 sm:grid-cols-2 xl:grid-cols-3">
             {setupSteps.map((step,index)=><a key={step.label} href="#editor" className="flex items-center gap-3 rounded-xl border border-slate-100 bg-slate-50/70 px-3 py-2.5 transition hover:border-slate-200 hover:bg-white">
               {step.done ? <CheckCircle2 className="h-4 w-4 shrink-0 text-emerald-600"/> : <span className="flex h-4 w-4 shrink-0 items-center justify-center rounded-full border border-slate-300 text-[9px] font-bold text-slate-400">{index+1}</span>}
-              <span className={`text-[11px] font-semibold ${step.done ? 'text-slate-500' : 'text-slate-800'}`}>{step.label}</span>
+              <span className={`text-[11px] font-semibold ${step.done ? 'text-slate-500' : 'text-slate-800'}`}>{dw.setup.items[index]}</span>
               {!step.done && <ArrowRight className="ml-auto h-3.5 w-3.5 text-slate-400"/>}
             </a>)}
           </div>
@@ -1664,9 +1700,9 @@ export default function App() {
         <section id="accommodations" className="w-full max-w-6xl mx-auto space-y-4">
           <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3">
             <div>
-              <p className="text-[10px] font-black uppercase tracking-[0.22em] text-amber-700">Workspace</p>
-              <h2 className="text-xl sm:text-2xl font-black tracking-tight text-slate-900">Deine Unterkünfte</h2>
-              <p className="text-xs text-stone-500 mt-1">Wähle eine Unterkunft aus, um ihre Gästemappe zu bearbeiten.</p>
+              <p className="text-[10px] font-black uppercase tracking-[0.22em] text-amber-700">{dw.accommodations.workspace}</p>
+              <h2 className="text-xl sm:text-2xl font-black tracking-tight text-slate-900">{dw.accommodations.title}</h2>
+              <p className="text-xs text-stone-500 mt-1">{dw.accommodations.description}</p>
             </div>
             <div className="flex flex-wrap gap-2">
               <button onClick={() => { setNewAccommodationName(''); setCreateAccommodationOpen(true); }} disabled={trialExpired || !accountRecord || accommodationLimitReached} className="rounded-xl bg-slate-900 text-white px-4 py-2.5 text-xs font-bold shadow-lg shadow-slate-900/10 disabled:opacity-40">+ Unterkunft hinzufügen</button>
@@ -1709,8 +1745,8 @@ export default function App() {
             <div className="flex items-start gap-3">
               <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-amber-50 text-amber-700"><CreditCard className="h-5 w-5"/></div>
               <div>
-                <p className="text-[10px] font-extrabold uppercase tracking-[.17em] text-slate-400">Konto & Paket</p>
-                <h2 className="mt-1 text-lg font-bold tracking-tight text-slate-900">{accountRecord?.subscription_status === 'trial' ? 'Kostenlose Testphase' : `${accountRecord?.plan_code || 'Gastemappe24'} Paket`}</h2>
+                <p className="text-[10px] font-extrabold uppercase tracking-[.17em] text-slate-400">{dw.package.label}</p>
+                <h2 className="mt-1 text-lg font-bold tracking-tight text-slate-900">{accountRecord?.subscription_status === 'trial' ? dw.package.trial : `${accountRecord?.plan_code || 'Gastemappe24'} ${dw.package.packageSuffix}`}</h2>
                 <p className="mt-1 text-xs text-slate-500">{hotelRecords.length} von {accommodationLimit} Unterkünften genutzt{accountRecord?.trial_ends_at ? ` · Testphase endet ${new Date(accountRecord.trial_ends_at).toLocaleDateString('de-DE')}` : accountRecord?.paid_until ? ` · Aktiv bis ${new Date(accountRecord.paid_until).toLocaleDateString('de-DE')}` : ''}</p>
               </div>
             </div>
@@ -1740,31 +1776,31 @@ export default function App() {
         {/* REAL ANALYTICS STATUS — do not display invented figures */}
         <div id="analytics" className="w-full max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-3 sm:gap-4">
           <div className="rounded-2xl border border-slate-200/80 bg-white p-5 shadow-sm">
-            <div className="flex items-center gap-3"><div className="p-3 rounded-2xl bg-stone-100 text-stone-500"><BarChart3 className="w-6 h-6"/></div><div><span className="text-[10px] font-extrabold text-stone-400 uppercase tracking-wider">Seitenaufrufe</span><h4 className="text-lg font-black text-slate-900">{analyticsLoading ? '…' : analyticsRows.reduce((sum, row) => sum + Number(row.views || 0), 0)}</h4></div></div>
-            <p className="text-[11px] text-stone-500 mt-3">Jeder erfolgreiche Aufruf der Gästemappe zählt einzeln.</p>
+            <div className="flex items-center gap-3"><div className="p-3 rounded-2xl bg-stone-100 text-stone-500"><BarChart3 className="w-6 h-6"/></div><div><span className="text-[10px] font-extrabold text-stone-400 uppercase tracking-wider">{dw.stats.views}</span><h4 className="text-lg font-black text-slate-900">{analyticsLoading ? '…' : analyticsRows.reduce((sum, row) => sum + Number(row.views || 0), 0)}</h4></div></div>
+            <p className="text-[11px] text-stone-500 mt-3">{dw.stats.viewsNote}</p>
           </div>
           <div className="rounded-2xl border border-slate-200/80 bg-white p-5 shadow-sm">
-            <div className="flex items-center gap-3"><div className="rounded-xl bg-amber-50 p-3 text-amber-700"><TrendingUp className="h-5 w-5"/></div><div className="min-w-0"><span className="text-[10px] font-extrabold uppercase tracking-wider text-slate-400">Meistbesuchte Seite</span><h4 className="truncate text-lg font-black text-slate-900">{analyticsLoading ? '…' : mostVisitedPageName}</h4></div></div>
-            <p className="mt-3 text-[11px] text-slate-500">{mostVisitedPage ? `${mostVisitedPage[1]} Aufrufe in den erfassten Daten` : analyticsLoading ? 'Besuchsdaten werden geladen.' : 'Sobald Gäste deine Gästemappe öffnen, erscheint hier die beliebteste Seite.'}</p>
+            <div className="flex items-center gap-3"><div className="rounded-xl bg-slate-100 p-3 text-slate-600"><TrendingUp className="h-5 w-5"/></div><div className="min-w-0"><span className="text-[10px] font-extrabold uppercase tracking-wider text-slate-400">{dw.stats.topPage}</span><h4 className="truncate text-lg font-black text-slate-900">{analyticsLoading ? '…' : mostVisitedPageName}</h4></div></div>
+            <p className="mt-3 text-[11px] text-slate-500">{mostVisitedPage ? `${mostVisitedPage[1]} ${dw.stats.recorded}` : analyticsLoading ? dw.stats.loading : dw.stats.topEmpty}</p>
           </div>
           <div className="rounded-2xl border border-slate-200/80 bg-white p-5 shadow-sm">
-            <div className="flex items-center gap-3"><div className="p-3 rounded-2xl bg-stone-100 text-stone-500"><Activity className="w-6 h-6"/></div><div><span className="text-[10px] font-extrabold text-stone-400 uppercase tracking-wider">{(dashboardCopy[lang] || dashboardCopy.de).dataStatus}</span><h4 className="text-lg font-black text-slate-900">{analyticsLoading ? 'Wird geladen …' : 'Cloud-Statistik aktiv'}</h4></div></div>
-            <p className="text-[11px] text-stone-500 mt-3">Besucheraufrufe werden anonym und zentral gezählt.</p>
+            <div className="flex items-center gap-3"><div className="p-3 rounded-2xl bg-stone-100 text-stone-500"><Activity className="w-6 h-6"/></div><div><span className="text-[10px] font-extrabold text-stone-400 uppercase tracking-wider">{dw.stats.weekly}</span><h4 className="text-lg font-black text-slate-900">{analyticsLoading ? '…' : weeklyInteractionCount}</h4></div></div>
+            <p className="text-[11px] text-stone-500 mt-3">{dw.stats.weeklyNote}</p>
           </div>
           <div className="rounded-2xl border border-slate-200/80 bg-white p-5 shadow-sm">
-            <div className="flex items-center gap-3"><div className="rounded-xl bg-amber-50 p-3 text-amber-700"><Building2 className="h-5 w-5"/></div><div><span className="text-[10px] font-extrabold uppercase tracking-wider text-slate-400">Unterkünfte</span><h4 className="text-lg font-black text-slate-900">{hotelRecords.length} <span className="text-xs font-semibold text-slate-400">/ {accommodationLimit}</span></h4></div></div>
-            <p className="mt-3 text-[11px] text-slate-500">Aktuell im Workspace eingerichtet.</p>
+            <div className="flex items-center gap-3"><div className="rounded-xl bg-slate-100 p-3 text-slate-600"><Activity className="h-5 w-5"/></div><div><span className="text-[10px] font-extrabold uppercase tracking-wider text-slate-400">{dw.stats.cloudTitle}</span><h4 className="text-lg font-black text-slate-900">{analyticsLoading ? '…' : dw.stats.cloudTitle}</h4></div></div>
+            <p className="mt-3 text-[11px] text-slate-500">{dw.stats.cloudNote}</p>
           </div>
         </div>
         <div className="max-w-6xl mx-auto bg-white rounded-3xl p-6 border border-stone-200 shadow-sm space-y-3">
           <div className="flex items-center gap-3"><div className="p-3 rounded-2xl bg-stone-100 text-stone-500"><TrendingUp className="w-6 h-6"/></div><div><h3 className="font-black text-xs text-slate-800 uppercase tracking-wider">{(dashboardCopy[lang] || dashboardCopy.de).analyticsTitle}</h3><p className="text-xs text-stone-500">{(dashboardCopy[lang] || dashboardCopy.de).analyticsIntro}</p></div></div>
           <div className="rounded-2xl border border-stone-200 bg-stone-50 p-5 space-y-3">
-            <div className="flex items-center justify-between gap-3"><span className="text-sm font-bold text-slate-800">Gesamtaufrufe</span><span className="text-2xl font-black text-slate-900 tabular-nums">{analyticsLoading ? '…' : analyticsRows.reduce((sum, row) => sum + Number(row.views || 0), 0)}</span></div>
+            <div className="flex items-center justify-between gap-3"><span className="text-sm font-bold text-slate-800">{dw.stats.total}</span><span className="text-2xl font-black text-slate-900 tabular-nums">{analyticsLoading ? '…' : analyticsRows.reduce((sum, row) => sum + Number(row.views || 0), 0)}</span></div>
             <div className="space-y-2">
               {analyticsRows.slice(0, 7).map(row => <div key={row.event_date + row.page_key} className="flex items-center justify-between text-xs text-stone-600"><span>{new Date(row.event_date + 'T00:00:00').toLocaleDateString(lang === 'tr' ? 'tr-TR' : lang === 'de' ? 'de-DE' : 'en-GB')} · {getAnalyticsPageLabel(row.page_key)}</span><strong className="text-slate-900 tabular-nums">{Number(row.views || 0)}</strong></div>)}
-              {!analyticsLoading && analyticsRows.length === 0 && <p className="text-xs text-stone-500">Noch keine Aufrufe erfasst. Öffne die Gästemappe einmal über den QR-Link.</p>}
+              {!analyticsLoading && analyticsRows.length === 0 && <p className="text-xs text-stone-500">{dw.stats.noData}</p>}
             </div>
-            <p className="text-[10px] text-stone-400">Anonyme Summenwerte. Jeder Seitenaufruf wird gezählt; keine IP-Adressen oder persönlichen Besucherprofile.</p>
+            <p className="text-[10px] text-stone-400">{dw.stats.privacy}</p>
           </div>
         </div>
 
@@ -2015,7 +2051,7 @@ export default function App() {
       <main className="p-5 space-y-5">
         {selectedCategory ? (
           <div className="space-y-4 animate-fade-in">
-            <button onClick={() => setSelectedCategory(null)} className={`text-xs font-bold ${currentTheme.text} cursor-pointer flex items-center gap-1`}>&larr; {t.detailBack}</button>
+            <button onClick={() => window.history.back()} className={`text-xs font-bold ${currentTheme.text} cursor-pointer flex items-center gap-1`}>&larr; {t.detailBack}</button>
             <div className="space-y-4">
               <div className="bg-white p-5 rounded-3xl shadow-md border border-stone-200 flex items-center gap-3.5">
                 <div className={`w-12 h-12 rounded-2xl ${currentTheme.bgLight} flex items-center justify-center shadow-xs`}>
@@ -2079,7 +2115,7 @@ export default function App() {
                       const title = cat.customTitle || (presetObj && presetObj.title && (presetObj.title[lang] || presetObj.title.de)) || 'Kategorie';
                       
                       return (
-                        <button key={cat.id} onClick={() => { const analyticsCategoryId = String(cat.id).replace(/[^A-Za-z0-9_-]/g, '').slice(0, 68); trackGuestPageView(`category_${analyticsCategoryId}`); setSelectedCategory({ ...cat, title, groupName }); }} className={`w-full bg-white p-4 rounded-2xl border border-stone-200 shadow-sm flex items-center justify-between text-left cursor-pointer hover:${currentTheme.border} transition`}>
+                        <button key={cat.id} onClick={() => { const analyticsCategoryId = String(cat.id).replace(/[^A-Za-z0-9_-]/g, '').slice(0, 68); trackGuestPageView(`category_${analyticsCategoryId}`); navigateGuest('services', { ...cat, title, groupName }); }} className={`w-full bg-white p-4 rounded-2xl border border-stone-200 shadow-sm flex items-center justify-between text-left cursor-pointer hover:${currentTheme.border} transition`}>
                           <div className="flex items-center gap-3">
                             <div className={`w-10 h-10 rounded-xl ${currentTheme.bgLight} flex items-center justify-center`}>
                               {renderSafeIconByName(cat.icon, currentTheme)}
@@ -2104,10 +2140,10 @@ export default function App() {
       {/* ALT NAVİGASYON ÇUBUĞU */}
       <div className="fixed bottom-0 left-0 right-0 max-w-md mx-auto bg-white/95 backdrop-blur-md border-t z-50 shadow-2xl">
         <nav className="px-3 py-2 flex justify-around items-center">
-          <button onClick={() => { if (activeTab !== 'home' || selectedCategory) trackGuestPageView('guest_home'); setActiveTab('home'); setSelectedCategory(null); }} className={`flex flex-col items-center gap-1 text-[10px] font-bold cursor-pointer ${activeTab === 'home' && !selectedCategory ? currentTheme.text : 'text-stone-400'}`}>
+          <button onClick={() => { if (activeTab !== 'home' || selectedCategory) trackGuestPageView('guest_home'); navigateGuest('home'); }} className={`flex flex-col items-center gap-1 text-[10px] font-bold cursor-pointer ${activeTab === 'home' && !selectedCategory ? currentTheme.text : 'text-stone-400'}`}>
             <Info className="w-5 h-5" /><span>{t.navHome}</span>
           </button>
-          <button onClick={() => { if (activeTab !== 'services' || selectedCategory) trackGuestPageView('guest_services'); setActiveTab('services'); setSelectedCategory(null); }} className={`flex flex-col items-center gap-1 text-[10px] font-bold cursor-pointer ${activeTab === 'services' || selectedCategory ? currentTheme.text : 'text-stone-400'}`}>
+          <button onClick={() => { if (activeTab !== 'services' || selectedCategory) trackGuestPageView('guest_services'); navigateGuest('services'); }} className={`flex flex-col items-center gap-1 text-[10px] font-bold cursor-pointer ${activeTab === 'services' || selectedCategory ? currentTheme.text : 'text-stone-400'}`}>
             <Compass className="w-5 h-5" /><span>{t.navGaestemappe}</span>
           </button>
           {((hotel.googleReviewUrl && /^https?:\/\//i.test(hotel.googleReviewUrl)) || hotel.reviewPlatform==='airbnb') && (
