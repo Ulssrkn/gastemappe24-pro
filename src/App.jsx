@@ -650,6 +650,38 @@ const GuestCategoryDisplay = ({ category, currentTheme, lang, t }) => {
   );
 };
 
+const AddressAutocomplete = ({ value, onChange, className }) => {
+  const [suggestions, setSuggestions] = useState([]);
+  const [open, setOpen] = useState(false);
+  useEffect(() => {
+    const query = (value || '').trim();
+    if (query.length < 3) { setSuggestions([]); setOpen(false); return; }
+    const controller = new AbortController();
+    const timer = setTimeout(async () => {
+      try {
+        const response = await fetch('https://photon.komoot.io/api/?q=' + encodeURIComponent(query) + '&limit=5&lang=de', { signal: controller.signal });
+        if (!response.ok) throw new Error('Address suggestions unavailable');
+        const data = await response.json();
+        const items = (data.features || []).map(feature => {
+          const p = feature.properties || {};
+          const street = p.street ? (p.housenumber ? p.street + ' ' + p.housenumber : p.street) : '';
+          return { label: [p.name, street, p.postcode, p.city || p.town || p.village, p.state, p.country].filter(Boolean).filter((part, index, all) => all.indexOf(part) === index).join(', ') };
+        }).filter(item => item.label);
+        setSuggestions(items); setOpen(items.length > 0);
+      } catch (error) { if (error.name !== 'AbortError') { setSuggestions([]); setOpen(false); } }
+    }, 350);
+    return () => { clearTimeout(timer); controller.abort(); };
+  }, [value]);
+  return <div className="relative">
+    <input type="text" value={value || ''} onChange={event => onChange(event.target.value)} onFocus={() => suggestions.length && setOpen(true)} onBlur={() => setTimeout(() => setOpen(false), 150)} autoComplete="street-address" className={className} />
+    {open && suggestions.length > 0 && <div role="listbox" className="absolute z-50 left-0 right-0 top-full mt-1 rounded-xl border border-stone-200 bg-white shadow-xl overflow-hidden">
+      {suggestions.map((item, index) => <button key={item.label + index} type="button" role="option" onMouseDown={event => event.preventDefault()} onClick={() => { onChange(item.label); setOpen(false); setSuggestions([]); }} className="w-full px-3 py-2.5 text-left text-xs text-stone-700 hover:bg-amber-50 border-b last:border-b-0 border-stone-100">
+        <MapPin className="inline w-3.5 h-3.5 mr-2 text-stone-400" />{item.label}
+      </button>)}
+      <div className="px-3 py-1.5 text-[9px] text-stone-400">Adressvorschläge von OpenStreetMap / Photon</div>
+    </div>}
+  </div>;
+};
 export default function App() {
   const [lang, setLang] = useState('de');
   const t = translations[lang] || translations.de;
@@ -1230,7 +1262,7 @@ export default function App() {
                 {key:'address',label:'Vollständige Adresse',type:'text',autocomplete:true},
                 {key:'googleReviewUrl',label:'Google-Bewertungslink',type:'url'},
                 {key:'locationTitle',label:'Region / Standort',type:'text'}
-              ].map(field=><div key={field.key} className="relative"><label className="block text-[10px] font-bold text-stone-500 uppercase mb-1">{field.label}</label><input type={field.type} autoComplete={field.autocomplete ? 'street-address' : undefined} value={hotel[field.key]||''} onChange={e=>setHotel(prev=>({...prev,[field.key]:e.target.value}))} className="w-full p-3 text-sm border border-stone-200 rounded-xl bg-stone-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-200"/>{field.autocomplete && <p className="mt-1 text-[10px] text-stone-400">Tipp: Adresse möglichst mit Straße, PLZ und Ort eingeben. Die Wetterfunktion nutzt bei Bedarf den Region-/Standort-Eintrag.</p>}</div>)}
+              ].map(field=><div key={field.key} className="relative"><label className="block text-[10px] font-bold text-stone-500 uppercase mb-1">{field.label}</label>{field.autocomplete ? <AddressAutocomplete value={hotel[field.key] || ''} onChange={value => setHotel(prev => ({ ...prev, [field.key]: value }))} className="w-full p-3 text-sm border border-stone-200 rounded-xl bg-stone-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-200" /> : <input type={field.type} value={hotel[field.key]||''} onChange={e=>setHotel(prev=>({...prev,[field.key]:e.target.value}))} className="w-full p-3 text-sm border border-stone-200 rounded-xl bg-stone-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-200"/>}{field.autocomplete && <p className="mt-1 text-[10px] text-stone-400">Tipp: Adresse möglichst mit Straße, PLZ und Ort eingeben. Die Wetterfunktion nutzt bei Bedarf den Region-/Standort-Eintrag.</p>}</div>)}
             </div>
             <p className="text-[11px] text-stone-500">Diese Angaben werden in der Gästemappe verwendet. Änderungen bitte oben rechts speichern.</p>
             <div className="border-t border-stone-100 pt-4 space-y-4">
