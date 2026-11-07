@@ -716,7 +716,7 @@ export default function App() {
       const merged = parsed && typeof parsed === 'object' && !Array.isArray(parsed) ? { ...defaultData, ...parsed } : defaultData;
       const quickAccessContent = Object.fromEntries(Object.entries(quickAccessDefaults).map(([language, cards]) => [
         language,
-        Object.fromEntries(Object.entries(cards).map(([id, defaults]) => [id, { ...defaults, ...(merged.quickAccessContent?.[language]?.[id] || {}) }]))
+        Object.fromEntries(Object.entries(cards).map(([id, defaults]) => [id, { ...defaults, ...(language === 'de' ? (id === 'parking' ? { description: merged.parkingInfo || defaults.description } : id === 'breakfast' ? { description: merged.breakfastTime || defaults.description } : id === 'checkin' ? { description: merged.checkInOut || defaults.description } : {}) : {}), ...(merged.quickAccessContent?.[language]?.[id] || {}) }]))
       ]));
       return { ...merged, quickAccessContent, images: Array.isArray(merged.images) ? merged.images : defaultData.images };
     } catch (error) {
@@ -758,6 +758,10 @@ export default function App() {
     ];
   });
 
+  const copyWifiLabels = {
+    de:{copy:'Kopieren',copied:'Kopiert'},en:{copy:'Copy',copied:'Copied'},tr:{copy:'Kopyala',copied:'Kopyalandı'},fr:{copy:'Copier',copied:'Copié'},hr:{copy:'Kopiraj',copied:'Kopirano'},it:{copy:'Copia',copied:'Copiato'},es:{copy:'Copiar',copied:'Copiado'},sv:{copy:'Kopiera',copied:'Kopierat'},no:{copy:'Kopier',copied:'Kopiert'},sq:{copy:'Kopjo',copied:'U kopjua'}
+  };
+  const copyWifiLabel = copyWifiLabels[lang] || copyWifiLabels.de;
   const getQuickCardText = (cardId, field) => {
     const language = lang === 'nb' ? 'no' : lang === 'cs' ? 'en' : lang;
     const card = hotel.quickAccessContent?.[language]?.[cardId] || hotel.quickAccessContent?.de?.[cardId] || quickAccessDefaults.de[cardId];
@@ -848,7 +852,7 @@ export default function App() {
         <div className="text-[11px] text-slate-500 font-mono bg-stone-50 p-2 rounded-lg border">
           <div><b>{hotel.wifiSsid}</b></div>
           <div className="flex justify-between items-center mt-1 gap-2"><span className="break-all">{hotel.wifiPass}</span>
-            <button type="button" onClick={copyWifiPassword} aria-label="Copy Wi-Fi password" title={copiedWifi ? 'Copied' : 'Copy password'} className={`${currentTheme.bgLight} ${currentTheme.text} px-2 py-1.5 rounded-lg cursor-pointer inline-flex items-center gap-1 shrink-0`}>{copiedWifi ? <><Check className="w-3.5 h-3.5 text-emerald-600" /><span className="text-[10px]">Copied</span></> : <><Copy className="w-3.5 h-3.5" /><span className="text-[10px]">Copy</span></>}</button>
+            <button type="button" onClick={copyWifiPassword} aria-label="Copy Wi-Fi password" title={copiedWifi ? copyWifiLabel.copied : copyWifiLabel.copy} className={`${currentTheme.bgLight} ${currentTheme.text} px-2 py-1.5 rounded-lg cursor-pointer inline-flex items-center gap-1 shrink-0`}>{copiedWifi ? <><Check className="w-3.5 h-3.5 text-emerald-600" /><span className="text-[10px]">{copyWifiLabel.copied}</span></> : <><Copy className="w-3.5 h-3.5" /><span className="text-[10px]">{copyWifiLabel.copy}</span></>}</button>
           </div>
         </div>
       </div>
