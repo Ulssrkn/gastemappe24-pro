@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { QRCodeSVG } from 'qrcode.react';
 import { hotelPresets, additionalPresets } from './hotelPresets.js';
 import dashboardWorkspaceCopy from './dashboardWorkspaceCopy.js';
+import guestCardCopy from './guestCardCopy.js';
 import AuthGate from './components/AuthGate.jsx';
 import { supabase, isSupabaseConfigured } from './lib/supabaseClient.js';
 import { 
@@ -377,7 +378,14 @@ const CompactPresetEditorModal = ({ isOpen, onClose, onSave, currentTheme, lang,
   
   const [customTitle, setCustomTitle] = useState('');
   const [customText, setCustomText] = useState('');
+  const [customTextTranslations, setCustomTextTranslations] = useState({});
   const [fieldValues, setFieldValues] = useState({});
+  const [contentCards, setContentCards] = useState([]);
+  const [contentCardError, setContentCardError] = useState('');
+  const gc = guestCardCopy[lang] || guestCardCopy.de;
+  const titleRequiredCopy = { de:'Bitte gib für jede Empfehlung einen Titel ein.',en:'Add a title to each recommendation.',tr:'Her öneri için bir başlık girin.',fr:'Ajoutez un titre à chaque recommandation.',es:'Añade un título a cada recomendación.',cs:'Každé doporučení musí mít název.',sq:'Shto një titull për çdo rekomandim.',sv:'Ange en titel för varje tips.',nb:'Legg til en tittel for hver anbefaling.',it:'Aggiungi un titolo a ogni consiglio.'}[lang];
+  const customTextHint = { de:'Dieser Text wird nicht automatisch übersetzt. Eigene Übersetzungen kannst du optional ergänzen, indem du die Dashboard-Sprache wechselst.',en:'This text is not translated automatically. You can add translations by switching the dashboard language.',tr:'Bu metin otomatik çevrilmez. Dashboard dilini değiştirerek isteğe bağlı çeviriler ekleyebilirsin.',fr:'Ce texte n’est pas traduit automatiquement. Changez la langue du tableau de bord pour ajouter des traductions.',es:'Este texto no se traduce automáticamente. Cambia el idioma del panel para añadir traducciones.',cs:'Tento text se nepřekládá automaticky. Překlady můžete doplnit změnou jazyka panelu.',sq:'Ky tekst nuk përkthehet automatikisht. Ndrysho gjuhën e panelit për të shtuar përkthime.',sv:'Texten översätts inte automatiskt. Byt språk i översikten om du vill lägga till översättningar.',nb:'Teksten oversettes ikke automatisk. Bytt språk i kontrollpanelet for å legge til oversettelser.',it:'Questo testo non viene tradotto automaticamente. Cambia la lingua del pannello per aggiungere traduzioni.'}[lang];
+  const cardTranslationHint = { de:'Eigene Beschreibungen werden nicht automatisch übersetzt. Zum Übersetzen die Dashboard-Sprache wechseln; ohne Übersetzung bleibt der eigene Text in dieser Sprache verborgen.',en:'Custom descriptions are not translated automatically. Switch the dashboard language to add a translation; otherwise the custom text stays hidden in that language.',tr:'Özel açıklamalar otomatik çevrilmez. Çeviri eklemek için dashboard dilini değiştir; çeviri olmayan dillerde özel metin gösterilmez.',fr:'Les descriptions personnalisées ne sont pas traduites automatiquement. Changez la langue du tableau de bord pour ajouter une traduction ; sinon, le texte reste masqué dans cette langue.',es:'Las descripciones propias no se traducen automáticamente. Cambia el idioma del panel para añadir traducciones; si falta, el texto propio no se muestra en ese idioma.',cs:'Vlastní popisy se nepřekládají automaticky. Překlady přidejte změnou jazyka panelu; bez nich se text v daném jazyce skryje.',sq:'Përshkrimet personale nuk përkthehen automatikisht. Ndrysho gjuhën e panelit për të shtuar përkthime; pa to, teksti fshihet në atë gjuhë.',sv:'Egna beskrivningar översätts inte automatiskt. Byt språk i översikten för att lägga till översättningar; annars visas inte texten på det språket.',nb:'Egendefinerte beskrivelser oversettes ikke automatisk. Bytt språk i kontrollpanelet for å legge til oversettelser; ellers skjules teksten på det språket.',it:'Le descrizioni personalizzate non vengono tradotte automaticamente. Cambia la lingua del pannello per aggiungere traduzioni; in caso contrario, il testo non appare in quella lingua.'}[lang];
 
   useEffect(() => {
     if (editingCategory) {
@@ -387,14 +395,20 @@ const CompactPresetEditorModal = ({ isOpen, onClose, onSave, currentTheme, lang,
       setSelectedPreset(presetObj || null);
       setCustomTitle(editingCategory.customTitle || '');
       setCustomText(editingCategory.customText || '');
+      setCustomTextTranslations(editingCategory.customTextTranslations || {});
       setFieldValues(editingCategory.fieldValues || {});
+      setContentCards(Array.isArray(editingCategory.fieldValues?.contentCards) ? editingCategory.fieldValues.contentCards : []);
+      setContentCardError('');
     } else {
       setStep(1);
       setSelectedMainCat(null);
       setSelectedPreset(null);
       setCustomTitle('');
       setCustomText('');
+      setCustomTextTranslations({});
       setFieldValues({});
+      setContentCards([]);
+      setContentCardError('');
     }
   }, [editingCategory, isOpen]);
 
@@ -414,6 +428,7 @@ const CompactPresetEditorModal = ({ isOpen, onClose, onSave, currentTheme, lang,
       });
     }
     setFieldValues(initialVals);
+    setContentCards([]);
     setStep(3);
   };
 
@@ -421,15 +436,26 @@ const CompactPresetEditorModal = ({ isOpen, onClose, onSave, currentTheme, lang,
     setFieldValues(prev => ({ ...prev, [key]: val }));
   };
 
+  const addContentCard = () => {
+    setContentCards(previous => [...previous, { id: `${Date.now()}-${Math.random().toString(36).slice(2, 7)}`, title: '', descriptionTranslations: {}, address: '', url: '', phone: '', hours: '' }]);
+    setContentCardError('');
+  };
+  const updateContentCard = (cardId, key, value) => setContentCards(previous => previous.map(card => card.id === cardId ? { ...card, [key]: value } : card));
+  const updateContentCardDescription = (cardId, value) => setContentCards(previous => previous.map(card => card.id === cardId ? { ...card, descriptionTranslations: { ...(card.descriptionTranslations || {}), [lang]: value } } : card));
+
   const handleSave = () => {
+    const invalidCard = contentCards.some(card => !String(card.title || '').trim());
+    if (invalidCard) { setContentCardError(titleRequiredCopy || guestCardCopy.en.titleRequired); return; }
+    setContentCardError('');
     const categoryData = {
       id: editingCategory ? editingCategory.id : Date.now().toString(),
       presetId: selectedPreset ? selectedPreset.id : 'custom',
       categoryId: selectedMainCat || 'cat_hotel',
       icon: selectedPreset ? selectedPreset.icon : 'Info',
       customTitle: customTitle,
-      fieldValues: fieldValues,
-      customText: customText
+      fieldValues: { ...fieldValues, contentCards },
+      customText: customText,
+      customTextTranslations
     };
     onSave(categoryData);
     onClose();
@@ -585,15 +611,37 @@ const CompactPresetEditorModal = ({ isOpen, onClose, onSave, currentTheme, lang,
                 </div>
               )}
 
+              {contentCardError && <p role="alert" className="text-xs font-semibold text-rose-700">{contentCardError}</p>}
+              <details className="rounded-2xl border border-slate-200 bg-white overflow-hidden">
+                <summary className="flex cursor-pointer list-none items-center justify-between gap-3 bg-slate-50 px-4 py-3 text-xs font-bold text-slate-800">
+                  <span>{gc.section}{contentCards.length ? ` · ${contentCards.length}` : ''}</span><ChevronDown className="h-4 w-4 text-slate-400"/>
+                </summary>
+                <div className="space-y-3 border-t border-slate-100 p-4">
+                  <p className="text-[11px] leading-relaxed text-slate-500">{cardTranslationHint || guestCardCopy.en.translationHint}</p>
+                  {contentCards.map((card,index)=><article key={card.id || index} className="space-y-3 rounded-xl border border-slate-200 bg-white p-3">
+                    <div className="flex items-start gap-2">
+                      <label className="min-w-0 flex-1 space-y-1"><span className="block text-[10px] font-bold uppercase tracking-wide text-slate-500">{gc.title} *</span><input value={card.title || ''} onChange={event=>updateContentCard(card.id,'title',event.target.value)} placeholder={lang==='tr'?'Örn. Stadtmuseum':'e.g. Stadtmuseum'} className="w-full rounded-lg border border-slate-200 px-3 py-2 text-xs outline-none focus:border-slate-400"/></label>
+                      <button type="button" onClick={()=>setContentCards(previous=>previous.filter(item=>item.id!==card.id))} aria-label={lang==='tr'?'Öneriyi kaldır':'Remove recommendation'} className="mt-5 rounded-lg p-2 text-slate-400 hover:bg-slate-100 hover:text-slate-700"><Trash2 className="h-4 w-4"/></button>
+                    </div>
+                    <label className="block space-y-1"><span className="block text-[10px] font-bold uppercase tracking-wide text-slate-500">{gc.description} · {lang.toUpperCase()}</span><textarea rows={2} value={card.descriptionTranslations?.[lang] || (lang==='de' ? card.description || '' : '')} onChange={event=>updateContentCardDescription(card.id,event.target.value)} className="w-full rounded-lg border border-slate-200 px-3 py-2 text-xs outline-none focus:border-slate-400"/></label>
+                    <details className="rounded-lg bg-slate-50 px-3 py-2"><summary className="cursor-pointer list-none text-[10px] font-bold text-slate-600">{gc.more}</summary><div className="mt-3 grid grid-cols-1 gap-2 sm:grid-cols-2">
+                      {[['address',gc.address,'text'],['url',gc.url,'url'],['phone',gc.phone,'tel'],['hours',gc.hours,'text']].map(([key,label,type])=><label key={key} className="space-y-1"><span className="block text-[10px] font-semibold text-slate-500">{label}</span><input type={type} value={card[key] || ''} onChange={event=>updateContentCard(card.id,key,event.target.value)} className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs outline-none focus:border-slate-400"/></label>)}
+                    </div></details>
+                  </article>)}
+                  <button type="button" onClick={addContentCard} className="inline-flex items-center gap-2 rounded-xl border border-slate-200 px-3 py-2 text-xs font-bold text-slate-700 hover:bg-slate-50"><Plus className="h-4 w-4"/>{gc.add}</button>
+                </div>
+              </details>
+
               <div className="space-y-1">
                 <label className="block text-[10px] font-black uppercase text-amber-800 tracking-wider">{t.customTextLabel}</label>
                 <textarea
                   rows="2"
-                  value={customText}
-                  onChange={(e) => setCustomText(e.target.value)}
+                  value={customTextTranslations[lang] ?? customText}
+                  onChange={(e) => { setCustomTextTranslations(previous => ({ ...previous, [lang]: e.target.value })); if (lang === 'de') setCustomText(e.target.value); }}
                   placeholder="Individueller Hinweistext für Gäste..."
                   className="w-full p-2.5 text-xs border border-amber-300/60 rounded-xl bg-amber-50/40"
                 />
+                <p className="text-[10px] leading-relaxed text-stone-500">{customTextHint || guestCardCopy.en.freeTextHint}</p>
               </div>
             </div>
           )}
@@ -617,14 +665,42 @@ const CompactPresetEditorModal = ({ isOpen, onClose, onSave, currentTheme, lang,
 const GuestCategoryDisplay = ({ category, currentTheme, lang, t }) => {
   const presetObj = categoryPresets.find(p => p.id === category.presetId);
   const fieldValues = category.fieldValues || {};
+  const copy = guestCardCopy[lang] || guestCardCopy.de;
+  const typeDetails = { museum: copy.museum, nature: copy.nature, guided: copy.guided };
+  const selectedAttractionTypes = presetObj?.id === 'UMG_001' && Array.isArray(fieldValues.attraction_types)
+    ? fieldValues.attraction_types.filter(type => type in typeDetails)
+    : [];
+  const contentCards = Array.isArray(fieldValues.contentCards) ? fieldValues.contentCards.filter(card => String(card.title || '').trim()) : [];
+  const safeWebUrl = value => {
+    try { const url = new URL(String(value || '').trim()); return url.protocol === 'https:' || url.protocol === 'http:' ? url.href : ''; }
+    catch { return ''; }
+  };
+  const openMapUrl = address => address ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}` : '';
 
   return (
     <div className="space-y-4">
+      {selectedAttractionTypes.length > 0 && <div className="grid grid-cols-1 gap-3">{selectedAttractionTypes.map(type=>{
+        const field=presetObj.schema.find(item=>item.key==='attraction_types');
+        const option=(field?.options||[]).find(item=>optionId(item)===type);
+        return <article key={type} className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm"><div className="flex items-start gap-3"><span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-slate-100 text-slate-600">{renderSafeIconByName(type==='museum'?'Building':type==='nature'?'MapPin':'Compass',currentTheme)}</span><div><h3 className="text-sm font-bold text-slate-900">{option?optionLabel(option,lang):type}</h3><p className="mt-1 text-xs leading-relaxed text-slate-600">{typeDetails[type]}</p></div></div></article>;
+      })}</div>}
+      {contentCards.length > 0 && <div className="grid grid-cols-1 gap-3">{contentCards.map((card,index)=>{
+        const description=card.descriptionTranslations?.[lang] || (lang==='de'?card.description:'') || '';
+        const website=safeWebUrl(card.url);
+        const mapUrl=openMapUrl(String(card.address||'').trim());
+        const phone=String(card.phone||'').trim();
+        const tel=phone.replace(/[^0-9+*#]/g,'');
+        return <article key={card.id||index} className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm"><div className="p-4"><div className="flex items-start justify-between gap-3"><div className="min-w-0"><h3 className="text-sm font-bold text-slate-900">{card.title}</h3>{card.hours&&<p className="mt-1 text-[10px] font-semibold uppercase tracking-wide text-slate-500">{card.hours}</p>}</div><span className="rounded-full bg-slate-100 px-2.5 py-1 text-[9px] font-bold text-slate-600">{presetObj?.title?.[lang]||presetObj?.title?.de||category.title}</span></div>{description&&<p className="mt-2 text-xs leading-relaxed text-slate-600">{description}</p>}{card.address&&<p className="mt-2 flex items-start gap-1.5 text-[11px] text-slate-500"><MapPin className="mt-0.5 h-3.5 w-3.5 shrink-0"/>{card.address}</p>}</div>
+          {(website||mapUrl||tel)&&<div className="flex flex-wrap gap-2 border-t border-slate-100 bg-slate-50/70 p-3">{mapUrl&&<a href={mapUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 rounded-lg bg-white px-3 py-2 text-[10px] font-bold text-slate-700 ring-1 ring-slate-200"><Navigation className="h-3.5 w-3.5"/>{copy.route}</a>}{website&&<a href={website} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 rounded-lg bg-white px-3 py-2 text-[10px] font-bold text-slate-700 ring-1 ring-slate-200"><ExternalLink className="h-3.5 w-3.5"/>{copy.website}</a>}{tel&&<a href={`tel:${tel}`} className="inline-flex items-center gap-1.5 rounded-lg bg-white px-3 py-2 text-[10px] font-bold text-slate-700 ring-1 ring-slate-200"><Phone className="h-3.5 w-3.5"/>{copy.call}</a>}</div>}
+        </article>;
+      })}</div>}
       {presetObj && presetObj.schema && presetObj.schema.length > 0 && (
         <div className="bg-white p-5 rounded-3xl shadow-sm border border-slate-200 space-y-5">
           {(Array.isArray(presetObj.schema) ? presetObj.schema : []).map(field => {
             const rawVal = fieldValues[field.key] !== undefined ? fieldValues[field.key] : field.default;
             const fieldLabel = (field.label && (field.label[lang] || field.label.de)) || field.key;
+
+            if (field.key === 'attraction_types') return null;
 
             if (rawVal === undefined || rawVal === null || rawVal === '' || (Array.isArray(rawVal) && rawVal.length === 0)) return null;
 
@@ -656,10 +732,10 @@ const GuestCategoryDisplay = ({ category, currentTheme, lang, t }) => {
         </div>
       )}
 
-      {category.customText && (
+      {(category.customTextTranslations?.[lang] || category.customText) && (
         <div className="p-5 rounded-2xl border border-slate-200 bg-slate-50 text-slate-700 text-sm leading-relaxed space-y-1.5">
           <span className="text-[10px] font-bold uppercase text-slate-500 tracking-wider block">{t.moreInfo}</span>
-          <p className="whitespace-pre-line font-medium">{category.customText}</p>
+          <p className="whitespace-pre-line font-medium">{category.customTextTranslations?.[lang] ?? category.customText}</p>
         </div>
       )}
     </div>
