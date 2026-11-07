@@ -32,7 +32,7 @@ serve(async (req) => {
     }
 
     const hotelResponse = await fetch(
-      `${supabaseUrl}/rest/v1/gm24_hotels?slug=eq.${encodeURIComponent(slug)}&select=id&limit=1`,
+      `${supabaseUrl}/rest/v1/gm24_hotels?slug=eq.${encodeURIComponent(slug)}&select=id,owner_id&limit=1`,
       { headers: { apikey: serviceRoleKey, Authorization: `Bearer ${serviceRoleKey}` } },
     );
     if (!hotelResponse.ok) {
@@ -41,6 +41,27 @@ serve(async (req) => {
     const hotels = await hotelResponse.json();
     if (!Array.isArray(hotels) || !hotels[0]?.id) {
       return new Response(JSON.stringify({ error: "Hotel not found" }), { status: 404, headers: corsHeaders });
+    }
+
+    // This function uses the service-role key and therefore bypasses RLS.
+    // Re-check the same eligibility rule as the public guest-page policy
+    // before recording a view, so expired/suspended pages cannot keep
+    // accumulating analytics through direct function calls.
+    const accountResponse = await fetch(
+      `${supabaseUrl}/rest/v1/gm24_accounts?owner_id=eq.${encodeURIComponent(hotels[0].owner_id)}&select=subscription_status,trial_ends_at&limit=1`,
+      { headers: { apikey: serviceRoleKey, Authorization: `Bearer ${serviceRoleKey}` } },
+    );
+    if (!accountResponse.ok) {
+      return new Response(JSON.stringify({ error: "Could not verify guest page access" }), { status: 502, headers: corsHeaders });
+    }
+    const accounts = await accountResponse.json();
+    const account = Array.isArray(accounts) ? accounts[0] : null;
+    const trialIsActive = account?.subscription_status === "trial"
+      && account?.trial_ends_at
+      && new Date(account.trial_ends_at).getTime() > Date.now();
+    const subscriptionIsActive = account?.subscription_status === "active";
+    if (!trialIsActive && !subscriptionIsActive) {
+      return new Response(JSON.stringify({ error: "Guest page is unavailable" }), { status: 404, headers: corsHeaders });
     }
 
     const countResponse = await fetch(`${supabaseUrl}/rest/v1/rpc/gm24_increment_page_view`, {
