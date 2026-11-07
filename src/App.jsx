@@ -1315,9 +1315,10 @@ export default function App() {
                 {key:'email',label:'E-Mail',type:'email'},
                 {key:'website',label:'Website',type:'url'},
                 {key:'address',label:'Vollständige Adresse',type:'text',autocomplete:true},
-                {key:'googleReviewUrl',label:'Google-Bewertungslink',type:'url'},
+                {key:'reviewPlatform',label:'Bewertungsplattform',type:'select'},
+                {key:'googleReviewUrl',label:hotel.reviewPlatform==='airbnb'?'Airbnb-Link (optional)':hotel.reviewPlatform==='booking'?'Booking.com-Bewertungslink':hotel.reviewPlatform==='tripadvisor'?'Tripadvisor-Bewertungslink':hotel.reviewPlatform==='custom'?'Bewertungslink':'Google-Bewertungslink',type:'url'},
                 {key:'locationTitle',label:'Region / Standort',type:'text'}
-              ].map(field=><div key={field.key} className="relative"><label className="block text-[10px] font-bold text-stone-500 uppercase mb-1">{field.label}</label>{field.autocomplete ? <AddressAutocomplete value={hotel[field.key] || ''} onChange={value => setHotel(prev => ({ ...prev, [field.key]: value }))} className="w-full p-3 text-sm border border-stone-200 rounded-xl bg-stone-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-200" /> : <input type={field.type} value={hotel[field.key]||''} onChange={e=>setHotel(prev=>({...prev,[field.key]:e.target.value}))} className="w-full p-3 text-sm border border-stone-200 rounded-xl bg-stone-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-200"/>}{field.autocomplete && <p className="mt-1 text-[10px] text-stone-400">Tipp: Adresse möglichst mit Straße, PLZ und Ort eingeben. Die Wetterfunktion nutzt bei Bedarf den Region-/Standort-Eintrag.</p>}</div>)}
+              ].map(field=><div key={field.key} className="relative"><label className="block text-[10px] font-bold text-stone-500 uppercase mb-1">{field.label}</label>{field.key==='reviewPlatform' ? <select value={hotel.reviewPlatform || 'google'} onChange={e=>setHotel(prev=>({...prev,reviewPlatform:e.target.value}))} className="w-full p-3 text-sm border border-stone-200 rounded-xl bg-stone-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-200"><option value="google">Google</option><option value="airbnb">Airbnb</option><option value="booking">Booking.com</option><option value="tripadvisor">Tripadvisor</option><option value="custom">Andere Plattform</option></select> : field.autocomplete ? <AddressAutocomplete value={hotel[field.key] || ''} onChange={value => setHotel(prev => ({ ...prev, [field.key]: value }))} className="w-full p-3 text-sm border border-stone-200 rounded-xl bg-stone-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-200" /> : <input type={field.type} value={hotel[field.key]||''} onChange={e=>setHotel(prev=>({...prev,[field.key]:e.target.value}))} className="w-full p-3 text-sm border border-stone-200 rounded-xl bg-stone-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-200"/>}{field.key==='reviewPlatform' && <p className="mt-1 text-[10px] text-stone-400">Airbnb: Gäste können ihre Unterkunft nur über eine tatsächliche Airbnb-Buchung bewerten. Ein allgemeiner Link führt zum Airbnb-Reisebereich.</p>}{field.autocomplete && <p className="mt-1 text-[10px] text-stone-400">Tipp: Adresse möglichst mit Straße, PLZ und Ort eingeben. Die Wetterfunktion nutzt bei Bedarf den Region-/Standort-Eintrag.</p>}</div>)}
             </div>
             <p className="text-[11px] text-stone-500">Diese Angaben werden in der Gästemappe verwendet. Änderungen bitte oben rechts speichern.</p>
             <div className="border-t border-stone-100 pt-4 space-y-4">
@@ -1644,12 +1645,12 @@ export default function App() {
           <button onClick={() => { setActiveTab('services'); setSelectedCategory(null); }} className={`flex flex-col items-center gap-1 text-[10px] font-bold cursor-pointer ${activeTab === 'services' || selectedCategory ? currentTheme.text : 'text-stone-400'}`}>
             <Compass className="w-5 h-5" /><span>{t.navGaestemappe}</span>
           </button>
-          {hotel.googleReviewUrl && /^https?:\/\//i.test(hotel.googleReviewUrl) ? (
-            <a href={hotel.googleReviewUrl} target="_blank" rel="noreferrer" className={`flex flex-col items-center gap-1 text-[10px] font-bold cursor-pointer ${currentTheme.text} hover:opacity-80`}>
+          {(hotel.googleReviewUrl && /^https?:\/\//i.test(hotel.googleReviewUrl)) || hotel.reviewPlatform==='airbnb' ? (
+            <a href={hotel.googleReviewUrl && /^https?:\/\//i.test(hotel.googleReviewUrl) ? hotel.googleReviewUrl : 'https://www.airbnb.com/trips/v1'} target="_blank" rel="noreferrer" className={`flex flex-col items-center gap-1 text-[10px] font-bold cursor-pointer ${currentTheme.text} hover:opacity-80`}>
               <Star className="w-5 h-5 fill-current" /><span>{t.navReview}</span>
             </a>
           ) : (
-            <span aria-disabled="true" title="Google-Bewertungslink im Hotelprofil hinterlegen" className="flex flex-col items-center gap-1 text-[10px] font-bold text-stone-300 cursor-not-allowed">
+            <span aria-disabled="true" title="Bewertungslink im Hotelprofil hinterlegen" className="flex flex-col items-center gap-1 text-[10px] font-bold text-stone-300 cursor-not-allowed">
               <Star className="w-5 h-5" /><span>{t.navReview}</span>
             </span>
           )}
