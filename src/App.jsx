@@ -671,6 +671,9 @@ export default function App() {
   const [appMode, setAppMode] = useState('guest');
   const [authSession, setAuthSession] = useState(null);
   const [authLoading, setAuthLoading] = useState(true);
+  const [hotelRecord, setHotelRecord] = useState(null);
+  const [cloudDataStatus, setCloudDataStatus] = useState('idle');
+  const [cloudDataError, setCloudDataError] = useState('');
 
   useEffect(() => {
     if (!supabase) {
@@ -693,6 +696,64 @@ export default function App() {
       subscription.unsubscribe();
     };
   }, []);
+
+  useEffect(() => {
+    const userId = authSession?.user?.id;
+    if (!supabase || !userId) {
+      setHotelRecord(null);
+      setCloudDataStatus('idle');
+      return undefined;
+    }
+
+    let active = true;
+    const loadOrCreateHotel = async () => {
+      setCloudDataStatus('loading');
+      setCloudDataError('');
+      try {
+        const { data, error } = await supabase
+          .from('gm24_hotels')
+          .select('id, slug, name, profile, public_content')
+          .eq('owner_id', userId)
+          .maybeSingle();
+        if (error) throw error;
+
+        if (data) {
+          if (!active) return;
+          setHotelRecord(data);
+          const savedProfile = data.profile && typeof data.profile === 'object' ? data.profile : {};
+          if (savedProfile.hotel && typeof savedProfile.hotel === 'object') setHotel(savedProfile.hotel);
+          if (Array.isArray(savedProfile.categories)) setCategories(savedProfile.categories);
+          setCloudDataStatus('ready');
+          return;
+        }
+
+        const slug = `hotel-${userId.replace(/-/g, '').slice(0, 12)}`;
+        const { data: created, error: createError } = await supabase
+          .from('gm24_hotels')
+          .insert({
+            owner_id: userId,
+            slug,
+            name: 'Meine Unterkunft',
+            profile: {},
+            public_content: {}
+          })
+          .select('id, slug, name, profile, public_content')
+          .single();
+        if (createError) throw createError;
+        if (!active) return;
+        setHotelRecord(created);
+        setCloudDataStatus('ready');
+      } catch (error) {
+        if (!active) return;
+        console.error('Hotel cloud data could not be loaded:', error);
+        setCloudDataError(error?.message || 'Die Unterkunftsdaten konnten nicht geladen werden.');
+        setCloudDataStatus('error');
+      }
+    };
+
+    loadOrCreateHotel();
+    return () => { active = false; };
+  }, [authSession?.user?.id]);
 
   const [isEditorModalOpen, setIsEditorModalOpen] = useState(false);
   const [editingCategory, setEditingCategory] = useState(null);
@@ -886,15 +947,42 @@ export default function App() {
   };
 
   const handleSaveData = async () => {
-    // Save the complete editor state locally; the current Supabase schema has no multilingual quick-access fields.
     localStorage.setItem('gm24_hotel', JSON.stringify(hotel));
     localStorage.setItem('gm24_categories', JSON.stringify(categories));
+
+    if (!supabase || !authSession?.user?.id || !hotelRecord?.id) {
+      setCloudDataError('Cloud-Speicherung ist noch nicht bereit. Bitte erneut anmelden oder die Verbindung prüfen.');
+      setCloudDataStatus('error');
+      return;
+    }
+
+    setCloudDataStatus('saving');
+    setCloudDataError('');
+    const profile = { hotel, categories };
+    // Only the guest-facing editor data is published. Owner identity and auth data stay private.
+    const publicContent = { hotel, categories };
     try {
-      const { error } = await supabase.from('hotels').upsert({ id: 'default-hotel-id', name: hotel.name, phone: hotel.phone, email: hotel.email, address: hotel.address, categories: categories, theme_color: hotel.themeColor });
-      if (error) console.warn('Supabase sync skipped; local changes are saved.', error);
-    } catch (err) { console.warn('Supabase sync unavailable; local changes are saved.', err); }
-    setIsSaved(true);
-    setTimeout(() => setIsSaved(false), 3000);
+      const { data, error } = await supabase
+        .from('gm24_hotels')
+        .update({
+          name: hotel.name || 'Meine Unterkunft',
+          profile,
+          public_content: publicContent,
+          updated_at: new Date().toISOString()
+        })
+        .eq('id', hotelRecord.id)
+        .select('id, slug, name, profile, public_content')
+        .single();
+      if (error) throw error;
+      setHotelRecord(data);
+      setCloudDataStatus('ready');
+      setIsSaved(true);
+      setTimeout(() => setIsSaved(false), 3000);
+    } catch (error) {
+      console.error('Cloud save failed; local copy remains available:', error);
+      setCloudDataError(error?.message || 'Cloud-Speicherung fehlgeschlagen. Die lokale Kopie bleibt erhalten.');
+      setCloudDataStatus('error');
+    }
   };
 
   const copyWifiPassword = () => {
