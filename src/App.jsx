@@ -631,6 +631,20 @@ const GuestCategoryDisplay = ({ category, currentTheme, lang, t }) => {
 export default function App() {
   const [lang, setLang] = useState('de');
   const t = translations[lang] || translations.de;
+  const quickAccessLabels = {
+    de: { title: 'Schnellzugriff anzeigen', wifi: 'WLAN-Karte', parking: 'Parkplatz-Karte', breakfast: 'Frühstücks-Karte', checkin: 'Check-in / Check-out-Karte' },
+    en: { title: 'Show quick access cards', wifi: 'Wi-Fi card', parking: 'Parking card', breakfast: 'Breakfast card', checkin: 'Check-in / Check-out card' },
+    tr: { title: 'Hızlı erişim kartlarını göster', wifi: 'WLAN kartı', parking: 'Otopark kartı', breakfast: 'Kahvaltı kartı', checkin: 'Giriş / Çıkış kartı' },
+    fr: { title: 'Afficher les accès rapides', wifi: 'Carte Wi-Fi', parking: 'Carte parking', breakfast: 'Carte petit-déjeuner', checkin: 'Carte arrivée / départ' },
+    es: { title: 'Mostrar accesos rápidos', wifi: 'Tarjeta Wi-Fi', parking: 'Tarjeta de aparcamiento', breakfast: 'Tarjeta de desayuno', checkin: 'Tarjeta entrada / salida' },
+    cs: { title: 'Zobrazit rychlý přístup', wifi: 'Karta Wi-Fi', parking: 'Karta parkování', breakfast: 'Karta snídaně', checkin: 'Karta příjezd / odjezd' },
+    sq: { title: 'Shfaq qasjet e shpejta', wifi: 'Karta Wi-Fi', parking: 'Karta e parkimit', breakfast: 'Karta e mëngjesit', checkin: 'Karta hyrje / dalje' },
+    sv: { title: 'Visa snabb åtkomst', wifi: 'Wi-Fi-kort', parking: 'Parkeringskort', breakfast: 'Frukostkort', checkin: 'In- och utcheckningskort' },
+    nb: { title: 'Vis hurtigtilgang', wifi: 'Wi-Fi-kort', parking: 'Parkeringskort', breakfast: 'Frokostkort', checkin: 'Inn- og utsjekkingskort' },
+    it: { title: 'Mostra accessi rapidi', wifi: 'Scheda Wi-Fi', parking: 'Scheda parcheggio', breakfast: 'Scheda colazione', checkin: 'Scheda check-in / check-out' },
+    hr: { title: 'Prikaži brzi pristup', wifi: 'Wi-Fi kartica', parking: 'Kartica parkirališta', breakfast: 'Kartica doručka', checkin: 'Kartica prijave / odjave' }
+  };
+  const quickLabels = quickAccessLabels[lang] || quickAccessLabels.de;
 
   const [appMode, setAppMode] = useState('guest'); 
   const [isEditorModalOpen, setIsEditorModalOpen] = useState(false);
@@ -863,6 +877,9 @@ export default function App() {
             <span className="font-extrabold text-lg tracking-tight">gastemappe24 <span className={`${currentTheme.text} text-xs uppercase px-1.5 py-0.5 ${currentTheme.bgLight} rounded-md`}>PRO</span></span>
           </div>
           <div className="flex items-center gap-3">
+            <select aria-label="Dashboard language" value={lang} onChange={(e) => setLang(e.target.value)} className="bg-white border border-stone-200 text-xs rounded-xl px-2.5 py-2 cursor-pointer">
+              <option value="de">🇩🇪 DE</option><option value="en">🇬🇧 EN</option><option value="tr">🇹🇷 TR</option><option value="fr">🇫🇷 FR</option><option value="es">🇪🇸 ES</option><option value="cs">🇨🇿 CS</option><option value="sq">🇦🇱 SQ</option><option value="sv">🇸🇪 SV</option><option value="nb">🇳🇴 NB</option><option value="it">🇮🇹 IT</option>
+            </select>
             <button onClick={handleSaveData} className="bg-emerald-700 text-white px-5 py-2 rounded-xl text-xs font-bold hover:bg-emerald-800 transition cursor-pointer flex items-center gap-2 shadow-md">
               <Save className="w-4 h-4" /> {isSaved ? t.savedMsg : t.saveBtn}
             </button>
@@ -936,6 +953,22 @@ export default function App() {
               <div>
                 <label className="block text-[10px] font-bold text-stone-500 uppercase mb-1">{t.lblPhone}</label>
                 <input type="text" value={hotel.phone} onChange={(e) => setHotel({ ...hotel, phone: e.target.value })} className="w-full p-2.5 text-xs border border-stone-200 rounded-xl" />
+              </div>
+            </div>
+            <div className="border-t border-stone-100 pt-4 space-y-3">
+              <h4 className="text-[10px] font-black uppercase tracking-wider text-stone-500">{quickLabels.title}</h4>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {[
+                  ['showWifi', 'wifi'],
+                  ['showParking', 'parking'],
+                  ['showBreakfast', 'breakfast'],
+                  ['showCheckInOut', 'checkin']
+                ].map(([key, labelKey]) => (
+                  <label key={key} className="flex items-center gap-2.5 rounded-xl border border-stone-200 bg-stone-50 px-3 py-2.5 text-xs font-semibold cursor-pointer">
+                    <input type="checkbox" checked={hotel[key] !== false} onChange={(e) => setHotel(prev => ({ ...prev, [key]: e.target.checked }))} className="accent-emerald-700 w-4 h-4" />
+                    {quickLabels[labelKey]}
+                  </label>
+                ))}
               </div>
             </div>
           </div>
