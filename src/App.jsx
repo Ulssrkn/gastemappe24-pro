@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { QRCodeSVG } from 'qrcode.react';
+import { hotelPresets, additionalPresets } from './hotelPresets.js';
 import { createClient } from '@supabase/supabase-js';
 import { 
   Wifi, Info, MapPin, Calendar, MessageSquare, 
@@ -122,7 +124,9 @@ const translations = {
     searchPlaceholder: "Search...",
     noPresetsFound: "No presets found in this category."
   },
-  tr: {
+  cs:{welcomeBadge:"Digitální průvodce pro hosty",welcomeButton:"Začít",greetingHello:"Dobrý den,",greetingWelcome:"vítejte.",navHome:"Domů",navGaestemappe:"Průvodce",navReview:"Hodnocení",navRoute:"Trasa",weatherTitle:"Slunečno",weatherSub:"Aktuální počasí",wlanTitle:"Wi-Fi",parkingTitle:"Parkování",breakfastTitle:"Snídaně",checkInOutTitle:"Příjezd / Odjezd",detailBack:"Zpět na přehled",adminTitle:"Správa a analytika",guestViewBtn:"Otevřít náhled hosta",saveBtn:"Uložit změny",savedMsg:"Uloženo!",trialTitle:"30denní zkušební verze (PRO)",trialDaysLeft:"Zbývající dny",statsScans:"Celkem skenování QR",statsActiveRooms:"Aktivní přístupy pokojů",analyticsTitle:"Analytika kategorií",qrTitle:"QR kód a tisk",printA4:"Tisk A4",printA5:"Tisk A5",printCard:"Vizitka",sec1Title:"1. Informace o ubytování",sec2Title:"2. Barvy a motivy",sec3Title:"3. Nahrát logo",sec4Title:"4. Správa obrázků",sec5Title:"5. QR kód a tisk",sec6Title:"6. Kategorie průvodce",lblHotelName:"Název ubytování",lblPhone:"Telefon",btnAddCategory:"Přidat obsah",modalTitle:"Přidat / upravit obsah",step1Title:"1. Vyberte kategorii",step2Title:"2. Vyberte šablonu",step3Title:"3. Zadejte informace",addBtn:"Přidat",editTitle:"Název / označení",customTextLabel:"Doplňující poznámky (volitelné)",yesLabel:"Ano / Dostupné",noLabel:"Ne / Nedostupné",moreInfo:"Další informace",cancel:"Zrušit",saveAndClose:"Uložit a zavřít",searchPlaceholder:"Hledat...",noPresetsFound:"V této kategorii nebyly nalezeny žádné šablony."},
+  nb:{welcomeBadge:"Digital gjestemappe",welcomeButton:"Kom i gang",greetingHello:"Hei,",greetingWelcome:"hyggelig at du er her.",navHome:"Hjem",navGaestemappe:"Gjestemappe",navReview:"Vurdering",navRoute:"Veibeskrivelse",weatherTitle:"Sol",weatherSub:"Lokalt vær",wlanTitle:"Wi-Fi",parkingTitle:"Parkering",breakfastTitle:"Frokost",checkInOutTitle:"Innsjekking / utsjekking",detailBack:"Tilbake til oversikten",adminTitle:"Administrasjon og analyse",guestViewBtn:"Åpne gjestevisning",saveBtn:"Lagre endringer",savedMsg:"Lagret!",trialTitle:"30 dagers prøveperiode (PRO)",trialDaysLeft:"Dager igjen",statsScans:"QR-skanninger totalt",statsActiveRooms:"Aktive romtilganger",analyticsTitle:"Kategorianalyse",qrTitle:"QR-kode og utskrift",printA4:"Utskrift A4",printA5:"Utskrift A5",printCard:"Visittkort",sec1Title:"1. Overnattingsinformasjon",sec2Title:"2. Design og fargetema",sec3Title:"3. Last opp logo",sec4Title:"4. Bildeadministrasjon",sec5Title:"5. QR-kode og utskrift",sec6Title:"6. Gjestemappekategorier",lblHotelName:"Overnattingsstedets navn",lblPhone:"Telefon",btnAddCategory:"Legg til innhold",modalTitle:"Legg til / rediger innhold",step1Title:"1. Velg kategori",step2Title:"2. Velg mal",step3Title:"3. Legg inn informasjon",addBtn:"Legg til",editTitle:"Tittel / etikett",customTextLabel:"Ekstra merknader (valgfritt)",yesLabel:"Ja / Tilgjengelig",noLabel:"Nei / Ikke tilgjengelig",moreInfo:"Mer informasjon",cancel:"Avbryt",saveAndClose:"Lagre og lukk",searchPlaceholder:"Søk...",noPresetsFound:"Ingen maler funnet i denne kategorien."},
+  tr:{
     welcomeBadge: "Dijital Misafir Rehberi",
     welcomeButton: "Başlayalım",
     greetingHello: "Merhaba,",
@@ -184,6 +188,25 @@ const translations = {
   sq: { welcomeBadge: "Udhëzues", welcomeButton: "Fillo", greetingHello: "Përshëndetje,", greetingWelcome: "mirë se erdhët.", navHome: "Kryefaqja", navGaestemappe: "Udhëzuesi", navReview: "Vlerëso", navRoute: "Udha", weatherTitle: "Diell", weatherSub: "Moti", wlanTitle: "Wi-Fi", parkingTitle: "Parkimi", breakfastTitle: "Mëngjesi", checkInOutTitle: "Hyrja", detailBack: "Kthehu", adminTitle: "Admin", guestViewBtn: "Pamja", saveBtn: "Ruaj", savedMsg: "U ruajt!", trialTitle: "PRO", trialDaysLeft: "ditë", statsScans: "Scans", statsActiveRooms: "Dhomat", analyticsTitle: "Analitika", qrTitle: "QR Center", printA4: "A4", printA5: "A5", printCard: "Kartë", sec1Title: "1. Info", sec2Title: "2. Ngjyrat", sec3Title: "3. Logo", sec4Title: "4. Fotografitë", sec5Title: "5. QR Center", sec6Title: "6. Shabllonet", lblHotelName: "Emri", lblPhone: "Tel", btnAddCategory: "Shto", modalTitle: "Ndrysho", step1Title: "1. Kategoria", step2Title: "2. Shablloni", step3Title: "3. Detajet", addBtn: "Shto", editTitle: "Titulli", customTextLabel: "Shënime", yesLabel: "Po", noLabel: "Jo", moreInfo: "Më shumë", cancel: "Anulo", saveAndClose: "Mbyll", searchPlaceholder: "Kërko...", noPresetsFound: "Asgjë." }
 };
 
+// Czech and Norwegian Bokmål UI chrome use English fallback until their full UI copy is curated.
+translations.cs = translations.en;
+translations.nb = translations.no;
+
+// Dashboard analytics copy is kept separate so every dashboard language
+// uses translated labels instead of hard-coded German text.
+const dashboardCopy = {
+  de: { qrScans:'QR-Scans', unavailable:'Noch nicht verfügbar', scansNote:'Echte Scan-Zahlen erscheinen, sobald die zentrale Ereigniserfassung eingerichtet ist.', configuredContent:'Eingerichtete Inhalte', contentNote:'Anzahl der eingerichteten Inhalte, keine erfundene Zimmerbelegung.', dataStatus:'Datenstatus', localStorage:'Lokale Speicherung', analyticsNote:'Zentrale Besucheranalyse ist noch nicht verbunden.', analyticsTitle:'Analytik & Besucherstatistik', analyticsIntro:'Transparenter Datenstatus statt geschätzter oder fest eingetragener Zahlen', noAnalytics:'Noch keine verlässlichen Scan- und Klickdaten vorhanden. Die Erfassung benötigt eine zentrale Datenbanktabelle und einen verbundenen Supabase-Zugang. Bis dahin zeigen wir bewusst keine erfundenen Diagramme.' },
+  en: { qrScans:'QR scans', unavailable:'Not available yet', scansNote:'Real scan counts will appear once central event tracking is set up.', configuredContent:'Configured content', contentNote:'Number of configured content entries, not invented room occupancy.', dataStatus:'Data status', localStorage:'Local storage', analyticsNote:'Central visitor analytics is not connected yet.', analyticsTitle:'Analytics & visitor statistics', analyticsIntro:'Transparent data status instead of estimated or hard-coded figures', noAnalytics:'No reliable scan or click data is available yet. Tracking requires a central database table and a connected Supabase account. Until then, we deliberately show no invented charts.' },
+  tr: { qrScans:'QR Taramaları', unavailable:'Henüz kullanılamıyor', scansNote:'Gerçek tarama sayıları, merkezi etkinlik takibi kurulduğunda görüntülenecek.', configuredContent:'Tanımlı içerikler', contentNote:'Bu sayı tanımlanmış içerikleri gösterir; oda doluluğu değildir.', dataStatus:'Veri durumu', localStorage:'Yerel depolama', analyticsNote:'Merkezi ziyaretçi analizi henüz bağlı değil.', analyticsTitle:'Analiz ve ziyaretçi istatistikleri', analyticsIntro:'Tahmini veya elle girilmiş sayılar yerine şeffaf veri durumu', noAnalytics:'Henüz güvenilir tarama ve tıklama verisi yok. Takip sistemi için merkezi bir veritabanı tablosu ve bağlı bir Supabase hesabı gerekiyor. O zamana kadar gerçeği yansıtmayan grafikler göstermiyoruz.' },
+  fr: { qrScans:'Scans QR', unavailable:'Pas encore disponible', scansNote:'Les vrais nombres de scans apparaîtront lorsque le suivi centralisé sera configuré.', configuredContent:'Contenus configurés', contentNote:'Nombre de contenus configurés, et non un taux d’occupation inventé.', dataStatus:'État des données', localStorage:'Stockage local', analyticsNote:'Les statistiques centrales des visiteurs ne sont pas encore connectées.', analyticsTitle:'Analyses et statistiques des visiteurs', analyticsIntro:'État transparent des données, sans chiffres estimés ou prédéfinis', noAnalytics:'Aucune donnée fiable de scan ou de clic pour le moment. Le suivi nécessite une table centrale et un accès Supabase connecté. En attendant, aucun graphique fictif ne sera affiché.' },
+  hr: { qrScans:'QR skeniranja', unavailable:'Još nije dostupno', scansNote:'Stvarni broj skeniranja prikazat će se nakon postavljanja centralnog praćenja događaja.', configuredContent:'Postavljeni sadržaji', contentNote:'Broj postavljenih sadržaja, a ne izmišljena popunjenost soba.', dataStatus:'Status podataka', localStorage:'Lokalna pohrana', analyticsNote:'Centralna analitika posjetitelja još nije povezana.', analyticsTitle:'Analitika i statistika posjetitelja', analyticsIntro:'Transparentan status podataka umjesto procijenjenih ili unaprijed unesenih brojki', noAnalytics:'Još nema pouzdanih podataka o skeniranjima i klikovima. Praćenje zahtijeva središnju tablicu baze podataka i povezani Supabase pristup. Do tada ne prikazujemo izmišljene grafikone.' },
+  it: { qrScans:'Scansioni QR', unavailable:'Non ancora disponibile', scansNote:'I conteggi reali appariranno quando sarà configurato il tracciamento centralizzato degli eventi.', configuredContent:'Contenuti configurati', contentNote:'Numero di contenuti configurati, non un’occupazione delle camere inventata.', dataStatus:'Stato dei dati', localStorage:'Archiviazione locale', analyticsNote:'Le statistiche centrali dei visitatori non sono ancora collegate.', analyticsTitle:'Analisi e statistiche dei visitatori', analyticsIntro:'Stato dei dati trasparente, senza numeri stimati o preimpostati', noAnalytics:'Non sono ancora disponibili dati affidabili su scansioni e clic. Il tracciamento richiede una tabella centrale e un accesso Supabase collegato. Fino ad allora non mostriamo grafici inventati.' },
+  es: { qrScans:'Escaneos QR', unavailable:'Aún no disponible', scansNote:'Los recuentos reales aparecerán cuando se configure el seguimiento centralizado de eventos.', configuredContent:'Contenidos configurados', contentNote:'Número de contenidos configurados, no una ocupación de habitaciones inventada.', dataStatus:'Estado de los datos', localStorage:'Almacenamiento local', analyticsNote:'Las estadísticas centrales de visitantes aún no están conectadas.', analyticsTitle:'Analítica y estadísticas de visitantes', analyticsIntro:'Estado de datos transparente en lugar de cifras estimadas o predefinidas', noAnalytics:'Aún no hay datos fiables de escaneos y clics. El seguimiento requiere una tabla central y acceso a Supabase conectado. Hasta entonces no mostramos gráficos inventados.' },
+  sv: { qrScans:'QR-skanningar', unavailable:'Inte tillgängligt ännu', scansNote:'Verkliga skanningssiffror visas när central händelsespårning har konfigurerats.', configuredContent:'Konfigurerat innehåll', contentNote:'Antal konfigurerade innehåll, inte påhittad rumsbeläggning.', dataStatus:'Datastatus', localStorage:'Lokal lagring', analyticsNote:'Central besöksanalys är ännu inte ansluten.', analyticsTitle:'Analys och besöksstatistik', analyticsIntro:'Transparent datastatus i stället för uppskattade eller förinställda siffror', noAnalytics:'Det finns ännu inga tillförlitliga skannings- eller klickdata. Spårning kräver en central databastabell och en ansluten Supabase-åtkomst. Tills dess visar vi inga påhittade diagram.' },
+  no: { qrScans:'QR-skanninger', unavailable:'Ikke tilgjengelig ennå', scansNote:'Faktiske skanningstall vises når sentral hendelsessporing er satt opp.', configuredContent:'Konfigurert innhold', contentNote:'Antall konfigurerte innholdselementer, ikke oppdiktet rombelegg.', dataStatus:'Datastatus', localStorage:'Lokal lagring', analyticsNote:'Sentral besøksanalyse er ennå ikke tilkoblet.', analyticsTitle:'Analyse og besøksstatistikk', analyticsIntro:'Åpen datastatus i stedet for anslåtte eller forhåndsutfylte tall', noAnalytics:'Det finnes ennå ingen pålitelige skanne- eller klikkdata. Sporing krever en sentral databasetabell og en tilkoblet Supabase-tilgang. Inntil da viser vi ingen oppdiktede diagrammer.' },
+  sq: { qrScans:'Skanime QR', unavailable:'Ende nuk është e disponueshme', scansNote:'Numri real i skanimeve do të shfaqet pasi të konfigurohet gjurmimi qendror i ngjarjeve.', configuredContent:'Përmbajtje të konfiguruara', contentNote:'Numri i përmbajtjeve të konfiguruara, jo një zënie e sajuar e dhomave.', dataStatus:'Statusi i të dhënave', localStorage:'Ruajtje lokale', analyticsNote:'Analitika qendrore e vizitorëve nuk është lidhur ende.', analyticsTitle:'Analitika dhe statistikat e vizitorëve', analyticsIntro:'Status transparent i të dhënave në vend të shifrave të vlerësuara ose të paracaktuara', noAnalytics:'Ende nuk ka të dhëna të besueshme për skanimet dhe klikimet. Gjurmimi kërkon një tabelë qendrore të bazës së të dhënave dhe qasje të lidhur në Supabase. Deri atëherë nuk shfaqim grafikë të sajuar.' }
+};
+
 const themeColors = [
   { id: 'amber', name: 'Amber Warm', bg: 'bg-amber-900', text: 'text-amber-900', bgLight: 'bg-amber-50', border: 'border-amber-900/40' },
   { id: 'emerald', name: 'Forest Emerald', bg: 'bg-emerald-800', text: 'text-emerald-800', bgLight: 'bg-emerald-50', border: 'border-emerald-800/40' },
@@ -196,29 +219,25 @@ const themeColors = [
 ];
 
 const mainCategories = [
-  { id: 'cat_hotel', name: { de: 'Hotel & Unterkunft', en: 'Hotel & Accommodation', tr: 'Otel & Konaklama', fr: 'Hôtel & Hébergement', hr: 'Hotel i smještaj' }, icon: 'Building' },
-  { id: 'cat_food', name: { de: 'Essen & Trinken', en: 'Food & Drinks', tr: 'Yeme & İçme', fr: 'Restauration', hr: 'Hrana i piće' }, icon: 'Utensils' },
-  { id: 'cat_sustainability', name: { de: 'Nachhaltigkeit & Umwelt', en: 'Sustainability & Environment', tr: 'Sürdürülebilirlik & Çevre', fr: 'Développement durable', hr: 'Održivost i okoliš' }, icon: 'Recycle' },
-  { id: 'cat_certificates', name: { de: 'Zertifikate & Auszeichnungen', en: 'Certificates & Awards', tr: 'Sertifikalar & Ödüller', fr: 'Certificats & Prix', hr: 'Certifikati i nagrade' }, icon: 'Award' },
-  { id: 'cat_wellness', name: { de: 'Wellness & Spa', en: 'Wellness & Spa', tr: 'Wellness & Spa', fr: 'Bien-être & Spa', hr: 'Wellness i spa' }, icon: 'Waves' },
-  { id: 'cat_leisure', name: { de: 'Freizeit & Aktivitäten', en: 'Leisure & Activities', tr: 'Eğlence & Aktiviteler', fr: 'Loisirs & Activités', hr: 'Slobodno vrijeme' }, icon: 'Compass' },
-  { id: 'cat_mobility', name: { de: 'Anreise & Mobilität', en: 'Arrival & Mobility', tr: 'Ulaşım & Mobilite', fr: 'Arrivée & Mobilité', hr: 'Dolazak i mobilnost' }, icon: 'Car' },
-  { id: 'cat_service', name: { de: 'Service & Informationen', en: 'Service & Information', tr: 'Servis & Bilgiler', fr: 'Service & Informations', hr: 'Usluge i informacije' }, icon: 'Phone' },
-  { id: 'cat_safety', name: { de: 'Regeln & Sicherheit', en: 'Rules & Safety', tr: 'Kurallar & Güvenlik', fr: 'Règles & Sécurité', hr: 'Pravila i sigurnost' }, icon: 'ShieldCheck' }
+{id:'cat_hotel',name:{de:'Hotel & Unterkunft',en:'Hotel & Accommodation',tr:'Hotel & Konaklama',fr:'Hôtel & hébergement',es:'Hotel y alojamiento',cs:'Hotel a ubytování',sq:'Hotel dhe akomodim',sv:'Hotell och boende',nb:'Hotell og overnatting',it:'Hotel e alloggio'},icon:'Building'},
+{id:'cat_food',name:{de:'Essen & Trinken',en:'Food & Drinks',tr:'Yeme & İçme',fr:'Restauration',es:'Comida y bebidas',cs:'Jídlo a nápoje',sq:'Ushqim dhe pije',sv:'Mat och dryck',nb:'Mat og drikke',it:'Cibo e bevande'},icon:'Utensils'},
+{id:'cat_wellness',name:{de:'Wellness & Spa',en:'Wellness & Spa',tr:'Wellness & Spa',fr:'Bien-être & spa',es:'Bienestar y spa',cs:'Wellness a spa',sq:'Wellness dhe spa',sv:'Wellness och spa',nb:'Velvære og spa',it:'Benessere e spa'},icon:'Waves'},
+{id:'cat_leisure',name:{de:'Freizeit & Aktivitäten',en:'Leisure & Activities',tr:'Boş Zaman & Aktiviteler',fr:'Loisirs & activités',es:'Ocio y actividades',cs:'Volný čas a aktivity',sq:'Kohë e lirë dhe aktivitete',sv:'Fritid och aktiviteter',nb:'Fritid og aktiviteter',it:'Tempo libero e attività'},icon:'Compass'},
+{id:'cat_environment',name:{de:'Umgebung & Ausflüge',en:'Area & Excursions',tr:'Çevre & Geziler',fr:'Environs & excursions',es:'Entorno y excursiones',cs:'Okolí a výlety',sq:'Rrethina dhe ekskursione',sv:'Område och utflykter',nb:'Område og utflukter',it:'Dintorni ed escursioni'},icon:'MapPin'},
+{id:'cat_mobility',name:{de:'Anreise & Mobilität',en:'Arrival & Mobility',tr:'Ulaşım & Mobilite',fr:'Arrivée & mobilité',es:'Llegada y movilidad',cs:'Příjezd a mobilita',sq:'Mbërritja dhe lëvizshmëria',sv:'Ankomst och mobilitet',nb:'Ankomst og mobilitet',it:'Arrivo e mobilità'},icon:'Car'},
+{id:'cat_service',name:{de:'Service & Informationen',en:'Service & Information',tr:'Hizmet & Bilgiler',fr:'Services & informations',es:'Servicios e información',cs:'Služby a informace',sq:'Shërbime dhe informacione',sv:'Service och information',nb:'Service og informasjon',it:'Servizi e informazioni'},icon:'Phone'},
+{id:'cat_safety',name:{de:'Regeln & Sicherheit',en:'Rules & Safety',tr:'Kurallar & Güvenlik',fr:'Règles & sécurité',es:'Normas y seguridad',cs:'Pravidla a bezpečnost',sq:'Rregulla dhe siguria',sv:'Regler och säkerhet',nb:'Regler og sikkerhet',it:'Regole e sicurezza'},icon:'ShieldCheck'}
 ];
 
 // --- EKSİKSİZ PRESET HAVUZU (TÜM KATEGORİLER DOLU) ---
-const categoryPresets = [
+const legacyCategoryPresets = [
   // HOTEL & UNTERKUNFT
   { id: 'hotel_info', categoryId: 'cat_hotel', icon: 'Building', title: { de: 'Hotelinformationen', en: 'Hotel Information', tr: 'Otel Bilgileri', fr: "Informations hôtel", hr: 'Informacije o hotelu' }, schema: [
     { key: 'reception_hours', type: 'text', label: { de: 'Rezeptionszeiten', en: 'Reception Hours', tr: 'Resepsiyon Saatleri', fr: 'Horaires réception', hr: 'Radno vrijeme recepcije' }, default: '07:00 - 22:00 Uhr', primary: true },
     { key: 'emergency_phone', type: 'text', label: { de: 'Notfallnummer', en: 'Emergency Phone', tr: 'Acil Durum Telefonu', fr: "Numéro d'urgence", hr: 'Broj za hitne slučajeve' }, default: '+49 123 456789', primary: true },
     { key: 'multilingual_staff', type: 'boolean', label: { de: 'Mehrsprachiges Personal', en: 'Multilingual Staff', tr: 'Çok Dilli Personel', fr: 'Personnel multilingue', hr: 'Višejezično osoblje' }, default: true, primary: true }
   ]},
-  { id: 'room_info', categoryId: 'cat_hotel', icon: 'Bed', title: { de: 'Zimmerinformationen', en: 'Room Information', tr: 'Oda Bilgileri', fr: 'Informations chambre', hr: 'Informacije o sobi' }, schema: [
-    { key: 'room_features', type: 'multiselect', label: { de: 'Zimmerausstattung', en: 'Room Features', tr: 'Oda Özellikleri', fr: 'Équipements', hr: 'Sadržaj sobe' }, options: ['Safe', 'Klimaanlage', 'Flachbild-TV', 'Haartrockner', 'Kaffeemaschine'], default: ['Safe', 'Klimaanlage', 'Flachbild-TV'], primary: true },
-    { key: 'balcony_status', type: 'boolean', label: { de: 'Balkon / Terrasse', en: 'Balcony / Terrace', tr: 'Balkon / Teras', fr: 'Balcon / Terrasse', hr: 'Balkon / Terasa' }, default: false, primary: true }
-  ]},
+  { id: 'room_info', categoryId: 'cat_hotel', icon: 'Bed', title: hotelPresets.find(p => p.id === 'HOT_006').title, schema: hotelPresets.find(p => p.id === 'HOT_006').schema },
   { id: 'sleep_comfort', categoryId: 'cat_hotel', icon: 'Bed', title: { de: 'Schlafkomfort', en: 'Sleep Comfort', tr: 'Uyku Konforu', fr: 'Confort du sommeil', hr: 'Udobnost spavanja' }, schema: [
     { key: 'pillow_menu', type: 'boolean', label: { de: 'Kissenmenü verfügbar', en: 'Pillows Menu Available', tr: 'Yastık Menüsü Mevcut', fr: 'Menu d\'oreillers', hr: 'Meni jastuka' }, default: true, primary: true },
     { key: 'mattress_type', type: 'text', label: { de: 'Matratzenart', en: 'Mattress Type', tr: 'Yatak Tipi', fr: 'Type de matelas', hr: 'Vrsta madraca' }, default: 'Orthopädisch / Premium', primary: true }
@@ -281,6 +300,7 @@ const categoryPresets = [
   ]}
 ];
 
+const categoryPresets = [...legacyCategoryPresets, ...hotelPresets, ...additionalPresets];
 const renderSafeIconByName = (iconName, currentTheme) => {
   const themeClass = currentTheme ? currentTheme.text : 'text-slate-800';
   const className = `w-5 h-5 ${themeClass}`;
@@ -302,8 +322,35 @@ const renderSafeIconByName = (iconName, currentTheme) => {
     case 'Recycle': return <Recycle className={className} />;
     case 'Award': return <Award className={className} />;
     case 'Baby': return <Baby className={className} />;
+    case 'Accessibility': return <Accessibility className={className} />;
+    case 'ShoppingBag': return <ShoppingBag className={className} />;
+    case 'Lock': return <Lock className={className} />;
+    case 'Sun': return <Sun className={className} />;
+    case 'Flame': return <Flame className={className} />;
+    case 'Heart': return <Heart className={className} />;
+    case 'Users': return <Users className={className} />;
     default: return <Info className={className} />;
   }
+};
+
+const OTHER_CUSTOM='OTHER_CUSTOM';
+const customTextLabels={de:'Sonstiges – Eigener Text',en:'Other – Custom Text',tr:'Diğer – Özel Metin',fr:'Autre – Texte personnalisé',es:'Otro – Texto personalizado',cs:'Jiné – Vlastní text',sq:'Tjetër – Tekst personal',sv:'Annat – Egen text',nb:'Annet – Egendefinert tekst',it:'Altro – Testo personalizzato'};
+const customTextFieldLabels={de:'Eigener Text (wird nicht übersetzt)',en:'Custom text (not translated)',tr:'Özel metin (çevrilmez)',fr:'Texte personnalisé (non traduit)',es:'Texto personalizado (no se traduce)',cs:'Vlastní text (nepřekládá se)',sq:'Tekst personal (nuk përkthehet)',sv:'Egen text (översätts inte)',nb:'Egendefinert tekst (oversettes ikke)',it:'Testo personalizzato (non tradotto)'};
+const optionId=o=>typeof o==='string'?o:o.id;
+const optionLabel=(o,lang)=>typeof o==='string'?o:((o.label&&(o.label[lang]||o.label.de))||o.id);
+const getFieldOptions=f=>[...(Array.isArray(f?.options)?f.options:[]).filter(o=>optionId(o)!==OTHER_CUSTOM),{id:OTHER_CUSTOM,label:customTextLabels}];
+const PresetFieldEditor=({field,value,fieldValues,onChange,onCustomTextChange,lang,hideLabel=false})=>{
+const val=value!==undefined?value:field.default,options=getFieldOptions(field),customKey=field.key+'__customText',customValue=fieldValues[customKey]||'';
+const selected=field.type==='multiselect'?(Array.isArray(val)&&val.includes(OTHER_CUSTOM)):val===OTHER_CUSTOM;
+const label=(field.label&&(field.label[lang]||field.label.de))||field.key;
+const toggle=(id,checked)=>{const current=Array.isArray(val)?val:[];onChange(checked?[...current.filter(x=>x!==id),id]:current.filter(x=>x!==id));};
+return <div className="space-y-1.5">{!hideLabel&&<label className="block text-[10px] font-extrabold text-stone-500 uppercase">{label}</label>}
+{field.type==='boolean'?<input type="checkbox" checked={!!val} onChange={e=>onChange(e.target.checked)}/>:
+field.type==='select'?<select value={val||''} onChange={e=>onChange(e.target.value)} className="w-full p-2.5 text-xs border border-stone-200 rounded-xl bg-white">{(Array.isArray(options) ? options : []).map(o=><option key={optionId(o)} value={optionId(o)}>{optionLabel(o,lang)}</option>)}</select>:
+field.type==='multiselect'?<div className="grid grid-cols-1 sm:grid-cols-2 gap-2">{(Array.isArray(options) ? options : []).map(o=>{const id=optionId(o);return <label key={id} className="flex items-center gap-2 rounded-xl border border-stone-200 bg-white px-3 py-2 text-xs cursor-pointer"><input type="checkbox" checked={(Array.isArray(val)?val:[]).includes(id)} onChange={e=>toggle(id,e.target.checked)}/><span>{optionLabel(o,lang)}</span></label>;})}</div>:
+field.type==='textarea'?<textarea rows={3} maxLength={5000} value={val||''} onChange={e=>onChange(e.target.value)} className="w-full p-2.5 text-xs border border-stone-200 rounded-xl"/>:
+<input type="text" value={val??''} onChange={e=>onChange(e.target.value)} className="w-full p-2.5 text-xs border border-stone-200 rounded-xl"/>}
+{selected&&<div className="pt-2 space-y-1"><label className="block text-[10px] font-bold text-amber-800">{customTextFieldLabels[lang]||customTextFieldLabels.de}</label><textarea rows={3} maxLength={2000} value={customValue} onChange={e=>onCustomTextChange(customKey,e.target.value)} placeholder={customTextLabels[lang]||customTextLabels.de} className="w-full p-2.5 text-xs border border-amber-300 rounded-xl bg-amber-50/40"/><span className="text-[10px] text-stone-400">{customValue.length}/2000</span></div>}</div>;
 };
 
 // --- 3-ADIMLI SAAS EDITÖR MODALI ---
@@ -349,7 +396,7 @@ const CompactPresetEditorModal = ({ isOpen, onClose, onSave, currentTheme, lang,
     const initialVals = {};
     if (preset && preset.schema) {
       preset.schema.forEach(f => {
-        initialVals[f.key] = f.default;
+        initialVals[f.key] = f.default !== undefined ? f.default : (f.type === 'multiselect' ? [] : '');
       });
     }
     setFieldValues(initialVals);
@@ -374,7 +421,7 @@ const CompactPresetEditorModal = ({ isOpen, onClose, onSave, currentTheme, lang,
     onClose();
   };
 
-  const availablePresets = categoryPresets.filter(p => p.categoryId === selectedMainCat)
+  const availablePresets = categoryPresets.filter(p => p.categoryId === selectedMainCat || (selectedMainCat === 'cat_safety' && (p.categoryId === 'cat_sustainability' || p.categoryId === 'cat_certificates')))
     .filter(p => {
       if (!searchQuery) return true;
       const title = (p.title && (p.title[lang] || p.title.de)) || '';
@@ -385,8 +432,8 @@ const CompactPresetEditorModal = ({ isOpen, onClose, onSave, currentTheme, lang,
   const secondaryFields = selectedPreset?.schema?.filter(f => !f.primary) || [];
 
   return (
-    <div className="fixed inset-0 bg-slate-950/70 backdrop-blur-sm z-[9999] flex items-center justify-center p-3 sm:p-6 animate-fade-in">
-      <div className="bg-white w-full max-w-2xl rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh] border border-stone-200">
+    <div className="fixed inset-0 bg-slate-950/70 backdrop-blur-sm z-[9999] flex items-center justify-center p-2 sm:p-6 animate-fade-in overflow-x-hidden">
+      <div className="bg-white w-full min-w-0 max-w-2xl rounded-2xl sm:rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[calc(100dvh-1rem)] sm:max-h-[90vh] border border-stone-200">
         
         <div className="p-4 sm:p-5 border-b border-stone-100 flex items-center justify-between bg-stone-50/80">
           <div>
@@ -406,21 +453,21 @@ const CompactPresetEditorModal = ({ isOpen, onClose, onSave, currentTheme, lang,
           <div className={`h-full transition-all duration-300 ${currentTheme.bg} ${step === 1 ? 'w-1/3' : step === 2 ? 'w-2/3' : 'w-full'}`}></div>
         </div>
 
-        <div className="p-4 sm:p-6 overflow-y-auto flex-1 space-y-4">
+        <div className="min-w-0 p-3 sm:p-6 overflow-y-auto overflow-x-hidden flex-1 space-y-4 overscroll-contain">
           {step === 1 && (
-            <div className="grid grid-cols-2 gap-2.5 sm:gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3 min-w-0">
               {mainCategories.map(mainCat => {
                 const name = mainCat.name[lang] || mainCat.name.de;
                 return (
                   <button
                     key={mainCat.id}
                     onClick={() => handleSelectCategory(mainCat.id)}
-                    className={`p-3.5 rounded-2xl border text-left transition flex items-center gap-3 cursor-pointer bg-white hover:${currentTheme.border} hover:shadow-md group`}
+                    className={`min-w-0 w-full p-3.5 rounded-2xl border text-left transition flex items-center gap-3 cursor-pointer bg-white hover:${currentTheme.border} hover:shadow-md group`}
                   >
                     <div className={`p-2.5 rounded-xl ${currentTheme.bgLight} group-hover:scale-105 transition`}>
                       {renderSafeIconByName(mainCat.icon, currentTheme)}
                     </div>
-                    <span className="text-xs font-bold text-slate-800 group-hover:text-slate-950 truncate">{name}</span>
+                    <span className="min-w-0 flex-1 text-xs font-bold text-slate-800 group-hover:text-slate-950 break-words">{name}</span>
                   </button>
                 );
               })}
@@ -492,55 +539,19 @@ const CompactPresetEditorModal = ({ isOpen, onClose, onSave, currentTheme, lang,
               </div>
 
               <div className="space-y-3 bg-stone-50/60 p-4 rounded-2xl border border-stone-200/80">
-                {primaryFields.map(field => {
-                  const val = fieldValues[field.key] !== undefined ? fieldValues[field.key] : field.default;
-                  const label = field.label[lang] || field.label.de;
-
-                  if (field.type === 'boolean') {
-                    return (
-                      <div key={field.key} className="flex items-center justify-between py-1">
-                        <span className="text-xs font-bold text-slate-800">{label}</span>
-                        <input
-                          type="checkbox"
-                          checked={!!val}
-                          onChange={(e) => handleFieldValueChange(field.key, e.target.checked)}
-                          className="w-4 h-4 accent-amber-800 rounded cursor-pointer"
-                        />
-                      </div>
-                    );
-                  }
-
-                  if (field.type === 'select') {
-                    return (
-                      <div key={field.key} className="space-y-1">
-                        <label className="block text-[10px] font-extrabold text-stone-500 uppercase">{label}</label>
-                        <select
-                          value={val || ''}
-                          onChange={(e) => handleFieldValueChange(field.key, e.target.value)}
-                          className="w-full p-2.5 text-xs border border-stone-200 rounded-xl bg-white font-medium cursor-pointer"
-                        >
-                          {field.options.map(opt => (
-                            <option key={opt} value={opt}>{opt}</option>
-                          ))}
-                        </select>
-                      </div>
-                    );
-                  }
-
-                  return (
-                    <div key={field.key} className="space-y-1">
-                      <label className="block text-[10px] font-extrabold text-stone-500 uppercase">{label}</label>
-                      <input
-                        type="text"
-                        value={val !== undefined ? val : ''}
-                        onChange={(e) => handleFieldValueChange(field.key, e.target.value)}
-                        className="w-full p-2.5 text-xs border border-stone-200 rounded-xl bg-white font-medium"
-                      />
-                    </div>
-                  );
-                })}
-              </div>
-
+{(selectedPreset?.id === 'HOT_006' || selectedPreset?.id === 'room_info') ? (() => {
+  const roomGroups = [
+    {id:'room_amenities',label:{de:'Zimmerausstattung',en:'Room amenities',tr:'Oda donanımı',fr:'Équipements de la chambre',hr:'Oprema sobe',it:'Dotazioni della camera',es:'Equipamiento de la habitación',sv:'Rumsutrustning',no:'Romfasiliteter',sq:'Pajisjet e dhomës'},keys:['room_amenities','room_smoking_policy']},
+    {id:'beds',label:{de:'Betten & Schlafkomfort',en:'Beds & sleep comfort',tr:'Yataklar & uyku konforu',fr:'Lits & confort',hr:'Kreveti i udobnost',it:'Letti e comfort',es:'Camas y confort',sv:'Sängar och komfort',no:'Senger og komfort',sq:'Krevatet dhe rehatia'},keys:['bed_types']},
+    {id:'bath',label:{de:'Badezimmer',en:'Bathroom',tr:'Banyo',fr:'Salle de bains',hr:'Kupaonica',it:'Bagno',es:'Baño',sv:'Badrum',no:'Bad',sq:'Banjo'},keys:['bathroom_features']},
+    {id:'tech',label:{de:'Internet & Unterhaltung',en:'Internet & entertainment',tr:'İnternet & eğlence',fr:'Internet & divertissement',hr:'Internet i zabava',it:'Internet e intrattenimento',es:'Internet y entretenimiento',sv:'Internet och underhållning',no:'Internett og underholdning',sq:'Internet dhe argëtim'},keys:['room_technology']},
+    {id:'view',label:{de:'Balkon, Terrasse & Aussicht',en:'Balcony, terrace & view',tr:'Balkon, teras & manzara',fr:'Balcon, terrasse & vue',hr:'Balkon, terasa i pogled',it:'Balcone, terrazza e vista',es:'Balcón, terraza y vistas',sv:'Balkong, terrass och utsikt',no:'Balkong, terrasse og utsikt',sq:'Ballkon, tarracë dhe pamje'},keys:['room_outdoor_view']},
+    {id:'capacity',label:{de:'Größe & Kapazität',en:'Size & capacity',tr:'Boyut & kapasite',fr:'Taille & capacité',hr:'Veličina i kapacitet',it:'Dimensioni e capienza',es:'Tamaño y capacidad',sv:'Storlek och kapacitet',no:'Størrelse og kapasitet',sq:'Madhësia dhe kapaciteti'},keys:['room_capacity','room_max_guests','room_floor_number']},
+    {id:'accessibility',label:{de:'Barrierefreiheit',en:'Accessibility',tr:'Erişilebilirlik',fr:'Accessibilité',hr:'Pristupačnost',it:'Accessibilità',es:'Accesibilidad',sv:'Tillgänglighet',no:'Tilgjengelighet',sq:'Aksesueshmëria'},keys:['room_accessibility']}
+  ];
+  return <div className="space-y-2">{roomGroups.map((group,index)=><details key={group.id} className="rounded-xl border border-stone-200 bg-white overflow-hidden"><summary className="cursor-pointer list-none flex items-center justify-between px-3 py-3 text-xs font-bold text-slate-800 bg-stone-50"><span>{group.label[lang]||group.label.de}</span><ChevronDown className="w-4 h-4 text-stone-400"/></summary><div className="p-3 space-y-3">{group.keys.map(key=>{const field=primaryFields.find(item=>item.key===key);return field?<PresetFieldEditor key={field.key} field={field} value={fieldValues[field.key]} fieldValues={fieldValues} lang={lang} hideLabel={true} onChange={value=>handleFieldValueChange(field.key,value)} onCustomTextChange={handleFieldValueChange}/>:null;})}</div></details>)}</div>;
+})() : primaryFields.map(field=><PresetFieldEditor key={field.key} field={field} value={fieldValues[field.key]} fieldValues={fieldValues} lang={lang} onChange={value=>handleFieldValueChange(field.key,value)} onCustomTextChange={handleFieldValueChange}/>)}
+</div>
               {secondaryFields.length > 0 && (
                 <div className="border border-stone-200 rounded-2xl overflow-hidden bg-white">
                   <button
@@ -554,23 +565,8 @@ const CompactPresetEditorModal = ({ isOpen, onClose, onSave, currentTheme, lang,
 
                   {showMoreInfo && (
                     <div className="p-4 space-y-3 bg-white border-t border-stone-200">
-                      {secondaryFields.map(field => {
-                        const val = fieldValues[field.key] !== undefined ? fieldValues[field.key] : field.default;
-                        const label = field.label[lang] || field.label.de;
-
-                        return (
-                          <div key={field.key} className="space-y-1">
-                            <label className="block text-[10px] font-extrabold text-stone-500 uppercase">{label}</label>
-                            <input
-                              type="text"
-                              value={val !== undefined ? val : ''}
-                              onChange={(e) => handleFieldValueChange(field.key, e.target.value)}
-                              className="w-full p-2.5 text-xs border border-stone-200 rounded-xl bg-white font-medium"
-                            />
-                          </div>
-                        );
-                      })}
-                    </div>
+{secondaryFields.map(field=><PresetFieldEditor key={field.key} field={field} value={fieldValues[field.key]} fieldValues={fieldValues} lang={lang} onChange={value=>handleFieldValueChange(field.key,value)} onCustomTextChange={handleFieldValueChange}/>)}
+</div>
                   )}
                 </div>
               )}
@@ -590,11 +586,11 @@ const CompactPresetEditorModal = ({ isOpen, onClose, onSave, currentTheme, lang,
         </div>
 
         {step === 3 && (
-          <div className="p-4 border-t border-stone-100 bg-stone-50/80 flex items-center justify-end gap-2">
-            <button onClick={onClose} className="px-4 py-2 text-xs font-bold text-stone-600 hover:text-slate-900 cursor-pointer">
+          <div className="p-3 sm:p-4 border-t border-stone-100 bg-stone-50/95 flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-end gap-2 shrink-0">
+            <button onClick={onClose} className="w-full sm:w-auto px-4 py-3 sm:py-2 text-xs font-bold text-stone-600 hover:text-slate-900 cursor-pointer">
               {t.cancel}
             </button>
-            <button onClick={handleSave} className={`px-5 py-2.5 rounded-xl text-xs font-bold text-white shadow-md ${currentTheme.bg} hover:opacity-95 cursor-pointer flex items-center gap-1.5`}>
+            <button onClick={handleSave} className={`w-full sm:w-auto justify-center px-5 py-3 sm:py-2.5 rounded-xl text-xs font-bold text-white shadow-md ${currentTheme.bg} hover:opacity-95 cursor-pointer flex items-center gap-1.5`}>
               <Check className="w-4 h-4" /> {t.saveAndClose}
             </button>
           </div>
@@ -612,11 +608,11 @@ const GuestCategoryDisplay = ({ category, currentTheme, lang, t }) => {
     <div className="space-y-4">
       {presetObj && presetObj.schema && presetObj.schema.length > 0 && (
         <div className={`bg-white p-5 rounded-3xl shadow-lg border ${currentTheme.border} space-y-4`}>
-          {presetObj.schema.map(field => {
+          {(Array.isArray(presetObj.schema) ? presetObj.schema : []).map(field => {
             const rawVal = fieldValues[field.key] !== undefined ? fieldValues[field.key] : field.default;
             const fieldLabel = (field.label && (field.label[lang] || field.label.de)) || field.key;
 
-            if (rawVal === undefined || rawVal === null || rawVal === '') return null;
+            if (rawVal === undefined || rawVal === null || rawVal === '' || (Array.isArray(rawVal) && rawVal.length === 0)) return null;
 
             return (
               <div key={field.key} className="border-b border-stone-100 last:border-0 pb-3.5 last:pb-0 flex flex-col gap-1.5">
@@ -636,16 +632,9 @@ const GuestCategoryDisplay = ({ category, currentTheme, lang, t }) => {
                   </div>
                 ) : field.type === 'multiselect' && Array.isArray(rawVal) ? (
                   <div className="flex flex-wrap gap-1.5 pt-1">
-                    {rawVal.map(item => (
-                      <span key={item} className={`px-3 py-1.5 rounded-xl text-xs font-bold ${currentTheme.bgLight} ${currentTheme.text} border border-stone-200/60 shadow-xs flex items-center gap-1.5`}>
-                        <Check className="w-3.5 h-3.5" /> {item}
-                      </span>
-                    ))}
-                  </div>
-                ) : (
-                  <div className="text-xs font-extrabold text-slate-900 bg-stone-50 px-4 py-3 rounded-2xl border border-stone-200/70 shadow-xs">
-                    {String(rawVal)}
-                  </div>
+                    {rawVal.filter(item=>item!==OTHER_CUSTOM).map(item=>{const option=(field.options||[]).find(candidate=>optionId(candidate)===item);return <span key={item} className={currentTheme.bgLight+' '+currentTheme.text+' px-3 py-1.5 rounded-xl text-xs font-bold border border-stone-200/60 shadow-xs'}>{option?optionLabel(option,lang):item}</span>;})}
+                    {rawVal.includes(OTHER_CUSTOM)&&fieldValues[field.key+'__customText']&&<p className="w-full mt-2 text-xs text-slate-700 whitespace-pre-line">{fieldValues[field.key+'__customText']}</p>}
+                  </div> ) : field.type === 'select' ? (<div className="text-xs font-extrabold text-slate-900 bg-stone-50 px-4 py-3 rounded-2xl border border-stone-200/70">{rawVal===OTHER_CUSTOM?(customTextLabels[lang]||customTextLabels.de):(()=>{const option=(field.options||[]).find(candidate=>optionId(candidate)===rawVal);return option?optionLabel(option,lang):String(rawVal);})()}{rawVal===OTHER_CUSTOM&&fieldValues[field.key+'__customText']&&<p className="mt-2 whitespace-pre-line font-medium">{fieldValues[field.key+'__customText']}</p>}</div>) : (<div className="text-xs font-extrabold text-slate-900 bg-stone-50 px-4 py-3 rounded-2xl border border-stone-200/70">{String(rawVal)}</div>
                 )}
               </div>
             );
@@ -666,6 +655,20 @@ const GuestCategoryDisplay = ({ category, currentTheme, lang, t }) => {
 export default function App() {
   const [lang, setLang] = useState('de');
   const t = translations[lang] || translations.de;
+  const quickAccessLabels = {
+    de: { title: 'Schnellzugriff anzeigen', wifi: 'WLAN-Karte', parking: 'Parkplatz-Karte', breakfast: 'Frühstücks-Karte', checkin: 'Check-in / Check-out-Karte' },
+    en: { title: 'Show quick access cards', wifi: 'Wi-Fi card', parking: 'Parking card', breakfast: 'Breakfast card', checkin: 'Check-in / Check-out card' },
+    tr: { title: 'Hızlı erişim kartlarını göster', wifi: 'WLAN kartı', parking: 'Otopark kartı', breakfast: 'Kahvaltı kartı', checkin: 'Giriş / Çıkış kartı' },
+    fr: { title: 'Afficher les accès rapides', wifi: 'Carte Wi-Fi', parking: 'Carte parking', breakfast: 'Carte petit-déjeuner', checkin: 'Carte arrivée / départ' },
+    es: { title: 'Mostrar accesos rápidos', wifi: 'Tarjeta Wi-Fi', parking: 'Tarjeta de aparcamiento', breakfast: 'Tarjeta de desayuno', checkin: 'Tarjeta entrada / salida' },
+    cs: { title: 'Zobrazit rychlý přístup', wifi: 'Karta Wi-Fi', parking: 'Karta parkování', breakfast: 'Karta snídaně', checkin: 'Karta příjezd / odjezd' },
+    sq: { title: 'Shfaq qasjet e shpejta', wifi: 'Karta Wi-Fi', parking: 'Karta e parkimit', breakfast: 'Karta e mëngjesit', checkin: 'Karta hyrje / dalje' },
+    sv: { title: 'Visa snabb åtkomst', wifi: 'Wi-Fi-kort', parking: 'Parkeringskort', breakfast: 'Frukostkort', checkin: 'In- och utcheckningskort' },
+    nb: { title: 'Vis hurtigtilgang', wifi: 'Wi-Fi-kort', parking: 'Parkeringskort', breakfast: 'Frokostkort', checkin: 'Inn- og utsjekkingskort' },
+    it: { title: 'Mostra accessi rapidi', wifi: 'Scheda Wi-Fi', parking: 'Scheda parcheggio', breakfast: 'Scheda colazione', checkin: 'Scheda check-in / check-out' },
+    hr: { title: 'Prikaži brzi pristup', wifi: 'Wi-Fi kartica', parking: 'Kartica parkirališta', breakfast: 'Kartica doručka', checkin: 'Kartica prijave / odjave' }
+  };
+  const quickLabels = quickAccessLabels[lang] || quickAccessLabels.de;
 
   const [appMode, setAppMode] = useState('guest'); 
   const [isEditorModalOpen, setIsEditorModalOpen] = useState(false);
@@ -678,30 +681,34 @@ export default function App() {
 
   const [currentSlide] = useState(0);
   const [copiedWifi, setCopiedWifi] = useState(false);
+  const [qrPrintFormat, setQrPrintFormat] = useState('a4');
 
-  const [scanCount] = useState(184);
-  const [daysLeft] = useState(24);
-  const [activeRooms] = useState(12);
+  const guestPageUrl = typeof window !== 'undefined' ? `${window.location.origin}${window.location.pathname}` : '';
 
-  const [analyticsClicks] = useState([
-    { category: 'Hotelinformationen', clicks: 84 },
-    { category: 'WLAN & Internet', clicks: 72 },
-    { category: 'Frühstück', clicks: 59 },
-    { category: 'Wellness & Sauna', clicks: 43 },
-    { category: 'Anreise & Parken', dl: 31 }
-  ]);
-
+  const quickAccessDefaults = {
+    de:{wifi:{title:'WLAN',description:'Verbinden Sie sich mit unserem Gäste-WLAN.'},parking:{title:'Parkplatz',description:'Kostenfreie Parkplätze am Haus verfügbar.'},breakfast:{title:'Frühstück',description:'Frühstückszeiten: 07:30–10:30 Uhr.'},checkin:{title:'Check-in / Check-out',description:'Check-in ab 15:00 Uhr · Check-out bis 11:00 Uhr.'}},
+    en:{wifi:{title:'Wi-Fi',description:'Connect to our guest Wi-Fi.'},parking:{title:'Parking',description:'Free parking is available at the property.'},breakfast:{title:'Breakfast',description:'Breakfast hours: 07:30–10:30.'},checkin:{title:'Check-in / Check-out',description:'Check-in from 3:00 PM · Check-out until 11:00 AM.'}},
+    tr:{wifi:{title:'Kablosuz İnternet',description:'Misafir Wi-Fi ağımıza bağlanabilirsiniz.'},parking:{title:'Otopark',description:'Tesisimizde ücretsiz otopark mevcuttur.'},breakfast:{title:'Kahvaltı',description:'Kahvaltı saatleri: 07:30–10:30.'},checkin:{title:'Giriş / Çıkış',description:'Giriş 15:00 itibarıyla · Çıkış 11:00’e kadar.'}},
+    fr:{wifi:{title:'Wi-Fi',description:'Connectez-vous à notre Wi-Fi client.'},parking:{title:'Parking',description:'Un parking gratuit est disponible sur place.'},breakfast:{title:'Petit-déjeuner',description:'Horaires : 07h30–10h30.'},checkin:{title:'Arrivée / Départ',description:'Arrivée dès 15h · Départ avant 11h.'}},
+    hr:{wifi:{title:'Wi-Fi',description:'Povežite se s našom Wi-Fi mrežom za goste.'},parking:{title:'Parkiralište',description:'Besplatno parkiralište dostupno je u sklopu objekta.'},breakfast:{title:'Doručak',description:'Vrijeme doručka: 07:30–10:30.'},checkin:{title:'Prijava / Odjava',description:'Prijava od 15:00 · Odjava do 11:00.'}},
+    it:{wifi:{title:'Wi-Fi',description:'Connettiti alla nostra rete Wi-Fi per gli ospiti.'},parking:{title:'Parcheggio',description:'Parcheggio gratuito disponibile presso la struttura.'},breakfast:{title:'Colazione',description:'Orario colazione: 07:30–10:30.'},checkin:{title:'Check-in / Check-out',description:'Check-in dalle 15:00 · Check-out entro le 11:00.'}},
+    es:{wifi:{title:'Wi-Fi',description:'Conéctese a nuestra red Wi-Fi para huéspedes.'},parking:{title:'Aparcamiento',description:'Hay aparcamiento gratuito en el establecimiento.'},breakfast:{title:'Desayuno',description:'Horario del desayuno: 07:30–10:30.'},checkin:{title:'Entrada / Salida',description:'Entrada desde las 15:00 · Salida hasta las 11:00.'}},
+    sv:{wifi:{title:'Wi-Fi',description:'Anslut till vårt gäst-Wi-Fi.'},parking:{title:'Parkering',description:'Gratis parkering finns vid boendet.'},breakfast:{title:'Frukost',description:'Frukosttider: 07.30–10.30.'},checkin:{title:'Incheckning / Utcheckning',description:'Incheckning från 15.00 · Utcheckning senast 11.00.'}},
+    no:{wifi:{title:'Wi-Fi',description:'Koble til vårt gjeste-Wi-Fi.'},parking:{title:'Parkering',description:'Gratis parkering er tilgjengelig på stedet.'},breakfast:{title:'Frokost',description:'Frokosttider: 07:30–10:30.'},checkin:{title:'Innsjekking / Utsjekking',description:'Innsjekking fra 15:00 · Utsjekking innen 11:00.'}},
+    sq:{wifi:{title:'Wi-Fi',description:'Lidhu me rrjetin tonë Wi-Fi për mysafirët.'},parking:{title:'Parkim',description:'Parkim falas është i disponueshëm në ambientet tona.'},breakfast:{title:'Mëngjesi',description:'Orari i mëngjesit: 07:30–10:30.'},checkin:{title:'Hyrja / Dalja',description:'Hyrja nga ora 15:00 · Dalja deri në 11:00.'}}
+  };
+  const [quickEditLang, setQuickEditLang] = useState('de');
   const [hotel, setHotel] = useState(() => {
     const saved = localStorage.getItem('gm24_hotel');
     const defaultData = {
       logoUrl: '',
       name: 'Boutique Hotel & Suites', 
       locationTitle: 'REGION / STANDORT',
-      address: 'Musterstraße 1, 12345 Musterstadt',
+      address: '',
       phone: '+49 123 456789',
       email: 'info@meine-unterkunft.de',
       website: 'www.meine-unterkunft.de',
-      googleReviewUrl: 'https://g.page/r/example/review',
+      googleReviewUrl: '',
       wifiSsid: 'Guest_WiFi',
       wifiPass: 'welcome2026',
       breakfastTime: '07:30 - 10:30 Uhr',
@@ -711,18 +718,97 @@ export default function App() {
       showParking: true,
       showBreakfast: true,
       showCheckInOut: true,
+      quickAccessContent: quickAccessDefaults,
       themeColor: 'amber',
       images: [
         'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1000&q=80',
         'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=1000&q=80'
       ]
     };
-    return saved ? { ...defaultData, ...JSON.parse(saved) } : defaultData;
+    if (!saved) return defaultData;
+    try {
+      const parsed = JSON.parse(saved);
+      const merged = parsed && typeof parsed === 'object' && !Array.isArray(parsed) ? { ...defaultData, ...parsed } : defaultData;
+      if (/Musterstraße 1|12345 Musterstadt/i.test(merged.address || '')) merged.address = '';
+      if (/g\.page\/r\/example\/review/i.test(merged.googleReviewUrl || '')) merged.googleReviewUrl = '';
+      const quickAccessContent = Object.fromEntries(Object.entries(quickAccessDefaults).map(([language, cards]) => [
+        language,
+        Object.fromEntries(Object.entries(cards).map(([id, defaults]) => [id, { ...defaults, ...(language === 'de' ? (id === 'parking' ? { description: merged.parkingInfo || defaults.description } : id === 'breakfast' ? { description: merged.breakfastTime || defaults.description } : id === 'checkin' ? { description: merged.checkInOut || defaults.description } : {}) : {}), ...(merged.quickAccessContent?.[language]?.[id] || {}) }]))
+      ]));
+      return { ...merged, quickAccessContent, images: Array.isArray(merged.images) ? merged.images : defaultData.images };
+    } catch (error) {
+      console.error('Ungültige gespeicherte Hoteldaten – Standardwerte werden verwendet.', error);
+      return defaultData;
+    }
   });
+
+  const [weather, setWeather] = useState({ status: 'loading', temperature: null, code: null, place: '' });
+  const weatherLabels = {
+    de: { loading:'Wetter wird geladen …', missing:'Hotelstandort fehlt', unavailable:'Wetterdaten derzeit nicht verfügbar', clear:'Klar', mainlyClear:'Überwiegend klar', partlyCloudy:'Teilweise bewölkt', overcast:'Bedeckt', fog:'Nebel', drizzle:'Nieselregen', rain:'Regen', snow:'Schnee', showers:'Regenschauer', snowShowers:'Schneeschauer', storm:'Gewitter' },
+    en: { loading:'Loading weather …', missing:'Hotel location missing', unavailable:'Weather data currently unavailable', clear:'Clear', mainlyClear:'Mainly clear', partlyCloudy:'Partly cloudy', overcast:'Overcast', fog:'Fog', drizzle:'Drizzle', rain:'Rain', snow:'Snow', showers:'Rain showers', snowShowers:'Snow showers', storm:'Thunderstorm' },
+    tr: { loading:'Hava durumu yükleniyor …', missing:'Otel konumu eksik', unavailable:'Hava durumu bilgisi şu anda alınamıyor', clear:'Açık', mainlyClear:'Çoğunlukla açık', partlyCloudy:'Parçalı bulutlu', overcast:'Kapalı', fog:'Sis', drizzle:'Çiseleme', rain:'Yağmur', snow:'Kar', showers:'Sağanak', snowShowers:'Kar sağanağı', storm:'Gök gürültülü fırtına' },
+    fr: { loading:'Chargement de la météo …', missing:'Emplacement de l’hôtel manquant', unavailable:'Météo actuellement indisponible', clear:'Dégagé', mainlyClear:'Plutôt dégagé', partlyCloudy:'Partiellement nuageux', overcast:'Couvert', fog:'Brouillard', drizzle:'Bruine', rain:'Pluie', snow:'Neige', showers:'Averses', snowShowers:'Averses de neige', storm:'Orage' },
+    hr: { loading:'Učitavanje vremena …', missing:'Nedostaje lokacija hotela', unavailable:'Vremenski podaci trenutno nisu dostupni', clear:'Vedro', mainlyClear:'Pretežno vedro', partlyCloudy:'Djelomično oblačno', overcast:'Oblačno', fog:'Magla', drizzle:'Rosulja', rain:'Kiša', snow:'Snijeg', showers:'Pljuskovi', snowShowers:'Snježni pljuskovi', storm:'Grmljavinska oluja' },
+    it: { loading:'Caricamento meteo …', missing:'Posizione dell’hotel mancante', unavailable:'Dati meteo momentaneamente non disponibili', clear:'Sereno', mainlyClear:'Prevalentemente sereno', partlyCloudy:'Parzialmente nuvoloso', overcast:'Coperto', fog:'Nebbia', drizzle:'Pioviggine', rain:'Pioggia', snow:'Neve', showers:'Rovesci', snowShowers:'Rovesci di neve', storm:'Temporale' },
+    es: { loading:'Cargando el tiempo …', missing:'Falta la ubicación del hotel', unavailable:'Datos meteorológicos no disponibles', clear:'Despejado', mainlyClear:'Mayormente despejado', partlyCloudy:'Parcialmente nublado', overcast:'Cubierto', fog:'Niebla', drizzle:'Llovizna', rain:'Lluvia', snow:'Nieve', showers:'Chubascos', snowShowers:'Chubascos de nieve', storm:'Tormenta' },
+    sv: { loading:'Laddar väder …', missing:'Hotellets plats saknas', unavailable:'Väderdata är inte tillgängliga just nu', clear:'Klart', mainlyClear:'Mestadels klart', partlyCloudy:'Växlande molnighet', overcast:'Mulet', fog:'Dimma', drizzle:'Duggregn', rain:'Regn', snow:'Snö', showers:'Regnskurar', snowShowers:'Snöbyar', storm:'Åska' },
+    no: { loading:'Laster vær …', missing:'Hotellets plassering mangler', unavailable:'Værdata er ikke tilgjengelig nå', clear:'Klart', mainlyClear:'For det meste klart', partlyCloudy:'Delvis skyet', overcast:'Overskyet', fog:'Tåke', drizzle:'Yr', rain:'Regn', snow:'Snø', showers:'Regnbyger', snowShowers:'Snøbyger', storm:'Tordenvær' },
+    sq: { loading:'Po ngarkohet moti …', missing:'Mungon vendndodhja e hotelit', unavailable:'Të dhënat e motit nuk janë të disponueshme', clear:'Kthjellët', mainlyClear:'Kryesisht kthjellët', partlyCloudy:'Pjesërisht me re', overcast:'Vranët', fog:'Mjegull', drizzle:'Shi i imët', rain:'Shi', snow:'Borë', showers:'Rrebeshe', snowShowers:'Rrebeshe bore', storm:'Stuhi' }
+  };
+  const getWeatherDescription = (code, labels) => {
+    if (code === 0) return labels.clear;
+    if (code === 1) return labels.mainlyClear;
+    if (code === 2) return labels.partlyCloudy;
+    if (code === 3) return labels.overcast;
+    if ([45,48].includes(code)) return labels.fog;
+    if ([51,53,55,56,57].includes(code)) return labels.drizzle;
+    if ([61,63,65,66,67,80,81,82].includes(code)) return [80,81,82].includes(code) ? labels.showers : labels.rain;
+    if ([71,73,75,77].includes(code)) return labels.snow;
+    if ([85,86].includes(code)) return labels.snowShowers;
+    if ([95,96,99].includes(code)) return labels.storm;
+    return labels.unavailable;
+  };
+  useEffect(() => {
+    const address = (hotel.address || '').trim();
+    const isExampleAddress = /Musterstraße 1|12345 Musterstadt/i.test(address);
+    if (!address || isExampleAddress) {
+      setWeather({ status: 'missing', temperature: null, code: null, place: '' });
+      return;
+    }
+    const controller = new AbortController();
+    setWeather({ status: 'loading', temperature: null, code: null, place: '' });
+    const loadWeather = async () => {
+      try {
+        const geoResponse = await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(address)}&count=1&language=${lang === 'tr' ? 'tr' : lang === 'de' ? 'de' : 'en'}&format=json`, { signal: controller.signal });
+        if (!geoResponse.ok) throw new Error('Geocoding request failed');
+        const geoData = await geoResponse.json();
+        const place = geoData.results?.[0];
+        if (!place) throw new Error('Hotel location not found');
+        const weatherResponse = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${place.latitude}&longitude=${place.longitude}&current=temperature_2m,weather_code&timezone=auto`, { signal: controller.signal });
+        if (!weatherResponse.ok) throw new Error('Weather request failed');
+        const weatherData = await weatherResponse.json();
+        if (typeof weatherData.current?.temperature_2m !== 'number' || typeof weatherData.current?.weather_code !== 'number') throw new Error('Weather data incomplete');
+        setWeather({ status: 'ready', temperature: Math.round(weatherData.current.temperature_2m), code: weatherData.current.weather_code, place: [place.name, place.admin1, place.country].filter(Boolean).join(', ') });
+      } catch (error) {
+        if (error.name !== 'AbortError') setWeather({ status: 'unavailable', temperature: null, code: null, place: '' });
+      }
+    };
+    loadWeather();
+    return () => controller.abort();
+  }, [hotel.address, lang]);
 
   const [categories, setCategories] = useState(() => {
     const saved = localStorage.getItem('gm24_categories');
-    return saved ? JSON.parse(saved) : [
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed)) return parsed;
+        console.error('Ungültige gespeicherte Kategorien – Standardkategorien werden verwendet.');
+      } catch (error) {
+        console.error('Gespeicherte Kategorien konnten nicht gelesen werden – Standardkategorien werden verwendet.', error);
+      }
+    }
+    return [
       { 
         id: '1', 
         presetId: 'wifi_internet', 
@@ -744,6 +830,22 @@ export default function App() {
     ];
   });
 
+  const copyWifiLabels = {
+    de:{copy:'Kopieren',copied:'Kopiert'},en:{copy:'Copy',copied:'Copied'},tr:{copy:'Kopyala',copied:'Kopyalandı'},fr:{copy:'Copier',copied:'Copié'},hr:{copy:'Kopiraj',copied:'Kopirano'},it:{copy:'Copia',copied:'Copiato'},es:{copy:'Copiar',copied:'Copiado'},sv:{copy:'Kopiera',copied:'Kopierat'},no:{copy:'Kopier',copied:'Kopiert'},sq:{copy:'Kopjo',copied:'U kopjua'}
+  };
+  const copyWifiLabel = copyWifiLabels[lang] || copyWifiLabels.de;
+  const getQuickCardText = (cardId, field) => {
+    const language = lang === 'nb' ? 'no' : lang === 'cs' ? 'en' : lang;
+    const card = hotel.quickAccessContent?.[language]?.[cardId] || hotel.quickAccessContent?.de?.[cardId] || quickAccessDefaults.de[cardId];
+    return card?.[field] || quickAccessDefaults.de[cardId][field];
+  };
+  const updateQuickCardText = (cardId, field, value) => setHotel(prev => ({
+    ...prev, quickAccessContent: { ...(prev.quickAccessContent || quickAccessDefaults),
+      [quickEditLang]: { ...(prev.quickAccessContent?.[quickEditLang] || quickAccessDefaults[quickEditLang]),
+        [cardId]: { ...(prev.quickAccessContent?.[quickEditLang]?.[cardId] || quickAccessDefaults[quickEditLang][cardId]), [field]: value }
+      }
+    }
+  }));
   const currentTheme = themeColors.find(tc => tc.id === hotel.themeColor) || themeColors[0];
 
   const handleSaveCategoryModal = (catData) => {
@@ -761,28 +863,15 @@ export default function App() {
   };
 
   const handleSaveData = async () => {
+    // Save the complete editor state locally; the current Supabase schema has no multilingual quick-access fields.
+    localStorage.setItem('gm24_hotel', JSON.stringify(hotel));
+    localStorage.setItem('gm24_categories', JSON.stringify(categories));
     try {
-      const { error } = await supabase
-        .from('hotels')
-        .upsert({ 
-          id: 'default-hotel-id', 
-          name: hotel.name,
-          phone: hotel.phone,
-          email: hotel.email,
-          address: hotel.address,
-          categories: categories,
-          theme_color: hotel.themeColor
-        });
-
-      if (error) throw error;
-      setIsSaved(true);
-      setTimeout(() => setIsSaved(false), 3000);
-    } catch (err) {
-      localStorage.setItem('gm24_hotel', JSON.stringify(hotel));
-      localStorage.setItem('gm24_categories', JSON.stringify(categories));
-      setIsSaved(true);
-      setTimeout(() => setIsSaved(false), 3000);
-    }
+      const { error } = await supabase.from('hotels').upsert({ id: 'default-hotel-id', name: hotel.name, phone: hotel.phone, email: hotel.email, address: hotel.address, categories: categories, theme_color: hotel.themeColor });
+      if (error) console.warn('Supabase sync skipped; local changes are saved.', error);
+    } catch (err) { console.warn('Supabase sync unavailable; local changes are saved.', err); }
+    setIsSaved(true);
+    setTimeout(() => setIsSaved(false), 3000);
   };
 
   const copyWifiPassword = () => {
@@ -818,7 +907,8 @@ export default function App() {
 
   const groupedCategories = (categories || []).reduce((acc, cat) => {
     if (!cat) return acc;
-    const mainCatObj = mainCategories.find(mc => mc.id === cat.categoryId) || mainCategories[0];
+    const normalizedCategoryId = (cat.categoryId === 'cat_sustainability' || cat.categoryId === 'cat_certificates') ? 'cat_safety' : cat.categoryId;
+    const mainCatObj = mainCategories.find(mc => mc.id === normalizedCategoryId) || mainCategories[0];
     const groupName = mainCatObj.name[lang] || mainCatObj.name.de;
     if (!acc[groupName]) acc[groupName] = [];
     const presetData = categoryPresets.find(p => p.id === cat.presetId);
@@ -829,39 +919,39 @@ export default function App() {
   const activeQuickCards = [
     hotel.showWifi && (
       <div key="wifi" className="bg-white p-4 rounded-2xl shadow-sm border border-stone-200 space-y-2">
-        <div className={`flex items-center gap-2 ${currentTheme.text}`}><Wifi className="w-5 h-5" /><span className="font-bold text-xs text-slate-900">{t.wlanTitle}</span></div>
+        <div className={`flex items-center gap-2 ${currentTheme.text}`}><Wifi className="w-5 h-5" /><span className="font-bold text-xs text-slate-900">{getQuickCardText('wifi','title')}</span></div>
+        <p className="text-[11px] text-slate-600">{getQuickCardText('wifi','description')}</p>
         <div className="text-[11px] text-slate-500 font-mono bg-stone-50 p-2 rounded-lg border">
           <div><b>{hotel.wifiSsid}</b></div>
-          <div className="flex justify-between items-center mt-1">
-            <span>{hotel.wifiPass}</span>
-            <button onClick={copyWifiPassword} className={`${currentTheme.bgLight} ${currentTheme.text} p-1 rounded cursor-pointer`}>{copiedWifi ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}</button>
+          <div className="flex flex-col items-start mt-2 gap-2 min-w-0"><span className="block w-full min-w-0 whitespace-normal break-all leading-relaxed">{hotel.wifiPass}</span>
+            <button type="button" onClick={copyWifiPassword} aria-label="Copy Wi-Fi password" title={copiedWifi ? copyWifiLabel.copied : copyWifiLabel.copy} className={`${currentTheme.bgLight} ${currentTheme.text} px-2 py-1.5 rounded-lg cursor-pointer inline-flex items-center gap-1 shrink-0`}>{copiedWifi ? <><Check className="w-3.5 h-3.5 text-emerald-600" /><span className="text-[10px]">{copyWifiLabel.copied}</span></> : <><Copy className="w-3.5 h-3.5" /><span className="text-[10px]">{copyWifiLabel.copy}</span></>}</button>
           </div>
         </div>
       </div>
     ),
     hotel.showParking && (
       <div key="parking" className="bg-white p-4 rounded-2xl shadow-sm border border-stone-200 space-y-2">
-        <div className={`flex items-center gap-2 ${currentTheme.text}`}><Car className="w-5 h-5" /><span className="font-bold text-xs text-slate-900">{t.parkingTitle}</span></div>
-        <p className="text-[11px] text-slate-600">{hotel.parkingInfo}</p>
+        <div className={`flex items-center gap-2 ${currentTheme.text}`}><Car className="w-5 h-5" /><span className="font-bold text-xs text-slate-900">{getQuickCardText('parking','title')}</span></div>
+        <p className="text-[11px] text-slate-600">{getQuickCardText('parking','description')}</p>
       </div>
     ),
     hotel.showBreakfast && (
       <div key="breakfast" className="bg-white p-4 rounded-2xl shadow-sm border border-stone-200 space-y-2">
-        <div className={`flex items-center gap-2 ${currentTheme.text}`}><Coffee className="w-5 h-5" /><span className="font-bold text-xs text-slate-900">{t.breakfastTitle}</span></div>
-        <p className="text-[11px] text-slate-600">{hotel.breakfastTime}</p>
+        <div className={`flex items-center gap-2 ${currentTheme.text}`}><Coffee className="w-5 h-5" /><span className="font-bold text-xs text-slate-900">{getQuickCardText('breakfast','title')}</span></div>
+        <p className="text-[11px] text-slate-600">{getQuickCardText('breakfast','description')}</p>
       </div>
     ),
     hotel.showCheckInOut && (
       <div key="checkinout" className="bg-white p-4 rounded-2xl shadow-sm border border-stone-200 space-y-2">
-        <div className={`flex items-center gap-2 ${currentTheme.text}`}><Clock className="w-5 h-5" /><span className="font-bold text-xs text-slate-900">{t.checkInOutTitle}</span></div>
-        <p className="text-[11px] text-slate-600">{hotel.checkInOut}</p>
+        <div className={`flex items-center gap-2 ${currentTheme.text}`}><Clock className="w-5 h-5" /><span className="font-bold text-xs text-slate-900">{getQuickCardText('checkin','title')}</span></div>
+        <p className="text-[11px] text-slate-600">{getQuickCardText('checkin','description')}</p>
       </div>
     )
   ].filter(Boolean);
 
   if (appMode === 'dashboard') {
     return (
-      <div className="min-h-screen bg-[#FBF9F5] font-sans text-slate-800 p-6 md:p-10 space-y-8 relative pb-28">
+      <div className="min-h-screen w-full max-w-full overflow-x-hidden box-border bg-[#FBF9F5] font-sans text-slate-800 p-3 sm:p-6 md:p-10 space-y-6 sm:space-y-8 relative pb-28">
         
         <CompactPresetEditorModal
           isOpen={isEditorModalOpen}
@@ -874,12 +964,15 @@ export default function App() {
         />
 
         {/* DASHBOARD HEADER */}
-        <div className="max-w-5xl mx-auto flex justify-between items-center pb-6 border-b border-stone-200">
+        <div className="w-full max-w-5xl mx-auto min-w-0 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 pb-5 sm:pb-6 border-b border-stone-200">
           <div className="flex items-center gap-2">
             <span className={`${currentTheme.bg} text-white font-black px-3 py-1.5 rounded-xl text-sm`}>G</span>
             <span className="font-extrabold text-lg tracking-tight">gastemappe24 <span className={`${currentTheme.text} text-xs uppercase px-1.5 py-0.5 ${currentTheme.bgLight} rounded-md`}>PRO</span></span>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="w-full sm:w-auto flex flex-wrap items-center gap-2 sm:gap-3">
+            <select aria-label="Dashboard language" value={lang} onChange={(e) => setLang(e.target.value)} className="bg-white border border-stone-200 text-xs rounded-xl px-2.5 py-2 cursor-pointer">
+              <option value="de">🇩🇪 DE</option><option value="en">🇬🇧 EN</option><option value="tr">🇹🇷 TR</option><option value="fr">🇫🇷 FR</option><option value="es">🇪🇸 ES</option><option value="cs">🇨🇿 CS</option><option value="sq">🇦🇱 SQ</option><option value="sv">🇸🇪 SV</option><option value="nb">🇳🇴 NB</option><option value="it">🇮🇹 IT</option>
+            </select>
             <button onClick={handleSaveData} className="bg-emerald-700 text-white px-5 py-2 rounded-xl text-xs font-bold hover:bg-emerald-800 transition cursor-pointer flex items-center gap-2 shadow-md">
               <Save className="w-4 h-4" /> {isSaved ? t.savedMsg : t.saveBtn}
             </button>
@@ -889,53 +982,24 @@ export default function App() {
           </div>
         </div>
 
-        {/* STATS & PRO TRIAL BAR */}
-        <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className="bg-white p-5 rounded-3xl border shadow-sm flex items-center gap-4">
-            <div className={`p-3 rounded-2xl ${currentTheme.bgLight} ${currentTheme.text}`}><BarChart3 className="w-6 h-6" /></div>
-            <div>
-              <span className="text-[10px] font-extrabold text-stone-400 uppercase tracking-wider">{t.statsScans}</span>
-              <h4 className="text-xl font-black text-slate-900">{scanCount}</h4>
-            </div>
+        {/* REAL ANALYTICS STATUS — do not display invented figures */}
+        <div className="w-full max-w-5xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
+          <div className="bg-white p-5 rounded-3xl border border-stone-200 shadow-sm">
+            <div className="flex items-center gap-3"><div className="p-3 rounded-2xl bg-stone-100 text-stone-500"><BarChart3 className="w-6 h-6"/></div><div><span className="text-[10px] font-extrabold text-stone-400 uppercase tracking-wider">{(dashboardCopy[lang] || dashboardCopy.de).qrScans}</span><h4 className="text-lg font-black text-slate-900">{(dashboardCopy[lang] || dashboardCopy.de).unavailable}</h4></div></div>
+            <p className="text-[11px] text-stone-500 mt-3">{(dashboardCopy[lang] || dashboardCopy.de).scansNote}</p>
           </div>
-          <div className="bg-white p-5 rounded-3xl border shadow-sm flex items-center gap-4">
-            <div className={`p-3 rounded-2xl ${currentTheme.bgLight} ${currentTheme.text}`}><Users className="w-6 h-6" /></div>
-            <div>
-              <span className="text-[10px] font-extrabold text-stone-400 uppercase tracking-wider">{t.statsActiveRooms}</span>
-              <h4 className="text-xl font-black text-slate-900">{activeRooms}</h4>
-            </div>
+          <div className="bg-white p-5 rounded-3xl border border-stone-200 shadow-sm">
+            <div className="flex items-center gap-3"><div className="p-3 rounded-2xl bg-stone-100 text-stone-500"><Users className="w-6 h-6"/></div><div><span className="text-[10px] font-extrabold text-stone-400 uppercase tracking-wider">{(dashboardCopy[lang] || dashboardCopy.de).configuredContent}</span><h4 className="text-lg font-black text-slate-900">{categories.length || '—'}</h4></div></div>
+            <p className="text-[11px] text-stone-500 mt-3">{(dashboardCopy[lang] || dashboardCopy.de).contentNote}</p>
           </div>
-          <div className={`p-5 rounded-3xl border border-amber-300 bg-amber-50/70 shadow-sm flex items-center justify-between`}>
-            <div>
-              <span className="text-[10px] font-extrabold text-amber-900 uppercase tracking-wider">{t.trialTitle}</span>
-              <h4 className="text-xl font-black text-amber-950">{daysLeft} {t.trialDaysLeft}</h4>
-            </div>
-            <Zap className="w-7 h-7 text-amber-600" />
+          <div className="bg-white p-5 rounded-3xl border border-stone-200 shadow-sm">
+            <div className="flex items-center gap-3"><div className="p-3 rounded-2xl bg-stone-100 text-stone-500"><Activity className="w-6 h-6"/></div><div><span className="text-[10px] font-extrabold text-stone-400 uppercase tracking-wider">{(dashboardCopy[lang] || dashboardCopy.de).dataStatus}</span><h4 className="text-lg font-black text-slate-900">{(dashboardCopy[lang] || dashboardCopy.de).localStorage}</h4></div></div>
+            <p className="text-[11px] text-stone-500 mt-3">{(dashboardCopy[lang] || dashboardCopy.de).analyticsNote}</p>
           </div>
         </div>
-
-        {/* ANALYTİK / TIKLANMA GRAFİK / LİSTE BÖLÜMÜ */}
-        <div className="max-w-5xl mx-auto bg-white rounded-3xl p-6 border border-stone-200 shadow-sm space-y-4">
-          <div className="flex items-center gap-3">
-            <div className={`p-3 rounded-2xl ${currentTheme.bgLight} ${currentTheme.text}`}><TrendingUp className="w-6 h-6" /></div>
-            <div>
-              <h3 className={`font-black text-xs ${currentTheme.text} uppercase tracking-wider`}>{t.analyticsTitle}</h3>
-              <p className="text-xs text-stone-500">Live Telemetrie & Gast-Interaktionen</p>
-            </div>
-          </div>
-          <div className="space-y-3 pt-2">
-            {analyticsClicks.map((item, idx) => (
-              <div key={idx} className="space-y-1">
-                <div className="flex justify-between text-xs font-bold text-slate-700">
-                  <span>{item.category}</span>
-                  <span className={currentTheme.text}>{item.clicks} Klicks</span>
-                </div>
-                <div className="w-full bg-stone-100 h-2 rounded-full overflow-hidden">
-                  <div className={`h-full ${currentTheme.bg}`} style={{ width: `${(item.clicks / 100) * 100}%` }}></div>
-                </div>
-              </div>
-            ))}
-          </div>
+        <div className="max-w-5xl mx-auto bg-white rounded-3xl p-6 border border-stone-200 shadow-sm space-y-3">
+          <div className="flex items-center gap-3"><div className="p-3 rounded-2xl bg-stone-100 text-stone-500"><TrendingUp className="w-6 h-6"/></div><div><h3 className="font-black text-xs text-slate-800 uppercase tracking-wider">{(dashboardCopy[lang] || dashboardCopy.de).analyticsTitle}</h3><p className="text-xs text-stone-500">{(dashboardCopy[lang] || dashboardCopy.de).analyticsIntro}</p></div></div>
+          <div className="rounded-2xl border border-dashed border-stone-300 bg-stone-50 p-5 text-sm text-stone-600">{(dashboardCopy[lang] || dashboardCopy.de).noAnalytics}</div>
         </div>
 
         {/* DASHBOARD CONTENT SECTIONS */}
@@ -946,14 +1010,37 @@ export default function App() {
           <div className="bg-white rounded-3xl p-6 border border-stone-200 shadow-sm space-y-4">
             <h3 className={`font-black text-xs ${currentTheme.text} uppercase tracking-wider`}>{t.sec1Title}</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-              <div>
-                <label className="block text-[10px] font-bold text-stone-500 uppercase mb-1">{t.lblHotelName}</label>
-                <input type="text" value={hotel.name} onChange={(e) => setHotel({ ...hotel, name: e.target.value })} className="w-full p-2.5 text-xs border border-stone-200 rounded-xl" />
+              {[
+                {key:'name',label:'Hotelname / Unterkunftsname',type:'text'},
+                {key:'phone',label:'Telefon',type:'tel'},
+                {key:'email',label:'E-Mail',type:'email'},
+                {key:'website',label:'Website',type:'url'},
+                {key:'address',label:'Vollständige Adresse',type:'text'},
+                {key:'googleReviewUrl',label:'Google-Bewertungslink',type:'url'},
+                {key:'locationTitle',label:'Region / Standort',type:'text'}
+              ].map(field=><div key={field.key}><label className="block text-[10px] font-bold text-stone-500 uppercase mb-1">{field.label}</label><input type={field.type} value={hotel[field.key]||''} onChange={e=>setHotel(prev=>({...prev,[field.key]:e.target.value}))} className="w-full p-3 text-sm border border-stone-200 rounded-xl bg-stone-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-200"/></div>)}
+            </div>
+            <p className="text-[11px] text-stone-500">Diese Angaben werden in der Gästemappe verwendet. Änderungen bitte oben rechts speichern.</p>
+            <div className="border-t border-stone-100 pt-4 space-y-4">
+              <div className="flex flex-wrap items-center justify-between gap-3">
+                <div><h4 className="text-xs font-black uppercase tracking-wider text-stone-700">Schnellzugriff · Preset-Editor</h4><p className="text-[11px] text-stone-500 mt-1">Kartentexte je Sprache bearbeiten. WLAN-Zugangsdaten gelten für alle Sprachen.</p></div>
+                <select aria-label="Sprache der Schnellzugriff-Presets" value={quickEditLang} onChange={e => setQuickEditLang(e.target.value)} className="bg-white border border-stone-200 text-xs rounded-xl px-3 py-2">
+                  <option value="de">🇩🇪 Deutsch</option><option value="en">🇬🇧 English</option><option value="tr">🇹🇷 Türkçe</option><option value="fr">🇫🇷 Français</option><option value="hr">🇭🇷 Hrvatski</option><option value="it">🇮🇹 Italiano</option><option value="es">🇪🇸 Español</option><option value="sv">🇸🇪 Svenska</option><option value="no">🇳🇴 Norsk</option><option value="sq">🇦🇱 Shqip</option>
+                </select>
               </div>
-              <div>
-                <label className="block text-[10px] font-bold text-stone-500 uppercase mb-1">{t.lblPhone}</label>
-                <input type="text" value={hotel.phone} onChange={(e) => setHotel({ ...hotel, phone: e.target.value })} className="w-full p-2.5 text-xs border border-stone-200 rounded-xl" />
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {[{id:'wifi',enabled:'showWifi',label:'WLAN'},{id:'parking',enabled:'showParking',label:'Parkplatz'},{id:'breakfast',enabled:'showBreakfast',label:'Frühstück'},{id:'checkin',enabled:'showCheckInOut',label:'Check-in / Check-out'}].map(card => (
+                  <div key={card.id} className="rounded-2xl border border-stone-200 bg-stone-50 p-3 space-y-3">
+                    <div className="flex items-center justify-between gap-2"><span className="text-xs font-bold text-slate-800">{card.label}</span><label className="flex items-center gap-2 text-[11px] font-semibold text-stone-600 cursor-pointer"><input type="checkbox" checked={hotel[card.enabled] !== false} onChange={e => setHotel(prev => ({...prev,[card.enabled]:e.target.checked}))} className="accent-emerald-700 w-4 h-4" />Anzeigen</label></div>
+                    <label className="block text-[10px] font-bold uppercase text-stone-500">Titel<input value={hotel.quickAccessContent?.[quickEditLang]?.[card.id]?.title ?? quickAccessDefaults[quickEditLang][card.id].title} onChange={e => updateQuickCardText(card.id,'title',e.target.value)} className="mt-1 w-full rounded-lg border border-stone-200 bg-white p-2.5 text-xs" /></label>
+                    <label className="block text-[10px] font-bold uppercase text-stone-500">Beschreibung<textarea rows="2" value={hotel.quickAccessContent?.[quickEditLang]?.[card.id]?.description ?? quickAccessDefaults[quickEditLang][card.id].description} onChange={e => updateQuickCardText(card.id,'description',e.target.value)} className="mt-1 w-full rounded-lg border border-stone-200 bg-white p-2.5 text-xs resize-y" /></label>
+                  </div>
+                ))}
               </div>
+              <div className="rounded-2xl border border-sky-200 bg-sky-50/70 p-3 space-y-3"><div className="text-xs font-bold text-slate-800">WLAN-Zugangsdaten · für alle Sprachen</div><div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <label className="block text-[10px] font-bold uppercase text-stone-500">Netzwerkname (SSID)<input value={hotel.wifiSsid || ''} onChange={e => setHotel(prev => ({...prev,wifiSsid:e.target.value}))} className="mt-1 w-full rounded-lg border border-stone-200 bg-white p-2.5 text-xs" /></label>
+                <label className="block text-[10px] font-bold uppercase text-stone-500">WLAN-Passwort<input value={hotel.wifiPass || ''} onChange={e => setHotel(prev => ({...prev,wifiPass:e.target.value}))} className="mt-1 w-full rounded-lg border border-stone-200 bg-white p-2.5 text-xs" /></label>
+              </div></div>
             </div>
           </div>
 
@@ -1000,7 +1087,7 @@ export default function App() {
               </label>
             </div>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-              {(hotel.images || []).map((img, idx) => (
+              {(Array.isArray(hotel.images) ? hotel.images : []).map((img, idx) => (
                 <div key={idx} className="relative rounded-2xl overflow-hidden border aspect-video group shadow-xs bg-stone-100">
                   <img src={img} alt={`Slide ${idx}`} className="w-full h-full object-cover" />
                   <button 
@@ -1023,17 +1110,22 @@ export default function App() {
                 <p className="text-xs text-stone-500">{t.qrTitle}</p>
               </div>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
-              <button onClick={() => window.print()} className="p-4 rounded-2xl border border-stone-200 bg-stone-50 hover:bg-stone-100 transition flex items-center justify-center gap-2 text-xs font-bold text-slate-800 cursor-pointer shadow-xs">
-                <Printer className="w-4 h-4 text-stone-600" /> {t.printA4}
-              </button>
-              <button onClick={() => window.print()} className="p-4 rounded-2xl border border-stone-200 bg-stone-50 hover:bg-stone-100 transition flex items-center justify-center gap-2 text-xs font-bold text-slate-800 cursor-pointer shadow-xs">
-                <Printer className="w-4 h-4 text-stone-600" /> {t.printA5}
-              </button>
-              <button onClick={() => window.print()} className="p-4 rounded-2xl border border-stone-200 bg-stone-50 hover:bg-stone-100 transition flex items-center justify-center gap-2 text-xs font-bold text-slate-800 cursor-pointer shadow-xs">
-                <Printer className="w-4 h-4 text-stone-600" /> {t.printCard}
-              </button>
+            <style>{`@media print { body * { visibility: hidden !important; } #qr-print-area, #qr-print-area * { visibility: visible !important; } #qr-print-area { position: absolute; inset: 0; width: 100%; display: flex !important; justify-content: center; align-items: center; } #qr-print-area .qr-sheet { width: ${qrPrintFormat==='a4'?'190mm':qrPrintFormat==='a5'?'130mm':'85mm'}; min-height: ${qrPrintFormat==='a4'?'270mm':qrPrintFormat==='a5'?'185mm':'55mm'}; padding: 12mm; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; } #qr-print-area svg { width: ${qrPrintFormat==='card'?'38mm':'65mm'} !important; height: auto !important; } }`}</style>
+            <div className="grid grid-cols-1 md:grid-cols-[1fr_auto] gap-5 items-center pt-2">
+              <div className="space-y-3">
+                <div className="flex flex-wrap gap-2">
+                  {[['a4','A4'],['a5','A5'],['card','Karte']].map(([value,label])=><button key={value} onClick={()=>setQrPrintFormat(value)} className={`px-4 py-2 rounded-xl text-xs font-bold border ${qrPrintFormat===value?'bg-slate-900 text-white border-slate-900':'bg-white text-slate-600 border-stone-200'}`}>{label}</button>)}
+                </div>
+                <p className="text-xs text-stone-500">Dieser QR-Code öffnet direkt die digitale Gästemappe dieser Website.</p>
+                <div className="flex flex-wrap gap-2">
+                  <button onClick={()=>window.print()} className="px-4 py-2.5 rounded-xl bg-slate-900 text-white text-xs font-bold flex items-center gap-2"><Printer className="w-4 h-4"/>Ausgewähltes Format drucken</button>
+                  <button onClick={()=>navigator.clipboard?.writeText(guestPageUrl)} className="px-4 py-2.5 rounded-xl border border-stone-200 bg-white text-xs font-bold flex items-center gap-2"><Copy className="w-4 h-4"/>Link kopieren</button>
+                </div>
+                <p className="text-[10px] text-stone-400 break-all">{guestPageUrl}</p>
+              </div>
+              <div className="bg-white p-4 rounded-2xl border border-stone-200 shadow-sm flex items-center justify-center"><QRCodeSVG value={guestPageUrl||'https://example.com'} size={190} level="H" includeMargin={true} /></div>
             </div>
+            <div id="qr-print-area" className="hidden"><div className="qr-sheet"><h1 className="text-2xl font-black mb-2">{hotel.name}</h1><p className="text-sm mb-5">Digitale Gästemappe</p><QRCodeSVG value={guestPageUrl||'https://example.com'} size={280} level="H" includeMargin={true}/><p className="text-xs mt-5">{guestPageUrl}</p></div></div>
           </div>
 
           {/* 6. DİNAMİK PRESET KATEGORİLER (3-ADIMLI MODAL SİSTEMİ) */}
@@ -1094,7 +1186,7 @@ export default function App() {
 
   if (showWelcomeScreen) {
     return (
-      <div className="min-h-screen bg-slate-950 max-w-md mx-auto shadow-2xl relative overflow-hidden flex flex-col justify-between font-sans">
+      <div className="h-[100dvh] min-h-[320px] bg-slate-950 max-w-md mx-auto shadow-2xl relative overflow-hidden flex flex-col justify-between font-sans">
         <div className="absolute inset-0 z-0">
           <img src={(hotel.images && hotel.images[0]) || 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1000&q=80'} alt="Welcome" className="w-full h-full object-cover brightness-75" />
           <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-slate-950/20"></div>
@@ -1106,17 +1198,17 @@ export default function App() {
             <option value="de">🇩🇪 DE</option>
             <option value="en">🇬🇧 EN</option>
             <option value="tr">🇹🇷 TR</option>
-            <option value="hr">🇭🇷 HR</option>
             <option value="fr">🇫🇷 FR</option>
-            <option value="it">🇮🇹 IT</option>
             <option value="es">🇪🇸 ES</option>
-            <option value="sv">🇸🇪 SV</option>
-            <option value="no">🇳🇴 NO</option>
+            <option value="cs">🇨🇿 CS</option>
             <option value="sq">🇦🇱 SQ</option>
+            <option value="sv">🇸🇪 SV</option>
+            <option value="nb">🇳🇴 NB</option>
+            <option value="it">🇮🇹 IT</option>
           </select>
         </div>
 
-        <div className="relative z-10 p-6 space-y-4 text-white">
+        <div className="relative z-10 px-6 pt-4 pb-[calc(env(safe-area-inset-bottom)+1.5rem)] space-y-4 text-white shrink-0">
           <h1 className="text-3xl font-black">{hotel.name}</h1>
           <button onClick={() => setShowWelcomeScreen(false)} className={`w-full ${currentTheme.bg} text-white py-4 rounded-2xl font-bold text-sm shadow-2xl flex items-center justify-center gap-2 cursor-pointer`}>
             <span>{t.welcomeButton}</span><ArrowRight className="w-4 h-4" />
@@ -1142,13 +1234,13 @@ export default function App() {
             <option value="de">🇩🇪 DE</option>
             <option value="en">🇬🇧 EN</option>
             <option value="tr">🇹🇷 TR</option>
-            <option value="hr">🇭🇷 HR</option>
             <option value="fr">🇫🇷 FR</option>
-            <option value="it">🇮🇹 IT</option>
             <option value="es">🇪🇸 ES</option>
-            <option value="sv">🇸🇪 SV</option>
-            <option value="no">🇳🇴 NO</option>
+            <option value="cs">🇨🇿 CS</option>
             <option value="sq">🇦🇱 SQ</option>
+            <option value="sv">🇸🇪 SV</option>
+            <option value="nb">🇳🇴 NB</option>
+            <option value="it">🇮🇹 IT</option>
           </select>
           <button onClick={() => setAppMode('dashboard')} className="text-stone-300 hover:text-stone-600 p-1 text-xs cursor-pointer">🔑</button>
         </div>
@@ -1190,16 +1282,16 @@ export default function App() {
                 <img src={(hotel.images && hotel.images[currentSlide]) || (hotel.images && hotel.images[0]) || ''} alt="Slide" className="w-full h-full object-cover" />
               </div>
 
-              {/* HAVA DURUMU KARTI */}
-              <div className="bg-white p-4 rounded-2xl shadow-sm border border-stone-200 flex items-center justify-between">
-                <div className="flex items-center gap-3">
+              {/* LIVE HOTEL WEATHER — Open-Meteo, based on the saved hotel address */}
+              <div className="bg-white p-4 rounded-2xl shadow-sm border border-stone-200 flex items-center justify-between gap-3">
+                <div className="flex items-center gap-3 min-w-0">
                   <div className={`p-3 ${currentTheme.bgLight} rounded-xl ${currentTheme.text}`}><Sun className="w-6 h-6" /></div>
-                  <div>
-                    <div className="text-xs font-extrabold text-slate-900 uppercase">{t.weatherTitle}</div>
-                    <div className="text-[11px] text-stone-500">{t.weatherSub}</div>
+                  <div className="min-w-0">
+                    <div className="text-xs font-extrabold text-slate-900 uppercase">{(weatherLabels[lang] || weatherLabels.de).loading && weather.status === 'loading' ? (weatherLabels[lang] || weatherLabels.de).loading : weather.status === 'ready' ? getWeatherDescription(weather.code, weatherLabels[lang] || weatherLabels.de) : weather.status === 'missing' ? (weatherLabels[lang] || weatherLabels.de).missing : (weatherLabels[lang] || weatherLabels.de).unavailable}</div>
+                    <div className="text-[11px] text-stone-500 truncate">{weather.status === 'ready' ? weather.place : weather.status === 'loading' ? (weatherLabels[lang] || weatherLabels.de).loading : weather.status === 'missing' ? (weatherLabels[lang] || weatherLabels.de).missing : (weatherLabels[lang] || weatherLabels.de).unavailable}</div>
                   </div>
                 </div>
-                <div className="text-right"><div className="text-2xl font-black text-slate-900">16°C</div></div>
+                <div className="text-right shrink-0"><div className="text-2xl font-black text-slate-900">{weather.status === 'ready' ? `${weather.temperature}°C` : '—'}</div></div>
               </div>
 
               {/* HIZLI ERİŞİM KARTLARI */}
@@ -1252,12 +1344,16 @@ export default function App() {
           <button onClick={() => { setActiveTab('services'); setSelectedCategory(null); }} className={`flex flex-col items-center gap-1 text-[10px] font-bold cursor-pointer ${activeTab === 'services' || selectedCategory ? currentTheme.text : 'text-stone-400'}`}>
             <Compass className="w-5 h-5" /><span>{t.navGaestemappe}</span>
           </button>
-          <a href={hotel.googleReviewUrl} target="_blank" rel="noreferrer" className={`flex flex-col items-center gap-1 text-[10px] font-bold cursor-pointer ${currentTheme.text} hover:opacity-80`}>
-            <Star className="w-5 h-5 fill-current" /><span>{t.navReview}</span>
-          </a>
-          <a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(hotel.address || '')}`} target="_blank" rel="noreferrer" className={`flex flex-col items-center gap-1 text-[10px] font-bold cursor-pointer ${currentTheme.text} hover:opacity-80`}>
-            <Navigation className="w-5 h-5" /><span>{t.navRoute}</span>
-          </a>
+          {hotel.googleReviewUrl && /^https?:\/\//i.test(hotel.googleReviewUrl) && (
+            <a href={hotel.googleReviewUrl} target="_blank" rel="noreferrer" className={`flex flex-col items-center gap-1 text-[10px] font-bold cursor-pointer ${currentTheme.text} hover:opacity-80`}>
+              <Star className="w-5 h-5 fill-current" /><span>{t.navReview}</span>
+            </a>
+          )}
+          {hotel.address && !/Musterstraße 1|12345 Musterstadt/i.test(hotel.address) && (
+            <a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(hotel.address)}`} target="_blank" rel="noreferrer" className={`flex flex-col items-center gap-1 text-[10px] font-bold cursor-pointer ${currentTheme.text} hover:opacity-80`}>
+              <Navigation className="w-5 h-5" /><span>{t.navRoute}</span>
+            </a>
+          )}
         </nav>
       </div>
     </div>
