@@ -720,6 +720,10 @@ export default function App() {
   const guestSlug = typeof window !== 'undefined'
     ? (window.location.pathname.match(/^\/g\/([a-z0-9-]+)\/?$/i)?.[1] || null)
     : null;
+  const trackGuestPageView = (pageKey) => {
+    if (!guestSlug || !supabase || !/^[a-zA-Z0-9_-]{1,80}$/.test(pageKey)) return;
+    supabase.functions.invoke('track-view', { body: { slug: guestSlug, page_key: pageKey } }).catch(error => console.warn('Analytics tracking unavailable:', error));
+  };
   const [guestPageStatus, setGuestPageStatus] = useState('idle');
   const [authSession, setAuthSession] = useState(null);
   const [authLoading, setAuthLoading] = useState(true);
@@ -1065,7 +1069,7 @@ export default function App() {
         if (Array.isArray(content.categories)) setCategories(content.categories);
         setGuestPageStatus('ready');
         // Count every successfully opened guest guide view; no visitor identifiers are stored.
-        supabase.functions.invoke('track-view', { body: { slug: guestSlug, page_key: 'guest_home' } }).catch(error => console.warn('Analytics tracking unavailable:', error));
+        trackGuestPageView('guest_home');
       } catch (error) {
         console.error('Public guest page could not be loaded:', error);
         if (active) setGuestPageStatus('error');
@@ -1310,6 +1314,45 @@ export default function App() {
       ? ({ single: 1, multi: 3, business: 10 }[accountRecord.plan_code] || 1)
       : 0;
   const accommodationLimitReached = hotelRecords.length >= accommodationLimit;
+  const normalizedHotelName = (hotel.name || '').trim();
+  const setupHasName = normalizedHotelName.length > 2 && !/^(boutique hotel & suites|meine unterkunft|neue unterkunft|unbenannte unterkunft)$/i.test(normalizedHotelName);
+  const setupHasContact = [hotel.phone, hotel.email].some(value => {
+    const text = (value || '').trim();
+    return text.length > 5 && !/^(\+49\s?123\s?456789|info@meine-unterkunft\.de)$/i.test(text);
+  });
+  const defaultExampleImages = ['photo-1566073771259', 'photo-1582719478250'];
+  const hasAccommodationPhoto = Array.isArray(hotel.images) && hotel.images.some(image => image && !defaultExampleImages.some(example => String(image).includes(example)));
+  const hasWifiDetails = Boolean((hotel.wifiSsid || '').trim() && (hotel.wifiPass || '').trim() && hotel.wifiSsid !== 'Hotel-Guest-WiFi' && hotel.wifiPass !== 'welcome2026');
+  const setupSteps = [
+    { label: 'Namen der Unterkunft festlegen', done: setupHasName },
+    { label: 'Telefon oder E-Mail ergänzen', done: setupHasContact },
+    { label: 'Adresse eintragen', done: Boolean((hotel.address || '').trim()) },
+    { label: 'Logo hochladen', done: Boolean(hotel.logoUrl) },
+    { label: 'Unterkunftsfoto hinzufügen', done: hasAccommodationPhoto },
+    { label: 'WLAN-Daten hinterlegen', done: hasWifiDetails },
+    { label: 'Mindestens einen Gästeinhalt prüfen', done: Array.isArray(categories) && categories.length > 0 }
+  ];
+  const setupCompletedCount = setupSteps.filter(step => step.done).length;
+  const setupProgress = Math.round((setupCompletedCount / setupSteps.length) * 100);
+  const pageTotals = analyticsRows.reduce((totals, row) => {
+    if (row.page_key) totals[row.page_key] = (totals[row.page_key] || 0) + Number(row.views || 0);
+    return totals;
+  }, {});
+  const mostVisitedPage = Object.entries(pageTotals).sort((a, b) => b[1] - a[1])[0] || null;
+  const getAnalyticsPageLabel = (pageKey) => {
+    if (pageKey === 'guest_home') return t.navHome;
+    if (pageKey === 'guest_services') return t.navGaestemappe;
+    if (pageKey === 'guest_review') return t.navReview;
+    if (pageKey === 'guest_route') return t.navRoute;
+    if (pageKey.startsWith('category_')) {
+      const categoryId = pageKey.slice('category_'.length);
+      const category = categories.find(item => String(item.id).replace(/[^A-Za-z0-9_-]/g, '').slice(0, 68) === categoryId);
+      const preset = category?.presetData || categoryPresets.find(item => item.id === category?.presetId);
+      return category?.customTitle || category?.title || preset?.title?.[lang] || preset?.title?.de || 'Gästekategorie';
+    }
+    return pageKey.replace(/[_-]+/g, ' ');
+  };
+  const mostVisitedPageName = mostVisitedPage ? getAnalyticsPageLabel(mostVisitedPage[0]) : '—';
 
   const handleSaveData = async () => {
     localStorage.setItem('gm24_hotel', JSON.stringify(hotel));
@@ -1598,6 +1641,26 @@ export default function App() {
           </div>
         </section>
 
+        <section id="setup-guide" className="w-full max-w-6xl mx-auto rounded-3xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <p className="text-[10px] font-extrabold uppercase tracking-[.17em] text-amber-700">Einrichtung</p>
+              <h2 className="mt-1 text-lg font-bold tracking-tight text-slate-900">{setupProgress === 100 ? 'Deine Gästemappe ist startklar' : 'Bring deine Gästemappe auf 100 %'}</h2>
+              <p className="mt-1 text-xs text-slate-500">Ergänze die wichtigsten Angaben und Inhalte für deine Gäste.</p>
+            </div>
+            <div className="flex items-center gap-3 sm:min-w-[230px]">
+              <div className="min-w-0 flex-1"><div className="flex justify-between text-[10px] font-semibold text-slate-500"><span>{setupCompletedCount} von {setupSteps.length} Schritten</span><span className="font-extrabold text-slate-900">{setupProgress} %</span></div><div className="mt-2 h-2 overflow-hidden rounded-full bg-slate-100"><div className="h-full rounded-full bg-amber-500 transition-all duration-500" style={{width:`${setupProgress}%`}}/></div></div>
+            </div>
+          </div>
+          <div className="mt-5 grid grid-cols-1 gap-2 sm:grid-cols-2 xl:grid-cols-3">
+            {setupSteps.map((step,index)=><a key={step.label} href="#editor" className="flex items-center gap-3 rounded-xl border border-slate-100 bg-slate-50/70 px-3 py-2.5 transition hover:border-slate-200 hover:bg-white">
+              {step.done ? <CheckCircle2 className="h-4 w-4 shrink-0 text-emerald-600"/> : <span className="flex h-4 w-4 shrink-0 items-center justify-center rounded-full border border-slate-300 text-[9px] font-bold text-slate-400">{index+1}</span>}
+              <span className={`text-[11px] font-semibold ${step.done ? 'text-slate-500' : 'text-slate-800'}`}>{step.label}</span>
+              {!step.done && <ArrowRight className="ml-auto h-3.5 w-3.5 text-slate-400"/>}
+            </a>)}
+          </div>
+        </section>
+
         <section id="accommodations" className="w-full max-w-6xl mx-auto space-y-4">
           <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3">
             <div>
@@ -1681,8 +1744,8 @@ export default function App() {
             <p className="text-[11px] text-stone-500 mt-3">Jeder erfolgreiche Aufruf der Gästemappe zählt einzeln.</p>
           </div>
           <div className="rounded-2xl border border-slate-200/80 bg-white p-5 shadow-sm">
-            <div className="flex items-center gap-3"><div className="p-3 rounded-2xl bg-stone-100 text-stone-500"><Users className="w-6 h-6"/></div><div><span className="text-[10px] font-extrabold text-stone-400 uppercase tracking-wider">{(dashboardCopy[lang] || dashboardCopy.de).configuredContent}</span><h4 className="text-lg font-black text-slate-900">{categories.length || '—'}</h4></div></div>
-            <p className="text-[11px] text-stone-500 mt-3">{(dashboardCopy[lang] || dashboardCopy.de).contentNote}</p>
+            <div className="flex items-center gap-3"><div className="rounded-xl bg-amber-50 p-3 text-amber-700"><TrendingUp className="h-5 w-5"/></div><div className="min-w-0"><span className="text-[10px] font-extrabold uppercase tracking-wider text-slate-400">Meistbesuchte Seite</span><h4 className="truncate text-lg font-black text-slate-900">{analyticsLoading ? '…' : mostVisitedPageName}</h4></div></div>
+            <p className="mt-3 text-[11px] text-slate-500">{mostVisitedPage ? `${mostVisitedPage[1]} Aufrufe in den erfassten Daten` : analyticsLoading ? 'Besuchsdaten werden geladen.' : 'Sobald Gäste deine Gästemappe öffnen, erscheint hier die beliebteste Seite.'}</p>
           </div>
           <div className="rounded-2xl border border-slate-200/80 bg-white p-5 shadow-sm">
             <div className="flex items-center gap-3"><div className="p-3 rounded-2xl bg-stone-100 text-stone-500"><Activity className="w-6 h-6"/></div><div><span className="text-[10px] font-extrabold text-stone-400 uppercase tracking-wider">{(dashboardCopy[lang] || dashboardCopy.de).dataStatus}</span><h4 className="text-lg font-black text-slate-900">{analyticsLoading ? 'Wird geladen …' : 'Cloud-Statistik aktiv'}</h4></div></div>
@@ -1698,7 +1761,7 @@ export default function App() {
           <div className="rounded-2xl border border-stone-200 bg-stone-50 p-5 space-y-3">
             <div className="flex items-center justify-between gap-3"><span className="text-sm font-bold text-slate-800">Gesamtaufrufe</span><span className="text-2xl font-black text-slate-900 tabular-nums">{analyticsLoading ? '…' : analyticsRows.reduce((sum, row) => sum + Number(row.views || 0), 0)}</span></div>
             <div className="space-y-2">
-              {analyticsRows.slice(0, 7).map(row => <div key={row.event_date + row.page_key} className="flex items-center justify-between text-xs text-stone-600"><span>{new Date(row.event_date + 'T00:00:00').toLocaleDateString(lang === 'tr' ? 'tr-TR' : lang === 'de' ? 'de-DE' : 'en-GB')} · {row.page_key === 'guest_home' ? 'Gästemappe' : row.page_key}</span><strong className="text-slate-900 tabular-nums">{Number(row.views || 0)}</strong></div>)}
+              {analyticsRows.slice(0, 7).map(row => <div key={row.event_date + row.page_key} className="flex items-center justify-between text-xs text-stone-600"><span>{new Date(row.event_date + 'T00:00:00').toLocaleDateString(lang === 'tr' ? 'tr-TR' : lang === 'de' ? 'de-DE' : 'en-GB')} · {getAnalyticsPageLabel(row.page_key)}</span><strong className="text-slate-900 tabular-nums">{Number(row.views || 0)}</strong></div>)}
               {!analyticsLoading && analyticsRows.length === 0 && <p className="text-xs text-stone-500">Noch keine Aufrufe erfasst. Öffne die Gästemappe einmal über den QR-Link.</p>}
             </div>
             <p className="text-[10px] text-stone-400">Anonyme Summenwerte. Jeder Seitenaufruf wird gezählt; keine IP-Adressen oder persönlichen Besucherprofile.</p>
@@ -1707,8 +1770,6 @@ export default function App() {
 
         {/* DASHBOARD CONTENT SECTIONS */}
         <div id="editor" className="max-w-6xl mx-auto space-y-6">
-          <h1 className="text-2xl font-black text-slate-900 tracking-tight">{t.adminTitle}</h1>
-
           {/* 1. HOTEL BİLGİLERİ */}
           <div className="bg-white rounded-3xl p-6 border border-stone-200 shadow-sm space-y-4">
             <h3 className={`font-black text-xs ${currentTheme.text} uppercase tracking-wider`}>{t.sec1Title}</h3>
@@ -2018,7 +2079,7 @@ export default function App() {
                       const title = cat.customTitle || (presetObj && presetObj.title && (presetObj.title[lang] || presetObj.title.de)) || 'Kategorie';
                       
                       return (
-                        <button key={cat.id} onClick={() => setSelectedCategory({ ...cat, title, groupName })} className={`w-full bg-white p-4 rounded-2xl border border-stone-200 shadow-sm flex items-center justify-between text-left cursor-pointer hover:${currentTheme.border} transition`}>
+                        <button key={cat.id} onClick={() => { const analyticsCategoryId = String(cat.id).replace(/[^A-Za-z0-9_-]/g, '').slice(0, 68); trackGuestPageView(`category_${analyticsCategoryId}`); setSelectedCategory({ ...cat, title, groupName }); }} className={`w-full bg-white p-4 rounded-2xl border border-stone-200 shadow-sm flex items-center justify-between text-left cursor-pointer hover:${currentTheme.border} transition`}>
                           <div className="flex items-center gap-3">
                             <div className={`w-10 h-10 rounded-xl ${currentTheme.bgLight} flex items-center justify-center`}>
                               {renderSafeIconByName(cat.icon, currentTheme)}
@@ -2043,19 +2104,19 @@ export default function App() {
       {/* ALT NAVİGASYON ÇUBUĞU */}
       <div className="fixed bottom-0 left-0 right-0 max-w-md mx-auto bg-white/95 backdrop-blur-md border-t z-50 shadow-2xl">
         <nav className="px-3 py-2 flex justify-around items-center">
-          <button onClick={() => { setActiveTab('home'); setSelectedCategory(null); }} className={`flex flex-col items-center gap-1 text-[10px] font-bold cursor-pointer ${activeTab === 'home' && !selectedCategory ? currentTheme.text : 'text-stone-400'}`}>
+          <button onClick={() => { if (activeTab !== 'home' || selectedCategory) trackGuestPageView('guest_home'); setActiveTab('home'); setSelectedCategory(null); }} className={`flex flex-col items-center gap-1 text-[10px] font-bold cursor-pointer ${activeTab === 'home' && !selectedCategory ? currentTheme.text : 'text-stone-400'}`}>
             <Info className="w-5 h-5" /><span>{t.navHome}</span>
           </button>
-          <button onClick={() => { setActiveTab('services'); setSelectedCategory(null); }} className={`flex flex-col items-center gap-1 text-[10px] font-bold cursor-pointer ${activeTab === 'services' || selectedCategory ? currentTheme.text : 'text-stone-400'}`}>
+          <button onClick={() => { if (activeTab !== 'services' || selectedCategory) trackGuestPageView('guest_services'); setActiveTab('services'); setSelectedCategory(null); }} className={`flex flex-col items-center gap-1 text-[10px] font-bold cursor-pointer ${activeTab === 'services' || selectedCategory ? currentTheme.text : 'text-stone-400'}`}>
             <Compass className="w-5 h-5" /><span>{t.navGaestemappe}</span>
           </button>
           {((hotel.googleReviewUrl && /^https?:\/\//i.test(hotel.googleReviewUrl)) || hotel.reviewPlatform==='airbnb') && (
-            <a href={hotel.googleReviewUrl && /^https?:\/\//i.test(hotel.googleReviewUrl) ? hotel.googleReviewUrl : 'https://www.airbnb.com/trips/v1'} target="_blank" rel="noreferrer" className={`flex flex-col items-center gap-1 text-[10px] font-bold cursor-pointer ${currentTheme.text} hover:opacity-80`}>
+            <a href={hotel.googleReviewUrl && /^https?:\/\//i.test(hotel.googleReviewUrl) ? hotel.googleReviewUrl : 'https://www.airbnb.com/trips/v1'} onClick={() => trackGuestPageView('guest_review')} target="_blank" rel="noreferrer" className={`flex flex-col items-center gap-1 text-[10px] font-bold cursor-pointer ${currentTheme.text} hover:opacity-80`}>
               <Star className="w-5 h-5 fill-current" /><span>{t.navReview}</span>
             </a>
           )}
           {hotel.address && !/Musterstraße 1|12345 Musterstadt/i.test(hotel.address) ? (
-            <a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(hotel.address)}`} target="_blank" rel="noreferrer" className={`flex flex-col items-center gap-1 text-[10px] font-bold cursor-pointer ${currentTheme.text} hover:opacity-80`}>
+            <a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(hotel.address)}`} onClick={() => trackGuestPageView('guest_route')} target="_blank" rel="noreferrer" className={`flex flex-col items-center gap-1 text-[10px] font-bold cursor-pointer ${currentTheme.text} hover:opacity-80`}>
               <Navigation className="w-5 h-5" /><span>{t.navRoute}</span>
             </a>
           ) : (
