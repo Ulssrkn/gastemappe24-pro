@@ -1186,7 +1186,7 @@ export default function App() {
 
   if (showWelcomeScreen) {
     return (
-      <div className="min-h-screen bg-slate-950 max-w-md mx-auto shadow-2xl relative overflow-hidden flex flex-col justify-between font-sans">
+      <div className="h-[100dvh] min-h-[320px] bg-slate-950 max-w-md mx-auto shadow-2xl relative overflow-hidden flex flex-col justify-between font-sans">
         <div className="absolute inset-0 z-0">
           <img src={(hotel.images && hotel.images[0]) || 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1000&q=80'} alt="Welcome" className="w-full h-full object-cover brightness-75" />
           <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-slate-950/20"></div>
@@ -1208,7 +1208,7 @@ export default function App() {
           </select>
         </div>
 
-        <div className="relative z-10 p-6 space-y-4 text-white">
+        <div className="relative z-10 px-6 pt-4 pb-[calc(env(safe-area-inset-bottom)+1.5rem)] space-y-4 text-white shrink-0">
           <h1 className="text-3xl font-black">{hotel.name}</h1>
           <button onClick={() => setShowWelcomeScreen(false)} className={`w-full ${currentTheme.bg} text-white py-4 rounded-2xl font-bold text-sm shadow-2xl flex items-center justify-center gap-2 cursor-pointer`}>
             <span>{t.welcomeButton}</span><ArrowRight className="w-4 h-4" />
