@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { QRCodeSVG } from 'qrcode.react';
 import { hotelPresets, additionalPresets } from './hotelPresets.js';
 import { createClient } from '@supabase/supabase-js';
 import { 
@@ -665,18 +666,9 @@ export default function App() {
 
   const [currentSlide] = useState(0);
   const [copiedWifi, setCopiedWifi] = useState(false);
+  const [qrPrintFormat, setQrPrintFormat] = useState('a4');
 
-  const [scanCount] = useState(184);
-  const [daysLeft] = useState(24);
-  const [activeRooms] = useState(12);
-
-  const [analyticsClicks] = useState([
-    { category: 'Hotelinformationen', clicks: 84 },
-    { category: 'WLAN & Internet', clicks: 72 },
-    { category: 'Frühstück', clicks: 59 },
-    { category: 'Wellness & Sauna', clicks: 43 },
-    { category: 'Anreise & Parken', dl: 31 }
-  ]);
+  const guestPageUrl = typeof window !== 'undefined' ? `${window.location.origin}${window.location.pathname}` : '';
 
   const quickAccessDefaults = {
     de:{wifi:{title:'WLAN',description:'Verbinden Sie sich mit unserem Gäste-WLAN.'},parking:{title:'Parkplatz',description:'Kostenfreie Parkplätze am Haus verfügbar.'},breakfast:{title:'Frühstück',description:'Frühstückszeiten: 07:30–10:30 Uhr.'},checkin:{title:'Check-in / Check-out',description:'Check-in ab 15:00 Uhr · Check-out bis 11:00 Uhr.'}},
@@ -918,53 +910,24 @@ export default function App() {
           </div>
         </div>
 
-        {/* STATS & PRO TRIAL BAR */}
+        {/* REAL ANALYTICS STATUS — do not display invented figures */}
         <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className="bg-white p-5 rounded-3xl border shadow-sm flex items-center gap-4">
-            <div className={`p-3 rounded-2xl ${currentTheme.bgLight} ${currentTheme.text}`}><BarChart3 className="w-6 h-6" /></div>
-            <div>
-              <span className="text-[10px] font-extrabold text-stone-400 uppercase tracking-wider">{t.statsScans}</span>
-              <h4 className="text-xl font-black text-slate-900">{scanCount}</h4>
-            </div>
+          <div className="bg-white p-5 rounded-3xl border border-stone-200 shadow-sm">
+            <div className="flex items-center gap-3"><div className="p-3 rounded-2xl bg-stone-100 text-stone-500"><BarChart3 className="w-6 h-6"/></div><div><span className="text-[10px] font-extrabold text-stone-400 uppercase tracking-wider">QR-Scans</span><h4 className="text-lg font-black text-slate-900">Noch nicht verfügbar</h4></div></div>
+            <p className="text-[11px] text-stone-500 mt-3">Echte Scan-Zahlen erscheinen, sobald die zentrale Ereigniserfassung eingerichtet ist.</p>
           </div>
-          <div className="bg-white p-5 rounded-3xl border shadow-sm flex items-center gap-4">
-            <div className={`p-3 rounded-2xl ${currentTheme.bgLight} ${currentTheme.text}`}><Users className="w-6 h-6" /></div>
-            <div>
-              <span className="text-[10px] font-extrabold text-stone-400 uppercase tracking-wider">{t.statsActiveRooms}</span>
-              <h4 className="text-xl font-black text-slate-900">{activeRooms}</h4>
-            </div>
+          <div className="bg-white p-5 rounded-3xl border border-stone-200 shadow-sm">
+            <div className="flex items-center gap-3"><div className="p-3 rounded-2xl bg-stone-100 text-stone-500"><Users className="w-6 h-6"/></div><div><span className="text-[10px] font-extrabold text-stone-400 uppercase tracking-wider">Aktive Zimmer</span><h4 className="text-lg font-black text-slate-900">{categories.length || '—'}</h4></div></div>
+            <p className="text-[11px] text-stone-500 mt-3">Anzahl der eingerichteten Inhalte, keine erfundene Zimmerbelegung.</p>
           </div>
-          <div className={`p-5 rounded-3xl border border-amber-300 bg-amber-50/70 shadow-sm flex items-center justify-between`}>
-            <div>
-              <span className="text-[10px] font-extrabold text-amber-900 uppercase tracking-wider">{t.trialTitle}</span>
-              <h4 className="text-xl font-black text-amber-950">{daysLeft} {t.trialDaysLeft}</h4>
-            </div>
-            <Zap className="w-7 h-7 text-amber-600" />
+          <div className="bg-white p-5 rounded-3xl border border-stone-200 shadow-sm">
+            <div className="flex items-center gap-3"><div className="p-3 rounded-2xl bg-stone-100 text-stone-500"><Activity className="w-6 h-6"/></div><div><span className="text-[10px] font-extrabold text-stone-400 uppercase tracking-wider">Datenstatus</span><h4 className="text-lg font-black text-slate-900">Lokale Speicherung</h4></div></div>
+            <p className="text-[11px] text-stone-500 mt-3">Zentrale Besucheranalyse ist noch nicht verbunden.</p>
           </div>
         </div>
-
-        {/* ANALYTİK / TIKLANMA GRAFİK / LİSTE BÖLÜMÜ */}
-        <div className="max-w-5xl mx-auto bg-white rounded-3xl p-6 border border-stone-200 shadow-sm space-y-4">
-          <div className="flex items-center gap-3">
-            <div className={`p-3 rounded-2xl ${currentTheme.bgLight} ${currentTheme.text}`}><TrendingUp className="w-6 h-6" /></div>
-            <div>
-              <h3 className={`font-black text-xs ${currentTheme.text} uppercase tracking-wider`}>{t.analyticsTitle}</h3>
-              <p className="text-xs text-stone-500">Live Telemetrie & Gast-Interaktionen</p>
-            </div>
-          </div>
-          <div className="space-y-3 pt-2">
-            {analyticsClicks.map((item, idx) => (
-              <div key={idx} className="space-y-1">
-                <div className="flex justify-between text-xs font-bold text-slate-700">
-                  <span>{item.category}</span>
-                  <span className={currentTheme.text}>{item.clicks} Klicks</span>
-                </div>
-                <div className="w-full bg-stone-100 h-2 rounded-full overflow-hidden">
-                  <div className={`h-full ${currentTheme.bg}`} style={{ width: `${(item.clicks / 100) * 100}%` }}></div>
-                </div>
-              </div>
-            ))}
-          </div>
+        <div className="max-w-5xl mx-auto bg-white rounded-3xl p-6 border border-stone-200 shadow-sm space-y-3">
+          <div className="flex items-center gap-3"><div className="p-3 rounded-2xl bg-stone-100 text-stone-500"><TrendingUp className="w-6 h-6"/></div><div><h3 className="font-black text-xs text-slate-800 uppercase tracking-wider">Analytik & Besucherstatistik</h3><p className="text-xs text-stone-500">Transparenter Datenstatus statt geschätzter oder fest eingetragener Zahlen</p></div></div>
+          <div className="rounded-2xl border border-dashed border-stone-300 bg-stone-50 p-5 text-sm text-stone-600">Noch keine verlässlichen Scan- und Klickdaten vorhanden. Die Erfassung benötigt eine zentrale Datenbanktabelle und einen verbundenen Supabase-Zugang. Bis dahin zeigen wir bewusst keine erfundenen Diagramme.</div>
         </div>
 
         {/* DASHBOARD CONTENT SECTIONS */}
@@ -975,15 +938,16 @@ export default function App() {
           <div className="bg-white rounded-3xl p-6 border border-stone-200 shadow-sm space-y-4">
             <h3 className={`font-black text-xs ${currentTheme.text} uppercase tracking-wider`}>{t.sec1Title}</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-              <div>
-                <label className="block text-[10px] font-bold text-stone-500 uppercase mb-1">{t.lblHotelName}</label>
-                <input type="text" value={hotel.name} onChange={(e) => setHotel({ ...hotel, name: e.target.value })} className="w-full p-2.5 text-xs border border-stone-200 rounded-xl" />
-              </div>
-              <div>
-                <label className="block text-[10px] font-bold text-stone-500 uppercase mb-1">{t.lblPhone}</label>
-                <input type="text" value={hotel.phone} onChange={(e) => setHotel({ ...hotel, phone: e.target.value })} className="w-full p-2.5 text-xs border border-stone-200 rounded-xl" />
-              </div>
+              {[
+                {key:'name',label:'Hotelname / Unterkunftsname',type:'text'},
+                {key:'phone',label:'Telefon',type:'tel'},
+                {key:'email',label:'E-Mail',type:'email'},
+                {key:'website',label:'Website',type:'url'},
+                {key:'address',label:'Vollständige Adresse',type:'text'},
+                {key:'locationTitle',label:'Region / Standort',type:'text'}
+              ].map(field=><div key={field.key}><label className="block text-[10px] font-bold text-stone-500 uppercase mb-1">{field.label}</label><input type={field.type} value={hotel[field.key]||''} onChange={e=>setHotel(prev=>({...prev,[field.key]:e.target.value}))} className="w-full p-3 text-sm border border-stone-200 rounded-xl bg-stone-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-200"/></div>)}
             </div>
+            <p className="text-[11px] text-stone-500">Diese Angaben werden in der Gästemappe verwendet. Änderungen bitte oben rechts speichern.</p>
             <div className="border-t border-stone-100 pt-4 space-y-4">
               <div className="flex flex-wrap items-center justify-between gap-3">
                 <div><h4 className="text-xs font-black uppercase tracking-wider text-stone-700">Schnellzugriff · Preset-Editor</h4><p className="text-[11px] text-stone-500 mt-1">Kartentexte je Sprache bearbeiten. WLAN-Zugangsdaten gelten für alle Sprachen.</p></div>
@@ -1073,17 +1037,22 @@ export default function App() {
                 <p className="text-xs text-stone-500">{t.qrTitle}</p>
               </div>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
-              <button onClick={() => window.print()} className="p-4 rounded-2xl border border-stone-200 bg-stone-50 hover:bg-stone-100 transition flex items-center justify-center gap-2 text-xs font-bold text-slate-800 cursor-pointer shadow-xs">
-                <Printer className="w-4 h-4 text-stone-600" /> {t.printA4}
-              </button>
-              <button onClick={() => window.print()} className="p-4 rounded-2xl border border-stone-200 bg-stone-50 hover:bg-stone-100 transition flex items-center justify-center gap-2 text-xs font-bold text-slate-800 cursor-pointer shadow-xs">
-                <Printer className="w-4 h-4 text-stone-600" /> {t.printA5}
-              </button>
-              <button onClick={() => window.print()} className="p-4 rounded-2xl border border-stone-200 bg-stone-50 hover:bg-stone-100 transition flex items-center justify-center gap-2 text-xs font-bold text-slate-800 cursor-pointer shadow-xs">
-                <Printer className="w-4 h-4 text-stone-600" /> {t.printCard}
-              </button>
+            <style>{`@media print { body * { visibility: hidden !important; } #qr-print-area, #qr-print-area * { visibility: visible !important; } #qr-print-area { position: absolute; inset: 0; width: 100%; display: flex !important; justify-content: center; align-items: center; } #qr-print-area .qr-sheet { width: ${qrPrintFormat==='a4'?'190mm':qrPrintFormat==='a5'?'130mm':'85mm'}; min-height: ${qrPrintFormat==='a4'?'270mm':qrPrintFormat==='a5'?'185mm':'55mm'}; padding: 12mm; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; } #qr-print-area svg { width: ${qrPrintFormat==='card'?'38mm':'65mm'} !important; height: auto !important; } }`}</style>
+            <div className="grid grid-cols-1 md:grid-cols-[1fr_auto] gap-5 items-center pt-2">
+              <div className="space-y-3">
+                <div className="flex flex-wrap gap-2">
+                  {[['a4','A4'],['a5','A5'],['card','Karte']].map(([value,label])=><button key={value} onClick={()=>setQrPrintFormat(value)} className={`px-4 py-2 rounded-xl text-xs font-bold border ${qrPrintFormat===value?'bg-slate-900 text-white border-slate-900':'bg-white text-slate-600 border-stone-200'}`}>{label}</button>)}
+                </div>
+                <p className="text-xs text-stone-500">Dieser QR-Code öffnet direkt die digitale Gästemappe dieser Website.</p>
+                <div className="flex flex-wrap gap-2">
+                  <button onClick={()=>window.print()} className="px-4 py-2.5 rounded-xl bg-slate-900 text-white text-xs font-bold flex items-center gap-2"><Printer className="w-4 h-4"/>Ausgewähltes Format drucken</button>
+                  <button onClick={()=>GenUI.copy(guestPageUrl)} className="px-4 py-2.5 rounded-xl border border-stone-200 bg-white text-xs font-bold flex items-center gap-2"><Copy className="w-4 h-4"/>Link kopieren</button>
+                </div>
+                <p className="text-[10px] text-stone-400 break-all">{guestPageUrl}</p>
+              </div>
+              <div className="bg-white p-4 rounded-2xl border border-stone-200 shadow-sm flex items-center justify-center"><QRCodeSVG value={guestPageUrl||'https://example.com'} size={190} level="H" includeMargin={true} /></div>
             </div>
+            <div id="qr-print-area" className="hidden"><div className="qr-sheet"><h1 className="text-2xl font-black mb-2">{hotel.name}</h1><p className="text-sm mb-5">Digitale Gästemappe</p><QRCodeSVG value={guestPageUrl||'https://example.com'} size={280} level="H" includeMargin={true}/><p className="text-xs mt-5">{guestPageUrl}</p></div></div>
           </div>
 
           {/* 6. DİNAMİK PRESET KATEGORİLER (3-ADIMLI MODAL SİSTEMİ) */}
