@@ -724,6 +724,10 @@ export default function App() {
   const [authSession, setAuthSession] = useState(null);
   const [authLoading, setAuthLoading] = useState(true);
   const [hotelRecord, setHotelRecord] = useState(null);
+  const [hotelRecords, setHotelRecords] = useState([]);
+  const [selectedHotelId, setSelectedHotelId] = useState('');
+  const [accountRecord, setAccountRecord] = useState(null);
+  const [trialNow, setTrialNow] = useState(Date.now());
   const [analyticsRows, setAnalyticsRows] = useState([]);
   const [analyticsLoading, setAnalyticsLoading] = useState(false);
   const [cloudDataStatus, setCloudDataStatus] = useState('idle');
@@ -752,9 +756,17 @@ export default function App() {
   }, []);
 
   useEffect(() => {
+    const timer = window.setInterval(() => setTrialNow(Date.now()), 60000);
+    return () => window.clearInterval(timer);
+  }, []);
+
+  useEffect(() => {
     const userId = authSession?.user?.id;
     if (!supabase || !userId || guestSlug) {
       setHotelRecord(null);
+      setHotelRecords([]);
+      setSelectedHotelId('');
+      setAccountRecord(null);
       setCloudDataStatus('idle');
       return undefined;
     }
@@ -764,38 +776,47 @@ export default function App() {
       setCloudDataStatus('loading');
       setCloudDataError('');
       try {
-        const { data, error } = await supabase
+        const { data: existingHotels, error } = await supabase
           .from('gm24_hotels')
-          .select('id, slug, name, profile, public_content')
+          .select('id, slug, name, profile, public_content, created_at')
           .eq('owner_id', userId)
-          .maybeSingle();
+          .order('created_at', { ascending: true });
         if (error) throw error;
 
-        if (data) {
-          if (!active) return;
-          setHotelRecord(data);
-          const savedProfile = data.profile && typeof data.profile === 'object' ? data.profile : {};
-          if (savedProfile.hotel && typeof savedProfile.hotel === 'object') setHotel(savedProfile.hotel);
-          if (Array.isArray(savedProfile.categories)) setCategories(savedProfile.categories);
-          setCloudDataStatus('ready');
-          return;
+        let records = existingHotels || [];
+        if (records.length === 0) {
+          const slug = `hotel-${userId.replace(/-/g, '').slice(0, 12)}`;
+          const { data: created, error: createError } = await supabase
+            .from('gm24_hotels')
+            .insert({
+              owner_id: userId,
+              slug,
+              name: 'Meine Unterkunft',
+              profile: {},
+              public_content: {}
+            })
+            .select('id, slug, name, profile, public_content, created_at')
+            .single();
+          if (createError) throw createError;
+          records = [created];
         }
-
-        const slug = `hotel-${userId.replace(/-/g, '').slice(0, 12)}`;
-        const { data: created, error: createError } = await supabase
-          .from('gm24_hotels')
-          .insert({
-            owner_id: userId,
-            slug,
-            name: 'Meine Unterkunft',
-            profile: {},
-            public_content: {}
-          })
-          .select('id, slug, name, profile, public_content')
-          .single();
-        if (createError) throw createError;
         if (!active) return;
-        setHotelRecord(created);
+        setHotelRecords(records);
+        const selected = records.find(item => item.id === selectedHotelId) || records[0];
+        setHotelRecord(selected);
+        setSelectedHotelId(selected.id);
+        const savedProfile = selected.profile && typeof selected.profile === 'object' ? selected.profile : {};
+        if (savedProfile.hotel && typeof savedProfile.hotel === 'object') setHotel(savedProfile.hotel);
+        if (Array.isArray(savedProfile.categories)) setCategories(savedProfile.categories);
+
+        const { data: account, error: accountError } = await supabase
+          .from('gm24_accounts')
+          .select('owner_id, plan_code, subscription_status, trial_started_at, trial_ends_at, paid_until')
+          .eq('owner_id', userId)
+          .maybeSingle();
+        if (accountError) throw accountError;
+        if (!active) return;
+        setAccountRecord(account || null);
         setCloudDataStatus('ready');
       } catch (error) {
         if (!active) return;
@@ -1078,6 +1099,76 @@ export default function App() {
     setCategories(prev => prev.filter(cat => cat.id !== id));
   };
 
+  const selectAccommodation = (id) => {
+    const selected = hotelRecords.find(item => item.id === id);
+    if (!selected) return;
+    setHotelRecord(selected);
+    setSelectedHotelId(selected.id);
+    const profile = selected.profile && typeof selected.profile === 'object' ? selected.profile : {};
+    if (profile.hotel && typeof profile.hotel === 'object') setHotel(profile.hotel);
+    else setHotel(previous => ({ ...previous, name: selected.name || 'Meine Unterkunft', address: '', phone: '', email: '', website: '', wifiSsid: '', wifiPass: '' }));
+    setCategories(Array.isArray(profile.categories) ? profile.categories : []);
+    setSelectedCategory(null);
+    setIsEditorModalOpen(false);
+  };
+
+  const createAccommodation = async () => {
+    if (!supabase || !authSession?.user?.id || !accountRecord) return;
+    if (accountRecord.subscription_status === 'suspended' || (accountRecord.trial_ends_at && new Date(accountRecord.trial_ends_at).getTime() <= trialNow && accountRecord.subscription_status !== 'active')) return;
+    const base = hotel || {};
+    const newHotel = {
+      ...base,
+      name: 'Neue Unterkunft',
+      logoUrl: '',
+      address: '',
+      phone: '',
+      email: '',
+      website: '',
+      googleReviewUrl: '',
+      wifiSsid: '',
+      wifiPass: '',
+      images: []
+    };
+    setCloudDataStatus('saving');
+    try {
+      const slugBase = 'unterkunft-' + Math.random().toString(36).slice(2, 9);
+      const { data: created, error } = await supabase
+        .from('gm24_hotels')
+        .insert({
+          owner_id: authSession.user.id,
+          slug: slugBase,
+          name: newHotel.name,
+          profile: { hotel: newHotel, categories: [] },
+          public_content: {}
+        })
+        .select('id, slug, name, profile, public_content, created_at')
+        .single();
+      if (error) throw error;
+      setHotelRecords(previous => [...previous, created]);
+      setHotelRecord(created);
+      setSelectedHotelId(created.id);
+      setHotel(newHotel);
+      setCategories([]);
+      setSelectedCategory(null);
+      setCloudDataStatus('ready');
+      const { data: refreshedAccount } = await supabase
+        .from('gm24_accounts')
+        .select('owner_id, plan_code, subscription_status, trial_started_at, trial_ends_at, paid_until')
+        .eq('owner_id', authSession.user.id)
+        .maybeSingle();
+      if (refreshedAccount) setAccountRecord(refreshedAccount);
+    } catch (error) {
+      console.error('Accommodation could not be created:', error);
+      setCloudDataError(error?.message || 'Die Unterkunft konnte nicht erstellt werden.');
+      setCloudDataStatus('error');
+    }
+  };
+
+  const trialEndsAt = accountRecord?.trial_ends_at ? new Date(accountRecord.trial_ends_at).getTime() : null;
+  const trialDaysLeft = trialEndsAt ? Math.max(0, Math.ceil((trialEndsAt - trialNow) / 86400000)) : null;
+  const trialExpired = accountRecord?.subscription_status === 'suspended'
+    || (accountRecord?.subscription_status === 'trial' && trialEndsAt !== null && trialEndsAt <= trialNow);
+
   const handleSaveData = async () => {
     localStorage.setItem('gm24_hotel', JSON.stringify(hotel));
     localStorage.setItem('gm24_categories', JSON.stringify(categories));
@@ -1227,6 +1318,24 @@ export default function App() {
     return <AuthGate supabase={supabase} />;
   }
 
+  if (appMode === 'dashboard' && accountRecord && trialExpired) {
+    return (
+      <main className="min-h-screen bg-[#FBF9F5] flex items-center justify-center p-4">
+        <section className="w-full max-w-xl bg-white border border-amber-200 rounded-3xl p-7 space-y-4 shadow-sm">
+          <div className="text-xs font-black uppercase tracking-wider text-amber-700">Gastemappe24 Pro · Konto</div>
+          <h1 className="text-2xl font-black text-slate-900">Deine Testphase ist beendet</h1>
+          <p className="text-sm text-stone-600">Deine 30-tägige Testphase ist abgelaufen. Dein Zugang ist vorübergehend gesperrt. Deine Unterkünfte und Inhalte bleiben gespeichert und werden nicht gelöscht.</p>
+          <div className="rounded-2xl bg-stone-50 border border-stone-200 p-4 text-sm">
+            <div className="flex justify-between gap-3"><span className="text-stone-500">Aktuelles Paket</span><strong>{accountRecord.plan_code || 'Trial'}</strong></div>
+            <div className="flex justify-between gap-3 mt-2"><span className="text-stone-500">Status</span><strong className="text-amber-700">Zugang pausiert</strong></div>
+          </div>
+          <p className="text-xs text-stone-500">Bitte kontaktiere den Anbieter, um dein Paket zu aktivieren.</p>
+          <button onClick={async () => { await supabase.auth.signOut(); setAppMode('guest'); }} className="rounded-xl bg-stone-900 text-white px-4 py-2.5 text-xs font-bold">Abmelden</button>
+        </section>
+      </main>
+    );
+  }
+
   if (appMode === 'dashboard') {
     return (
       <div className="min-h-screen w-full max-w-full overflow-x-hidden box-border bg-[#FBF9F5] font-sans text-slate-800 p-3 sm:p-6 md:p-10 space-y-6 sm:space-y-8 relative pb-28">
@@ -1251,7 +1360,7 @@ export default function App() {
             <select aria-label="Dashboard language" value={lang} onChange={(e) => setLang(e.target.value)} className="bg-white border border-stone-200 text-xs rounded-xl px-2.5 py-2 cursor-pointer">
               <option value="de">🇩🇪 DE</option><option value="en">🇬🇧 EN</option><option value="tr">🇹🇷 TR</option><option value="fr">🇫🇷 FR</option><option value="es">🇪🇸 ES</option><option value="cs">🇨🇿 CS</option><option value="sq">🇦🇱 SQ</option><option value="sv">🇸🇪 SV</option><option value="nb">🇳🇴 NB</option><option value="it">🇮🇹 IT</option>
             </select>
-            <button onClick={handleSaveData} className="bg-emerald-700 text-white px-5 py-2 rounded-xl text-xs font-bold hover:bg-emerald-800 transition cursor-pointer flex items-center gap-2 shadow-md">
+            <button onClick={handleSaveData} disabled={trialExpired} className="bg-emerald-700 text-white px-5 py-2 rounded-xl text-xs font-bold hover:bg-emerald-800 transition cursor-pointer flex items-center gap-2 shadow-md disabled:opacity-40 disabled:cursor-not-allowed">
               <Save className="w-4 h-4" /> {isSaved ? t.savedMsg : t.saveBtn}
             </button>
             <button onClick={() => { setAppMode('guest'); setShowWelcomeScreen(false); }} className="bg-stone-900 text-white px-4 py-2 rounded-xl text-xs font-bold hover:bg-black transition cursor-pointer">
@@ -1263,7 +1372,40 @@ export default function App() {
           </div>
         </div>
 
-        <div className="w-full max-w-5xl mx-auto rounded-2xl border border-stone-200 bg-white px-4 py-3 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+        <div className="w-full max-w-5xl mx-auto rounded-2xl border border-stone-200 bg-white p-4 flex flex-col gap-3">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+            <div className="flex-1 min-w-0">
+              <label className="block text-[10px] font-bold uppercase tracking-wider text-stone-400 mb-1" htmlFor="gm24-accommodation-select">Meine Unterkünfte</label>
+              <select id="gm24-accommodation-select" value={selectedHotelId} onChange={event => selectAccommodation(event.target.value)} className="w-full sm:max-w-sm rounded-xl border border-stone-200 bg-stone-50 px-3 py-2.5 text-sm font-semibold">
+                {hotelRecords.map(item => <option key={item.id} value={item.id}>{item.name || 'Unbenannte Unterkunft'}</option>)}
+              </select>
+            </div>
+            <button onClick={createAccommodation} disabled={trialExpired || !accountRecord} className="rounded-xl bg-stone-900 text-white px-4 py-2.5 text-xs font-bold disabled:opacity-40 disabled:cursor-not-allowed">+ Unterkunft hinzufügen</button>
+          </div>
+          <div className="rounded-xl bg-stone-50 border border-stone-100 p-3 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+            <div className="text-xs">
+              <span className="font-bold text-stone-700">Cloud-Speicher: </span>
+              <span className={cloudDataStatus === 'ready' ? 'text-emerald-700' : cloudDataStatus === 'error' ? 'text-red-700' : 'text-stone-500'}>
+                {cloudDataStatus === 'ready' ? 'Verbunden' : cloudDataStatus === 'loading' || cloudDataStatus === 'saving' ? 'Wird geladen …' : cloudDataStatus === 'error' ? 'Prüfung erforderlich' : 'Nicht verbunden'}
+              </span>
+              {hotelRecord?.slug && <span className="ml-3 text-stone-400">Hotel-ID: {hotelRecord.slug}</span>}
+            </div>
+            {cloudDataError && <p role="alert" className="text-[11px] text-red-700">{cloudDataError}</p>}
+          </div>
+        </div>
+
+        <div className={`w-full max-w-5xl mx-auto rounded-2xl border p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 ${trialDaysLeft !== null && trialDaysLeft <= 7 ? 'border-amber-300 bg-amber-50' : 'border-stone-200 bg-white'}`}>
+          <div>
+            <div className="text-[10px] font-black uppercase tracking-wider text-stone-500">Dein Paket · 30 Tage kostenlos testen</div>
+            <div className="text-sm font-bold text-slate-900 mt-1">{accountRecord?.plan_code === 'trial' ? 'Kostenlose Testphase' : (accountRecord?.plan_code || 'Paket')}</div>
+            <div className="text-[11px] text-stone-500 mt-1">{accountRecord?.trial_started_at ? `Gestartet am ${new Date(accountRecord.trial_started_at).toLocaleDateString('de-DE')}` : 'Startet mit deiner ersten Unterkunft.'}</div>
+          </div>
+          <div className="sm:text-right">
+            {trialDaysLeft !== null ? <div className="text-2xl font-black tabular-nums text-slate-900">{trialDaysLeft} <span className="text-xs font-bold text-stone-500">Tage übrig</span></div> : <div className="text-sm font-bold text-stone-500">Noch nicht gestartet</div>}
+            {trialDaysLeft !== null && trialDaysLeft <= 7 && trialDaysLeft > 0 && <p className="text-[11px] font-semibold text-amber-800 mt-1">Deine Testphase endet bald. Bitte wähle rechtzeitig ein Paket.</p>}
+            {trialDaysLeft !== null && trialDaysLeft > 7 && <p className="text-[11px] text-stone-500 mt-1">Endet am {new Date(accountRecord.trial_ends_at).toLocaleDateString('de-DE')}</p>}
+          </div>
+        </div>
           <div className="text-xs">
             <span className="font-bold text-stone-700">Cloud-Speicher: </span>
             <span className={cloudDataStatus === 'ready' ? 'text-emerald-700' : cloudDataStatus === 'error' ? 'text-red-700' : 'text-stone-500'}>
