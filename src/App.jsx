@@ -670,6 +670,19 @@ export default function App() {
     { category: 'Anreise & Parken', dl: 31 }
   ]);
 
+  const quickAccessDefaults = {
+    de:{wifi:{title:'WLAN',description:'Verbinden Sie sich mit unserem Gäste-WLAN.'},parking:{title:'Parkplatz',description:'Kostenfreie Parkplätze am Haus verfügbar.'},breakfast:{title:'Frühstück',description:'Frühstückszeiten: 07:30–10:30 Uhr.'},checkin:{title:'Check-in / Check-out',description:'Check-in ab 15:00 Uhr · Check-out bis 11:00 Uhr.'}},
+    en:{wifi:{title:'Wi-Fi',description:'Connect to our guest Wi-Fi.'},parking:{title:'Parking',description:'Free parking is available at the property.'},breakfast:{title:'Breakfast',description:'Breakfast hours: 07:30–10:30.'},checkin:{title:'Check-in / Check-out',description:'Check-in from 3:00 PM · Check-out until 11:00 AM.'}},
+    tr:{wifi:{title:'Kablosuz İnternet',description:'Misafir Wi-Fi ağımıza bağlanabilirsiniz.'},parking:{title:'Otopark',description:'Tesisimizde ücretsiz otopark mevcuttur.'},breakfast:{title:'Kahvaltı',description:'Kahvaltı saatleri: 07:30–10:30.'},checkin:{title:'Giriş / Çıkış',description:'Giriş 15:00 itibarıyla · Çıkış 11:00’e kadar.'}},
+    fr:{wifi:{title:'Wi-Fi',description:'Connectez-vous à notre Wi-Fi client.'},parking:{title:'Parking',description:'Un parking gratuit est disponible sur place.'},breakfast:{title:'Petit-déjeuner',description:'Horaires : 07h30–10h30.'},checkin:{title:'Arrivée / Départ',description:'Arrivée dès 15h · Départ avant 11h.'}},
+    hr:{wifi:{title:'Wi-Fi',description:'Povežite se s našom Wi-Fi mrežom za goste.'},parking:{title:'Parkiralište',description:'Besplatno parkiralište dostupno je u sklopu objekta.'},breakfast:{title:'Doručak',description:'Vrijeme doručka: 07:30–10:30.'},checkin:{title:'Prijava / Odjava',description:'Prijava od 15:00 · Odjava do 11:00.'}},
+    it:{wifi:{title:'Wi-Fi',description:'Connettiti alla nostra rete Wi-Fi per gli ospiti.'},parking:{title:'Parcheggio',description:'Parcheggio gratuito disponibile presso la struttura.'},breakfast:{title:'Colazione',description:'Orario colazione: 07:30–10:30.'},checkin:{title:'Check-in / Check-out',description:'Check-in dalle 15:00 · Check-out entro le 11:00.'}},
+    es:{wifi:{title:'Wi-Fi',description:'Conéctese a nuestra red Wi-Fi para huéspedes.'},parking:{title:'Aparcamiento',description:'Hay aparcamiento gratuito en el establecimiento.'},breakfast:{title:'Desayuno',description:'Horario del desayuno: 07:30–10:30.'},checkin:{title:'Entrada / Salida',description:'Entrada desde las 15:00 · Salida hasta las 11:00.'}},
+    sv:{wifi:{title:'Wi-Fi',description:'Anslut till vårt gäst-Wi-Fi.'},parking:{title:'Parkering',description:'Gratis parkering finns vid boendet.'},breakfast:{title:'Frukost',description:'Frukosttider: 07.30–10.30.'},checkin:{title:'Incheckning / Utcheckning',description:'Incheckning från 15.00 · Utcheckning senast 11.00.'}},
+    no:{wifi:{title:'Wi-Fi',description:'Koble til vårt gjeste-Wi-Fi.'},parking:{title:'Parkering',description:'Gratis parkering er tilgjengelig på stedet.'},breakfast:{title:'Frokost',description:'Frokosttider: 07:30–10:30.'},checkin:{title:'Innsjekking / Utsjekking',description:'Innsjekking fra 15:00 · Utsjekking innen 11:00.'}},
+    sq:{wifi:{title:'Wi-Fi',description:'Lidhu me rrjetin tonë Wi-Fi për mysafirët.'},parking:{title:'Parkim',description:'Parkim falas është i disponueshëm në ambientet tona.'},breakfast:{title:'Mëngjesi',description:'Orari i mëngjesit: 07:30–10:30.'},checkin:{title:'Hyrja / Dalja',description:'Hyrja nga ora 15:00 · Dalja deri në 11:00.'}}
+  };
+  const [quickEditLang, setQuickEditLang] = useState('de');
   const [hotel, setHotel] = useState(() => {
     const saved = localStorage.getItem('gm24_hotel');
     const defaultData = {
@@ -690,6 +703,7 @@ export default function App() {
       showParking: true,
       showBreakfast: true,
       showCheckInOut: true,
+      quickAccessContent: quickAccessDefaults,
       themeColor: 'amber',
       images: [
         'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1000&q=80',
@@ -700,7 +714,11 @@ export default function App() {
     try {
       const parsed = JSON.parse(saved);
       const merged = parsed && typeof parsed === 'object' && !Array.isArray(parsed) ? { ...defaultData, ...parsed } : defaultData;
-      return { ...merged, images: Array.isArray(merged.images) ? merged.images : defaultData.images };
+      const quickAccessContent = Object.fromEntries(Object.entries(quickAccessDefaults).map(([language, cards]) => [
+        language,
+        Object.fromEntries(Object.entries(cards).map(([id, defaults]) => [id, { ...defaults, ...(merged.quickAccessContent?.[language]?.[id] || {}) }]))
+      ]));
+      return { ...merged, quickAccessContent, images: Array.isArray(merged.images) ? merged.images : defaultData.images };
     } catch (error) {
       console.error('Ungültige gespeicherte Hoteldaten – Standardwerte werden verwendet.', error);
       return defaultData;
@@ -740,6 +758,18 @@ export default function App() {
     ];
   });
 
+  const getQuickCardText = (cardId, field) => {
+    const language = lang === 'nb' ? 'no' : lang === 'cs' ? 'en' : lang;
+    const card = hotel.quickAccessContent?.[language]?.[cardId] || hotel.quickAccessContent?.de?.[cardId] || quickAccessDefaults.de[cardId];
+    return card?.[field] || quickAccessDefaults.de[cardId][field];
+  };
+  const updateQuickCardText = (cardId, field, value) => setHotel(prev => ({
+    ...prev, quickAccessContent: { ...(prev.quickAccessContent || quickAccessDefaults),
+      [quickEditLang]: { ...(prev.quickAccessContent?.[quickEditLang] || quickAccessDefaults[quickEditLang]),
+        [cardId]: { ...(prev.quickAccessContent?.[quickEditLang]?.[cardId] || quickAccessDefaults[quickEditLang][cardId]), [field]: value }
+      }
+    }
+  }));
   const currentTheme = themeColors.find(tc => tc.id === hotel.themeColor) || themeColors[0];
 
   const handleSaveCategoryModal = (catData) => {
@@ -757,28 +787,15 @@ export default function App() {
   };
 
   const handleSaveData = async () => {
+    // Save the complete editor state locally; the current Supabase schema has no multilingual quick-access fields.
+    localStorage.setItem('gm24_hotel', JSON.stringify(hotel));
+    localStorage.setItem('gm24_categories', JSON.stringify(categories));
     try {
-      const { error } = await supabase
-        .from('hotels')
-        .upsert({ 
-          id: 'default-hotel-id', 
-          name: hotel.name,
-          phone: hotel.phone,
-          email: hotel.email,
-          address: hotel.address,
-          categories: categories,
-          theme_color: hotel.themeColor
-        });
-
-      if (error) throw error;
-      setIsSaved(true);
-      setTimeout(() => setIsSaved(false), 3000);
-    } catch (err) {
-      localStorage.setItem('gm24_hotel', JSON.stringify(hotel));
-      localStorage.setItem('gm24_categories', JSON.stringify(categories));
-      setIsSaved(true);
-      setTimeout(() => setIsSaved(false), 3000);
-    }
+      const { error } = await supabase.from('hotels').upsert({ id: 'default-hotel-id', name: hotel.name, phone: hotel.phone, email: hotel.email, address: hotel.address, categories: categories, theme_color: hotel.themeColor });
+      if (error) console.warn('Supabase sync skipped; local changes are saved.', error);
+    } catch (err) { console.warn('Supabase sync unavailable; local changes are saved.', err); }
+    setIsSaved(true);
+    setTimeout(() => setIsSaved(false), 3000);
   };
 
   const copyWifiPassword = () => {
@@ -826,32 +843,32 @@ export default function App() {
   const activeQuickCards = [
     hotel.showWifi && (
       <div key="wifi" className="bg-white p-4 rounded-2xl shadow-sm border border-stone-200 space-y-2">
-        <div className={`flex items-center gap-2 ${currentTheme.text}`}><Wifi className="w-5 h-5" /><span className="font-bold text-xs text-slate-900">{t.wlanTitle}</span></div>
+        <div className={`flex items-center gap-2 ${currentTheme.text}`}><Wifi className="w-5 h-5" /><span className="font-bold text-xs text-slate-900">{getQuickCardText('wifi','title')}</span></div>
+        <p className="text-[11px] text-slate-600">{getQuickCardText('wifi','description')}</p>
         <div className="text-[11px] text-slate-500 font-mono bg-stone-50 p-2 rounded-lg border">
           <div><b>{hotel.wifiSsid}</b></div>
-          <div className="flex justify-between items-center mt-1">
-            <span>{hotel.wifiPass}</span>
-            <button onClick={copyWifiPassword} className={`${currentTheme.bgLight} ${currentTheme.text} p-1 rounded cursor-pointer`}>{copiedWifi ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}</button>
+          <div className="flex justify-between items-center mt-1 gap-2"><span className="break-all">{hotel.wifiPass}</span>
+            <button type="button" onClick={copyWifiPassword} aria-label="Copy Wi-Fi password" title={copiedWifi ? 'Copied' : 'Copy password'} className={`${currentTheme.bgLight} ${currentTheme.text} px-2 py-1.5 rounded-lg cursor-pointer inline-flex items-center gap-1 shrink-0`}>{copiedWifi ? <><Check className="w-3.5 h-3.5 text-emerald-600" /><span className="text-[10px]">Copied</span></> : <><Copy className="w-3.5 h-3.5" /><span className="text-[10px]">Copy</span></>}</button>
           </div>
         </div>
       </div>
     ),
     hotel.showParking && (
       <div key="parking" className="bg-white p-4 rounded-2xl shadow-sm border border-stone-200 space-y-2">
-        <div className={`flex items-center gap-2 ${currentTheme.text}`}><Car className="w-5 h-5" /><span className="font-bold text-xs text-slate-900">{t.parkingTitle}</span></div>
-        <p className="text-[11px] text-slate-600">{hotel.parkingInfo}</p>
+        <div className={`flex items-center gap-2 ${currentTheme.text}`}><Car className="w-5 h-5" /><span className="font-bold text-xs text-slate-900">{getQuickCardText('parking','title')}</span></div>
+        <p className="text-[11px] text-slate-600">{getQuickCardText('parking','description')}</p>
       </div>
     ),
     hotel.showBreakfast && (
       <div key="breakfast" className="bg-white p-4 rounded-2xl shadow-sm border border-stone-200 space-y-2">
-        <div className={`flex items-center gap-2 ${currentTheme.text}`}><Coffee className="w-5 h-5" /><span className="font-bold text-xs text-slate-900">{t.breakfastTitle}</span></div>
-        <p className="text-[11px] text-slate-600">{hotel.breakfastTime}</p>
+        <div className={`flex items-center gap-2 ${currentTheme.text}`}><Coffee className="w-5 h-5" /><span className="font-bold text-xs text-slate-900">{getQuickCardText('breakfast','title')}</span></div>
+        <p className="text-[11px] text-slate-600">{getQuickCardText('breakfast','description')}</p>
       </div>
     ),
     hotel.showCheckInOut && (
       <div key="checkinout" className="bg-white p-4 rounded-2xl shadow-sm border border-stone-200 space-y-2">
-        <div className={`flex items-center gap-2 ${currentTheme.text}`}><Clock className="w-5 h-5" /><span className="font-bold text-xs text-slate-900">{t.checkInOutTitle}</span></div>
-        <p className="text-[11px] text-slate-600">{hotel.checkInOut}</p>
+        <div className={`flex items-center gap-2 ${currentTheme.text}`}><Clock className="w-5 h-5" /><span className="font-bold text-xs text-slate-900">{getQuickCardText('checkin','title')}</span></div>
+        <p className="text-[11px] text-slate-600">{getQuickCardText('checkin','description')}</p>
       </div>
     )
   ].filter(Boolean);
@@ -955,21 +972,26 @@ export default function App() {
                 <input type="text" value={hotel.phone} onChange={(e) => setHotel({ ...hotel, phone: e.target.value })} className="w-full p-2.5 text-xs border border-stone-200 rounded-xl" />
               </div>
             </div>
-            <div className="border-t border-stone-100 pt-4 space-y-3">
-              <h4 className="text-[10px] font-black uppercase tracking-wider text-stone-500">{quickLabels.title}</h4>
+            <div className="border-t border-stone-100 pt-4 space-y-4">
+              <div className="flex flex-wrap items-center justify-between gap-3">
+                <div><h4 className="text-xs font-black uppercase tracking-wider text-stone-700">Schnellzugriff · Preset-Editor</h4><p className="text-[11px] text-stone-500 mt-1">Kartentexte je Sprache bearbeiten. WLAN-Zugangsdaten gelten für alle Sprachen.</p></div>
+                <select aria-label="Sprache der Schnellzugriff-Presets" value={quickEditLang} onChange={e => setQuickEditLang(e.target.value)} className="bg-white border border-stone-200 text-xs rounded-xl px-3 py-2">
+                  <option value="de">🇩🇪 Deutsch</option><option value="en">🇬🇧 English</option><option value="tr">🇹🇷 Türkçe</option><option value="fr">🇫🇷 Français</option><option value="hr">🇭🇷 Hrvatski</option><option value="it">🇮🇹 Italiano</option><option value="es">🇪🇸 Español</option><option value="sv">🇸🇪 Svenska</option><option value="no">🇳🇴 Norsk</option><option value="sq">🇦🇱 Shqip</option>
+                </select>
+              </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                {[
-                  ['showWifi', 'wifi'],
-                  ['showParking', 'parking'],
-                  ['showBreakfast', 'breakfast'],
-                  ['showCheckInOut', 'checkin']
-                ].map(([key, labelKey]) => (
-                  <label key={key} className="flex items-center gap-2.5 rounded-xl border border-stone-200 bg-stone-50 px-3 py-2.5 text-xs font-semibold cursor-pointer">
-                    <input type="checkbox" checked={hotel[key] !== false} onChange={(e) => setHotel(prev => ({ ...prev, [key]: e.target.checked }))} className="accent-emerald-700 w-4 h-4" />
-                    {quickLabels[labelKey]}
-                  </label>
+                {[{id:'wifi',enabled:'showWifi',label:'WLAN'},{id:'parking',enabled:'showParking',label:'Parkplatz'},{id:'breakfast',enabled:'showBreakfast',label:'Frühstück'},{id:'checkin',enabled:'showCheckInOut',label:'Check-in / Check-out'}].map(card => (
+                  <div key={card.id} className="rounded-2xl border border-stone-200 bg-stone-50 p-3 space-y-3">
+                    <div className="flex items-center justify-between gap-2"><span className="text-xs font-bold text-slate-800">{card.label}</span><label className="flex items-center gap-2 text-[11px] font-semibold text-stone-600 cursor-pointer"><input type="checkbox" checked={hotel[card.enabled] !== false} onChange={e => setHotel(prev => ({...prev,[card.enabled]:e.target.checked}))} className="accent-emerald-700 w-4 h-4" />Anzeigen</label></div>
+                    <label className="block text-[10px] font-bold uppercase text-stone-500">Titel<input value={hotel.quickAccessContent?.[quickEditLang]?.[card.id]?.title ?? quickAccessDefaults[quickEditLang][card.id].title} onChange={e => updateQuickCardText(card.id,'title',e.target.value)} className="mt-1 w-full rounded-lg border border-stone-200 bg-white p-2.5 text-xs" /></label>
+                    <label className="block text-[10px] font-bold uppercase text-stone-500">Beschreibung<textarea rows="2" value={hotel.quickAccessContent?.[quickEditLang]?.[card.id]?.description ?? quickAccessDefaults[quickEditLang][card.id].description} onChange={e => updateQuickCardText(card.id,'description',e.target.value)} className="mt-1 w-full rounded-lg border border-stone-200 bg-white p-2.5 text-xs resize-y" /></label>
+                  </div>
                 ))}
               </div>
+              <div className="rounded-2xl border border-sky-200 bg-sky-50/70 p-3 space-y-3"><div className="text-xs font-bold text-slate-800">WLAN-Zugangsdaten · für alle Sprachen</div><div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <label className="block text-[10px] font-bold uppercase text-stone-500">Netzwerkname (SSID)<input value={hotel.wifiSsid || ''} onChange={e => setHotel(prev => ({...prev,wifiSsid:e.target.value}))} className="mt-1 w-full rounded-lg border border-stone-200 bg-white p-2.5 text-xs" /></label>
+                <label className="block text-[10px] font-bold uppercase text-stone-500">WLAN-Passwort<input value={hotel.wifiPass || ''} onChange={e => setHotel(prev => ({...prev,wifiPass:e.target.value}))} className="mt-1 w-full rounded-lg border border-stone-200 bg-white p-2.5 text-xs" /></label>
+              </div></div>
             </div>
           </div>
 
