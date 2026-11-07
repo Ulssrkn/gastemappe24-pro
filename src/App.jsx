@@ -221,10 +221,7 @@ const legacyCategoryPresets = [
     { key: 'emergency_phone', type: 'text', label: { de: 'Notfallnummer', en: 'Emergency Phone', tr: 'Acil Durum Telefonu', fr: "Numéro d'urgence", hr: 'Broj za hitne slučajeve' }, default: '+49 123 456789', primary: true },
     { key: 'multilingual_staff', type: 'boolean', label: { de: 'Mehrsprachiges Personal', en: 'Multilingual Staff', tr: 'Çok Dilli Personel', fr: 'Personnel multilingue', hr: 'Višejezično osoblje' }, default: true, primary: true }
   ]},
-  { id: 'room_info', categoryId: 'cat_hotel', icon: 'Bed', title: { de: 'Zimmerinformationen', en: 'Room Information', tr: 'Oda Bilgileri', fr: 'Informations chambre', hr: 'Informacije o sobi' }, schema: [
-    { key: 'room_features', type: 'multiselect', label: { de: 'Zimmerausstattung', en: 'Room Features', tr: 'Oda Özellikleri', fr: 'Équipements', hr: 'Sadržaj sobe' }, options: ['Safe', 'Klimaanlage', 'Flachbild-TV', 'Haartrockner', 'Kaffeemaschine'], default: ['Safe', 'Klimaanlage', 'Flachbild-TV'], primary: true },
-    { key: 'balcony_status', type: 'boolean', label: { de: 'Balkon / Terrasse', en: 'Balcony / Terrace', tr: 'Balkon / Teras', fr: 'Balcon / Terrasse', hr: 'Balkon / Terasa' }, default: false, primary: true }
-  ]},
+  { id: 'room_info', categoryId: 'cat_hotel', icon: 'Bed', title: hotelPresets.find(p => p.id === 'HOT_006').title, schema: hotelPresets.find(p => p.id === 'HOT_006').schema },
   { id: 'sleep_comfort', categoryId: 'cat_hotel', icon: 'Bed', title: { de: 'Schlafkomfort', en: 'Sleep Comfort', tr: 'Uyku Konforu', fr: 'Confort du sommeil', hr: 'Udobnost spavanja' }, schema: [
     { key: 'pillow_menu', type: 'boolean', label: { de: 'Kissenmenü verfügbar', en: 'Pillows Menu Available', tr: 'Yastık Menüsü Mevcut', fr: 'Menu d\'oreillers', hr: 'Meni jastuka' }, default: true, primary: true },
     { key: 'mattress_type', type: 'text', label: { de: 'Matratzenart', en: 'Mattress Type', tr: 'Yatak Tipi', fr: 'Type de matelas', hr: 'Vrsta madraca' }, default: 'Orthopädisch / Premium', primary: true }
@@ -526,7 +523,7 @@ const CompactPresetEditorModal = ({ isOpen, onClose, onSave, currentTheme, lang,
               </div>
 
               <div className="space-y-3 bg-stone-50/60 p-4 rounded-2xl border border-stone-200/80">
-{selectedPreset?.id === 'HOT_006' ? (() => {
+{(selectedPreset?.id === 'HOT_006' || selectedPreset?.id === 'room_info') ? (() => {
   const roomGroups = [
     {id:'room_amenities',label:{de:'Zimmerausstattung',en:'Room amenities',tr:'Oda donanımı',fr:'Équipements de la chambre',hr:'Oprema sobe',it:'Dotazioni della camera',es:'Equipamiento de la habitación',sv:'Rumsutrustning',no:'Romfasiliteter',sq:'Pajisjet e dhomës'},keys:['room_amenities']},
     {id:'beds',label:{de:'Betten & Schlafkomfort',en:'Beds & sleep comfort',tr:'Yataklar & uyku konforu',fr:'Lits & confort',hr:'Kreveti i udobnost',it:'Letti e comfort',es:'Camas y confort',sv:'Sängar och komfort',no:'Senger og komfort',sq:'Krevatet dhe rehatia'},keys:['bed_types']},
