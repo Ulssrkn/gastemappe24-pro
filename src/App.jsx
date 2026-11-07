@@ -653,9 +653,10 @@ const GuestCategoryDisplay = ({ category, currentTheme, lang, t }) => {
 const AddressAutocomplete = ({ value, onChange, className }) => {
   const [suggestions, setSuggestions] = useState([]);
   const [open, setOpen] = useState(false);
+  const [isTyping, setIsTyping] = useState(false);
   useEffect(() => {
     const query = (value || '').trim();
-    if (query.length < 3) { setSuggestions([]); setOpen(false); return; }
+    if (!isTyping || query.length < 3) { setSuggestions([]); setOpen(false); return; }
     const controller = new AbortController();
     const timer = setTimeout(async () => {
       try {
@@ -673,9 +674,9 @@ const AddressAutocomplete = ({ value, onChange, className }) => {
     return () => { clearTimeout(timer); controller.abort(); };
   }, [value]);
   return <div className="relative">
-    <input type="text" value={value || ''} onChange={event => onChange(event.target.value)} onFocus={() => suggestions.length && setOpen(true)} onBlur={() => setTimeout(() => setOpen(false), 150)} autoComplete="street-address" className={className} />
+    <input type="text" value={value || ''} onChange={event => { setIsTyping(true); onChange(event.target.value); }} onFocus={() => { if (isTyping && suggestions.length) setOpen(true); }} onBlur={() => setTimeout(() => setOpen(false), 150)} autoComplete="off" className={className} />
     {open && suggestions.length > 0 && <div role="listbox" className="absolute z-50 left-0 right-0 top-full mt-1 rounded-xl border border-stone-200 bg-white shadow-xl overflow-hidden">
-      {suggestions.map((item, index) => <button key={item.label + index} type="button" role="option" onMouseDown={event => event.preventDefault()} onClick={() => { onChange(item.label); setOpen(false); setSuggestions([]); }} className="w-full px-3 py-2.5 text-left text-xs text-stone-700 hover:bg-amber-50 border-b last:border-b-0 border-stone-100">
+      {suggestions.map((item, index) => <button key={item.label + index} type="button" role="option" onMouseDown={event => event.preventDefault()} onClick={() => { onChange(item.label); setIsTyping(false); setOpen(false); setSuggestions([]); }} className="w-full px-3 py-2.5 text-left text-xs text-stone-700 hover:bg-amber-50 border-b last:border-b-0 border-stone-100">
         <MapPin className="inline w-3.5 h-3.5 mr-2 text-stone-400" />{item.label}
       </button>)}
       <div className="px-3 py-1.5 text-[9px] text-stone-400">Adressvorschläge von OpenStreetMap / Photon</div>
