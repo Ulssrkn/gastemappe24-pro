@@ -30,7 +30,7 @@ const createQrPdf = async ({ svg, hotelName, logoUrl, format }) => {
   const stream=te.encode(`q ${pw} 0 0 ${ph} 0 0 cm /Im0 Do Q`);offs[5]=pos;put(`5 0 obj\\n<< /Length ${stream.length} >>\\nstream\\n`);put(stream);put('\\nendstream\\nendobj\\n');const xref=pos;put('xref\\n0 6\\n0000000000 65535 f \\n');for(let i=1;i<=5;i++)put(`${String(offs[i]).padStart(10,'0')} 00000 n \\n`);put(`trailer\\n<< /Size 6 /Root 1 0 R >>\\nstartxref\\n${xref}\\n%%EOF`);
   const url=URL.createObjectURL(new Blob(chunks,{type:'application/pdf'})),a=document.createElement('a');a.href=url;a.download=`${(hotelName||'Gastemappe24').replace(/[^a-z0-9-_]+/gi,'-')}-QR-${format.toUpperCase()}.pdf`;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1500);
 };
-\nconst translations = {
+const translations = {
   de: {
     welcomeBadge: "Digitale Gästemappe",
     welcomeButton: "Los geht's",
