@@ -1194,10 +1194,11 @@ export default function App() {
           updated_at: new Date().toISOString()
         })
         .eq('id', hotelRecord.id)
-        .select('id, slug, name, profile, public_content')
+        .select('id, slug, name, profile, public_content, created_at')
         .single();
       if (error) throw error;
       setHotelRecord(data);
+      setHotelRecords(previous => previous.map(item => item.id === data.id ? data : item));
       setCloudDataStatus('ready');
       setIsSaved(true);
       setTimeout(() => setIsSaved(false), 3000);
@@ -1406,16 +1407,6 @@ export default function App() {
             {trialDaysLeft !== null && trialDaysLeft > 7 && <p className="text-[11px] text-stone-500 mt-1">Endet am {new Date(accountRecord.trial_ends_at).toLocaleDateString('de-DE')}</p>}
           </div>
         </div>
-          <div className="text-xs">
-            <span className="font-bold text-stone-700">Cloud-Speicher: </span>
-            <span className={cloudDataStatus === 'ready' ? 'text-emerald-700' : cloudDataStatus === 'error' ? 'text-red-700' : 'text-stone-500'}>
-              {cloudDataStatus === 'ready' ? 'Verbunden' : cloudDataStatus === 'loading' || cloudDataStatus === 'saving' ? 'Wird geladen …' : cloudDataStatus === 'error' ? 'Prüfung erforderlich' : 'Nicht verbunden'}
-            </span>
-            {hotelRecord?.slug && <span className="ml-3 text-stone-400">Hotel-ID: {hotelRecord.slug}</span>}
-          </div>
-          {cloudDataError && <p role="alert" className="text-[11px] text-red-700">{cloudDataError}</p>}
-        </div>
-
         {/* REAL ANALYTICS STATUS — do not display invented figures */}
         <div className="w-full max-w-5xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
           <div className="bg-white p-5 rounded-3xl border border-stone-200 shadow-sm">
