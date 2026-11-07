@@ -1490,14 +1490,14 @@ export default function App() {
           </a>
           <div className="mt-10 px-3 text-[10px] font-extrabold uppercase tracking-[.18em] text-slate-400">Arbeitsbereich</div>
           <nav className="mt-3 space-y-1.5">
-            {[[LayoutDashboard,'Übersicht','#dashboard-home'],[Building2,'Unterkünfte','#accommodations'],[BarChart3,'Analytik','#analytics'],[Settings,'Gästemappe bearbeiten','#editor']].map(([Icon,label,href])=><a key={label} href={href} className="flex items-center gap-3 rounded-xl px-3 py-3 text-[13px] font-semibold text-slate-600 transition hover:bg-slate-100 hover:text-slate-900"><Icon className="h-[17px] w-[17px]"/>{label}</a>)}
+            {[[LayoutDashboard,'Übersicht','#dashboard-overview'],[Building2,'Unterkünfte','#accommodations'],[BarChart3,'Analytik','#analytics'],[Settings,'Gästemappe bearbeiten','#editor']].map(([Icon,label,href])=><a key={label} href={href} className="flex items-center gap-3 rounded-xl px-3 py-3 text-[13px] font-semibold text-slate-600 transition hover:bg-slate-100 hover:text-slate-900"><Icon className="h-[17px] w-[17px]"/>{label}</a>)}
           </nav>
           <div className="mt-8 px-3 text-[10px] font-extrabold uppercase tracking-[.18em] text-slate-400">Konto</div>
           <a href="#membership" className="mt-3 flex items-center gap-3 rounded-xl px-3 py-3 text-[13px] font-semibold text-slate-600 transition hover:bg-slate-100 hover:text-slate-900"><CreditCard className="h-[17px] w-[17px]"/>Paket & Testphase</a>
           <div className="mt-auto rounded-2xl border border-slate-200 bg-slate-50 p-4"><div className="flex items-center gap-2 text-xs font-bold text-slate-800"><span className="h-2 w-2 rounded-full bg-emerald-500"/>Dein Workspace</div><p className="mt-2 text-[11px] leading-relaxed text-slate-500">Deine Gästemappe und Unterkünfte an einem Ort.</p></div>
         </aside>
         <nav className="fixed inset-x-3 bottom-3 z-40 grid grid-cols-4 rounded-2xl border border-slate-200 bg-white/95 p-1.5 shadow-xl backdrop-blur md:hidden">
-          {[[LayoutDashboard,'Start','#dashboard-home'],[Building2,'Unterkünfte','#accommodations'],[BarChart3,'Analytik','#analytics'],[Settings,'Bearbeiten','#editor']].map(([Icon,label,href])=><a key={label} href={href} className="flex flex-col items-center gap-1 rounded-xl py-2 text-[9px] font-semibold text-slate-500 hover:bg-slate-100 hover:text-slate-900"><Icon className="h-4 w-4"/>{label}</a>)}
+          {[[LayoutDashboard,'Start','#dashboard-overview'],[Building2,'Unterkünfte','#accommodations'],[BarChart3,'Analytik','#analytics'],[Settings,'Bearbeiten','#editor']].map(([Icon,label,href])=><a key={label} href={href} className="flex flex-col items-center gap-1 rounded-xl py-2 text-[9px] font-semibold text-slate-500 hover:bg-slate-100 hover:text-slate-900"><Icon className="h-4 w-4"/>{label}</a>)}
         </nav>
         
         {createAccommodationOpen && (
@@ -1583,6 +1583,21 @@ export default function App() {
           </div>
         </div>
 
+        <section id="dashboard-overview" className="w-full max-w-6xl mx-auto overflow-hidden rounded-[28px] border border-slate-800 bg-gradient-to-br from-[#142536] via-[#1c3447] to-[#294456] px-6 py-7 text-white shadow-xl shadow-slate-900/10 sm:px-9 sm:py-9">
+          <div className="flex flex-col justify-between gap-7 lg:flex-row lg:items-end">
+            <div className="max-w-2xl">
+              <div className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-1.5 text-[10px] font-bold tracking-wide text-slate-200"><Sparkles className="h-3.5 w-3.5 text-amber-300"/>DEIN GASTGEBER-WORKSPACE</div>
+              <h1 className="mt-5 text-3xl font-semibold tracking-tight sm:text-4xl">Alles für deine Gäste. <span className="text-amber-300">An einem Ort.</span></h1>
+              <p className="mt-3 max-w-xl text-sm leading-6 text-slate-300">Verwalte deine digitalen Gästemappen, behalte die Nutzung im Blick und passe dein Gästeerlebnis ganz einfach an.</p>
+            </div>
+            <div className="min-w-[220px] rounded-2xl border border-white/15 bg-white/[0.08] p-4 backdrop-blur-sm">
+              <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-[.14em] text-slate-300"><span className={`h-2 w-2 rounded-full ${cloudDataStatus === 'ready' ? 'bg-emerald-400' : cloudDataStatus === 'error' ? 'bg-rose-400' : 'bg-amber-300'}`}/>{cloudDataStatus === 'ready' ? 'Cloud verbunden' : cloudDataStatus === 'error' ? 'Cloud-Prüfung nötig' : 'Workspace-Status'}</div>
+              <p className="mt-2 truncate text-base font-bold text-white">{hotelRecord?.name || hotel.name || 'Deine Unterkunft'}</p>
+              <p className="mt-1 text-xs text-slate-300">{hotelRecords.length} {hotelRecords.length === 1 ? 'Unterkunft' : 'Unterkünfte'} im Workspace</p>
+            </div>
+          </div>
+        </section>
+
         <section id="accommodations" className="w-full max-w-6xl mx-auto space-y-4">
           <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3">
             <div>
@@ -1626,47 +1641,56 @@ export default function App() {
           </div>
         </section>
 
-        <section id="membership" className="w-full max-w-6xl mx-auto overflow-hidden rounded-3xl border border-slate-800 bg-gradient-to-br from-slate-950 via-slate-900 to-slate-800 p-5 sm:p-7 text-white shadow-xl shadow-slate-900/10">
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-            <div>
-              <p className="text-[10px] font-black uppercase tracking-[0.22em] text-amber-300">Mitgliedschaft</p>
-              <h2 className="mt-1 text-xl font-black">Dein Gastemappe24-Paket</h2>
-              <p className="mt-1 text-xs text-slate-300">Dein Konto ist aktuell in der kostenlosen Testphase.</p>
+        <section id="membership" className="w-full max-w-6xl mx-auto rounded-3xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex items-start gap-3">
+              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-amber-50 text-amber-700"><CreditCard className="h-5 w-5"/></div>
+              <div>
+                <p className="text-[10px] font-extrabold uppercase tracking-[.17em] text-slate-400">Konto & Paket</p>
+                <h2 className="mt-1 text-lg font-bold tracking-tight text-slate-900">{accountRecord?.subscription_status === 'trial' ? 'Kostenlose Testphase' : `${accountRecord?.plan_code || 'Gastemappe24'} Paket`}</h2>
+                <p className="mt-1 text-xs text-slate-500">{hotelRecords.length} von {accommodationLimit} Unterkünften genutzt{accountRecord?.trial_ends_at ? ` · Testphase endet ${new Date(accountRecord.trial_ends_at).toLocaleDateString('de-DE')}` : accountRecord?.paid_until ? ` · Aktiv bis ${new Date(accountRecord.paid_until).toLocaleDateString('de-DE')}` : ''}</p>
+              </div>
             </div>
-            <div className="rounded-2xl border border-white/10 bg-white/10 px-4 py-3 sm:text-right">
-              <p className="text-[9px] font-bold uppercase tracking-wider text-slate-300">Testphase</p>
-              <p className="text-2xl font-black tabular-nums">{trialDaysLeft !== null ? `${trialDaysLeft} Tage` : 'Noch nicht gestartet'}</p>
-              {accountRecord?.trial_ends_at && <p className="text-[10px] text-slate-300">Bis {new Date(accountRecord.trial_ends_at).toLocaleDateString('de-DE')}</p>}
+            <div className="flex items-center gap-4 rounded-2xl bg-slate-50 px-4 py-3 sm:min-w-[210px]">
+              <div className="min-w-0 flex-1"><div className="flex justify-between gap-2 text-[10px] font-semibold text-slate-500"><span>{accountRecord?.subscription_status === 'trial' ? 'Testphase' : 'Paket'}</span><span className="text-slate-800">{accountRecord?.subscription_status === 'trial' && trialDaysLeft !== null ? `${trialDaysLeft} Tage` : 'Aktiv'}</span></div><div className="mt-2 h-1.5 overflow-hidden rounded-full bg-slate-200"><div className="h-full rounded-full bg-amber-500 transition-all" style={{width:`${accountRecord?.subscription_status === 'trial' && trialDaysLeft !== null ? Math.max(0,Math.min(100,(30-trialDaysLeft)/30*100)) : 100}%`}}/></div></div>
+              <span className={`rounded-full px-2.5 py-1.5 text-[9px] font-bold ${accountRecord?.subscription_status === 'trial' ? 'bg-amber-50 text-amber-800' : 'bg-emerald-50 text-emerald-700'}`}>{accountRecord?.subscription_status === 'trial' ? 'Testphase' : 'Aktiv'}</span>
             </div>
           </div>
-          <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-3">
+          <details className="group mt-4 border-t border-slate-100 pt-4">
+            <summary className="flex cursor-pointer list-none items-center justify-between gap-3 text-xs font-bold text-slate-700 hover:text-slate-950"><span>Pakete vergleichen und unverbindlich vormerken</span><ChevronDown className="h-4 w-4 text-slate-400 transition group-open:rotate-180"/></summary>
+            <div className="mt-4 grid grid-cols-1 gap-3 md:grid-cols-3">
             {[
               {code:'single',name:'Single',capacity:'1 Unterkunft',desc:'Für einzelne Ferienwohnungen und kleine Gastgeber',features:['Eine digitale Gästemappe','Eigener QR-Code','Basis-Statistiken']},
               {code:'multi',name:'Multi',capacity:'Bis zu 3 Unterkünfte',desc:'Für Gastgeber mit mehreren Apartments',features:['Bis zu 3 Gästemappen','Getrennte Inhalte & QR-Codes','Separate Statistiken'],featured:true},
               {code:'business',name:'Business',capacity:'Bis zu 10 Unterkünfte',desc:'Für kleine Hotelbetriebe und Betreiber',features:['Bis zu 10 Gästemappen','Zentrale Verwaltung','Separate Statistiken']}
-            ].map(plan => <article key={plan.code} className={`rounded-2xl border p-4 ${plan.featured ? 'border-amber-300 bg-white text-slate-900 shadow-lg' : 'border-white/15 bg-white/5 text-white'}`}>
-              <div className="flex items-center justify-between gap-2"><h3 className="font-black">{plan.name}</h3>{plan.featured && <span className="rounded-full bg-amber-100 px-2 py-1 text-[8px] font-black uppercase tracking-wider text-amber-800">Beliebt</span>}</div>
-              <p className={`mt-1 text-xs font-bold ${plan.featured ? 'text-amber-800' : 'text-amber-200'}`}>{plan.capacity}</p>
-              <p className={`mt-2 min-h-[32px] text-[10px] ${plan.featured ? 'text-stone-500' : 'text-slate-300'}`}>{plan.desc}</p>
-              <ul className={`mt-3 space-y-1.5 text-[10px] ${plan.featured ? 'text-slate-700' : 'text-slate-200'}`}>{plan.features.map(feature => <li key={feature} className="flex gap-2"><span className={plan.featured ? 'text-amber-700' : 'text-amber-300'}>✓</span>{feature}</li>)}</ul>
-              <button onClick={() => chooseRequestedPlan(plan.code)} className={`mt-4 w-full rounded-xl px-3 py-2.5 text-[10px] font-black transition ${requestedPlanCode === plan.code ? 'bg-amber-600 text-white' : plan.featured ? 'bg-slate-900 text-white' : 'border border-white/20 text-white hover:bg-white/10'}`}>{requestedPlanCode === plan.code ? 'Als Wunsch ausgewählt' : 'Paket vormerken'}</button>
+            ].map(plan => <article key={plan.code} className={`rounded-2xl border p-4 ${plan.featured ? 'border-amber-300 bg-amber-50/40' : 'border-slate-200 bg-white'}`}>
+              <div className="flex items-center justify-between gap-2"><h3 className="font-bold text-slate-900">{plan.name}</h3>{plan.featured && <span className="rounded-full bg-amber-100 px-2 py-1 text-[8px] font-black uppercase tracking-wider text-amber-800">Beliebt</span>}</div>
+              <p className="mt-1 text-xs font-bold text-amber-800">{plan.capacity}</p>
+              <p className="mt-2 min-h-[32px] text-[10px] text-slate-500">{plan.desc}</p>
+              <ul className="mt-3 space-y-1.5 text-[10px] text-slate-700">{plan.features.map(feature => <li key={feature} className="flex gap-2"><span className="text-emerald-700">✓</span>{feature}</li>)}</ul>
+              <button onClick={() => chooseRequestedPlan(plan.code)} className={`mt-4 w-full rounded-xl px-3 py-2.5 text-[10px] font-bold transition ${requestedPlanCode === plan.code ? 'bg-amber-600 text-white' : 'border border-slate-200 bg-white text-slate-700 hover:border-slate-400'}`}>{requestedPlanCode === plan.code ? 'Als Wunsch ausgewählt' : 'Paket vormerken'}</button>
             </article>)}
-          </div>
-          <p className="mt-4 text-[10px] leading-relaxed text-slate-300">Paketvorschau: Preise, endgültige Leistungen und Aktivierung werden nach der Unternehmensgründung festgelegt. Die Auswahl ist unverbindlich; es wird keine Zahlung ausgelöst und dein aktueller Zugang nicht geändert.</p>
+            </div>
+            <p className="mt-4 text-[10px] leading-relaxed text-slate-500">Paketvorschau: Preise, endgültige Leistungen und Aktivierung werden nach der Unternehmensgründung festgelegt. Die Auswahl ist unverbindlich; es wird keine Zahlung ausgelöst und dein aktueller Zugang nicht geändert.</p>
+          </details>
         </section>
         {/* REAL ANALYTICS STATUS — do not display invented figures */}
-        <div id="analytics" className="w-full max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
-          <div className="bg-white p-5 rounded-3xl border border-stone-200 shadow-sm">
+        <div id="analytics" className="w-full max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-3 sm:gap-4">
+          <div className="rounded-2xl border border-slate-200/80 bg-white p-5 shadow-sm">
             <div className="flex items-center gap-3"><div className="p-3 rounded-2xl bg-stone-100 text-stone-500"><BarChart3 className="w-6 h-6"/></div><div><span className="text-[10px] font-extrabold text-stone-400 uppercase tracking-wider">Seitenaufrufe</span><h4 className="text-lg font-black text-slate-900">{analyticsLoading ? '…' : analyticsRows.reduce((sum, row) => sum + Number(row.views || 0), 0)}</h4></div></div>
             <p className="text-[11px] text-stone-500 mt-3">Jeder erfolgreiche Aufruf der Gästemappe zählt einzeln.</p>
           </div>
-          <div className="bg-white p-5 rounded-3xl border border-stone-200 shadow-sm">
+          <div className="rounded-2xl border border-slate-200/80 bg-white p-5 shadow-sm">
             <div className="flex items-center gap-3"><div className="p-3 rounded-2xl bg-stone-100 text-stone-500"><Users className="w-6 h-6"/></div><div><span className="text-[10px] font-extrabold text-stone-400 uppercase tracking-wider">{(dashboardCopy[lang] || dashboardCopy.de).configuredContent}</span><h4 className="text-lg font-black text-slate-900">{categories.length || '—'}</h4></div></div>
             <p className="text-[11px] text-stone-500 mt-3">{(dashboardCopy[lang] || dashboardCopy.de).contentNote}</p>
           </div>
-          <div className="bg-white p-5 rounded-3xl border border-stone-200 shadow-sm">
+          <div className="rounded-2xl border border-slate-200/80 bg-white p-5 shadow-sm">
             <div className="flex items-center gap-3"><div className="p-3 rounded-2xl bg-stone-100 text-stone-500"><Activity className="w-6 h-6"/></div><div><span className="text-[10px] font-extrabold text-stone-400 uppercase tracking-wider">{(dashboardCopy[lang] || dashboardCopy.de).dataStatus}</span><h4 className="text-lg font-black text-slate-900">{analyticsLoading ? 'Wird geladen …' : 'Cloud-Statistik aktiv'}</h4></div></div>
             <p className="text-[11px] text-stone-500 mt-3">Besucheraufrufe werden anonym und zentral gezählt.</p>
+          </div>
+          <div className="rounded-2xl border border-slate-200/80 bg-white p-5 shadow-sm">
+            <div className="flex items-center gap-3"><div className="rounded-xl bg-amber-50 p-3 text-amber-700"><Building2 className="h-5 w-5"/></div><div><span className="text-[10px] font-extrabold uppercase tracking-wider text-slate-400">Unterkünfte</span><h4 className="text-lg font-black text-slate-900">{hotelRecords.length} <span className="text-xs font-semibold text-slate-400">/ {accommodationLimit}</span></h4></div></div>
+            <p className="mt-3 text-[11px] text-slate-500">Aktuell im Workspace eingerichtet.</p>
           </div>
         </div>
         <div className="max-w-6xl mx-auto bg-white rounded-3xl p-6 border border-stone-200 shadow-sm space-y-3">
