@@ -729,6 +729,8 @@ export default function App() {
     try {
       const parsed = JSON.parse(saved);
       const merged = parsed && typeof parsed === 'object' && !Array.isArray(parsed) ? { ...defaultData, ...parsed } : defaultData;
+      if (/Musterstraße 1|12345 Musterstadt/i.test(merged.address || '')) merged.address = '';
+      if (/g\.page\/r\/example\/review/i.test(merged.googleReviewUrl || '')) merged.googleReviewUrl = '';
       const quickAccessContent = Object.fromEntries(Object.entries(quickAccessDefaults).map(([language, cards]) => [
         language,
         Object.fromEntries(Object.entries(cards).map(([id, defaults]) => [id, { ...defaults, ...(language === 'de' ? (id === 'parking' ? { description: merged.parkingInfo || defaults.description } : id === 'breakfast' ? { description: merged.breakfastTime || defaults.description } : id === 'checkin' ? { description: merged.checkInOut || defaults.description } : {}) : {}), ...(merged.quickAccessContent?.[language]?.[id] || {}) }]))
@@ -1286,7 +1288,7 @@ export default function App() {
                   <div className={`p-3 ${currentTheme.bgLight} rounded-xl ${currentTheme.text}`}><Sun className="w-6 h-6" /></div>
                   <div className="min-w-0">
                     <div className="text-xs font-extrabold text-slate-900 uppercase">{(weatherLabels[lang] || weatherLabels.de).loading && weather.status === 'loading' ? (weatherLabels[lang] || weatherLabels.de).loading : weather.status === 'ready' ? getWeatherDescription(weather.code, weatherLabels[lang] || weatherLabels.de) : weather.status === 'missing' ? (weatherLabels[lang] || weatherLabels.de).missing : (weatherLabels[lang] || weatherLabels.de).unavailable}</div>
-                    <div className="text-[11px] text-stone-500 truncate">{weather.status === 'ready' ? weather.place : (weatherLabels[lang] || weatherLabels.de).unavailable}</div>
+                    <div className="text-[11px] text-stone-500 truncate">{weather.status === 'ready' ? weather.place : weather.status === 'loading' ? (weatherLabels[lang] || weatherLabels.de).loading : weather.status === 'missing' ? (weatherLabels[lang] || weatherLabels.de).missing : (weatherLabels[lang] || weatherLabels.de).unavailable}</div>
                   </div>
                 </div>
                 <div className="text-right shrink-0"><div className="text-2xl font-black text-slate-900">{weather.status === 'ready' ? `${weather.temperature}°C` : '—'}</div></div>
