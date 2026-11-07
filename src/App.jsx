@@ -1122,6 +1122,10 @@ export default function App() {
 
   const createAccommodation = async () => {
     if (!supabase || !authSession?.user?.id || !accountRecord) return;
+    if (hotelRecords.length >= accommodationLimit) {
+      setCloudDataError(`Dein aktuelles Paket erlaubt höchstens ${accommodationLimit} Unterkünfte.`);
+      return;
+    }
     if (accountRecord.subscription_status === 'suspended' || (accountRecord.trial_ends_at && new Date(accountRecord.trial_ends_at).getTime() <= trialNow && accountRecord.subscription_status !== 'active')) return;
     const base = hotel || {};
     const newHotel = {
@@ -1179,7 +1183,7 @@ export default function App() {
   };
 
   const cloneAccommodation = async () => {
-    if (!supabase || !authSession?.user?.id || !hotelRecord || !accountRecord || trialExpired) return;
+    if (!supabase || !authSession?.user?.id || !hotelRecord || !accountRecord || trialExpired || accommodationLimitReached) return;
     const removePrivateFields = (value) => {
       if (Array.isArray(value)) return value.map(removePrivateFields);
       if (!value || typeof value !== 'object') return value;
@@ -1300,6 +1304,12 @@ export default function App() {
   const trialDaysLeft = trialEndsAt ? Math.max(0, Math.ceil((trialEndsAt - trialNow) / 86400000)) : null;
   const trialExpired = accountRecord?.subscription_status === 'suspended'
     || (accountRecord?.subscription_status === 'trial' && trialEndsAt !== null && trialEndsAt <= trialNow);
+  const accommodationLimit = accountRecord?.subscription_status === 'trial'
+    ? 3
+    : accountRecord?.subscription_status === 'active'
+      ? ({ single: 1, multi: 3, business: 10 }[accountRecord.plan_code] || 1)
+      : 0;
+  const accommodationLimitReached = hotelRecords.length >= accommodationLimit;
 
   const handleSaveData = async () => {
     localStorage.setItem('gm24_hotel', JSON.stringify(hotel));
@@ -1564,8 +1574,8 @@ export default function App() {
               <p className="text-xs text-stone-500 mt-1">Wähle eine Unterkunft aus, um ihre Gästemappe zu bearbeiten.</p>
             </div>
             <div className="flex flex-wrap gap-2">
-              <button onClick={() => { setNewAccommodationName(''); setCreateAccommodationOpen(true); }} disabled={trialExpired || !accountRecord} className="rounded-xl bg-slate-900 text-white px-4 py-2.5 text-xs font-bold shadow-lg shadow-slate-900/10 disabled:opacity-40">+ Unterkunft hinzufügen</button>
-              <button onClick={() => setClonePreviewOpen(true)} disabled={trialExpired || !hotelRecord} className="rounded-xl border border-stone-200 bg-white px-4 py-2.5 text-xs font-bold text-slate-700 hover:border-amber-300 disabled:opacity-40">Kopieren</button>
+              <button onClick={() => { setNewAccommodationName(''); setCreateAccommodationOpen(true); }} disabled={trialExpired || !accountRecord || accommodationLimitReached} className="rounded-xl bg-slate-900 text-white px-4 py-2.5 text-xs font-bold shadow-lg shadow-slate-900/10 disabled:opacity-40">+ Unterkunft hinzufügen</button>
+              <button onClick={() => setClonePreviewOpen(true)} disabled={trialExpired || !hotelRecord || accommodationLimitReached} className="rounded-xl border border-stone-200 bg-white px-4 py-2.5 text-xs font-bold text-slate-700 hover:border-amber-300 disabled:opacity-40">Kopieren</button>
             </div>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
