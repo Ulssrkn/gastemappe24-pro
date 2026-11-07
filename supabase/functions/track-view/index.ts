@@ -25,7 +25,7 @@ serve(async (req) => {
   try {
     const body = await req.json();
     const slug = typeof body?.slug === "string" ? body.slug.trim().toLowerCase() : "";
-    const page = typeof body?.page === "string" ? body.page.trim() : "home";
+    const page = typeof body?.page_key === "string" ? body.page_key.trim() : (typeof body?.page === "string" ? body.page.trim() : "guest_home");
 
     if (!/^[a-z0-9][a-z0-9-]{2,59}$/.test(slug) || !/^[a-zA-Z0-9_-]{1,80}$/.test(page)) {
       return new Response(JSON.stringify({ error: "Invalid hotel or page" }), { status: 400, headers: corsHeaders });
