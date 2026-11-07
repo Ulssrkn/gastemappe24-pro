@@ -806,6 +806,7 @@ export default function App() {
       const { data, error } = await supabase
         .from('gm24_analytics_daily')
         .select('event_date, page_key, views')
+        .eq('hotel_id', hotelId)
         .order('event_date', { ascending: false })
         .limit(90);
       if (!active) return;
@@ -1269,8 +1270,8 @@ export default function App() {
             <p className="text-[11px] text-stone-500 mt-3">{(dashboardCopy[lang] || dashboardCopy.de).contentNote}</p>
           </div>
           <div className="bg-white p-5 rounded-3xl border border-stone-200 shadow-sm">
-            <div className="flex items-center gap-3"><div className="p-3 rounded-2xl bg-stone-100 text-stone-500"><Activity className="w-6 h-6"/></div><div><span className="text-[10px] font-extrabold text-stone-400 uppercase tracking-wider">{(dashboardCopy[lang] || dashboardCopy.de).dataStatus}</span><h4 className="text-lg font-black text-slate-900">{(dashboardCopy[lang] || dashboardCopy.de).localStorage}</h4></div></div>
-            <p className="text-[11px] text-stone-500 mt-3">{(dashboardCopy[lang] || dashboardCopy.de).analyticsNote}</p>
+            <div className="flex items-center gap-3"><div className="p-3 rounded-2xl bg-stone-100 text-stone-500"><Activity className="w-6 h-6"/></div><div><span className="text-[10px] font-extrabold text-stone-400 uppercase tracking-wider">{(dashboardCopy[lang] || dashboardCopy.de).dataStatus}</span><h4 className="text-lg font-black text-slate-900">{analyticsLoading ? 'Wird geladen …' : 'Cloud-Statistik aktiv'}</h4></div></div>
+            <p className="text-[11px] text-stone-500 mt-3">Besucheraufrufe werden anonym und zentral gezählt.</p>
           </div>
         </div>
         <div className="max-w-5xl mx-auto bg-white rounded-3xl p-6 border border-stone-200 shadow-sm space-y-3">
