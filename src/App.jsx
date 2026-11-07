@@ -1564,17 +1564,17 @@ export default function App() {
         {/* DASHBOARD HEADER */}
         <div id="dashboard-home" className="w-full max-w-6xl mx-auto min-w-0 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 rounded-2xl border border-slate-200/80 bg-white px-5 py-4 shadow-sm sm:px-6">
           <div className="flex items-center gap-2">
-            <span className={`${currentTheme.bg} text-white font-black px-3 py-1.5 rounded-xl text-sm`}>G</span>
+            <span className="bg-slate-900 text-amber-300 font-black px-3 py-1.5 rounded-xl text-sm">G</span>
             <span className="font-extrabold text-lg tracking-tight">gastemappe<span className="text-amber-700">24</span></span>
           </div>
           <div className="w-full sm:w-auto flex flex-wrap items-center gap-2 sm:gap-3">
             <select aria-label="Dashboard language" value={lang} onChange={(e) => setLang(e.target.value)} className="bg-white border border-stone-200 text-xs rounded-xl px-2.5 py-2 cursor-pointer">
               <option value="de">🇩🇪 DE</option><option value="en">🇬🇧 EN</option><option value="tr">🇹🇷 TR</option><option value="fr">🇫🇷 FR</option><option value="es">🇪🇸 ES</option><option value="cs">🇨🇿 CS</option><option value="sq">🇦🇱 SQ</option><option value="sv">🇸🇪 SV</option><option value="nb">🇳🇴 NB</option><option value="it">🇮🇹 IT</option>
             </select>
-            <button onClick={handleSaveData} disabled={trialExpired} className="bg-emerald-700 text-white px-5 py-2 rounded-xl text-xs font-bold hover:bg-emerald-800 transition cursor-pointer flex items-center gap-2 shadow-md disabled:opacity-40 disabled:cursor-not-allowed">
+            <button onClick={handleSaveData} disabled={trialExpired} className="bg-slate-900 text-white px-5 py-2 rounded-xl text-xs font-bold hover:bg-slate-800 transition cursor-pointer flex items-center gap-2 shadow-sm disabled:opacity-40 disabled:cursor-not-allowed">
               <Save className="w-4 h-4" /> {isSaved ? t.savedMsg : t.saveBtn}
             </button>
-            <button onClick={() => { setAppMode('guest'); setShowWelcomeScreen(false); }} className="bg-stone-900 text-white px-4 py-2 rounded-xl text-xs font-bold hover:bg-black transition cursor-pointer">
+            <button onClick={() => { setAppMode('guest'); setShowWelcomeScreen(false); }} className="border border-slate-200 bg-white text-slate-700 px-4 py-2 rounded-xl text-xs font-bold hover:bg-slate-50 transition cursor-pointer">
               {t.guestViewBtn}
             </button>
             <button onClick={async () => { await supabase.auth.signOut(); setAppMode('guest'); setShowWelcomeScreen(true); }} className="border border-stone-200 text-stone-600 px-3 py-2 rounded-xl text-xs font-bold hover:bg-stone-50 transition cursor-pointer inline-flex items-center gap-1">
@@ -1587,7 +1587,7 @@ export default function App() {
           <div className="flex flex-col justify-between gap-7 lg:flex-row lg:items-end">
             <div className="max-w-2xl">
               <div className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-1.5 text-[10px] font-bold tracking-wide text-slate-200"><Sparkles className="h-3.5 w-3.5 text-amber-300"/>DEIN GASTGEBER-WORKSPACE</div>
-              <h1 className="mt-5 text-3xl font-semibold tracking-tight sm:text-4xl">Alles für deine Gäste. <span className="text-amber-300">An einem Ort.</span></h1>
+              <h1 className="mt-5 text-3xl font-semibold tracking-tight text-white sm:text-4xl">Alles für deine Gäste. An einem Ort.</h1>
               <p className="mt-3 max-w-xl text-sm leading-6 text-slate-300">Verwalte deine digitalen Gästemappen, behalte die Nutzung im Blick und passe dein Gästeerlebnis ganz einfach an.</p>
             </div>
             <div className="min-w-[220px] rounded-2xl border border-white/15 bg-white/[0.08] p-4 backdrop-blur-sm">
