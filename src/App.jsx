@@ -325,7 +325,7 @@ const customTextLabels={de:'Sonstiges – Eigener Text',en:'Other – Custom Tex
 const customTextFieldLabels={de:'Eigener Text (wird nicht übersetzt)',en:'Custom text (not translated)',tr:'Özel metin (çevrilmez)',fr:'Texte personnalisé (non traduit)',es:'Texto personalizado (no se traduce)',cs:'Vlastní text (nepřekládá se)',sq:'Tekst personal (nuk përkthehet)',sv:'Egen text (översätts inte)',nb:'Egendefinert tekst (oversettes ikke)',it:'Testo personalizzato (non tradotto)'};
 const optionId=o=>typeof o==='string'?o:o.id;
 const optionLabel=(o,lang)=>typeof o==='string'?o:((o.label&&(o.label[lang]||o.label.de))||o.id);
-const getFieldOptions=f=>[...(f.options||[]).filter(o=>optionId(o)!==OTHER_CUSTOM),{id:OTHER_CUSTOM,label:customTextLabels}];
+const getFieldOptions=f=>[...(Array.isArray(f?.options)?f.options:[]).filter(o=>optionId(o)!==OTHER_CUSTOM),{id:OTHER_CUSTOM,label:customTextLabels}];
 const PresetFieldEditor=({field,value,fieldValues,onChange,onCustomTextChange,lang})=>{
 const val=value!==undefined?value:field.default,options=getFieldOptions(field),customKey=field.key+'__customText',customValue=fieldValues[customKey]||'';
 const selected=field.type==='multiselect'?(Array.isArray(val)&&val.includes(OTHER_CUSTOM)):val===OTHER_CUSTOM;
@@ -333,8 +333,8 @@ const label=(field.label&&(field.label[lang]||field.label.de))||field.key;
 const toggle=(id,checked)=>{const current=Array.isArray(val)?val:[];onChange(checked?[...current.filter(x=>x!==id),id]:current.filter(x=>x!==id));};
 return <div className="space-y-1.5"><label className="block text-[10px] font-extrabold text-stone-500 uppercase">{label}</label>
 {field.type==='boolean'?<input type="checkbox" checked={!!val} onChange={e=>onChange(e.target.checked)}/>:
-field.type==='select'?<select value={val||''} onChange={e=>onChange(e.target.value)} className="w-full p-2.5 text-xs border border-stone-200 rounded-xl bg-white">{options.map(o=><option key={optionId(o)} value={optionId(o)}>{optionLabel(o,lang)}</option>)}</select>:
-field.type==='multiselect'?<div className="grid grid-cols-1 sm:grid-cols-2 gap-2">{options.map(o=>{const id=optionId(o);return <label key={id} className="flex items-center gap-2 rounded-xl border border-stone-200 bg-white px-3 py-2 text-xs cursor-pointer"><input type="checkbox" checked={(Array.isArray(val)?val:[]).includes(id)} onChange={e=>toggle(id,e.target.checked)}/><span>{optionLabel(o,lang)}</span></label>;})}</div>:
+field.type==='select'?<select value={val||''} onChange={e=>onChange(e.target.value)} className="w-full p-2.5 text-xs border border-stone-200 rounded-xl bg-white">{(Array.isArray(options) ? options : []).map(o=><option key={optionId(o)} value={optionId(o)}>{optionLabel(o,lang)}</option>)}</select>:
+field.type==='multiselect'?<div className="grid grid-cols-1 sm:grid-cols-2 gap-2">{(Array.isArray(options) ? options : []).map(o=>{const id=optionId(o);return <label key={id} className="flex items-center gap-2 rounded-xl border border-stone-200 bg-white px-3 py-2 text-xs cursor-pointer"><input type="checkbox" checked={(Array.isArray(val)?val:[]).includes(id)} onChange={e=>toggle(id,e.target.checked)}/><span>{optionLabel(o,lang)}</span></label>;})}</div>:
 field.type==='textarea'?<textarea rows={3} maxLength={5000} value={val||''} onChange={e=>onChange(e.target.value)} className="w-full p-2.5 text-xs border border-stone-200 rounded-xl"/>:
 <input type="text" value={val??''} onChange={e=>onChange(e.target.value)} className="w-full p-2.5 text-xs border border-stone-200 rounded-xl"/>}
 {selected&&<div className="pt-2 space-y-1"><label className="block text-[10px] font-bold text-amber-800">{customTextFieldLabels[lang]||customTextFieldLabels.de}</label><textarea rows={3} maxLength={2000} value={customValue} onChange={e=>onCustomTextChange(customKey,e.target.value)} placeholder={customTextLabels[lang]||customTextLabels.de} className="w-full p-2.5 text-xs border border-amber-300 rounded-xl bg-amber-50/40"/><span className="text-[10px] text-stone-400">{customValue.length}/2000</span></div>}</div>;
@@ -584,7 +584,7 @@ const GuestCategoryDisplay = ({ category, currentTheme, lang, t }) => {
     <div className="space-y-4">
       {presetObj && presetObj.schema && presetObj.schema.length > 0 && (
         <div className={`bg-white p-5 rounded-3xl shadow-lg border ${currentTheme.border} space-y-4`}>
-          {presetObj.schema.map(field => {
+          {(Array.isArray(presetObj.schema) ? presetObj.schema : []).map(field => {
             const rawVal = fieldValues[field.key] !== undefined ? fieldValues[field.key] : field.default;
             const fieldLabel = (field.label && (field.label[lang] || field.label.de)) || field.key;
 
@@ -682,12 +682,29 @@ export default function App() {
         'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=1000&q=80'
       ]
     };
-    return saved ? { ...defaultData, ...JSON.parse(saved) } : defaultData;
+    if (!saved) return defaultData;
+    try {
+      const parsed = JSON.parse(saved);
+      const merged = parsed && typeof parsed === 'object' && !Array.isArray(parsed) ? { ...defaultData, ...parsed } : defaultData;
+      return { ...merged, images: Array.isArray(merged.images) ? merged.images : defaultData.images };
+    } catch (error) {
+      console.error('Ungültige gespeicherte Hoteldaten – Standardwerte werden verwendet.', error);
+      return defaultData;
+    }
   });
 
   const [categories, setCategories] = useState(() => {
     const saved = localStorage.getItem('gm24_categories');
-    return saved ? JSON.parse(saved) : [
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed)) return parsed;
+        console.error('Ungültige gespeicherte Kategorien – Standardkategorien werden verwendet.');
+      } catch (error) {
+        console.error('Gespeicherte Kategorien konnten nicht gelesen werden – Standardkategorien werden verwendet.', error);
+      }
+    }
+    return [
       { 
         id: '1', 
         presetId: 'wifi_internet', 
@@ -966,7 +983,7 @@ export default function App() {
               </label>
             </div>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-              {(hotel.images || []).map((img, idx) => (
+              {(Array.isArray(hotel.images) ? hotel.images : []).map((img, idx) => (
                 <div key={idx} className="relative rounded-2xl overflow-hidden border aspect-video group shadow-xs bg-stone-100">
                   <img src={img} alt={`Slide ${idx}`} className="w-full h-full object-cover" />
                   <button 
