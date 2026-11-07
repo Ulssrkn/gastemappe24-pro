@@ -670,7 +670,7 @@ export default function App() {
 
   const [appMode, setAppMode] = useState('guest');
   const guestSlug = typeof window !== 'undefined'
-    ? (window.location.pathname.match(/^\\/g\\/([a-z0-9-]+)\\/?$/i)?.[1] || null)
+    ? (window.location.pathname.match(/^\/g\/([a-z0-9-]+)\/?$/i)?.[1] || null)
     : null;
   const [guestPageStatus, setGuestPageStatus] = useState('idle');
   const [authSession, setAuthSession] = useState(null);
