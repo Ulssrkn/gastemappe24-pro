@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { QRCodeSVG } from 'qrcode.react';
 import { hotelPresets, additionalPresets } from './hotelPresets.js';
-import { createClient } from '@supabase/supabase-js';
+import AuthGate from './components/AuthGate.jsx';
+import { supabase, isSupabaseConfigured } from './lib/supabaseClient.js';
 import { 
   Wifi, Info, MapPin, Calendar, MessageSquare, 
   Settings, Phone, Plus, Trash2, 
@@ -12,9 +13,6 @@ import {
   Flame, Accessibility, Recycle, Award, Scissors, ShoppingCart, Stethoscope, Baby, Music, Smile, CheckCircle2, XCircle, Zap, Search, ChevronDown, ChevronUp, X
 } from 'lucide-react';
 
-const supabaseUrl = 'https://YOUR-SUPABASE-URL.supabase.co';
-const supabaseAnonKey = 'YOUR-SUPABASE-ANON-KEY';
-export const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 // --- 10 DİL ÇEVİRİ SİSTEMİ ---
 const translations = {
@@ -670,7 +668,32 @@ export default function App() {
   };
   const quickLabels = quickAccessLabels[lang] || quickAccessLabels.de;
 
-  const [appMode, setAppMode] = useState('guest'); 
+  const [appMode, setAppMode] = useState('guest');
+  const [authSession, setAuthSession] = useState(null);
+  const [authLoading, setAuthLoading] = useState(true);
+
+  useEffect(() => {
+    if (!supabase) {
+      setAuthLoading(false);
+      return undefined;
+    }
+    let mounted = true;
+    supabase.auth.getSession().then(({ data, error }) => {
+      if (!mounted) return;
+      if (error) console.warn('Could not restore Supabase session:', error);
+      setAuthSession(data?.session || null);
+      setAuthLoading(false);
+    });
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setAuthSession(session || null);
+      setAuthLoading(false);
+    });
+    return () => {
+      mounted = false;
+      subscription.unsubscribe();
+    };
+  }, []);
+
   const [isEditorModalOpen, setIsEditorModalOpen] = useState(false);
   const [editingCategory, setEditingCategory] = useState(null);
   const [isSaved, setIsSaved] = useState(false);
@@ -949,6 +972,26 @@ export default function App() {
     )
   ].filter(Boolean);
 
+  if (appMode === 'dashboard' && !isSupabaseConfigured) {
+    return (
+      <main className="min-h-screen bg-[#FBF9F5] flex items-center justify-center p-4">
+        <section className="max-w-xl bg-white border border-stone-200 rounded-3xl p-7 space-y-3">
+          <h1 className="text-xl font-black text-slate-900">Supabase-Verbindung noch nicht konfiguriert</h1>
+          <p className="text-sm text-stone-600">Für den geschützten Dashboard-Zugang müssen in Vercel die Umgebungsvariablen VITE_SUPABASE_URL und VITE_SUPABASE_ANON_KEY hinterlegt werden. Danach bitte ein neues Deployment starten.</p>
+          <button onClick={() => { setAppMode('guest'); setShowWelcomeScreen(false); }} className="rounded-xl bg-stone-900 px-4 py-2 text-sm font-bold text-white">Zur Gastansicht</button>
+        </section>
+      </main>
+    );
+  }
+
+  if (appMode === 'dashboard' && authLoading) {
+    return <main className="min-h-screen bg-[#FBF9F5] flex items-center justify-center text-sm text-stone-500">Anmeldestatus wird geprüft …</main>;
+  }
+
+  if (appMode === 'dashboard' && !authSession?.user) {
+    return <AuthGate supabase={supabase} />;
+  }
+
   if (appMode === 'dashboard') {
     return (
       <div className="min-h-screen w-full max-w-full overflow-x-hidden box-border bg-[#FBF9F5] font-sans text-slate-800 p-3 sm:p-6 md:p-10 space-y-6 sm:space-y-8 relative pb-28">
@@ -978,6 +1021,9 @@ export default function App() {
             </button>
             <button onClick={() => { setAppMode('guest'); setShowWelcomeScreen(false); }} className="bg-stone-900 text-white px-4 py-2 rounded-xl text-xs font-bold hover:bg-black transition cursor-pointer">
               {t.guestViewBtn}
+            </button>
+            <button onClick={async () => { await supabase.auth.signOut(); setAppMode('guest'); setShowWelcomeScreen(true); }} className="border border-stone-200 text-stone-600 px-3 py-2 rounded-xl text-xs font-bold hover:bg-stone-50 transition cursor-pointer inline-flex items-center gap-1">
+              <LogOut className="w-3.5 h-3.5" /> Abmelden
             </button>
           </div>
         </div>
