@@ -1116,6 +1116,17 @@ export default function App() {
           </div>
         </div>
 
+        <div className="w-full max-w-5xl mx-auto rounded-2xl border border-stone-200 bg-white px-4 py-3 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+          <div className="text-xs">
+            <span className="font-bold text-stone-700">Cloud-Speicher: </span>
+            <span className={cloudDataStatus === 'ready' ? 'text-emerald-700' : cloudDataStatus === 'error' ? 'text-red-700' : 'text-stone-500'}>
+              {cloudDataStatus === 'ready' ? 'Verbunden' : cloudDataStatus === 'loading' || cloudDataStatus === 'saving' ? 'Wird geladen …' : cloudDataStatus === 'error' ? 'Prüfung erforderlich' : 'Nicht verbunden'}
+            </span>
+            {hotelRecord?.slug && <span className="ml-3 text-stone-400">Hotel-ID: {hotelRecord.slug}</span>}
+          </div>
+          {cloudDataError && <p role="alert" className="text-[11px] text-red-700">{cloudDataError}</p>}
+        </div>
+
         {/* REAL ANALYTICS STATUS — do not display invented figures */}
         <div className="w-full max-w-5xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
           <div className="bg-white p-5 rounded-3xl border border-stone-200 shadow-sm">
