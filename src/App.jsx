@@ -1402,7 +1402,8 @@ export default function App() {
                 </div>
                 <p className="text-xs text-stone-500">Dieser QR-Code öffnet direkt die digitale Gästemappe dieser Website.</p>
                 <div className="flex flex-wrap gap-2">
-                  <button onClick={()=>window.print()} className="px-4 py-2.5 rounded-xl bg-slate-900 text-white text-xs font-bold flex items-center gap-2"><Printer className="w-4 h-4"/>Ausgewähltes Format drucken</button>
+                  <button onClick={()=>window.print()} className="px-4 py-2.5 rounded-xl bg-slate-900 text-white text-xs font-bold flex items-center gap-2"><Printer className="w-4 h-4"/>Drucken</button>
+                  <button onClick={()=>window.print()} className="px-4 py-2.5 rounded-xl border border-emerald-700 text-emerald-800 bg-emerald-50 text-xs font-bold flex items-center gap-2"><Save className="w-4 h-4"/>Als PDF speichern</button>
                   <button onClick={()=>navigator.clipboard?.writeText(guestPageUrl)} className="px-4 py-2.5 rounded-xl border border-stone-200 bg-white text-xs font-bold flex items-center gap-2"><Copy className="w-4 h-4"/>Link kopieren</button>
                 </div>
                 <p className="text-[10px] text-stone-400 break-all">{guestPageUrl}</p>
