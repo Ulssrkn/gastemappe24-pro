@@ -526,7 +526,18 @@ const CompactPresetEditorModal = ({ isOpen, onClose, onSave, currentTheme, lang,
               </div>
 
               <div className="space-y-3 bg-stone-50/60 p-4 rounded-2xl border border-stone-200/80">
-{primaryFields.map(field=><PresetFieldEditor key={field.key} field={field} value={fieldValues[field.key]} fieldValues={fieldValues} lang={lang} onChange={value=>handleFieldValueChange(field.key,value)} onCustomTextChange={handleFieldValueChange}/>)}
+{selectedPreset?.id === 'HOT_006' ? (() => {
+  const roomGroups = [
+    {id:'room_amenities',label:{de:'Zimmerausstattung',en:'Room amenities',tr:'Oda donanımı',fr:'Équipements de la chambre',hr:'Oprema sobe',it:'Dotazioni della camera',es:'Equipamiento de la habitación',sv:'Rumsutrustning',no:'Romfasiliteter',sq:'Pajisjet e dhomës'},keys:['room_amenities']},
+    {id:'beds',label:{de:'Betten & Schlafkomfort',en:'Beds & sleep comfort',tr:'Yataklar & uyku konforu',fr:'Lits & confort',hr:'Kreveti i udobnost',it:'Letti e comfort',es:'Camas y confort',sv:'Sängar och komfort',no:'Senger og komfort',sq:'Krevatet dhe rehatia'},keys:['bed_types']},
+    {id:'bath',label:{de:'Badezimmer',en:'Bathroom',tr:'Banyo',fr:'Salle de bains',hr:'Kupaonica',it:'Bagno',es:'Baño',sv:'Badrum',no:'Bad',sq:'Banjo'},keys:['bathroom_features']},
+    {id:'tech',label:{de:'Internet & Unterhaltung',en:'Internet & entertainment',tr:'İnternet & eğlence',fr:'Internet & divertissement',hr:'Internet i zabava',it:'Internet e intrattenimento',es:'Internet y entretenimiento',sv:'Internet och underhållning',no:'Internett og underholdning',sq:'Internet dhe argëtim'},keys:['room_technology']},
+    {id:'view',label:{de:'Balkon, Terrasse & Aussicht',en:'Balcony, terrace & view',tr:'Balkon, teras & manzara',fr:'Balcon, terrasse & vue',hr:'Balkon, terasa i pogled',it:'Balcone, terrazza e vista',es:'Balcón, terraza y vistas',sv:'Balkong, terrass och utsikt',no:'Balkong, terrasse og utsikt',sq:'Ballkon, tarracë dhe pamje'},keys:['room_outdoor_view']},
+    {id:'capacity',label:{de:'Größe & Kapazität',en:'Size & capacity',tr:'Boyut & kapasite',fr:'Taille & capacité',hr:'Veličina i kapacitet',it:'Dimensioni e capienza',es:'Tamaño y capacidad',sv:'Storlek och kapacitet',no:'Størrelse og kapasitet',sq:'Madhësia dhe kapaciteti'},keys:['room_capacity','room_max_guests','room_floor_number']},
+    {id:'rules',label:{de:'Rauchen & Zugänglichkeit',en:'Smoking & accessibility',tr:'Sigara & erişilebilirlik',fr:'Tabac & accessibilité',hr:'Pušenje i pristupačnost',it:'Fumo e accessibilità',es:'Fumadores y accesibilidad',sv:'Rökning och tillgänglighet',no:'Røyking og tilgjengelighet',sq:'Duhani dhe aksesueshmëria'},keys:['room_smoking_policy','room_accessibility']}
+  ];
+  return <div className="space-y-2">{roomGroups.map((group,index)=><details key={group.id} open={index===0} className="rounded-xl border border-stone-200 bg-white overflow-hidden"><summary className="cursor-pointer list-none flex items-center justify-between px-3 py-3 text-xs font-bold text-slate-800 bg-stone-50"><span>{group.label[lang]||group.label.de}</span><ChevronDown className="w-4 h-4 text-stone-400"/></summary><div className="p-3 space-y-3">{group.keys.map(key=>{const field=primaryFields.find(item=>item.key===key);return field?<PresetFieldEditor key={field.key} field={field} value={fieldValues[field.key]} fieldValues={fieldValues} lang={lang} onChange={value=>handleFieldValueChange(field.key,value)} onCustomTextChange={handleFieldValueChange}/>:null;})}</div></details>)}</div>;
+})() : primaryFields.map(field=><PresetFieldEditor key={field.key} field={field} value={fieldValues[field.key]} fieldValues={fieldValues} lang={lang} onChange={value=>handleFieldValueChange(field.key,value)} onCustomTextChange={handleFieldValueChange}/>)}
 </div>
               {secondaryFields.length > 0 && (
                 <div className="border border-stone-200 rounded-2xl overflow-hidden bg-white">
