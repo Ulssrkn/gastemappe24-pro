@@ -10,7 +10,7 @@ import {
   ChevronRight, ArrowRight, Upload, AlertCircle, Lock, Unlock,
   Utensils, Heart, Compass, Coffee, Car, Clock, ShieldCheck, Edit3, Mail, Globe, ExternalLink, QrCode, Printer, BarChart3, Star, Navigation, Sun, LogOut, User,
   Wine, Sparkles, Tv, Waves, Dumbbell, Key, Bed, Building, ShoppingBag, Landmark, Map, Bus, Plane, Scroll, Save, Eye, EyeOff, Palette, TrendingUp, Users, Activity, HelpCircle,
-  Flame, Accessibility, Recycle, Award, Scissors, ShoppingCart, Stethoscope, Baby, Music, Smile, CheckCircle2, XCircle, Zap, Search, ChevronDown, ChevronUp, X
+  Flame, Accessibility, Recycle, Award, Scissors, ShoppingCart, Stethoscope, Baby, Music, Smile, CheckCircle2, XCircle, Zap, Search, ChevronDown, ChevronUp, X, LayoutDashboard, Building2, CreditCard
 } from 'lucide-react';
 
 
@@ -1481,7 +1481,24 @@ export default function App() {
 
   if (appMode === 'dashboard') {
     return (
-      <div className="min-h-screen w-full max-w-full overflow-x-hidden box-border bg-[#FBF9F5] font-sans text-slate-800 p-3 sm:p-6 md:p-10 space-y-6 sm:space-y-8 relative pb-28">
+      <div className="min-h-screen w-full max-w-full overflow-x-hidden box-border bg-[#f5f6f8] font-sans text-slate-800 p-3 sm:p-6 md:py-8 md:pr-10 md:pl-[18rem] space-y-6 sm:space-y-8 relative pb-28">
+
+        <aside className="fixed inset-y-0 left-0 z-40 hidden w-64 flex-col border-r border-slate-200/80 bg-white px-5 py-7 md:flex">
+          <a href="#dashboard-home" className="flex items-center gap-3 px-2">
+            <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-900 text-lg font-black text-amber-300 shadow-sm">G</span>
+            <span className="text-[15px] font-extrabold tracking-tight text-slate-900">gastemappe<span className="text-amber-700">24</span><span className="block pt-0.5 text-[9px] font-bold uppercase tracking-[.2em] text-slate-400">Gastgeber-Workspace</span></span>
+          </a>
+          <div className="mt-10 px-3 text-[10px] font-extrabold uppercase tracking-[.18em] text-slate-400">Arbeitsbereich</div>
+          <nav className="mt-3 space-y-1.5">
+            {[[LayoutDashboard,'Übersicht','#dashboard-home'],[Building2,'Unterkünfte','#accommodations'],[BarChart3,'Analytik','#analytics'],[Settings,'Gästemappe bearbeiten','#editor']].map(([Icon,label,href])=><a key={label} href={href} className="flex items-center gap-3 rounded-xl px-3 py-3 text-[13px] font-semibold text-slate-600 transition hover:bg-slate-100 hover:text-slate-900"><Icon className="h-[17px] w-[17px]"/>{label}</a>)}
+          </nav>
+          <div className="mt-8 px-3 text-[10px] font-extrabold uppercase tracking-[.18em] text-slate-400">Konto</div>
+          <a href="#membership" className="mt-3 flex items-center gap-3 rounded-xl px-3 py-3 text-[13px] font-semibold text-slate-600 transition hover:bg-slate-100 hover:text-slate-900"><CreditCard className="h-[17px] w-[17px]"/>Paket & Testphase</a>
+          <div className="mt-auto rounded-2xl border border-slate-200 bg-slate-50 p-4"><div className="flex items-center gap-2 text-xs font-bold text-slate-800"><span className="h-2 w-2 rounded-full bg-emerald-500"/>Dein Workspace</div><p className="mt-2 text-[11px] leading-relaxed text-slate-500">Deine Gästemappe und Unterkünfte an einem Ort.</p></div>
+        </aside>
+        <nav className="fixed inset-x-3 bottom-3 z-40 grid grid-cols-4 rounded-2xl border border-slate-200 bg-white/95 p-1.5 shadow-xl backdrop-blur md:hidden">
+          {[[LayoutDashboard,'Start','#dashboard-home'],[Building2,'Unterkünfte','#accommodations'],[BarChart3,'Analytik','#analytics'],[Settings,'Bearbeiten','#editor']].map(([Icon,label,href])=><a key={label} href={href} className="flex flex-col items-center gap-1 rounded-xl py-2 text-[9px] font-semibold text-slate-500 hover:bg-slate-100 hover:text-slate-900"><Icon className="h-4 w-4"/>{label}</a>)}
+        </nav>
         
         {createAccommodationOpen && (
           <div className="fixed inset-0 z-[110] flex items-center justify-center bg-slate-950/60 p-4">
@@ -1545,10 +1562,10 @@ export default function App() {
         />
 
         {/* DASHBOARD HEADER */}
-        <div className="w-full max-w-5xl mx-auto min-w-0 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 pb-5 sm:pb-6 border-b border-stone-200">
+        <div id="dashboard-home" className="w-full max-w-6xl mx-auto min-w-0 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 rounded-2xl border border-slate-200/80 bg-white px-5 py-4 shadow-sm sm:px-6">
           <div className="flex items-center gap-2">
             <span className={`${currentTheme.bg} text-white font-black px-3 py-1.5 rounded-xl text-sm`}>G</span>
-            <span className="font-extrabold text-lg tracking-tight">gastemappe24 <span className={`${currentTheme.text} text-xs uppercase px-1.5 py-0.5 ${currentTheme.bgLight} rounded-md`}>PRO</span></span>
+            <span className="font-extrabold text-lg tracking-tight">gastemappe<span className="text-amber-700">24</span></span>
           </div>
           <div className="w-full sm:w-auto flex flex-wrap items-center gap-2 sm:gap-3">
             <select aria-label="Dashboard language" value={lang} onChange={(e) => setLang(e.target.value)} className="bg-white border border-stone-200 text-xs rounded-xl px-2.5 py-2 cursor-pointer">
@@ -1566,7 +1583,7 @@ export default function App() {
           </div>
         </div>
 
-        <section className="w-full max-w-5xl mx-auto space-y-4">
+        <section id="accommodations" className="w-full max-w-6xl mx-auto space-y-4">
           <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3">
             <div>
               <p className="text-[10px] font-black uppercase tracking-[0.22em] text-amber-700">Workspace</p>
@@ -1609,7 +1626,7 @@ export default function App() {
           </div>
         </section>
 
-        <section className="w-full max-w-5xl mx-auto overflow-hidden rounded-3xl border border-slate-800 bg-gradient-to-br from-slate-950 via-slate-900 to-slate-800 p-5 sm:p-7 text-white shadow-xl shadow-slate-900/10">
+        <section id="membership" className="w-full max-w-6xl mx-auto overflow-hidden rounded-3xl border border-slate-800 bg-gradient-to-br from-slate-950 via-slate-900 to-slate-800 p-5 sm:p-7 text-white shadow-xl shadow-slate-900/10">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>
               <p className="text-[10px] font-black uppercase tracking-[0.22em] text-amber-300">Mitgliedschaft</p>
@@ -1638,7 +1655,7 @@ export default function App() {
           <p className="mt-4 text-[10px] leading-relaxed text-slate-300">Paketvorschau: Preise, endgültige Leistungen und Aktivierung werden nach der Unternehmensgründung festgelegt. Die Auswahl ist unverbindlich; es wird keine Zahlung ausgelöst und dein aktueller Zugang nicht geändert.</p>
         </section>
         {/* REAL ANALYTICS STATUS — do not display invented figures */}
-        <div className="w-full max-w-5xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
+        <div id="analytics" className="w-full max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
           <div className="bg-white p-5 rounded-3xl border border-stone-200 shadow-sm">
             <div className="flex items-center gap-3"><div className="p-3 rounded-2xl bg-stone-100 text-stone-500"><BarChart3 className="w-6 h-6"/></div><div><span className="text-[10px] font-extrabold text-stone-400 uppercase tracking-wider">Seitenaufrufe</span><h4 className="text-lg font-black text-slate-900">{analyticsLoading ? '…' : analyticsRows.reduce((sum, row) => sum + Number(row.views || 0), 0)}</h4></div></div>
             <p className="text-[11px] text-stone-500 mt-3">Jeder erfolgreiche Aufruf der Gästemappe zählt einzeln.</p>
@@ -1652,7 +1669,7 @@ export default function App() {
             <p className="text-[11px] text-stone-500 mt-3">Besucheraufrufe werden anonym und zentral gezählt.</p>
           </div>
         </div>
-        <div className="max-w-5xl mx-auto bg-white rounded-3xl p-6 border border-stone-200 shadow-sm space-y-3">
+        <div className="max-w-6xl mx-auto bg-white rounded-3xl p-6 border border-stone-200 shadow-sm space-y-3">
           <div className="flex items-center gap-3"><div className="p-3 rounded-2xl bg-stone-100 text-stone-500"><TrendingUp className="w-6 h-6"/></div><div><h3 className="font-black text-xs text-slate-800 uppercase tracking-wider">{(dashboardCopy[lang] || dashboardCopy.de).analyticsTitle}</h3><p className="text-xs text-stone-500">{(dashboardCopy[lang] || dashboardCopy.de).analyticsIntro}</p></div></div>
           <div className="rounded-2xl border border-stone-200 bg-stone-50 p-5 space-y-3">
             <div className="flex items-center justify-between gap-3"><span className="text-sm font-bold text-slate-800">Gesamtaufrufe</span><span className="text-2xl font-black text-slate-900 tabular-nums">{analyticsLoading ? '…' : analyticsRows.reduce((sum, row) => sum + Number(row.views || 0), 0)}</span></div>
@@ -1665,7 +1682,7 @@ export default function App() {
         </div>
 
         {/* DASHBOARD CONTENT SECTIONS */}
-        <div className="max-w-5xl mx-auto space-y-6">
+        <div id="editor" className="max-w-6xl mx-auto space-y-6">
           <h1 className="text-2xl font-black text-slate-900 tracking-tight">{t.adminTitle}</h1>
 
           {/* 1. HOTEL BİLGİLERİ */}
@@ -2027,3 +2044,4 @@ export default function App() {
     </div>
   );
 }
+
