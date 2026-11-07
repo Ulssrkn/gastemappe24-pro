@@ -1344,15 +1344,23 @@ export default function App() {
           <button onClick={() => { setActiveTab('services'); setSelectedCategory(null); }} className={`flex flex-col items-center gap-1 text-[10px] font-bold cursor-pointer ${activeTab === 'services' || selectedCategory ? currentTheme.text : 'text-stone-400'}`}>
             <Compass className="w-5 h-5" /><span>{t.navGaestemappe}</span>
           </button>
-          {hotel.googleReviewUrl && /^https?:\/\//i.test(hotel.googleReviewUrl) && (
+          {hotel.googleReviewUrl && /^https?:\/\//i.test(hotel.googleReviewUrl) ? (
             <a href={hotel.googleReviewUrl} target="_blank" rel="noreferrer" className={`flex flex-col items-center gap-1 text-[10px] font-bold cursor-pointer ${currentTheme.text} hover:opacity-80`}>
               <Star className="w-5 h-5 fill-current" /><span>{t.navReview}</span>
             </a>
+          ) : (
+            <span aria-disabled="true" title="Google-Bewertungslink im Hotelprofil hinterlegen" className="flex flex-col items-center gap-1 text-[10px] font-bold text-stone-300 cursor-not-allowed">
+              <Star className="w-5 h-5" /><span>{t.navReview}</span>
+            </span>
           )}
-          {hotel.address && !/Musterstraße 1|12345 Musterstadt/i.test(hotel.address) && (
+          {hotel.address && !/Musterstraße 1|12345 Musterstadt/i.test(hotel.address) ? (
             <a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(hotel.address)}`} target="_blank" rel="noreferrer" className={`flex flex-col items-center gap-1 text-[10px] font-bold cursor-pointer ${currentTheme.text} hover:opacity-80`}>
               <Navigation className="w-5 h-5" /><span>{t.navRoute}</span>
             </a>
+          ) : (
+            <span aria-disabled="true" title="Hoteladresse im Hotelprofil hinterlegen" className="flex flex-col items-center gap-1 text-[10px] font-bold text-stone-300 cursor-not-allowed">
+              <Navigation className="w-5 h-5" /><span>{t.navRoute}</span>
+            </span>
           )}
         </nav>
       </div>
