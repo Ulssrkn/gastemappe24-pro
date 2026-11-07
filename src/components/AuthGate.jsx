@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
+import { Eye, EyeOff } from 'lucide-react';
 
 export default function AuthGate({ supabase }) {
   const [mode, setMode] = useState('login');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
@@ -78,9 +80,18 @@ export default function AuthGate({ supabase }) {
           {mode !== 'reset' && (
             <div className="space-y-1.5">
               <label htmlFor="gm24-auth-password" className="block text-xs font-bold text-stone-600">Passwort</label>
-              <input id="gm24-auth-password" type="password" autoComplete={mode === 'signup' ? 'new-password' : 'current-password'}
-                minLength={8} required value={password} onChange={event => setPassword(event.target.value)}
-                className="w-full rounded-xl border border-stone-200 bg-stone-50 px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-amber-200" />
+              <div className="relative">
+                <input id="gm24-auth-password" type={showPassword ? 'text' : 'password'} autoComplete={mode === 'signup' ? 'new-password' : 'current-password'}
+                  minLength={8} required value={password} onChange={event => setPassword(event.target.value)}
+                  className="w-full rounded-xl border border-stone-200 bg-stone-50 px-4 py-3 pr-12 text-sm outline-none focus:ring-2 focus:ring-amber-200" />
+                <button type="button" onClick={() => setShowPassword(value => !value)}
+                  aria-label={showPassword ? 'Passwort verbergen' : 'Passwort anzeigen'}
+                  aria-pressed={showPassword}
+                  className="absolute inset-y-0 right-0 flex items-center px-4 text-stone-500 hover:text-stone-900"
+                  title={showPassword ? 'Passwort verbergen' : 'Passwort anzeigen'}>
+                  {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                </button>
+              </div>
               {mode === 'signup' && <p className="text-[11px] text-stone-400">Mindestens 8 Zeichen.</p>}
             </div>
           )}
