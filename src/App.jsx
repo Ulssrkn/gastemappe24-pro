@@ -585,7 +585,7 @@ const CompactPresetEditorModal = ({ isOpen, onClose, onSave, currentTheme, lang,
                 />
               </div>
 
-              <section className="space-y-3 rounded-2xl border border-slate-200 bg-slate-50/70 p-4">
+              {selectedPreset?.id !== 'REG_004' && <section className="space-y-3 rounded-2xl border border-slate-200 bg-slate-50/70 p-4">
                 <div className="flex items-center justify-between gap-3">
                   <div><h3 className="text-sm font-bold text-slate-900">{gc.section}{contentCards.length ? ` · ${contentCards.length}` : ''}</h3><p className="mt-0.5 text-[10px] text-slate-500">{cardSectionHint}</p></div>
                   <button type="button" onClick={addContentCard} className="inline-flex shrink-0 items-center gap-1.5 rounded-xl bg-slate-900 px-3 py-2 text-[10px] font-bold text-white hover:bg-slate-800"><Plus className="h-3.5 w-3.5"/>{gc.add}</button>
@@ -603,7 +603,7 @@ const CompactPresetEditorModal = ({ isOpen, onClose, onSave, currentTheme, lang,
                     {[['url',gc.url,'url'],['phone',gc.phone,'tel'],['hours',gc.hours,'text']].map(([key,label,type])=><label key={key} className="space-y-1"><span className="block text-[10px] font-semibold text-slate-500">{label}</span><input type={type} value={card[key]||''} onChange={event=>updateContentCard(card.id,key,event.target.value)} className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs outline-none focus:border-slate-400"/></label>)}
                   </div></details>
                 </article>)}
-              </section>
+              </section>}
 
               <div className="space-y-3 bg-stone-50/60 p-4 rounded-2xl border border-stone-200/80">
 {(selectedPreset?.id === 'HOT_006' || selectedPreset?.id === 'room_info') ? (() => {
@@ -682,8 +682,9 @@ const GuestCheckoutChecklist = ({ field, selected, customTask, lang }) => {
     nb:{title:'Sjekkliste for utsjekking',hint:'Før du drar',progress:(done,total)=>done+' av '+total+' fullført'},
     it:{title:'Lista di controllo per il check-out',hint:'Prima di partire',progress:(done,total)=>done+' di '+total+' completati'}
   }[lang] || {title:'Check-out checklist',hint:'Before you leave',progress:(done,total)=>done+' of '+total+' completed'};
-  const options=(field?.options||[]).filter(option=>selected.includes(optionId(option)));
-  const tasks=[...options,...(selected.includes(OTHER_CUSTOM)&&String(customTask).trim()?[{id:OTHER_CUSTOM,label:{[lang]:String(customTask).trim(),de:String(customTask).trim()}}]:[])];
+  const selectedValues=Array.isArray(selected)?selected:[];
+  const options=(field?.options||[]).filter(option=>selectedValues.includes(optionId(option)));
+  const tasks=[...options,...(selectedValues.includes(OTHER_CUSTOM)&&String(customTask).trim()?[{id:OTHER_CUSTOM,label:{[lang]:String(customTask).trim(),de:String(customTask).trim()}}]:[])];
   if (!tasks.length) return null;
   const doneCount=tasks.filter(task=>completed.includes(optionId(task))).length;
   const toggle=id=>setCompleted(previous=>previous.includes(id)?previous.filter(item=>item!==id):[...previous,id]);
