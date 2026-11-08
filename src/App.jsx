@@ -668,6 +668,28 @@ const CompactPresetEditorModal = ({ isOpen, onClose, onSave, currentTheme, lang,
   );
 };
 
+const GuestCheckoutChecklist = ({ field, selected, customTask, lang }) => {
+  const [completed, setCompleted] = useState([]);
+  const copy = {
+    de:{title:'Check-out-Checkliste',hint:'Vor der Abreise',progress:(done,total)=>done+' von '+total+' erledigt'},
+    en:{title:'Check-out checklist',hint:'Before you leave',progress:(done,total)=>done+' of '+total+' completed'},
+    tr:{title:'Çıkış kontrol listesi',hint:'Ayrılmadan önce',progress:(done,total)=>done+' / '+total+' tamamlandı'},
+    fr:{title:'Liste de départ',hint:'Avant de partir',progress:(done,total)=>done+' sur '+total+' terminé(s)'},
+    es:{title:'Lista de salida',hint:'Antes de irte',progress:(done,total)=>done+' de '+total+' completados'},
+    cs:{title:'Kontrolní seznam při odjezdu',hint:'Před odjezdem',progress:(done,total)=>done+' z '+total+' hotovo'},
+    sq:{title:'Lista e largimit',hint:'Para se të largohesh',progress:(done,total)=>done+' nga '+total+' të përfunduara'},
+    sv:{title:'Checklista för utcheckning',hint:'Innan du åker',progress:(done,total)=>done+' av '+total+' klara'},
+    nb:{title:'Sjekkliste for utsjekking',hint:'Før du drar',progress:(done,total)=>done+' av '+total+' fullført'},
+    it:{title:'Lista di controllo per il check-out',hint:'Prima di partire',progress:(done,total)=>done+' di '+total+' completati'}
+  }[lang] || {title:'Check-out checklist',hint:'Before you leave',progress:(done,total)=>done+' of '+total+' completed'};
+  const options=(field?.options||[]).filter(option=>selected.includes(optionId(option)));
+  const tasks=[...options,...(selected.includes(OTHER_CUSTOM)&&String(customTask).trim()?[{id:OTHER_CUSTOM,label:{[lang]:String(customTask).trim(),de:String(customTask).trim()}}]:[])];
+  if (!tasks.length) return null;
+  const doneCount=tasks.filter(task=>completed.includes(optionId(task))).length;
+  const toggle=id=>setCompleted(previous=>previous.includes(id)?previous.filter(item=>item!==id):[...previous,id]);
+  return <section className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm"><div className="flex items-center justify-between gap-3 border-b border-slate-100 bg-slate-50/70 px-4 py-3"><div><h3 className="text-sm font-bold text-slate-900">{copy.title}</h3><p className="mt-0.5 text-[10px] text-slate-500">{copy.hint}</p></div><span className="shrink-0 rounded-full bg-white px-2.5 py-1 text-[10px] font-bold text-slate-600 ring-1 ring-slate-200">{copy.progress(doneCount,tasks.length)}</span></div><div className="divide-y divide-slate-100 px-4">{tasks.map(task=>{const id=optionId(task),checked=completed.includes(id);return <label key={id} className="flex cursor-pointer items-start gap-3 py-3 text-sm leading-relaxed text-slate-700"><input type="checkbox" checked={checked} onChange={()=>toggle(id)} className="mt-0.5 h-4 w-4 shrink-0 accent-emerald-600"/><span className={checked?'text-slate-400 line-through':''}>{optionLabel(task,lang)}</span></label>;})}</div></section>;
+};
+
 const GuestCategoryDisplay = ({ category, currentTheme, lang, t }) => {
   const presetObj = categoryPresets.find(p => p.id === category.presetId);
   const fieldValues = category.fieldValues || {};
@@ -682,6 +704,7 @@ const GuestCategoryDisplay = ({ category, currentTheme, lang, t }) => {
     catch { return ''; }
   };
   const openMapUrl = address => address ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}` : '';
+  if (presetObj?.id === 'REG_004') return <GuestCheckoutChecklist field={presetObj.schema?.find(item => item.key === 'checkout_tasks')} selected={fieldValues.checkout_tasks || []} customTask={fieldValues.checkout_tasks__customText || ''} lang={lang} />;
 
   return (
     <div className="space-y-4">
