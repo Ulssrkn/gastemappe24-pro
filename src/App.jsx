@@ -5,12 +5,14 @@ import dashboardWorkspaceCopy from './dashboardWorkspaceCopy.js';
 import guestCardCopy from './guestCardCopy.js';
 import analyticsCopy from './analyticsCopy.js';
 import AuthGate from './components/AuthGate.jsx';
+import useModalFocus from './components/useModalFocus.js';
+import pilotCopy from './pilotCopy.js';
 import { supabase, isSupabaseConfigured } from './lib/supabaseClient.js';
 import { 
   Wifi, Info, MapPin, Calendar, MessageSquare, 
   Settings, Phone, Plus, Trash2, 
   Check, Image as ImageIcon, Copy,
-  ChevronRight, ArrowRight, Upload, AlertCircle, Lock, Unlock,
+  ChevronRight, ArrowRight, AlertCircle, Lock, Unlock,
   Utensils, Heart, Compass, Coffee, Car, Clock, ShieldCheck, Edit3, Mail, Globe, ExternalLink, QrCode, Printer, BarChart3, Star, Navigation, Sun, LogOut, User,
   Wine, Sparkles, Tv, Waves, Dumbbell, Key, Bed, Building, ShoppingBag, Landmark, Map, Bus, Plane, Scroll, Save, Eye, EyeOff, Palette, TrendingUp, Users, Activity, HelpCircle,
   Flame, Accessibility, Recycle, Award, Scissors, ShoppingCart, Stethoscope, Baby, Music, Smile, CheckCircle2, XCircle, Zap, Search, ChevronDown, ChevronUp, X, LayoutDashboard, Building2, CreditCard, BookOpen, MousePointerClick
@@ -18,6 +20,18 @@ import {
 
 
 // --- 10 DİL ÇEVİRİ SİSTEMİ ---
+
+const legalLinks = [
+  ['legalNotice', import.meta.env.VITE_IMPRESSUM_URL],
+  ['privacy', import.meta.env.VITE_PRIVACY_URL],
+].filter(([, url]) => typeof url === 'string' && (/^https:\/\//i.test(url) || /^\/(?![\/\\])/.test(url)));
+
+function LegalLinks({ copy, onCover = false }) {
+  if (!legalLinks.length) return null;
+  return <footer className={`relative z-10 flex flex-wrap gap-4 px-5 py-3 text-xs ${onCover ? "text-white" : ""}`}>
+    {legalLinks.map(([key, url]) => <a className="underline" key={key} href={url}>{copy[key]}</a>)}
+  </footer>;
+}
 
 const createQrPdf = async ({ svg, hotelName, logoUrl, format }) => {
   const [pw,ph]=format==='a4'?[595.28,841.89]:format==='a5'?[419.53,595.28]:[425.2,283.46],scale=2;
@@ -261,7 +275,7 @@ const legacyCategoryPresets = [
   { id: 'wifi_internet', categoryId: 'cat_hotel', icon: 'Wifi', title: { de: 'WLAN & Internet', en: 'WiFi & Internet', tr: 'WLAN & İnternet', fr: 'Wi-Fi & Internet', hr: 'Wi-Fi i internet' }, schema: [
     { key: 'wifi_available', type: 'boolean', label: { de: 'WLAN verfügbar', en: 'WiFi Available', tr: 'WLAN Mevcut', fr: 'Wi-Fi disponible', hr: 'Wi-Fi dostupan' }, default: true, primary: true },
     { key: 'network_name', type: 'text', label: { de: 'Netzwerkname (SSID)', en: 'Network Name (SSID)', tr: 'Ağ Adı (SSID)', fr: 'Nom du réseau (SSID)', hr: 'Naziv mreže (SSID)' }, default: 'Hotel-Guest-WiFi', primary: true },
-    { key: 'wifi_password', type: 'text', label: { de: 'Passwort', en: 'Password', tr: 'Şifre', fr: 'Mot de passe', hr: 'Lozinka' }, default: 'welcome2026', primary: true }
+    { key: 'wifi_password', type: 'text', label: { de: 'Passwort', en: 'Password', tr: 'Şifre', fr: 'Mot de passe', hr: 'Lozinka' }, default: '', primary: true }
   ]},
 
   // ESSEN & TRINKEN
@@ -481,18 +495,18 @@ const CompactPresetEditorModal = ({ isOpen, onClose, onSave, currentTheme, lang,
 
   return (
     <div className="fixed inset-0 bg-slate-950/70 backdrop-blur-sm z-[9999] flex items-center justify-center p-2 sm:p-6 animate-fade-in overflow-x-hidden">
-      <div className="bg-white w-full min-w-0 max-w-2xl rounded-2xl sm:rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[calc(100dvh-1rem)] sm:max-h-[90vh] border border-stone-200">
+      <div role="dialog" aria-modal="true" aria-labelledby="gm24-preset-title" tabIndex={-1} className="bg-white w-full min-w-0 max-w-2xl rounded-2xl sm:rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[calc(100dvh-1rem)] sm:max-h-[90vh] border border-stone-200">
         
         <div className="p-4 sm:p-5 border-b border-stone-100 flex items-center justify-between bg-stone-50/80">
           <div>
             <span className="text-[10px] font-black uppercase tracking-widest text-stone-400 block">{t.modalTitle}</span>
-            <h2 className="text-base sm:text-lg font-black text-slate-900 leading-tight">
+            <h2 id="gm24-preset-title" className="text-base sm:text-lg font-black text-slate-900 leading-tight">
               {step === 1 && t.step1Title}
               {step === 2 && t.step2Title}
               {step === 3 && t.step3Title}
             </h2>
           </div>
-          <button onClick={onClose} className="p-2 rounded-xl text-stone-400 hover:text-slate-800 hover:bg-stone-200/50 transition cursor-pointer">
+          <button onClick={onClose} aria-label={(pilotCopy[lang] || pilotCopy.de).close} className="p-2 rounded-xl text-stone-400 hover:text-slate-800 hover:bg-stone-200/50 transition cursor-pointer">
             <X className="w-5 h-5" />
           </button>
         </div>
@@ -809,6 +823,8 @@ const AddressAutocomplete = ({ value, onChange, className, lang = 'de' }) => {
 };
 export default function App() {
   const [lang, setLang] = useState('de');
+  const pilot = pilotCopy[lang] || pilotCopy.de;
+  useEffect(() => { document.documentElement.lang = lang; }, [lang]);
   const t = translations[lang] || translations.de;
   const dw = dashboardWorkspaceCopy[lang] || dashboardWorkspaceCopy.de;
   const localHour = new Date().getHours();
@@ -833,13 +849,10 @@ export default function App() {
   const guestSlug = typeof window !== 'undefined'
     ? (window.location.pathname.match(/^\/g\/([a-z0-9-]+)\/?$/i)?.[1] || null)
     : null;
-  const [analyticsRefreshTick, setAnalyticsRefreshTick] = useState(0);
   const trackGuestPageView = (pageKey) => {
-    const trackingSlug = guestSlug || hotelRecord?.slug || null;
-    if (!trackingSlug || !supabase || !/^[a-zA-Z0-9_-]{1,80}$/.test(pageKey)) return;
-    supabase.functions.invoke('track-view', { body: { slug: trackingSlug, page_key: pageKey } }).then(({ error }) => {
+    if (!guestSlug || !supabase || !/^[a-zA-Z0-9_-]{1,80}$/.test(pageKey)) return;
+    supabase.functions.invoke('track-view', { body: { slug: guestSlug, page_key: pageKey } }).then(({ error }) => {
       if (error) throw error;
-      setAnalyticsRefreshTick(value => value + 1);
     }).catch(error => console.warn('Analytics tracking unavailable:', error));
   };
   const trackGuestEvent = trackGuestPageView;
@@ -847,6 +860,11 @@ export default function App() {
   const [guestPageStatus, setGuestPageStatus] = useState('idle');
   const [authSession, setAuthSession] = useState(null);
   const [authLoading, setAuthLoading] = useState(true);
+  const [recoveringPassword, setRecoveringPassword] = useState(false);
+  const [loadedOwnerId, setLoadedOwnerId] = useState(null);
+  const ownerRef = useRef({ id: null });
+  const operationRef = useRef(false);
+  const [guidePublished, setGuidePublished] = useState(false);
   const [hotelRecord, setHotelRecord] = useState(null);
   const [hotelRecords, setHotelRecords] = useState([]);
   const [selectedHotelId, setSelectedHotelId] = useState('');
@@ -856,7 +874,7 @@ export default function App() {
   const [createAccommodationOpen, setCreateAccommodationOpen] = useState(false);
   const [newAccommodationName, setNewAccommodationName] = useState('');
   const [deleteAccommodationTarget, setDeleteAccommodationTarget] = useState(null);
-  const [requestedPlanCode, setRequestedPlanCode] = useState(() => localStorage.getItem('gm24_requested_plan') || 'single');
+  const [requestedPlanCode, setRequestedPlanCode] = useState('single');
 
   const [cloneOptions, setCloneOptions] = useState({ categories: true, texts: true, design: true });
   const [analyticsRows, setAnalyticsRows] = useState([]);
@@ -871,14 +889,21 @@ export default function App() {
       return undefined;
     }
     let mounted = true;
+    const syncSession = session => {
+      const id = session?.user?.id || null;
+      if (ownerRef.current.id !== id) ownerRef.current = { id };
+      setAuthSession(session);
+    };
     supabase.auth.getSession().then(({ data, error }) => {
       if (!mounted) return;
       if (error) console.warn('Could not restore Supabase session:', error);
-      setAuthSession(data?.session || null);
+      syncSession(data?.session || null);
       setAuthLoading(false);
     });
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      setAuthSession(session || null);
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event === 'PASSWORD_RECOVERY') setRecoveringPassword(true);
+      if (event === 'SIGNED_OUT') setRecoveringPassword(false);
+      syncSession(session || null);
       setAuthLoading(false);
     });
     return () => {
@@ -894,12 +919,29 @@ export default function App() {
 
   useEffect(() => {
     const userId = authSession?.user?.id;
-    if (!supabase || !userId || guestSlug) {
-      setHotelRecord(null);
-      setHotelRecords([]);
-      setSelectedHotelId('');
-      setAccountRecord(null);
+    setLoadedOwnerId(null);
+    setHotelRecord(null);
+    setHotelRecords([]);
+    setSelectedHotelId('');
+    setAccountRecord(null);
+    setRequestedPlanCode('single');
+    setAnalyticsRows([]);
+    setSelectedCategory(null);
+    setEditingCategory(null);
+    setIsEditorModalOpen(false);
+    setCreateAccommodationOpen(false);
+    setClonePreviewOpen(false);
+    setDeleteAccommodationTarget(null);
+    setIsSaved(false);
+    setGuidePublished(false);
+    operationRef.current = false;
+    if (!guestSlug) {
+      setHotel(userId ? emptyHotel() : demoHotel());
+      setCategories(userId ? [] : demoCategories);
+    }
+    if (!supabase || !userId || guestSlug || recoveringPassword) {
       setCloudDataStatus('idle');
+      setCloudDataError('');
       return undefined;
     }
 
@@ -910,7 +952,7 @@ export default function App() {
       try {
         const { data: existingHotels, error } = await supabase
           .from('gm24_hotels')
-          .select('id, slug, name, profile, public_content, created_at')
+          .select('id, owner_id, owner_id, slug, name, profile, public_content, created_at')
           .eq('owner_id', userId)
           .order('created_at', { ascending: true });
         if (error) throw error;
@@ -927,29 +969,32 @@ export default function App() {
               profile: {},
               public_content: {}
             })
-            .select('id, slug, name, profile, public_content, created_at')
+            .select('id, owner_id, slug, name, profile, public_content, created_at')
             .single();
-          if (createError) throw createError;
-          records = [created];
+          if (createError && createError.code !== '23505') throw createError;
+          if (created) {
+            records = [created];
+          } else {
+            const retry = await supabase.from('gm24_hotels')
+              .select('id, owner_id, owner_id, slug, name, profile, public_content, created_at')
+              .eq('owner_id', userId).order('created_at', { ascending: true });
+            if (retry.error) throw retry.error;
+            records = retry.data || [];
+            if (!records.length) throw createError;
+          }
         }
-        if (!active) return;
-        setHotelRecords(records);
-        const selected = records.find(item => item.id === selectedHotelId) || records[0];
-        setHotelRecord(selected);
-        setSelectedHotelId(selected.id);
-        const savedProfile = selected.profile && typeof selected.profile === 'object' ? selected.profile : {};
-        if (savedProfile.hotel && typeof savedProfile.hotel === 'object') setHotel(savedProfile.hotel);
-        if (Array.isArray(savedProfile.categories)) setCategories(savedProfile.categories);
-
         const { data: account, error: accountError } = await supabase
           .from('gm24_accounts')
           .select('owner_id, plan_code, subscription_status, trial_started_at, trial_ends_at, paid_until, requested_plan_code')
           .eq('owner_id', userId)
           .maybeSingle();
         if (accountError) throw accountError;
-        if (!active) return;
+        if (!active || ownerRef.current.id !== userId) return;
+        setHotelRecords(records);
+        applyAccommodation(records[0]);
         setAccountRecord(account || null);
-        setRequestedPlanCode(account?.requested_plan_code || localStorage.getItem('gm24_requested_plan') || 'single');
+        setRequestedPlanCode(account?.requested_plan_code || 'single');
+        setLoadedOwnerId(userId);
         setCloudDataStatus('ready');
       } catch (error) {
         if (!active) return;
@@ -961,31 +1006,38 @@ export default function App() {
 
     loadOrCreateHotel();
     return () => { active = false; };
-  }, [authSession?.user?.id, guestSlug]);
+  }, [authSession?.user?.id, guestSlug, recoveringPassword]);
 
   useEffect(() => {
     const hotelId = hotelRecord?.id;
-    if (!supabase || !hotelId || guestSlug || !authSession?.user?.id) {
+    if (!supabase || !hotelId || guestSlug || hotelRecord?.owner_id !== authSession?.user?.id) {
       setAnalyticsRows([]);
       return undefined;
     }
     let active = true;
     const loadAnalytics = async () => {
       setAnalyticsLoading(true);
-      const { data, error } = await supabase
-        .from('gm24_analytics_daily')
-        .select('event_date, page_key, views')
-        .eq('hotel_id', hotelId)
-        .gte('event_date', new Date(Date.now() - 180 * 86400000).toISOString().slice(0, 10))
-        .order('event_date', { ascending: false })
-        .limit(1000);
-      if (!active) return;
-      if (error) {
-        console.warn('Analytics could not be loaded:', error);
-        setAnalyticsRows([]);
-      } else {
-        setAnalyticsRows((data || []).filter(row => row && row.page_key));
+      const rows = [];
+      const since = new Date(Date.now() - 180 * 86400000).toISOString().slice(0, 10);
+      const pageSize = 500;
+      for (let start = 0; active; start += pageSize) {
+        const { data, error } = await supabase.from('gm24_analytics_daily')
+          .select('event_date, page_key, views').eq('hotel_id', hotelId)
+          .gte('event_date', since).order('event_date', { ascending: false })
+          .order('page_key').range(start, start + pageSize - 1);
+        if (!active) return;
+        if (error) {
+          console.warn('Analytics could not be loaded:', error);
+          setAnalyticsRows([]);
+          setAnalyticsLoading(false);
+          return;
+        }
+        const entries = data || [];
+        rows.push(...entries.filter(row => row?.page_key));
+        if (entries.length < pageSize) break;
       }
+      if (!active) return;
+      setAnalyticsRows(rows);
       setAnalyticsLoading(false);
     };
     loadAnalytics();
@@ -999,7 +1051,7 @@ export default function App() {
       window.removeEventListener('focus', refreshWhenVisible);
       document.removeEventListener('visibilitychange', refreshWhenVisible);
     };
-  }, [hotelRecord?.id, authSession?.user?.id, guestSlug, appMode, analyticsRefreshTick]);
+  }, [hotelRecord?.id, authSession?.user?.id, guestSlug, appMode]);
 
   const [isEditorModalOpen, setIsEditorModalOpen] = useState(false);
   const [editingCategory, setEditingCategory] = useState(null);
@@ -1078,48 +1130,23 @@ export default function App() {
     sq:{wifi:{title:'Wi-Fi',description:'Lidhu me rrjetin tonë Wi-Fi për mysafirët.'},parking:{title:'Parkim',description:'Parkim falas është i disponueshëm në ambientet tona.'},breakfast:{title:'Mëngjesi',description:'Orari i mëngjesit: 07:30–10:30.'},checkin:{title:'Hyrja / Dalja',description:'Hyrja nga ora 15:00 · Dalja deri në 11:00.'}}
   };
   const [quickEditLang, setQuickEditLang] = useState('de');
-  const [hotel, setHotel] = useState(() => {
-    const saved = localStorage.getItem('gm24_hotel');
-    const defaultData = {
-      logoUrl: '',
-      name: 'Boutique Hotel & Suites', 
-      locationTitle: 'REGION / STANDORT',
-      address: '',
-      phone: '+49 123 456789',
-      email: 'info@meine-unterkunft.de',
-      website: 'www.meine-unterkunft.de',
-      googleReviewUrl: '',
-      wifiSsid: 'Guest_WiFi',
-      wifiPass: 'welcome2026',
-      breakfastTime: '07:30 - 10:30 Uhr',
-      checkInOut: 'Check-in: ab 15:00 | Check-out: bis 11:00',
-      parkingInfo: 'Kostenfreie Parkplätze am Haus verfügbar.',
-      showWifi: true,
-      showParking: true,
-      showBreakfast: true,
-      showCheckInOut: true,
-      quickAccessContent: quickAccessDefaults,
-      themeColor: 'amber',
-      images: [
-        'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1000&q=80',
-        'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=1000&q=80'
-      ]
-    };
-    if (!saved) return defaultData;
-    try {
-      const parsed = JSON.parse(saved);
-      const merged = parsed && typeof parsed === 'object' && !Array.isArray(parsed) ? { ...defaultData, ...parsed } : defaultData;
-      if (/Musterstraße 1|12345 Musterstadt/i.test(merged.address || '')) merged.address = '';
-      if (/g\.page\/r\/example\/review/i.test(merged.googleReviewUrl || '')) merged.googleReviewUrl = '';
-      const quickAccessContent = Object.fromEntries(Object.entries(quickAccessDefaults).map(([language, cards]) => [
-        language,
-        Object.fromEntries(Object.entries(cards).map(([id, defaults]) => [id, { ...defaults, ...(language === 'de' ? (id === 'parking' ? { description: merged.parkingInfo || defaults.description } : id === 'breakfast' ? { description: merged.breakfastTime || defaults.description } : id === 'checkin' ? { description: merged.checkInOut || defaults.description } : {}) : {}), ...(merged.quickAccessContent?.[language]?.[id] || {}) }]))
-      ]));
-      return { ...merged, quickAccessContent, images: Array.isArray(merged.images) ? merged.images : defaultData.images };
-    } catch (error) {
-      console.error('Ungültige gespeicherte Hoteldaten – Standardwerte werden verwendet.', error);
-      return defaultData;
-    }
+  const emptyHotel = (name = '') => ({
+    name, logoUrl: '', locationTitle: '', address: '', phone: '', email: '', website: '',
+    reviewPlatform: 'google', googleReviewUrl: '', wifiSsid: '', wifiPass: '',
+    publishGuestWifi: false, breakfastTime: '', checkInOut: '', parkingInfo: '',
+    showWifi: false, showParking: false, showBreakfast: false, showCheckInOut: false,
+    quickAccessContent: {}, themeColor: 'amber', images: [],
+  });
+  const demoHotel = () => ({
+    ...emptyHotel('Boutique Hotel & Suites'),
+    breakfastTime: '07:30 – 10:30', checkInOut: 'Check-in 15:00 · Check-out 11:00',
+    parkingInfo: quickAccessDefaults.de.parking.description,
+    showBreakfast: true, showCheckInOut: true, showParking: true,
+  });
+  const [hotel, setHotel] = useState(() => guestSlug ? emptyHotel() : demoHotel());
+  const normalizeHotel = (saved, name) => ({
+    ...emptyHotel(name), ...(saved && typeof saved === 'object' && !Array.isArray(saved) ? saved : {}),
+    images: Array.isArray(saved?.images) ? saved.images : [],
   });
 
   const [weather, setWeather] = useState({ status: 'loading', temperature: null, code: null, place: '' });
@@ -1185,38 +1212,12 @@ export default function App() {
     return () => controller.abort();
   }, [hotel.address, lang]);
 
-  const [categories, setCategories] = useState(() => {
-    const saved = localStorage.getItem('gm24_categories');
-    if (saved) {
-      try {
-        const parsed = JSON.parse(saved);
-        if (Array.isArray(parsed)) return parsed;
-        console.error('Ungültige gespeicherte Kategorien – Standardkategorien werden verwendet.');
-      } catch (error) {
-        console.error('Gespeicherte Kategorien konnten nicht gelesen werden – Standardkategorien werden verwendet.', error);
-      }
-    }
-    return [
-      { 
-        id: '1', 
-        presetId: 'wifi_internet', 
-        categoryId: 'cat_hotel',
-        icon: 'Wifi', 
-        customTitle: '', 
-        fieldValues: { wifi_available: true, network_name: 'Hotel-Guest-WiFi', wifi_password: 'welcome2026', coverage: 'Gesamtes Hotel' },
-        customText: 'Bei Verbindungsproblemen wenden Sie sich bitte an die Rezeption.' 
-      },
-      { 
-        id: '2', 
-        presetId: 'cert_sustainability', 
-        categoryId: 'cat_certificates',
-        icon: 'Award', 
-        customTitle: 'GreenKey Zertifikat', 
-        fieldValues: { cert_name: 'Green Key 2026', cert_number: 'GK-2026-9876' },
-        customText: 'Unser Hotel ist als nachhaltiger Betrieb ausgezeichnet.' 
-      }
-    ];
-  });
+  const demoCategories = [
+    { id: 'demo-wifi', categoryId: 'cat_hotel', presetId: 'wifi_internet', icon: 'Wifi',
+      fieldValues: { wifi_available: true, network_name: 'Hotel-Guest-WiFi' } },
+    { id: 'demo-sustainability', categoryId: 'cat_safety', presetId: 'cert_sustainability', icon: 'Award' },
+  ];
+  const [categories, setCategories] = useState(() => guestSlug ? [] : demoCategories);
 
   useEffect(() => {
     if (!guestSlug) {
@@ -1232,9 +1233,7 @@ export default function App() {
       setGuestPageStatus('loading');
       try {
         const { data, error } = await supabase
-          .from('gm24_guest_pages')
-          .select('slug, name, public_content')
-          .eq('slug', guestSlug)
+          .rpc('gm24_read_guest_guide', { p_slug: guestSlug })
           .maybeSingle();
         if (error) throw error;
         if (!data || !data.public_content || typeof data.public_content !== 'object') {
@@ -1243,9 +1242,8 @@ export default function App() {
         }
         if (!active) return;
         const content = data.public_content;
-        if (content.hotel && typeof content.hotel === 'object') setHotel(content.hotel);
-        else setHotel(previous => ({ ...previous, name: data.name || previous.name }));
-        if (Array.isArray(content.categories)) setCategories(content.categories);
+        setHotel(normalizeHotel(content.hotel, data.name));
+        setCategories(Array.isArray(content.categories) ? content.categories : []);
         setGuestPageStatus('ready');
         // Count every successfully opened guest guide view; no visitor identifiers are stored.
         trackGuestPageView('guest_home');
@@ -1290,49 +1288,40 @@ export default function App() {
     setCategories(prev => prev.filter(cat => cat.id !== id));
   };
 
-  const selectAccommodation = (id) => {
-    const selected = hotelRecords.find(item => item.id === id);
-    if (!selected) return;
+  const applyAccommodation = selected => {
     setHotelRecord(selected);
     setSelectedHotelId(selected.id);
-    const profile = selected.profile && typeof selected.profile === 'object' ? selected.profile : {};
-    if (profile.hotel && typeof profile.hotel === 'object') setHotel(profile.hotel);
-    else setHotel(previous => ({ ...previous, name: selected.name || 'Meine Unterkunft', address: '', phone: '', email: '', website: '', wifiSsid: '', wifiPass: '' }));
-    setCategories(Array.isArray(profile.categories) ? profile.categories : []);
+    setHotel(normalizeHotel(selected.profile?.hotel, selected.name));
+    setCategories(Array.isArray(selected.profile?.categories) ? selected.profile.categories : []);
+    setGuidePublished(Boolean(Object.keys(selected.public_content || {}).length));
+    setIsSaved(false);
     setSelectedCategory(null);
+    setEditingCategory(null);
     setIsEditorModalOpen(false);
   };
 
+  const canManage = Boolean(loadedOwnerId && loadedOwnerId === authSession?.user?.id
+    && hotelRecord?.owner_id === loadedOwnerId);
+
+  const selectAccommodation = id => {
+    if (!canManage || operationRef.current) return;
+    const selected = hotelRecords.find(item => item.id === id);
+    if (selected) applyAccommodation(selected);
+  };
+
   const createAccommodation = async () => {
-    if (!supabase || !authSession?.user?.id || !accountRecord) return;
+    if (!canManage || !accountRecord || operationRef.current || trialExpired) return;
     if (hotelRecords.length >= accommodationLimit) {
       setCloudDataError(`Dein aktuelles Paket erlaubt höchstens ${accommodationLimit} Unterkünfte.`);
       return;
     }
-    if (accountRecord.subscription_status === 'suspended' || (accountRecord.trial_ends_at && new Date(accountRecord.trial_ends_at).getTime() <= trialNow && accountRecord.subscription_status !== 'active')) return;
-    const base = hotel || {};
-    const newHotel = {
-      ...base,
-      name: (newAccommodationName || '').trim() || 'Neue Unterkunft',
-      logoUrl: '',
-      locationTitle: '',
-      address: '',
-      phone: '',
-      email: '',
-      website: '',
-      reviewPlatform: 'google',
-      googleReviewUrl: '',
-      wifiSsid: '',
-      wifiPass: '',
-      breakfastTime: '',
-      checkInOut: '',
-      parkingInfo: '',
-      quickAccessContent: {},
-      images: []
-    };
+    const newHotel = emptyHotel(newAccommodationName.trim());
+    if (!newHotel.name) return;
+    const requestOwner = ownerRef.current;
+    operationRef.current = true;
     setCloudDataStatus('saving');
     try {
-      const slugBase = 'unterkunft-' + Math.random().toString(36).slice(2, 9);
+      const slugBase = 'unterkunft-' + crypto.randomUUID().replace(/-/g, '');
       const { data: created, error } = await supabase
         .from('gm24_hotels')
         .insert({
@@ -1342,31 +1331,25 @@ export default function App() {
           profile: { hotel: newHotel, categories: [] },
           public_content: {}
         })
-        .select('id, slug, name, profile, public_content, created_at')
+        .select('id, owner_id, slug, name, profile, public_content, created_at')
         .single();
       if (error) throw error;
+      if (ownerRef.current !== requestOwner) return;
       setHotelRecords(previous => [...previous, created]);
-      setHotelRecord(created);
-      setSelectedHotelId(created.id);
-      setHotel(newHotel);
-      setCategories([]);
-      setSelectedCategory(null);
+      applyAccommodation(created);
+      setCreateAccommodationOpen(false);
       setCloudDataStatus('ready');
-      const { data: refreshedAccount } = await supabase
-        .from('gm24_accounts')
-        .select('owner_id, plan_code, subscription_status, trial_started_at, trial_ends_at, paid_until, requested_plan_code')
-        .eq('owner_id', authSession.user.id)
-        .maybeSingle();
-      if (refreshedAccount) setAccountRecord(refreshedAccount);
     } catch (error) {
-      console.error('Accommodation could not be created:', error);
-      setCloudDataError(error?.message || 'Die Unterkunft konnte nicht erstellt werden.');
+      if (ownerRef.current !== requestOwner) return;
+      setCloudDataError(error?.message || pilot.saveFailed);
       setCloudDataStatus('error');
+    } finally {
+      if (ownerRef.current === requestOwner) operationRef.current = false;
     }
   };
 
   const cloneAccommodation = async () => {
-    if (!supabase || !authSession?.user?.id || !hotelRecord || !accountRecord || trialExpired || accommodationLimitReached) return;
+    if (!canManage || !accountRecord || trialExpired || accommodationLimitReached || operationRef.current) return;
     const removePrivateFields = (value) => {
       if (Array.isArray(value)) return value.map(removePrivateFields);
       if (!value || typeof value !== 'object') return value;
@@ -1388,6 +1371,7 @@ export default function App() {
       googleReviewUrl: '',
       wifiSsid: '',
       wifiPass: '',
+      publishGuestWifi: false,
       images: [],
       themeColor: cloneOptions.design ? source.themeColor : 'amber',
       breakfastTime: cloneOptions.texts ? (source.breakfastTime || '') : '',
@@ -1401,7 +1385,9 @@ export default function App() {
           id: globalThis.crypto?.randomUUID?.() || `cat-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`
         }))
       : [];
-    const slug = 'kopie-' + (globalThis.crypto?.randomUUID?.() || Math.random().toString(36).slice(2, 12)).replace(/-/g, '').slice(0, 12).toLowerCase();
+    const slug = 'kopie-' + crypto.randomUUID().replace(/-/g, '');
+    const requestOwner = ownerRef.current;
+    operationRef.current = true;
     setCloudDataStatus('saving');
     try {
       const { data: created, error } = await supabase
@@ -1413,27 +1399,28 @@ export default function App() {
           profile: { hotel: clonedHotel, categories: clonedCategories },
           public_content: {}
         })
-        .select('id, slug, name, profile, public_content, created_at')
+        .select('id, owner_id, slug, name, profile, public_content, created_at')
         .single();
       if (error) throw error;
+      if (ownerRef.current !== requestOwner) return;
       setHotelRecords(previous => [...previous, created]);
-      setHotelRecord(created);
-      setSelectedHotelId(created.id);
-      setHotel(clonedHotel);
-      setCategories(clonedCategories);
-      setSelectedCategory(null);
+      applyAccommodation(created);
       setClonePreviewOpen(false);
       setCloudDataStatus('ready');
     } catch (error) {
-      console.error('Accommodation clone failed:', error);
-      setCloudDataError(error?.message || 'Die Unterkunft konnte nicht kopiert werden.');
+      if (ownerRef.current !== requestOwner) return;
+      setCloudDataError(error?.message || pilot.saveFailed);
       setCloudDataStatus('error');
+    } finally {
+      if (ownerRef.current === requestOwner) operationRef.current = false;
     }
   };
 
   const deleteAccommodation = async () => {
     const target = deleteAccommodationTarget;
-    if (!supabase || !authSession?.user?.id || !target || hotelRecords.length <= 1) return;
+    if (!canManage || !target || hotelRecords.length <= 1 || operationRef.current) return;
+    const requestOwner = ownerRef.current;
+    operationRef.current = true;
     setCloudDataStatus('saving');
     setCloudDataError('');
     try {
@@ -1441,43 +1428,39 @@ export default function App() {
         .from('gm24_hotels')
         .delete()
         .eq('id', target.id)
-        .eq('owner_id', authSession.user.id);
+        .eq('owner_id', requestOwner.id).select('id').single();
       if (error) throw error;
+      if (ownerRef.current !== requestOwner) return;
       const remaining = hotelRecords.filter(item => item.id !== target.id);
       setHotelRecords(remaining);
       setDeleteAccommodationTarget(null);
-      if (hotelRecord?.id === target.id) {
-        const next = remaining[0];
-        setHotelRecord(next);
-        setSelectedHotelId(next.id);
-        const profile = next.profile && typeof next.profile === 'object' ? next.profile : {};
-        if (profile.hotel && typeof profile.hotel === 'object') setHotel(profile.hotel);
-        else setHotel(previous => ({ ...previous, name: next.name || 'Meine Unterkunft', address: '', phone: '', email: '', website: '', wifiSsid: '', wifiPass: '' }));
-        setCategories(Array.isArray(profile.categories) ? profile.categories : []);
-        setSelectedCategory(null);
-      }
+      if (hotelRecord?.id === target.id) applyAccommodation(remaining[0]);
       setCloudDataStatus('ready');
     } catch (error) {
-      console.error('Accommodation could not be deleted:', error);
-      setCloudDataError(error?.message || 'Die Unterkunft konnte nicht gelöscht werden.');
+      if (ownerRef.current !== requestOwner) return;
+      setCloudDataError(error?.message || pilot.saveFailed);
       setCloudDataStatus('error');
+    } finally {
+      if (ownerRef.current === requestOwner) operationRef.current = false;
     }
   };
 
   const chooseRequestedPlan = async (planCode) => {
-    if (!supabase || !authSession?.user?.id) return;
+    if (!canManage) return;
+    const requestOwner = ownerRef.current;
     try {
       const { data, error } = await supabase
         .from('gm24_accounts')
         .update({ requested_plan_code: planCode })
-        .eq('owner_id', authSession.user.id)
+        .eq('owner_id', requestOwner.id)
         .select('owner_id, plan_code, subscription_status, trial_started_at, trial_ends_at, paid_until, requested_plan_code')
         .single();
       if (error) throw error;
+      if (ownerRef.current !== requestOwner) return;
       setAccountRecord(data);
       setRequestedPlanCode(planCode);
-      localStorage.setItem('gm24_requested_plan', planCode);
     } catch (error) {
+      if (ownerRef.current !== requestOwner) return;
       console.error('Package preference could not be saved:', error);
       setCloudDataError('Die Paketvormerkung konnte nicht gespeichert werden. Bitte erneut versuchen.');
     }
@@ -1490,8 +1473,8 @@ export default function App() {
     Date.UTC(trialEndDate.getFullYear(), trialEndDate.getMonth(), trialEndDate.getDate())
     - Date.UTC(trialToday.getFullYear(), trialToday.getMonth(), trialToday.getDate())
   ) / 86400000)) : null;
-  const trialExpired = accountRecord?.subscription_status === 'suspended'
-    || (accountRecord?.subscription_status === 'trial' && trialEndsAt !== null && trialEndsAt <= trialNow);
+  const trialExpired = Boolean(accountRecord && accountRecord.subscription_status !== 'active'
+    && (accountRecord.subscription_status !== 'trial' || trialEndsAt === null || trialEndsAt <= trialNow));
   const accommodationLimit = accountRecord?.subscription_status === 'trial'
     ? 3
     : accountRecord?.subscription_status === 'active'
@@ -1581,43 +1564,35 @@ export default function App() {
   const dailyGuideViews=Array.from({length:analyticsPeriodDays},(_,i)=>{const date=new Date(analyticsToday.getTime()-(analyticsPeriodDays-1-i)*86400000).toISOString().slice(0,10);return{date,value:rowSum(currentRows.filter(row=>row.event_date===date&&!actionEvent(row.page_key)))};});
   const chartMax=Math.max(1,...dailyGuideViews.map(day=>day.value));
 
-  const handleSaveData = async () => {
-    localStorage.setItem('gm24_hotel', JSON.stringify(hotel));
-    localStorage.setItem('gm24_categories', JSON.stringify(categories));
-
-    if (!supabase || !authSession?.user?.id || !hotelRecord?.id) {
-      setCloudDataError('Cloud-Speicherung ist noch nicht bereit. Bitte erneut anmelden oder die Verbindung prüfen.');
-      setCloudDataStatus('error');
-      return;
-    }
-
+  const handleSaveData = async (publish = false) => {
+    if (!canManage || trialExpired || operationRef.current) return;
+    const requestOwner = ownerRef.current;
+    operationRef.current = true;
     setCloudDataStatus('saving');
     setCloudDataError('');
     const profile = { hotel, categories };
-    // Only the guest-facing editor data is published. Owner identity and auth data stay private.
-    const publicContent = { hotel, categories };
     try {
-      const { data, error } = await supabase
-        .from('gm24_hotels')
-        .update({
-          name: hotel.name || 'Meine Unterkunft',
-          profile,
-          public_content: publicContent,
-          updated_at: new Date().toISOString()
-        })
-        .eq('id', hotelRecord.id)
-        .select('id, slug, name, profile, public_content, created_at')
-        .single();
+      const { data, error } = await supabase.from('gm24_hotels').update({
+        name: hotel.name.trim() || hotelRecord.name,
+        profile,
+        ...(publish ? { public_content: profile } : {}),
+        updated_at: new Date().toISOString()
+      }).eq('id', hotelRecord.id).eq('owner_id', requestOwner.id)
+        .select('id, owner_id, owner_id, slug, name, profile, public_content, created_at').single();
       if (error) throw error;
+      if (ownerRef.current !== requestOwner) return;
       setHotelRecord(data);
       setHotelRecords(previous => previous.map(item => item.id === data.id ? data : item));
+      setGuidePublished(Boolean(Object.keys(data.public_content || {}).length));
       setCloudDataStatus('ready');
       setIsSaved(true);
       setTimeout(() => setIsSaved(false), 3000);
     } catch (error) {
-      console.error('Cloud save failed; local copy remains available:', error);
-      setCloudDataError(error?.message || 'Cloud-Speicherung fehlgeschlagen. Die lokale Kopie bleibt erhalten.');
+      if (ownerRef.current !== requestOwner) return;
+      setCloudDataError(error?.message || pilot.saveFailed);
       setCloudDataStatus('error');
+    } finally {
+      if (ownerRef.current === requestOwner) operationRef.current = false;
     }
   };
 
@@ -1627,26 +1602,6 @@ export default function App() {
     navigator.clipboard.writeText(hotel.wifiPass);
     setCopiedWifi(true);
     setTimeout(() => setCopiedWifi(false), 2500);
-  };
-
-  const handleLogoUpload = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => { setHotel(prev => ({ ...prev, logoUrl: reader.result })); };
-      reader.readAsDataURL(file);
-    }
-  };
-
-  const handleImageUpload = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => { 
-        setHotel(prev => ({ ...prev, images: [...(prev.images || []), reader.result] })); 
-      };
-      reader.readAsDataURL(file);
-    }
   };
 
   const removeImage = (index) => {
@@ -1672,7 +1627,7 @@ export default function App() {
         <div className="text-[11px] text-slate-500 font-mono bg-stone-50 p-2 rounded-lg border">
           <div><b>{hotel.wifiSsid}</b></div>
           <div className="flex flex-col items-start mt-2 gap-2 min-w-0"><span className="block w-full min-w-0 whitespace-normal break-all leading-relaxed">{hotel.wifiPass}</span>
-            <button type="button" onClick={copyWifiPassword} aria-label="Copy Wi-Fi password" title={copiedWifi ? copyWifiLabel.copied : copyWifiLabel.copy} className={`${currentTheme.bgLight} ${currentTheme.text} px-2 py-1.5 rounded-lg cursor-pointer inline-flex items-center gap-1 shrink-0`}>{copiedWifi ? <><Check className="w-3.5 h-3.5 text-emerald-600" /><span className="text-[10px]">{copyWifiLabel.copied}</span></> : <><Copy className="w-3.5 h-3.5" /><span className="text-[10px]">{copyWifiLabel.copy}</span></>}</button>
+            {hotel.wifiPass && <button type="button" onClick={copyWifiPassword} aria-label={copyWifiLabel.copy} title={copiedWifi ? copyWifiLabel.copied : copyWifiLabel.copy} className={`${currentTheme.bgLight} ${currentTheme.text} px-2 py-1.5 rounded-lg cursor-pointer inline-flex items-center gap-1 shrink-0`}>{copiedWifi ? <><Check className="w-3.5 h-3.5 text-emerald-600" /><span className="text-[10px]">{copyWifiLabel.copied}</span></> : <><Copy className="w-3.5 h-3.5" /><span className="text-[10px]">{copyWifiLabel.copy}</span></>}</button>}
           </div>
         </div>
       </div>
@@ -1697,6 +1652,15 @@ export default function App() {
     )
   ].filter(Boolean);
 
+  useModalFocus(createAccommodationOpen || Boolean(deleteAccommodationTarget) || clonePreviewOpen || isEditorModalOpen, () => {
+    if (operationRef.current) return;
+    setCreateAccommodationOpen(false);
+    setDeleteAccommodationTarget(null);
+    setClonePreviewOpen(false);
+    setIsEditorModalOpen(false);
+    setEditingCategory(null);
+  });
+
   if (guestSlug && (guestPageStatus === 'loading' || guestPageStatus === 'idle')) {
     return <main className="min-h-screen bg-stone-50 flex items-center justify-center text-sm text-stone-500">Gästemappe wird geladen …</main>;
   }
@@ -1710,6 +1674,13 @@ export default function App() {
         </section>
       </main>
     );
+  }
+
+  if (recoveringPassword && authSession && !guestSlug) {
+    return <AuthGate supabase={supabase} lang={lang} recovery onRecovered={() => {
+      setRecoveringPassword(false);
+      setAppMode('dashboard');
+    }} />;
   }
 
   if (appMode === 'dashboard' && !isSupabaseConfigured) {
@@ -1729,10 +1700,17 @@ export default function App() {
   }
 
   if (appMode === 'dashboard' && !authSession?.user) {
-    return <AuthGate supabase={supabase} />;
+    return <AuthGate supabase={supabase} lang={lang} />;
   }
 
-  if (appMode === 'dashboard' && accountRecord && trialExpired) {
+  if (appMode === 'dashboard' && !canManage) {
+    return <main className="min-h-screen grid place-content-center gap-4 p-6 text-center">
+      <p role="status">{cloudDataError || pilot.loading}</p>
+      {cloudDataError && <button type="button" onClick={() => window.location.reload()}>{pilot.retry}</button>}
+    </main>;
+  }
+
+  if (appMode === 'dashboard' && trialExpired) {
     return (
       <main className="min-h-screen bg-[#FBF9F5] flex items-center justify-center p-4">
         <section className="w-full max-w-xl bg-white border border-amber-200 rounded-3xl p-7 space-y-4 shadow-sm">
@@ -1773,34 +1751,34 @@ export default function App() {
         
         {createAccommodationOpen && (
           <div className="fixed inset-0 z-[110] flex items-center justify-center bg-slate-950/60 p-4">
-            <section role="dialog" aria-modal="true" aria-labelledby="gm24-create-title" className="w-full max-w-md rounded-3xl bg-white p-6 shadow-2xl">
+            <section role="dialog" aria-modal="true" aria-labelledby="gm24-create-title" tabIndex={-1} className="w-full max-w-md rounded-3xl bg-white p-6 shadow-2xl">
               <p className="text-[10px] font-black uppercase tracking-wider text-amber-700">Neue Unterkunft</p>
               <h2 id="gm24-create-title" className="mt-1 text-xl font-black text-slate-900">Was möchtest du hinzufügen?</h2>
               <p className="mt-2 text-xs text-stone-500">Es wird eine leere, eigenständige Gästemappe angelegt. Du kannst den Namen später ändern.</p>
-              <input autoFocus value={newAccommodationName} onChange={e => setNewAccommodationName(e.target.value)} placeholder="z. B. Apartment Sonnengarten" className="mt-4 w-full rounded-xl border border-stone-200 bg-stone-50 px-4 py-3 text-sm outline-none focus:border-amber-400"/>
+              <input data-initial-focus aria-label={t.lblHotelName} value={newAccommodationName} onChange={e => setNewAccommodationName(e.target.value)} placeholder="z. B. Apartment Sonnengarten" className="mt-4 w-full rounded-xl border border-stone-200 bg-stone-50 px-4 py-3 text-sm outline-none focus:border-amber-400"/>
               <div className="mt-5 flex justify-end gap-2">
-                <button onClick={() => setCreateAccommodationOpen(false)} className="rounded-xl border border-stone-200 px-4 py-2.5 text-xs font-bold text-stone-600">Abbrechen</button>
-                <button onClick={async () => { await createAccommodation(); setCreateAccommodationOpen(false); }} disabled={!newAccommodationName.trim()} className="rounded-xl bg-slate-900 px-4 py-2.5 text-xs font-bold text-white disabled:opacity-40">Unterkunft erstellen</button>
+                <button onClick={() => setCreateAccommodationOpen(false)} className="rounded-xl border border-stone-200 px-4 py-2.5 text-xs font-bold text-stone-600">{pilot.cancel}</button>
+                <button onClick={createAccommodation} disabled={!newAccommodationName.trim() || cloudDataStatus === 'saving'} className="rounded-xl bg-slate-900 px-4 py-2.5 text-xs font-bold text-white disabled:opacity-40">{pilot.create}</button>
               </div>
             </section>
           </div>
         )}
         {deleteAccommodationTarget && (
           <div className="fixed inset-0 z-[120] flex items-center justify-center bg-slate-950/60 p-4">
-            <section role="alertdialog" aria-modal="true" aria-labelledby="gm24-delete-title" className="w-full max-w-md rounded-3xl bg-white p-6 shadow-2xl">
+            <section role="alertdialog" aria-modal="true" aria-labelledby="gm24-delete-title" tabIndex={-1} className="w-full max-w-md rounded-3xl bg-white p-6 shadow-2xl">
               <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-red-50 text-red-600"><Trash2 className="h-5 w-5"/></div>
               <h2 id="gm24-delete-title" className="mt-4 text-lg font-black text-slate-900">Unterkunft wirklich löschen?</h2>
               <p className="mt-2 text-sm text-stone-600"><strong>{deleteAccommodationTarget.name || 'Unbenannte Unterkunft'}</strong> und die dazugehörigen Gästemappen-Inhalte werden dauerhaft gelöscht. Diese Aktion kann nicht rückgängig gemacht werden.</p>
               <div className="mt-5 flex justify-end gap-2">
-                <button onClick={() => setDeleteAccommodationTarget(null)} className="rounded-xl border border-stone-200 px-4 py-2.5 text-xs font-bold text-stone-600">Abbrechen</button>
-                <button onClick={deleteAccommodation} disabled={cloudDataStatus === 'saving'} className="rounded-xl bg-red-600 px-4 py-2.5 text-xs font-bold text-white disabled:opacity-50">Endgültig löschen</button>
+                <button onClick={() => setDeleteAccommodationTarget(null)} className="rounded-xl border border-stone-200 px-4 py-2.5 text-xs font-bold text-stone-600">{pilot.cancel}</button>
+                <button onClick={deleteAccommodation} disabled={cloudDataStatus === 'saving'} className="rounded-xl bg-red-600 px-4 py-2.5 text-xs font-bold text-white disabled:opacity-50">{pilot.delete}</button>
               </div>
             </section>
           </div>
         )}
         {clonePreviewOpen && (
           <div className="fixed inset-0 z-[100] bg-slate-950/50 flex items-center justify-center p-4">
-            <section role="dialog" aria-modal="true" aria-labelledby="gm24-clone-title" className="w-full max-w-lg rounded-3xl bg-white p-6 shadow-2xl space-y-4">
+            <section role="dialog" aria-modal="true" aria-labelledby="gm24-clone-title" tabIndex={-1} className="w-full max-w-lg rounded-3xl bg-white p-6 shadow-2xl space-y-4">
               <div>
                 <p className="text-[10px] font-black uppercase tracking-wider text-amber-700">Unterkunft kopieren</p>
                 <h2 id="gm24-clone-title" className="text-xl font-black text-slate-900 mt-1">Kopie vorbereiten</h2>
@@ -1815,8 +1793,8 @@ export default function App() {
                 Nicht kopiert werden: WLAN-Zugangsdaten, Adresse, Telefonnummer, E-Mail, Website, Logo, Bilder, QR-Link und Statistiken. Die Original-Unterkunft bleibt unverändert.
               </div>
               <div className="flex justify-end gap-2">
-                <button onClick={() => setClonePreviewOpen(false)} className="rounded-xl border border-stone-200 px-4 py-2.5 text-xs font-bold text-stone-600">Abbrechen</button>
-                <button onClick={cloneAccommodation} className="rounded-xl bg-stone-900 px-4 py-2.5 text-xs font-bold text-white">Kopie erstellen</button>
+                <button onClick={() => setClonePreviewOpen(false)} className="rounded-xl border border-stone-200 px-4 py-2.5 text-xs font-bold text-stone-600">{pilot.cancel}</button>
+                <button onClick={cloneAccommodation} disabled={cloudDataStatus === 'saving'} className="rounded-xl bg-stone-900 px-4 py-2.5 text-xs font-bold text-white">{pilot.copy}</button>
               </div>
             </section>
           </div>
@@ -1839,16 +1817,21 @@ export default function App() {
             <span className="font-extrabold text-lg tracking-tight">gastemappe<span className="text-amber-700">24</span></span>
           </div>
           <div className="w-full sm:w-auto flex flex-wrap items-center gap-2 sm:gap-3">
-            <select aria-label="Dashboard language" value={lang} onChange={(e) => setLang(e.target.value)} className="bg-white border border-stone-200 text-xs rounded-xl px-2.5 py-2 cursor-pointer">
-              <option value="de">🇩🇪 DE</option><option value="en">🇬🇧 EN</option><option value="tr">🇹🇷 TR</option><option value="fr">🇫🇷 FR</option><option value="es">🇪🇸 ES</option><option value="cs">🇨🇿 CS</option><option value="sq">🇦🇱 SQ</option><option value="sv">🇸🇪 SV</option><option value="nb">🇳🇴 NB</option><option value="it">🇮🇹 IT</option>
+            <select value={lang} onChange={(e) => setLang(e.target.value)} aria-label={pilot.language} className="bg-white border border-stone-200 text-xs rounded-xl px-2.5 py-2 cursor-pointer">
+              <option value="de">🇩🇪 DE</option><option value="en">🇬🇧 EN</option><option value="tr">🇹🇷 TR</option><option value="fr">🇫🇷 FR</option><option value="es">🇪🇸 ES</option><option value="hr">🇭🇷 HR</option><option value="sq">🇦🇱 SQ</option><option value="sv">🇸🇪 SV</option><option value="nb">🇳🇴 NB</option><option value="it">🇮🇹 IT</option>
             </select>
-            <button onClick={handleSaveData} disabled={trialExpired} className="bg-slate-900 text-white px-5 py-2 rounded-xl text-xs font-bold hover:bg-slate-800 transition cursor-pointer flex items-center gap-2 shadow-sm disabled:opacity-40 disabled:cursor-not-allowed">
+            <button onClick={() => handleSaveData()} disabled={cloudDataStatus === 'saving' || trialExpired} className="bg-slate-900 text-white px-5 py-2 rounded-xl text-xs font-bold hover:bg-slate-800 transition cursor-pointer flex items-center gap-2 shadow-sm disabled:opacity-40 disabled:cursor-not-allowed">
               <Save className="w-4 h-4" /> {isSaved ? t.savedMsg : t.saveBtn}
             </button>
+            <button type="button" onClick={() => handleSaveData(true)} disabled={cloudDataStatus === 'saving' || trialExpired}
+              className="rounded-xl bg-emerald-700 px-4 py-2 text-xs font-bold text-white disabled:opacity-40">
+              {pilot.publish}
+            </button>
+            <span role="status" className="text-xs text-slate-600">{guidePublished ? pilot.published : pilot.unpublished}</span>
             <button onClick={() => { setAppMode('guest'); setShowWelcomeScreen(false); }} className="border border-slate-200 bg-white text-slate-700 px-4 py-2 rounded-xl text-xs font-bold hover:bg-slate-50 transition cursor-pointer">
               {t.guestViewBtn}
             </button>
-            <button onClick={async () => { await supabase.auth.signOut(); setAppMode('guest'); setShowWelcomeScreen(true); }} className="border border-stone-200 text-stone-600 px-3 py-2 rounded-xl text-xs font-bold hover:bg-stone-50 transition cursor-pointer inline-flex items-center gap-1">
+            <button onClick={async () => { await supabase.auth.signOut(); setAppMode('guest'); setShowWelcomeScreen(true); }} disabled={cloudDataStatus === 'saving'} className="border border-stone-200 text-stone-600 px-3 py-2 rounded-xl text-xs font-bold hover:bg-stone-50 transition cursor-pointer inline-flex items-center gap-1">
               <LogOut className="w-3.5 h-3.5" /> Abmelden
             </button>
           </div>
@@ -2106,7 +2089,11 @@ export default function App() {
               </div>
               <div className="rounded-2xl border border-sky-200 bg-sky-50/70 p-3 space-y-3"><div className="text-xs font-bold text-slate-800">WLAN-Zugangsdaten · für alle Sprachen</div><div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <label className="block text-[10px] font-bold uppercase text-stone-500">Netzwerkname (SSID)<input value={hotel.wifiSsid || ''} onChange={e => setHotel(prev => ({...prev,wifiSsid:e.target.value}))} className="mt-1 w-full rounded-lg border border-stone-200 bg-white p-2.5 text-xs" /></label>
-                <label className="block text-[10px] font-bold uppercase text-stone-500">WLAN-Passwort<input value={hotel.wifiPass || ''} onChange={e => setHotel(prev => ({...prev,wifiPass:e.target.value}))} className="mt-1 w-full rounded-lg border border-stone-200 bg-white p-2.5 text-xs" /></label>
+                <label className="block text-[10px] font-bold uppercase text-stone-500">WLAN-Passwort<input type="password" value={hotel.wifiPass || ''} onChange={e => setHotel(prev => ({...prev,wifiPass:e.target.value}))} className="mt-1 w-full rounded-lg border border-stone-200 bg-white p-2.5 text-xs" /></label>
+                <label className="flex items-center gap-2 text-xs text-slate-700">
+                  <input type="checkbox" checked={hotel.publishGuestWifi === true} onChange={event => setHotel(previous => ({ ...previous, publishGuestWifi: event.target.checked }))} />
+                  {pilot.publishWifi}
+                </label>
               </div></div>
             </div>
 
@@ -2137,10 +2124,8 @@ export default function App() {
               ) : (
                 <div className={`w-12 h-12 rounded-xl ${currentTheme.bgLight} ${currentTheme.text} flex items-center justify-center font-black`}>LOGO</div>
               )}
-              <label className={`px-4 py-2.5 rounded-xl text-xs font-bold text-white ${currentTheme.bg} cursor-pointer shadow hover:opacity-95`}>
-                <Upload className="w-4 h-4 inline mr-1.5" /> Logo Seç / Yükle
-                <input type="file" accept="image/*" onChange={handleLogoUpload} className="hidden" />
-              </label>
+              <p className="text-xs text-stone-500">{pilot.uploadPaused}</p>
+              {hotel.logoUrl && <button type="button" className="text-xs underline" onClick={() => setHotel(previous => ({ ...previous, logoUrl: '' }))}>{pilot.remove}</button>}
             </div>
           </div>
 
@@ -2148,17 +2133,14 @@ export default function App() {
           <div id="editor-photos" className="scroll-mt-24 bg-white rounded-3xl p-6 border border-stone-200 shadow-sm space-y-4">
             <div className="flex items-center justify-between">
               <h3 className={`font-black text-xs ${currentTheme.text} uppercase tracking-wider`}>{t.sec4Title}</h3>
-              <label className={`px-4 py-2 rounded-xl text-xs font-bold text-white ${currentTheme.bg} cursor-pointer shadow hover:opacity-95 flex items-center gap-1.5`}>
-                <Plus className="w-4 h-4" /> Fotoğraf Ekle
-                <input type="file" accept="image/*" onChange={handleImageUpload} className="hidden" />
-              </label>
+              <p className="text-xs text-stone-500">{pilot.uploadPaused}</p>
             </div>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
               {(Array.isArray(hotel.images) ? hotel.images : []).map((img, idx) => (
                 <div key={idx} className="relative rounded-2xl overflow-hidden border aspect-video group shadow-xs bg-stone-100">
                   <img src={img} alt={`Slide ${idx}`} className="w-full h-full object-cover" />
                   <button 
-                    onClick={() => removeImage(idx)} 
+                    aria-label={pilot.remove + ' ' + (idx + 1)} onClick={() => removeImage(idx)}
                     className="absolute top-2 right-2 p-1.5 bg-rose-600 text-white rounded-xl opacity-0 group-hover:opacity-100 transition shadow cursor-pointer"
                   >
                     <Trash2 className="w-3.5 h-3.5" />
@@ -2182,9 +2164,9 @@ export default function App() {
               <div className="space-y-4">
                 <div className="flex flex-wrap gap-2">{[['a4','A4'],['a5','A5'],['card','Karte']].map(([v,l])=><button key={v} onClick={()=>setQrPrintFormat(v)} className={`px-4 py-2 rounded-xl text-xs font-bold border ${qrPrintFormat===v?'bg-slate-900 text-white border-slate-900':'bg-white text-slate-600 border-stone-200'}`}>{l}</button>)}</div>
                 <div className="rounded-2xl bg-slate-900 text-white p-5"><span className="text-[10px] uppercase tracking-[.24em] text-amber-300 font-bold">Gastemappe24 Pro</span><h4 className="text-lg font-black mt-2">Ein QR-Code. Alles für Ihre Gäste.</h4><p className="text-xs text-slate-300 mt-2">Scannen und direkt die digitale Gästemappe öffnen – ohne App und ohne Anmeldung.</p></div>
-                <div className="flex flex-wrap gap-2"><button onClick={()=>window.print()} className="px-4 py-2.5 rounded-xl bg-slate-900 text-white text-xs font-bold flex items-center gap-2"><Printer className="w-4 h-4"/>Drucken</button>
-                  <button onClick={async()=>{try{const el=document.querySelector('#qr-print-area svg');if(!el)throw Error('QR fehlt');await createQrPdf({svg:new XMLSerializer().serializeToString(el),hotelName:hotel.name,logoUrl:hotel.logoUrl,format:qrPrintFormat})}catch(e){console.error(e);alert('PDF konnte nicht erstellt werden. Bitte erneut versuchen.')}}} className="px-4 py-2.5 rounded-xl border border-emerald-700 text-emerald-800 bg-emerald-50 text-xs font-bold flex items-center gap-2"><Save className="w-4 h-4"/>PDF herunterladen</button>
-                  <button onClick={()=>navigator.clipboard?.writeText(guestPageUrl)} className="px-4 py-2.5 rounded-xl border border-stone-200 bg-white text-xs font-bold flex items-center gap-2"><Copy className="w-4 h-4"/>Link kopieren</button></div>
+                <div className="flex flex-wrap gap-2"><button onClick={()=>window.print()} className="px-4 py-2.5 rounded-xl bg-slate-900 text-white text-xs font-bold flex items-center gap-2"><Printer className="w-4 h-4"/>{pilot.print}</button>
+                  <button onClick={async()=>{try{const el=document.querySelector('#qr-print-area svg');if(!el)throw Error('QR fehlt');await createQrPdf({svg:new XMLSerializer().serializeToString(el),hotelName:hotel.name,logoUrl:hotel.logoUrl,format:qrPrintFormat})}catch(e){console.error(e);alert('PDF konnte nicht erstellt werden. Bitte erneut versuchen.')}}} className="px-4 py-2.5 rounded-xl border border-emerald-700 text-emerald-800 bg-emerald-50 text-xs font-bold flex items-center gap-2"><Save className="w-4 h-4"/>{pilot.pdf}</button>
+                  <button onClick={()=>navigator.clipboard?.writeText(guestPageUrl)} className="px-4 py-2.5 rounded-xl border border-stone-200 bg-white text-xs font-bold flex items-center gap-2"><Copy className="w-4 h-4"/>{pilot.copyLink}</button></div>
                 <p className="text-[10px] text-stone-400 break-all">{guestPageUrl}</p><p className="text-[10px] text-emerald-700 font-semibold">Kostenlos · Keine externe API · Keine laufenden Zusatzkosten</p>
               </div>
               <div className="rounded-[28px] bg-[#f4f1e9] p-4 sm:p-7 border border-stone-200"><div className="mx-auto max-w-[390px] bg-white rounded-[24px] overflow-hidden shadow-xl border border-stone-200"><div className="h-2 bg-[#172b3a]"/><div className="px-6 py-7 text-center">
@@ -2207,19 +2189,19 @@ export default function App() {
     return (
       <div className="h-[100dvh] min-h-[320px] bg-slate-950 max-w-md mx-auto shadow-2xl relative overflow-hidden flex flex-col justify-between font-sans">
         <div className="absolute inset-0 z-0">
-          <img src={(hotel.images && hotel.images[0]) || 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1000&q=80'} alt="Welcome" className="w-full h-full object-cover brightness-75" />
+          <img src={hotel.images?.[0] || '/guide-cover.svg'} alt="Welcome" className="w-full h-full object-cover brightness-75" />
           <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-slate-950/20"></div>
         </div>
 
         <div className="relative z-10 flex min-w-0 items-center justify-between gap-3 p-6 text-white">
           <span title={hotel.name} className="min-w-0 flex-1 line-clamp-2 break-words text-xs font-bold uppercase leading-tight">{hotel.name}</span>
-          <select value={lang} onChange={(e) => setLang(e.target.value)} className="shrink-0 rounded-xl border border-white/30 bg-black/40 px-2.5 py-1.5 text-xs text-white cursor-pointer">
+          <select value={lang} onChange={(e) => setLang(e.target.value)} aria-label={pilot.language} className="shrink-0 rounded-xl border border-white/30 bg-black/40 px-2.5 py-1.5 text-xs text-white cursor-pointer">
             <option value="de">🇩🇪 DE</option>
             <option value="en">🇬🇧 EN</option>
             <option value="tr">🇹🇷 TR</option>
             <option value="fr">🇫🇷 FR</option>
             <option value="es">🇪🇸 ES</option>
-            <option value="cs">🇨🇿 CS</option>
+            <option value="hr">🇭🇷 HR</option>
             <option value="sq">🇦🇱 SQ</option>
             <option value="sv">🇸🇪 SV</option>
             <option value="nb">🇳🇴 NB</option>
@@ -2233,6 +2215,7 @@ export default function App() {
             <span>{t.welcomeButton}</span><ArrowRight className="w-4 h-4" />
           </button>
         </div>
+        <LegalLinks copy={pilot} onCover />
       </div>
     );
   }
@@ -2249,19 +2232,19 @@ export default function App() {
           <span title={hotel.name} className="block min-w-0 flex-1 line-clamp-2 break-words text-[11px] font-bold leading-tight tracking-wider uppercase text-slate-800">{hotel.name}</span>
         </div>
         <div className="flex shrink-0 items-center gap-2">
-          <select value={lang} onChange={(e) => setLang(e.target.value)} className="bg-white border text-xs font-semibold rounded-xl px-2.5 py-1.5 cursor-pointer">
+          <select value={lang} onChange={(e) => setLang(e.target.value)} aria-label={pilot.language} className="bg-white border text-xs font-semibold rounded-xl px-2.5 py-1.5 cursor-pointer">
             <option value="de">🇩🇪 DE</option>
             <option value="en">🇬🇧 EN</option>
             <option value="tr">🇹🇷 TR</option>
             <option value="fr">🇫🇷 FR</option>
             <option value="es">🇪🇸 ES</option>
-            <option value="cs">🇨🇿 CS</option>
+            <option value="hr">🇭🇷 HR</option>
             <option value="sq">🇦🇱 SQ</option>
             <option value="sv">🇸🇪 SV</option>
             <option value="nb">🇳🇴 NB</option>
             <option value="it">🇮🇹 IT</option>
           </select>
-          <button onClick={() => setAppMode('dashboard')} className="text-stone-300 hover:text-stone-600 p-1 text-xs cursor-pointer">🔑</button>
+          {!guestSlug && <button onClick={() => setAppMode('dashboard')} className="text-stone-600 p-1 text-xs cursor-pointer">🔑</button>}
         </div>
       </header>
 
@@ -2299,7 +2282,7 @@ export default function App() {
 
               {/* SLİDER ALANI */}
               <div className="relative rounded-3xl overflow-hidden shadow-lg h-56 bg-slate-900 border border-stone-200">
-                <img src={(hotel.images && hotel.images[currentSlide]) || (hotel.images && hotel.images[0]) || ''} alt="Slide" className="w-full h-full object-cover" />
+                <img src={(hotel.images && hotel.images[currentSlide]) || (hotel.images && hotel.images[0]) || '/guide-cover.svg'} alt="Slide" className="w-full h-full object-cover" />
               </div>
 
               {/* LIVE HOTEL WEATHER — Open-Meteo, based on the saved hotel address */}
@@ -2354,6 +2337,7 @@ export default function App() {
           )
         )}
         {guestSlug && supabase && guestPageStatus === 'ready' && <section className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm" aria-live="polite"><p className="text-sm font-bold text-slate-900">{guestFeedback?ac.thanks:ac.helpfulPrompt}</p>{!guestFeedback&&<div className="mt-3 flex gap-2"><button type="button" onClick={()=>{trackGuestEvent('feedback_helpful');setGuestFeedback('yes');try{sessionStorage.setItem(`gm24_feedback_${guestSlug}_${new Date().toISOString().slice(0,10)}`,'yes')}catch{}}} className="rounded-xl bg-slate-900 px-4 py-2 text-xs font-bold text-white">{ac.yes}</button><button type="button" onClick={()=>{trackGuestEvent('feedback_not_helpful');setGuestFeedback('no');try{sessionStorage.setItem(`gm24_feedback_${guestSlug}_${new Date().toISOString().slice(0,10)}`,'no')}catch{}}} className="rounded-xl border border-slate-200 px-4 py-2 text-xs font-bold text-slate-700">{ac.no}</button></div>}</section>}
+        <LegalLinks copy={pilot} />
       </main>
 
       {/* ALT NAVİGASYON ÇUBUĞU */}

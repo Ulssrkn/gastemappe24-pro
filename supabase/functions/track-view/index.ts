@@ -1,84 +1,77 @@
-// Privacy-minimal public page-view counter for Gastemappe24 Pro.
-// Deliberately does not read or persist IP, user-agent, referrer, cookies,
-// visitor identifiers, device details, or other guest data.
+// Records anonymous guest events without collecting visitor identifiers.
 import { serve } from "https://deno.land/std@0.224.0/http/server.ts";
 
 const supabaseUrl = Deno.env.get("SUPABASE_URL");
 const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
 
-const corsHeaders = {
+const headers = {
   "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "authorization, apikey, content-type",
+  "Access-Control-Allow-Headers": "authorization, apikey, content-type, x-client-info",
   "Access-Control-Allow-Methods": "POST, OPTIONS",
   "Content-Type": "application/json",
+  "Cache-Control": "no-store",
 };
 
-serve(async (req) => {
-  if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
-  if (req.method !== "POST") {
-    return new Response(JSON.stringify({ error: "Method not allowed" }), { status: 405, headers: corsHeaders });
+function reply(status: number, extraHeaders = {}) {
+  const errors: Record<number, string> = {
+    400: "Invalid guest event",
+    404: "Guest guide is unavailable",
+    405: "Method not allowed",
+    413: "Request is too large",
+    429: "Rate limit exceeded",
+    502: "Could not record guest event",
+    503: "Analytics is not configured",
+  };
+  const body = status === 200 ? { ok: true } : { error: errors[status] };
+  return new Response(JSON.stringify(body), { status, headers: { ...headers, ...extraHeaders } });
+}
+
+serve(async req => {
+  if (req.method === "OPTIONS") return new Response(null, { status: 204, headers });
+  if (req.method !== "POST") return reply(405);
+  if (!supabaseUrl || !serviceRoleKey) return reply(503);
+  if (!req.body) return reply(400);
+
+  let body;
+  const reader = req.body.getReader();
+  try {
+    const decoder = new TextDecoder();
+    let bytes = 0;
+    let text = "";
+    for (;;) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      bytes += value.byteLength;
+      if (bytes > 1024) {
+        await reader.cancel();
+        return reply(413);
+      }
+      text += decoder.decode(value, { stream: true });
+    }
+    body = JSON.parse(text + decoder.decode());
+  } catch {
+    return reply(400);
+  } finally {
+    reader.releaseLock();
   }
-  if (!supabaseUrl || !serviceRoleKey) {
-    return new Response(JSON.stringify({ error: "Analytics service is not configured" }), { status: 503, headers: corsHeaders });
+
+  const slug = typeof body?.slug === "string" ? body.slug.trim().toLowerCase() : "";
+  const page = body?.page_key ?? body?.page ?? "guest_home";
+  if (!/^[a-z0-9][a-z0-9-]{2,59}$/.test(slug) || typeof page !== "string" || !/^[A-Za-z0-9_-]{1,80}$/.test(page)) {
+    return reply(400);
   }
 
   try {
-    const body = await req.json();
-    const slug = typeof body?.slug === "string" ? body.slug.trim().toLowerCase() : "";
-    const page = typeof body?.page_key === "string" ? body.page_key.trim() : (typeof body?.page === "string" ? body.page.trim() : "guest_home");
-
-    if (!/^[a-z0-9][a-z0-9-]{2,59}$/.test(slug) || !/^[a-zA-Z0-9_-]{1,80}$/.test(page)) {
-      return new Response(JSON.stringify({ error: "Invalid hotel or page" }), { status: 400, headers: corsHeaders });
-    }
-
-    const hotelResponse = await fetch(
-      `${supabaseUrl}/rest/v1/gm24_hotels?slug=eq.${encodeURIComponent(slug)}&select=id,owner_id&limit=1`,
-      { headers: { apikey: serviceRoleKey, Authorization: `Bearer ${serviceRoleKey}` } },
-    );
-    if (!hotelResponse.ok) {
-      return new Response(JSON.stringify({ error: "Could not resolve hotel" }), { status: 502, headers: corsHeaders });
-    }
-    const hotels = await hotelResponse.json();
-    if (!Array.isArray(hotels) || !hotels[0]?.id) {
-      return new Response(JSON.stringify({ error: "Hotel not found" }), { status: 404, headers: corsHeaders });
-    }
-
-    // This function uses the service-role key and therefore bypasses RLS.
-    // Re-check the same eligibility rule as the public guest-page policy
-    // before recording a view, so expired/suspended pages cannot keep
-    // accumulating analytics through direct function calls.
-    const accountResponse = await fetch(
-      `${supabaseUrl}/rest/v1/gm24_accounts?owner_id=eq.${encodeURIComponent(hotels[0].owner_id)}&select=subscription_status,trial_ends_at&limit=1`,
-      { headers: { apikey: serviceRoleKey, Authorization: `Bearer ${serviceRoleKey}` } },
-    );
-    if (!accountResponse.ok) {
-      return new Response(JSON.stringify({ error: "Could not verify guest page access" }), { status: 502, headers: corsHeaders });
-    }
-    const accounts = await accountResponse.json();
-    const account = Array.isArray(accounts) ? accounts[0] : null;
-    const trialIsActive = account?.subscription_status === "trial"
-      && account?.trial_ends_at
-      && new Date(account.trial_ends_at).getTime() > Date.now();
-    const subscriptionIsActive = account?.subscription_status === "active";
-    if (!trialIsActive && !subscriptionIsActive) {
-      return new Response(JSON.stringify({ error: "Guest page is unavailable" }), { status: 404, headers: corsHeaders });
-    }
-
-    const countResponse = await fetch(`${supabaseUrl}/rest/v1/rpc/gm24_increment_page_view`, {
+    const response = await fetch(`${supabaseUrl}/rest/v1/rpc/gm24_record_guest_event`, {
       method: "POST",
-      headers: {
-        apikey: serviceRoleKey,
-        Authorization: `Bearer ${serviceRoleKey}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ p_hotel_id: hotels[0].id, p_page_key: page }),
+      headers: { apikey: serviceRoleKey, Authorization: `Bearer ${serviceRoleKey}`, "Content-Type": "application/json" },
+      body: JSON.stringify({ p_slug: slug, p_event: page }),
     });
-    if (!countResponse.ok) {
-      return new Response(JSON.stringify({ error: "Could not record page view" }), { status: 502, headers: corsHeaders });
-    }
-
-    return new Response(JSON.stringify({ ok: true }), { status: 200, headers: corsHeaders });
+    if (!response.ok) return reply(502);
+    const status = await response.json();
+    if (![200, 400, 404, 429].includes(status)) return reply(502);
+    return status === 429 ? reply(429, { "Retry-After": "60" }) : reply(status);
   } catch {
-    return new Response(JSON.stringify({ error: "Invalid request" }), { status: 400, headers: corsHeaders });
+    return reply(502);
   }
 });
