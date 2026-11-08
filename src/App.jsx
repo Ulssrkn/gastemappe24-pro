@@ -830,9 +830,14 @@ export default function App() {
   const guestSlug = typeof window !== 'undefined'
     ? (window.location.pathname.match(/^\/g\/([a-z0-9-]+)\/?$/i)?.[1] || null)
     : null;
+  const [analyticsRefreshTick, setAnalyticsRefreshTick] = useState(0);
   const trackGuestPageView = (pageKey) => {
-    if (!guestSlug || !supabase || !/^[a-zA-Z0-9_-]{1,80}$/.test(pageKey)) return;
-    supabase.functions.invoke('track-view', { body: { slug: guestSlug, page_key: pageKey } }).catch(error => console.warn('Analytics tracking unavailable:', error));
+    const trackingSlug = guestSlug || hotelRecord?.slug || null;
+    if (!trackingSlug || !supabase || !/^[a-zA-Z0-9_-]{1,80}$/.test(pageKey)) return;
+    supabase.functions.invoke('track-view', { body: { slug: trackingSlug, page_key: pageKey } }).then(({ error }) => {
+      if (error) throw error;
+      setAnalyticsRefreshTick(value => value + 1);
+    }).catch(error => console.warn('Analytics tracking unavailable:', error));
   };
   const trackGuestEvent = trackGuestPageView;
   const [guestFeedback, setGuestFeedback] = useState(() => { try { return guestSlug ? sessionStorage.getItem(`gm24_feedback_${guestSlug}_${new Date().toISOString().slice(0,10)}`) || '' : ''; } catch { return ''; } });
@@ -981,8 +986,17 @@ export default function App() {
       setAnalyticsLoading(false);
     };
     loadAnalytics();
-    return () => { active = false; };
-  }, [hotelRecord?.id, authSession?.user?.id, guestSlug]);
+    const refreshWhenVisible = () => {
+      if (document.visibilityState === 'visible') loadAnalytics();
+    };
+    window.addEventListener('focus', refreshWhenVisible);
+    document.addEventListener('visibilitychange', refreshWhenVisible);
+    return () => {
+      active = false;
+      window.removeEventListener('focus', refreshWhenVisible);
+      document.removeEventListener('visibilitychange', refreshWhenVisible);
+    };
+  }, [hotelRecord?.id, authSession?.user?.id, guestSlug, appMode, analyticsRefreshTick]);
 
   const [isEditorModalOpen, setIsEditorModalOpen] = useState(false);
   const [editingCategory, setEditingCategory] = useState(null);
