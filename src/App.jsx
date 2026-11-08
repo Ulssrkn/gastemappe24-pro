@@ -3,6 +3,7 @@ import { QRCodeSVG } from 'qrcode.react';
 import { hotelPresets, additionalPresets } from './hotelPresets.js';
 import dashboardWorkspaceCopy from './dashboardWorkspaceCopy.js';
 import guestCardCopy from './guestCardCopy.js';
+import analyticsCopy from './analyticsCopy.js';
 import AuthGate from './components/AuthGate.jsx';
 import { supabase, isSupabaseConfigured } from './lib/supabaseClient.js';
 import { 
@@ -691,7 +692,7 @@ const GuestCheckoutChecklist = ({ field, selected, customTask, lang }) => {
   return <section className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm"><div className="flex items-center justify-between gap-3 border-b border-slate-100 bg-slate-50/70 px-4 py-3"><div><h3 className="text-sm font-bold text-slate-900">{copy.title}</h3><p className="mt-0.5 text-[10px] text-slate-500">{copy.hint}</p></div><span className="shrink-0 rounded-full bg-white px-2.5 py-1 text-[10px] font-bold text-slate-600 ring-1 ring-slate-200">{copy.progress(doneCount,tasks.length)}</span></div><div className="divide-y divide-slate-100 px-4">{tasks.map(task=>{const id=optionId(task),checked=completed.includes(id);return <label key={id} className="flex cursor-pointer items-start gap-3 py-3 text-sm leading-relaxed text-slate-700"><input type="checkbox" checked={checked} onChange={()=>toggle(id)} className="mt-0.5 h-4 w-4 shrink-0 accent-emerald-600"/><span className={checked?'text-slate-400 line-through':''}>{optionLabel(task,lang)}</span></label>;})}</div></section>;
 };
 
-const GuestCategoryDisplay = ({ category, currentTheme, lang, t }) => {
+const GuestCategoryDisplay = ({ category, currentTheme, lang, t, onGuestEvent }) => {
   const presetObj = categoryPresets.find(p => p.id === category.presetId);
   const fieldValues = category.fieldValues || {};
   const copy = guestCardCopy[lang] || guestCardCopy.de;
@@ -721,7 +722,7 @@ const GuestCategoryDisplay = ({ category, currentTheme, lang, t }) => {
         const phone=String(card.phone||'').trim();
         const tel=phone.replace(/[^0-9+*#]/g,'');
         return <article key={card.id||index} className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm"><div className="p-4"><div className="flex items-start justify-between gap-3"><div className="min-w-0"><h3 className="text-sm font-bold text-slate-900">{card.title}</h3>{card.hours&&<p className="mt-1 text-[10px] font-semibold uppercase tracking-wide text-slate-500">{card.hours}</p>}</div><span className="rounded-full bg-slate-100 px-2.5 py-1 text-[9px] font-bold text-slate-600">{presetObj?.title?.[lang]||presetObj?.title?.de||category.title}</span></div>{description&&<p className="mt-2 text-xs leading-relaxed text-slate-600">{description}</p>}{card.address&&<p className="mt-2 flex items-start gap-1.5 text-[11px] text-slate-500"><MapPin className="mt-0.5 h-3.5 w-3.5 shrink-0"/>{card.address}</p>}</div>
-          {(website||mapUrl||tel)&&<div className="flex flex-wrap gap-2 border-t border-slate-100 bg-slate-50/70 p-3">{mapUrl&&<a href={mapUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 rounded-lg bg-white px-3 py-2 text-[10px] font-bold text-slate-700 ring-1 ring-slate-200"><Navigation className="h-3.5 w-3.5"/>{copy.route}</a>}{website&&<a href={website} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 rounded-lg bg-white px-3 py-2 text-[10px] font-bold text-slate-700 ring-1 ring-slate-200"><ExternalLink className="h-3.5 w-3.5"/>{copy.website}</a>}{tel&&<a href={`tel:${tel}`} className="inline-flex items-center gap-1.5 rounded-lg bg-white px-3 py-2 text-[10px] font-bold text-slate-700 ring-1 ring-slate-200"><Phone className="h-3.5 w-3.5"/>{copy.call}</a>}</div>}
+          {(website||mapUrl||tel)&&<div className="flex flex-wrap gap-2 border-t border-slate-100 bg-slate-50/70 p-3">{mapUrl&&<a href={mapUrl} onClick={()=>onGuestEvent?.('action_route')} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 rounded-lg bg-white px-3 py-2 text-[10px] font-bold text-slate-700 ring-1 ring-slate-200"><Navigation className="h-3.5 w-3.5"/>{copy.route}</a>}{website&&<a href={website} onClick={()=>onGuestEvent?.('action_website')} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 rounded-lg bg-white px-3 py-2 text-[10px] font-bold text-slate-700 ring-1 ring-slate-200"><ExternalLink className="h-3.5 w-3.5"/>{copy.website}</a>}{tel&&<a href={`tel:${tel}`} onClick={()=>onGuestEvent?.('action_call')} className="inline-flex items-center gap-1.5 rounded-lg bg-white px-3 py-2 text-[10px] font-bold text-slate-700 ring-1 ring-slate-200"><Phone className="h-3.5 w-3.5"/>{copy.call}</a>}</div>}
         </article>;
       })}</div>}
       {presetObj && presetObj.schema && presetObj.schema.length > 0 && (
@@ -833,6 +834,8 @@ export default function App() {
     if (!guestSlug || !supabase || !/^[a-zA-Z0-9_-]{1,80}$/.test(pageKey)) return;
     supabase.functions.invoke('track-view', { body: { slug: guestSlug, page_key: pageKey } }).catch(error => console.warn('Analytics tracking unavailable:', error));
   };
+  const trackGuestEvent = trackGuestPageView;
+  const [guestFeedback, setGuestFeedback] = useState(() => { try { return guestSlug ? sessionStorage.getItem(`gm24_feedback_${guestSlug}_${new Date().toISOString().slice(0,10)}`) || '' : ''; } catch { return ''; } });
   const [guestPageStatus, setGuestPageStatus] = useState('idle');
   const [authSession, setAuthSession] = useState(null);
   const [authLoading, setAuthLoading] = useState(true);
@@ -964,8 +967,9 @@ export default function App() {
         .from('gm24_analytics_daily')
         .select('event_date, page_key, views')
         .eq('hotel_id', hotelId)
+        .gte('event_date', new Date(Date.now() - 60 * 86400000).toISOString().slice(0, 10))
         .order('event_date', { ascending: false })
-        .limit(90);
+        .limit(1000);
       if (!active) return;
       if (error) {
         console.warn('Analytics could not be loaded:', error);
@@ -1525,28 +1529,30 @@ export default function App() {
   ];
   const setupCompletedCount = setupSteps.filter(step => step.done).length;
   const setupProgress = Math.round((setupCompletedCount / setupSteps.length) * 100);
-  const pageTotals = analyticsRows.reduce((totals, row) => {
-    if (row.page_key) totals[row.page_key] = (totals[row.page_key] || 0) + Number(row.views || 0);
-    return totals;
-  }, {});
-  const mostVisitedPage = Object.entries(pageTotals).sort((a, b) => b[1] - a[1])[0] || null;
+  const ac = analyticsCopy[lang] || analyticsCopy.en;
   const analyticsToday = new Date();
-  const analyticsSevenDaysAgo = new Date(analyticsToday.getTime() - 6 * 86400000).toISOString().slice(0, 10);
-  const weeklyInteractionCount = analyticsRows.filter(row => row.event_date >= analyticsSevenDaysAgo).reduce((sum, row) => sum + Number(row.views || 0), 0);
-  const getAnalyticsPageLabel = (pageKey) => {
-    if (pageKey === 'guest_home') return t.navHome;
-    if (pageKey === 'guest_services') return t.navGaestemappe;
-    if (pageKey === 'guest_review') return t.navReview;
-    if (pageKey === 'guest_route') return t.navRoute;
-    if (pageKey.startsWith('category_')) {
-      const categoryId = pageKey.slice('category_'.length);
-      const category = categories.find(item => String(item.id).replace(/[^A-Za-z0-9_-]/g, '').slice(0, 68) === categoryId);
-      const preset = category?.presetData || categoryPresets.find(item => item.id === category?.presetId);
-      return category?.customTitle || category?.title || preset?.title?.[lang] || preset?.title?.de || 'Gästekategorie';
-    }
-    return pageKey.replace(/[_-]+/g, ' ');
-  };
-  const mostVisitedPageName = mostVisitedPage ? getAnalyticsPageLabel(mostVisitedPage[0]) : '—';
+  const todayKey = analyticsToday.toISOString().slice(0,10);
+  const currentStart = new Date(analyticsToday.getTime()-29*86400000).toISOString().slice(0,10);
+  const previousStart = new Date(analyticsToday.getTime()-59*86400000).toISOString().slice(0,10);
+  const previousEnd = new Date(analyticsToday.getTime()-30*86400000).toISOString().slice(0,10);
+  const actionEvent = key => key.startsWith('action_') || key.startsWith('feedback_') || key==='guest_route' || key==='guest_review';
+  const currentRows=analyticsRows.filter(row=>row.event_date>=currentStart&&row.event_date<=todayKey);
+  const previousRows=analyticsRows.filter(row=>row.event_date>=previousStart&&row.event_date<=previousEnd);
+  const rowSum=rows=>rows.reduce((sum,row)=>sum+Number(row.views||0),0);
+  const guideViews=rowSum(currentRows.filter(row=>!actionEvent(row.page_key)));
+  const previousGuideViews=rowSum(previousRows.filter(row=>!actionEvent(row.page_key)));
+  const guideChange=previousGuideViews?Math.round((guideViews-previousGuideViews)/previousGuideViews*100):null;
+  const usefulClicks=rowSum(currentRows.filter(row=>['action_route','action_wifi_copy','action_review','action_call','action_website','guest_route','guest_review'].includes(row.page_key)));
+  const feedbackYes=rowSum(currentRows.filter(row=>row.page_key==='feedback_helpful'));
+  const feedbackNo=rowSum(currentRows.filter(row=>row.page_key==='feedback_not_helpful'));
+  const feedbackTotal=feedbackYes+feedbackNo;
+  const feedbackRate=feedbackTotal?Math.round(feedbackYes/feedbackTotal*100):null;
+  const categoryTotals=currentRows.filter(row=>row.page_key.startsWith('category_')).reduce((out,row)=>{out[row.page_key]=(out[row.page_key]||0)+Number(row.views||0);return out;},{});
+  const getAnalyticsPageLabel=key=>{if(key==='guest_home')return t.navHome;if(key==='guest_services')return t.navGaestemappe;if(key.startsWith('category_')){const id=key.slice(9);const category=categories.find(item=>String(item.id).replace(/[^A-Za-z0-9_-]/g,'').slice(0,68)===id);const preset=category?.presetData||categoryPresets.find(item=>item.id===category?.presetId);return category?.customTitle||category?.title||preset?.title?.[lang]||preset?.title?.de||'Guest section';}return key.replace(/[_-]+/g,' ');};
+  const topCategories=Object.entries(categoryTotals).sort((x,y)=>y[1]-x[1]).slice(0,5);
+  const topCategory=topCategories[0]||null;
+  const dailyGuideViews=Array.from({length:30},(_,i)=>{const date=new Date(analyticsToday.getTime()-(29-i)*86400000).toISOString().slice(0,10);return{date,value:rowSum(currentRows.filter(row=>row.event_date===date&&!actionEvent(row.page_key)))};});
+  const chartMax=Math.max(1,...dailyGuideViews.map(day=>day.value));
 
   const handleSaveData = async () => {
     localStorage.setItem('gm24_hotel', JSON.stringify(hotel));
@@ -1590,6 +1596,7 @@ export default function App() {
 
   const copyWifiPassword = () => {
     if (!hotel.wifiPass) return;
+    trackGuestEvent('action_wifi_copy');
     navigator.clipboard.writeText(hotel.wifiPass);
     setCopiedWifi(true);
     setTimeout(() => setCopiedWifi(false), 2500);
@@ -1932,37 +1939,20 @@ export default function App() {
             <p className="mt-4 text-[10px] leading-relaxed text-slate-500">{dw.package.disclaimer}</p>
           </details>
         </section>
-        {/* REAL ANALYTICS STATUS — do not display invented figures */}
-        <div className={`${dashboardSection === 'analytics' ? '' : 'hidden'} w-full min-w-0 max-w-6xl mx-auto`}><div className="mb-4"><h1 className="text-2xl font-black tracking-tight text-slate-900">{dw.stats.analyticsTitle}</h1><p className="mt-1 text-sm text-slate-500">{dw.stats.analyticsIntro}</p></div></div>
-        <div id="analytics" className={`${dashboardSection === 'analytics' ? '' : 'hidden'} w-full min-w-0 max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 2xl:grid-cols-4 gap-3 sm:gap-4`}>
-          <div className="min-w-0 rounded-2xl border border-slate-200/80 bg-white p-4 sm:p-5 shadow-sm">
-            <div className="flex items-center gap-3"><div className="p-3 rounded-2xl bg-stone-100 text-stone-500"><BarChart3 className="w-6 h-6"/></div><div><span className="text-[10px] font-extrabold text-stone-400 uppercase tracking-wider">{dw.stats.views}</span><h4 className="text-lg font-black text-slate-900">{analyticsLoading ? '…' : analyticsRows.reduce((sum, row) => sum + Number(row.views || 0), 0)}</h4></div></div>
-            <p className="text-[11px] text-stone-500 mt-3">{dw.stats.viewsNote}</p>
+        <section id="analytics" className={`${dashboardSection==='analytics'?'':'hidden'} mx-auto w-full min-w-0 max-w-6xl space-y-5`}>
+          <header><p className="text-[10px] font-black uppercase tracking-[.2em] text-amber-700">{ac.range}</p><h1 className="mt-1 text-2xl font-black tracking-tight text-slate-900">{dw.stats.analyticsTitle}</h1><p className="mt-1 text-sm text-slate-500">{ac.intro}</p></header>
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-4">
+            <article className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm"><p className="text-[10px] font-extrabold uppercase tracking-wider text-slate-400">{ac.views}</p><p className="mt-2 text-3xl font-black tabular-nums text-slate-900">{analyticsLoading?'…':guideViews}</p><p className="mt-1 text-[11px] text-slate-500">{guideChange===null?ac.noComparison:`${guideChange>0?'+':''}${guideChange}% ${ac.comparison}`}</p></article>
+            <article className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm"><p className="text-[10px] font-extrabold uppercase tracking-wider text-slate-400">{ac.topSection}</p><p className="mt-2 line-clamp-2 text-lg font-black text-slate-900">{analyticsLoading?'…':topCategory?getAnalyticsPageLabel(topCategory[0]):'—'}</p><p className="mt-1 text-[11px] text-slate-500">{topCategory?`${topCategory[1]} ${ac.viewsUnit}`:ac.noSections}</p></article>
+            <article className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm"><p className="text-[10px] font-extrabold uppercase tracking-wider text-slate-400">{ac.actions}</p><p className="mt-2 text-3xl font-black tabular-nums text-slate-900">{analyticsLoading?'…':usefulClicks}</p><p className="mt-1 text-[11px] text-slate-500">{ac.actionsNote}</p></article>
+            <article className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm"><p className="text-[10px] font-extrabold uppercase tracking-wider text-slate-400">{ac.helpful}</p><p className="mt-2 text-3xl font-black tabular-nums text-slate-900">{analyticsLoading?'…':feedbackRate===null?'—':feedbackRate+'%'}</p><p className="mt-1 text-[11px] text-slate-500">{feedbackTotal?feedbackTotal+' '+ac.responses:ac.noResponses}</p></article>
           </div>
-          <div className="min-w-0 rounded-2xl border border-slate-200/80 bg-white p-4 sm:p-5 shadow-sm">
-            <div className="flex min-w-0 items-center gap-3"><div className="shrink-0 rounded-xl bg-slate-100 p-3 text-slate-600"><TrendingUp className="h-5 w-5"/></div><div className="min-w-0"><span className="block text-[10px] font-extrabold uppercase leading-4 tracking-wider text-slate-400">{dw.stats.topPage}</span><h4 className="line-clamp-2 break-words text-base font-black leading-tight text-slate-900 sm:text-lg">{analyticsLoading ? '…' : mostVisitedPageName}</h4></div></div>
-            <p className="mt-3 text-[11px] text-slate-500">{mostVisitedPage ? `${mostVisitedPage[1]} ${dw.stats.recorded}` : analyticsLoading ? dw.stats.loading : dw.stats.topEmpty}</p>
+          <div className="grid grid-cols-1 gap-4 lg:grid-cols-[1.4fr_1fr]">
+            <section className="rounded-3xl border border-slate-200 bg-white p-4 shadow-sm sm:p-5"><div className="flex items-center justify-between gap-3"><div><h2 className="text-sm font-black text-slate-900">{ac.trend}</h2><p className="mt-1 text-[11px] text-slate-500">{ac.viewsNote}</p></div><span className="text-xs font-bold text-slate-500">{guideViews} {ac.viewsUnit}</span></div><div className="mt-5 flex h-36 items-end gap-1.5 sm:gap-2">{dailyGuideViews.map(day=><div key={day.date} title={day.date+': '+day.value} className="flex h-full min-w-0 flex-1 items-end"><div className="w-full rounded-t-md bg-slate-800" style={{height:day.value?Math.max(7,day.value/chartMax*100)+'%':'3px',opacity:day.value?.9:.16}} /></div>)}</div><div className="mt-2 flex justify-between text-[9px] text-slate-400"><span>{currentStart}</span><span>{todayKey}</span></div></section>
+            <section className="rounded-3xl border border-slate-200 bg-white p-4 shadow-sm sm:p-5"><h2 className="text-sm font-black text-slate-900">{ac.topList}</h2><div className="mt-3 space-y-3">{topCategories.map(([key,value],i)=><div key={key}><div className="flex justify-between gap-3 text-xs"><span className="truncate font-semibold text-slate-700">{i+1}. {getAnalyticsPageLabel(key)}</span><strong>{value}</strong></div><div className="mt-1.5 h-1.5 overflow-hidden rounded-full bg-slate-100"><div className="h-full rounded-full bg-amber-500" style={{width:Math.max(5,value/(topCategory?.[1]||1)*100)+'%'}} /></div></div>)}{!analyticsLoading&&!topCategories.length&&<p className="py-4 text-xs text-slate-500">{ac.noSections}</p>}</div></section>
           </div>
-          <div className="min-w-0 rounded-2xl border border-slate-200/80 bg-white p-4 sm:p-5 shadow-sm">
-            <div className="flex items-center gap-3"><div className="p-3 rounded-2xl bg-stone-100 text-stone-500"><Activity className="w-6 h-6"/></div><div><span className="text-[10px] font-extrabold text-stone-400 uppercase tracking-wider">{dw.stats.weekly}</span><h4 className="text-lg font-black text-slate-900">{analyticsLoading ? '…' : weeklyInteractionCount}</h4></div></div>
-            <p className="text-[11px] text-stone-500 mt-3">{dw.stats.weeklyNote}</p>
-          </div>
-          <div className="min-w-0 rounded-2xl border border-slate-200/80 bg-white p-4 sm:p-5 shadow-sm">
-            <div className="flex min-w-0 items-center gap-3"><div className="shrink-0 rounded-xl bg-slate-100 p-3 text-slate-600"><Activity className="h-5 w-5"/></div><div className="min-w-0"><span className="block text-[10px] font-extrabold uppercase leading-4 tracking-wider text-slate-400">{dw.stats.cloudTitle}</span><h4 className="line-clamp-2 break-words text-base font-black leading-tight text-slate-900 sm:text-lg">{analyticsLoading ? '…' : dw.stats.cloudTitle}</h4></div></div>
-            <p className="mt-3 text-[11px] text-slate-500">{dw.stats.cloudNote}</p>
-          </div>
-        </div>
-        <div className={`${dashboardSection === 'analytics' ? '' : 'hidden'} w-full min-w-0 max-w-6xl mx-auto bg-white rounded-3xl p-6 border border-stone-200 shadow-sm space-y-3`}>
-          <div className="flex items-center gap-3"><div className="p-3 rounded-2xl bg-stone-100 text-stone-500"><TrendingUp className="w-6 h-6"/></div><div><h3 className="font-black text-xs text-slate-800 uppercase tracking-wider">{(dashboardCopy[lang] || dashboardCopy.de).analyticsTitle}</h3><p className="text-xs text-stone-500">{(dashboardCopy[lang] || dashboardCopy.de).analyticsIntro}</p></div></div>
-          <div className="rounded-2xl border border-stone-200 bg-stone-50 p-5 space-y-3">
-            <div className="flex items-center justify-between gap-3"><span className="text-sm font-bold text-slate-800">{dw.stats.total}</span><span className="text-2xl font-black text-slate-900 tabular-nums">{analyticsLoading ? '…' : analyticsRows.reduce((sum, row) => sum + Number(row.views || 0), 0)}</span></div>
-            <div className="space-y-2">
-              {analyticsRows.slice(0, 7).map(row => <div key={row.event_date + row.page_key} className="flex items-center justify-between text-xs text-stone-600"><span>{new Date(row.event_date + 'T00:00:00').toLocaleDateString(lang === 'tr' ? 'tr-TR' : lang === 'de' ? 'de-DE' : 'en-GB')} · {getAnalyticsPageLabel(row.page_key)}</span><strong className="text-slate-900 tabular-nums">{Number(row.views || 0)}</strong></div>)}
-              {!analyticsLoading && analyticsRows.length === 0 && <p className="text-xs text-stone-500">{dw.stats.noData}</p>}
-            </div>
-            <p className="text-[10px] text-stone-400">{dw.stats.privacy}</p>
-          </div>
-        </div>
+          <section className="rounded-2xl border border-amber-200 bg-amber-50/70 p-4"><p className="text-[10px] font-black uppercase tracking-wider text-amber-800">{ac.insight}</p><p className="mt-1 text-sm font-semibold text-slate-800">{topCategory?ac.insightText.replace('{section}',getAnalyticsPageLabel(topCategory[0])):ac.noInsight}</p></section><p className="px-1 text-[10px] leading-relaxed text-slate-400">{ac.privacy}</p>
+        </section>
 
         {/* DASHBOARD CONTENT SECTIONS */}
         <div id="editor" className={`${dashboardSection === 'editor' ? '' : 'hidden'} max-w-6xl mx-auto space-y-6`}>
@@ -2247,6 +2237,7 @@ export default function App() {
                 currentTheme={currentTheme} 
                 lang={lang} 
                 t={t}
+                onGuestEvent={trackGuestEvent}
               />
             </div>
           </div>
@@ -2314,6 +2305,7 @@ export default function App() {
             </div>
           )
         )}
+        {guestSlug && supabase && guestPageStatus === 'ready' && <section className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm" aria-live="polite"><p className="text-sm font-bold text-slate-900">{guestFeedback?ac.thanks:ac.helpfulPrompt}</p>{!guestFeedback&&<div className="mt-3 flex gap-2"><button type="button" onClick={()=>{trackGuestEvent('feedback_helpful');setGuestFeedback('yes');try{sessionStorage.setItem(`gm24_feedback_${guestSlug}_${new Date().toISOString().slice(0,10)}`,'yes')}catch{}}} className="rounded-xl bg-slate-900 px-4 py-2 text-xs font-bold text-white">{ac.yes}</button><button type="button" onClick={()=>{trackGuestEvent('feedback_not_helpful');setGuestFeedback('no');try{sessionStorage.setItem(`gm24_feedback_${guestSlug}_${new Date().toISOString().slice(0,10)}`,'no')}catch{}}} className="rounded-xl border border-slate-200 px-4 py-2 text-xs font-bold text-slate-700">{ac.no}</button></div>}</section>}
       </main>
 
       {/* ALT NAVİGASYON ÇUBUĞU */}
@@ -2326,12 +2318,12 @@ export default function App() {
             <Compass className="w-5 h-5" /><span>{t.navGaestemappe}</span>
           </button>
           {((hotel.googleReviewUrl && /^https?:\/\//i.test(hotel.googleReviewUrl)) || hotel.reviewPlatform==='airbnb') && (
-            <a href={hotel.googleReviewUrl && /^https?:\/\//i.test(hotel.googleReviewUrl) ? hotel.googleReviewUrl : 'https://www.airbnb.com/trips/v1'} onClick={() => trackGuestPageView('guest_review')} target="_blank" rel="noreferrer" className={`flex flex-col items-center gap-1 text-[10px] font-bold cursor-pointer ${currentTheme.text} hover:opacity-80`}>
+            <a href={hotel.googleReviewUrl && /^https?:\/\//i.test(hotel.googleReviewUrl) ? hotel.googleReviewUrl : 'https://www.airbnb.com/trips/v1'} onClick={() => trackGuestEvent('action_review')} target="_blank" rel="noreferrer" className={`flex flex-col items-center gap-1 text-[10px] font-bold cursor-pointer ${currentTheme.text} hover:opacity-80`}>
               <Star className="w-5 h-5 fill-current" /><span>{t.navReview}</span>
             </a>
           )}
           {hotel.address && !/Musterstraße 1|12345 Musterstadt/i.test(hotel.address) ? (
-            <a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(hotel.address)}`} onClick={() => trackGuestPageView('guest_route')} target="_blank" rel="noreferrer" className={`flex flex-col items-center gap-1 text-[10px] font-bold cursor-pointer ${currentTheme.text} hover:opacity-80`}>
+            <a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(hotel.address)}`} onClick={() => trackGuestEvent('action_route')} target="_blank" rel="noreferrer" className={`flex flex-col items-center gap-1 text-[10px] font-bold cursor-pointer ${currentTheme.text} hover:opacity-80`}>
               <Navigation className="w-5 h-5" /><span>{t.navRoute}</span>
             </a>
           ) : (
