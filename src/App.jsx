@@ -1458,17 +1458,43 @@ export default function App() {
     const text = (value || '').trim();
     return text.length > 5 && !/^(\+49\s?123\s?456789|info@meine-unterkunft\.de)$/i.test(text);
   });
+  const setupHasProfile = setupHasName && setupHasContact && Boolean((hotel.address || '').trim());
   const defaultExampleImages = ['photo-1566073771259', 'photo-1582719478250'];
   const hasAccommodationPhoto = Array.isArray(hotel.images) && hotel.images.some(image => image && !defaultExampleImages.some(example => String(image).includes(example)));
-  const hasWifiDetails = Boolean((hotel.wifiSsid || '').trim() && (hotel.wifiPass || '').trim() && hotel.wifiSsid !== 'Hotel-Guest-WiFi' && hotel.wifiPass !== 'welcome2026');
+  const isQuickCardCustomized = cardId => Object.entries(hotel.quickAccessContent || {}).some(([language, cards]) => {
+    const current = cards?.[cardId];
+    const defaults = quickAccessDefaults[language]?.[cardId] || quickAccessDefaults.de[cardId];
+    return current && ['title', 'description'].some(key => String(current[key] || '').trim() !== String(defaults[key] || '').trim());
+  });
+  const quickAccessReadyCount = [
+    { enabled: hotel.showWifi !== false, ready: ((hotel.wifiSsid || '').trim() && (hotel.wifiPass || '').trim() && hotel.wifiSsid !== 'Guest_WiFi' && hotel.wifiPass !== 'welcome2026') || (isQuickCardCustomized('wifi') && (hotel.wifiSsid || '').trim() && (hotel.wifiPass || '').trim()) },
+    { enabled: hotel.showParking !== false, ready: ((hotel.parkingInfo || '').trim() && hotel.parkingInfo !== 'Kostenfreie Parkplätze am Haus verfügbar.') || isQuickCardCustomized('parking') },
+    { enabled: hotel.showBreakfast !== false, ready: ((hotel.breakfastTime || '').trim() && hotel.breakfastTime !== '07:30 - 10:30 Uhr') || isQuickCardCustomized('breakfast') },
+    { enabled: hotel.showCheckInOut !== false, ready: ((hotel.checkInOut || '').trim() && hotel.checkInOut !== 'Check-in: ab 15:00 | Check-out: bis 11:00') || isQuickCardCustomized('checkin') }
+  ].filter(card => card.enabled && card.ready).length;
+  const hasConfiguredQuickAccess = quickAccessReadyCount >= 2;
+  const isMeaningfulGuideSection = category => {
+    const preset = category?.presetData || categoryPresets.find(item => item.id === category?.presetId);
+    const fieldValues = category?.fieldValues || {};
+    const hasChangedPresetField = (preset?.schema || []).some(field => {
+      const value = fieldValues[field.key];
+      if (value === undefined || value === null || value === '' || (Array.isArray(value) && value.length === 0)) return false;
+      return field.default === undefined || JSON.stringify(value) !== JSON.stringify(field.default);
+    });
+    const hasUsefulCard = (Array.isArray(fieldValues.contentCards) ? fieldValues.contentCards : []).some(card =>
+      String(card.title || '').trim() && ['description', 'address', 'url', 'phone', 'hours'].some(key => String(card[key] || '').trim())
+    );
+    const hasDescription = String(category?.customText || '').trim().length >= 20;
+    return hasChangedPresetField || hasUsefulCard || hasDescription;
+  };
+  const configuredGuideSectionCount = (Array.isArray(categories) ? categories : []).filter(isMeaningfulGuideSection).length;
+  const hasFiveGuideSections = configuredGuideSectionCount >= 5;
   const setupSteps = [
-    { label: 'Namen der Unterkunft festlegen', done: setupHasName },
-    { label: 'Telefon oder E-Mail ergänzen', done: setupHasContact },
-    { label: 'Adresse eintragen', done: Boolean((hotel.address || '').trim()) },
-    { label: 'Logo hochladen', done: Boolean(hotel.logoUrl) },
-    { label: 'Unterkunftsfoto hinzufügen', done: hasAccommodationPhoto },
-    { label: 'WLAN-Daten hinterlegen', done: hasWifiDetails },
-    { label: 'Mindestens einen Gästeinhalt prüfen', done: Array.isArray(categories) && categories.length > 0 }
+    { target: 'editor-property-profile', done: setupHasProfile },
+    { target: 'editor-logo', done: Boolean(hotel.logoUrl) },
+    { target: 'editor-photos', done: hasAccommodationPhoto },
+    { target: 'editor-quick-access', done: hasConfiguredQuickAccess },
+    { target: 'editor-guest-sections', done: hasFiveGuideSections }
   ];
   const setupCompletedCount = setupSteps.filter(step => step.done).length;
   const setupProgress = Math.round((setupCompletedCount / setupSteps.length) * 100);
@@ -1795,7 +1821,7 @@ export default function App() {
             </div>
           </div>
           <div className="mt-5 grid grid-cols-1 gap-2 sm:grid-cols-2 xl:grid-cols-3">
-            {setupSteps.map((step,index)=><button key={step.label} type="button" onClick={()=>navigateDashboardSection('editor')} className="flex items-center gap-3 rounded-xl border border-slate-100 bg-slate-50/70 px-3 py-2.5 text-left transition hover:border-slate-200 hover:bg-white">
+            {setupSteps.map((step,index)=><button key={step.target} type="button" onClick={()=>{navigateDashboardSection('editor');setTimeout(()=>document.getElementById(step.target)?.scrollIntoView({behavior:'smooth',block:'start'}),80);}} className="flex items-center gap-3 rounded-xl border border-slate-100 bg-slate-50/70 px-3 py-2.5 text-left transition hover:border-slate-200 hover:bg-white">
               {step.done ? <CheckCircle2 className="h-4 w-4 shrink-0 text-emerald-600"/> : <span className="flex h-4 w-4 shrink-0 items-center justify-center rounded-full border border-slate-300 text-[9px] font-bold text-slate-400">{index+1}</span>}
               <span className={`text-[11px] font-semibold ${step.done ? 'text-slate-500' : 'text-slate-800'}`}>{dw.setup.items[index]}</span>
               {!step.done && <ArrowRight className="ml-auto h-3.5 w-3.5 text-slate-400"/>}
@@ -1915,7 +1941,7 @@ export default function App() {
         <div id="editor" className={`${dashboardSection === 'editor' ? '' : 'hidden'} max-w-6xl mx-auto space-y-6`}>
           <div><p className="text-[10px] font-black uppercase tracking-[.2em] text-amber-700">{dw.accommodations.workspace}</p><h1 className="mt-1 text-2xl font-black tracking-tight text-slate-900">{dw.nav.editor}</h1><p className="mt-1 text-sm text-slate-500">{dw.accommodations.description}</p></div>
           {/* 1. HOTEL BİLGİLERİ */}
-          <div className="bg-white rounded-3xl p-6 border border-stone-200 shadow-sm space-y-4">
+          <div id="editor-property-profile" className="scroll-mt-6 bg-white rounded-3xl p-6 border border-stone-200 shadow-sm space-y-4">
             <h3 className={`font-black text-xs ${currentTheme.text} uppercase tracking-wider`}>{t.sec1Title}</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
               {[
@@ -1930,7 +1956,7 @@ export default function App() {
               ].map(field=><div key={field.key} className="relative"><label className="block text-[10px] font-bold text-stone-500 uppercase mb-1">{field.label}</label>{field.key==='reviewPlatform' ? <select value={hotel.reviewPlatform || 'google'} onChange={e=>setHotel(prev=>({...prev,reviewPlatform:e.target.value}))} className="w-full p-3 text-sm border border-stone-200 rounded-xl bg-stone-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-200"><option value="google">Google</option><option value="airbnb">Airbnb</option><option value="booking">Booking.com</option><option value="tripadvisor">Tripadvisor</option><option value="custom">Andere Plattform</option></select> : field.autocomplete ? <AddressAutocomplete lang={lang} value={hotel[field.key] || ''} onChange={value => setHotel(prev => ({ ...prev, [field.key]: value }))} className="w-full p-3 text-sm border border-stone-200 rounded-xl bg-stone-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-200" /> : <input type={field.type} value={hotel[field.key]||''} onChange={e=>setHotel(prev=>({...prev,[field.key]:e.target.value}))} className="w-full p-3 text-sm border border-stone-200 rounded-xl bg-stone-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-200"/>}{field.key==='reviewPlatform' && <p className="mt-1 text-[10px] text-stone-400">Airbnb: Gäste können ihre Unterkunft nur über eine tatsächliche Airbnb-Buchung bewerten. Ein allgemeiner Link führt zum Airbnb-Reisebereich.</p>}{field.autocomplete && <p className="mt-1 text-[10px] text-stone-400">Tipp: Adresse möglichst mit Straße, PLZ und Ort eingeben. Die Wetterfunktion nutzt bei Bedarf den Region-/Standort-Eintrag.</p>}</div>)}
             </div>
             <p className="text-[11px] text-stone-500">Diese Angaben werden in der Gästemappe verwendet. Änderungen bitte oben rechts speichern.</p>
-            <div className="border-t border-stone-100 pt-4 space-y-4">
+            <div id="editor-quick-access" className="scroll-mt-6 border-t border-stone-100 pt-4 space-y-4">
               <div className="flex flex-wrap items-center justify-between gap-3">
                 <div><h4 className="text-xs font-black uppercase tracking-wider text-stone-700">Schnellzugriff · Preset-Editor</h4><p className="text-[11px] text-stone-500 mt-1">Kartentexte je Sprache bearbeiten. WLAN-Zugangsdaten gelten für alle Sprachen.</p></div>
                 <select aria-label="Sprache der Schnellzugriff-Presets" value={quickEditLang} onChange={e => setQuickEditLang(e.target.value)} className="bg-white border border-stone-200 text-xs rounded-xl px-3 py-2">
@@ -1971,7 +1997,7 @@ export default function App() {
           </div>
 
           {/* 3. LOGO YÜKLEME */}
-          <div className="bg-white rounded-3xl p-6 border border-stone-200 shadow-sm space-y-4">
+          <div id="editor-logo" className="scroll-mt-6 bg-white rounded-3xl p-6 border border-stone-200 shadow-sm space-y-4">
             <h3 className={`font-black text-xs ${currentTheme.text} uppercase tracking-wider`}>{t.sec3Title}</h3>
             <div className="flex items-center gap-4">
               {hotel.logoUrl ? (
@@ -1987,7 +2013,7 @@ export default function App() {
           </div>
 
           {/* 4. SLIDER FOTOĞRAF YÖNETİMİ */}
-          <div className="bg-white rounded-3xl p-6 border border-stone-200 shadow-sm space-y-4">
+          <div id="editor-photos" className="scroll-mt-6 bg-white rounded-3xl p-6 border border-stone-200 shadow-sm space-y-4">
             <div className="flex items-center justify-between">
               <h3 className={`font-black text-xs ${currentTheme.text} uppercase tracking-wider`}>{t.sec4Title}</h3>
               <label className={`px-4 py-2 rounded-xl text-xs font-bold text-white ${currentTheme.bg} cursor-pointer shadow hover:opacity-95 flex items-center gap-1.5`}>
@@ -2039,7 +2065,7 @@ export default function App() {
           </div>
 
           {/* 6. DİNAMİK PRESET KATEGORİLER (3-ADIMLI MODAL SİSTEMİ) */}
-          <div className="bg-white rounded-3xl p-6 border border-stone-200 shadow-sm space-y-6">
+          <div id="editor-guest-sections" className="scroll-mt-6 bg-white rounded-3xl p-6 border border-stone-200 shadow-sm space-y-6">
             <div className="flex flex-wrap items-center justify-between gap-4">
               <h3 className={`font-black text-xs ${currentTheme.text} uppercase tracking-wider`}>{t.sec6Title}</h3>
               <button
