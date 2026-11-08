@@ -234,7 +234,7 @@ const themeColors = [
 ];
 
 const mainCategories = [
-{id:'cat_hotel',name:{de:'Hotel & Unterkunft',en:'Hotel & Accommodation',tr:'Hotel & Konaklama',fr:'Hôtel & hébergement',es:'Hotel y alojamiento',cs:'Hotel a ubytování',sq:'Hotel dhe akomodim',sv:'Hotell och boende',nb:'Hotell og overnatting',it:'Hotel e alloggio'},icon:'Building'},
+{id:'cat_hotel',name:{de:'Hotel & Unterkunft',en:'Hotel & Accommodation',tr:'Otel ve Tesis',fr:'Hôtel & hébergement',es:'Hotel y alojamiento',cs:'Hotel a ubytování',sq:'Hotel dhe akomodim',sv:'Hotell och boende',nb:'Hotell og overnatting',it:'Hotel e alloggio'},icon:'Building'},
 {id:'cat_food',name:{de:'Essen & Trinken',en:'Food & Drinks',tr:'Yeme & İçme',fr:'Restauration',es:'Comida y bebidas',cs:'Jídlo a nápoje',sq:'Ushqim dhe pije',sv:'Mat och dryck',nb:'Mat og drikke',it:'Cibo e bevande'},icon:'Utensils'},
 {id:'cat_wellness',name:{de:'Wellness & Spa',en:'Wellness & Spa',tr:'Wellness & Spa',fr:'Bien-être & spa',es:'Bienestar y spa',cs:'Wellness a spa',sq:'Wellness dhe spa',sv:'Wellness och spa',nb:'Velvære og spa',it:'Benessere e spa'},icon:'Waves'},
 {id:'cat_leisure',name:{de:'Freizeit & Aktivitäten',en:'Leisure & Activities',tr:'Boş Zaman & Aktiviteler',fr:'Loisirs & activités',es:'Ocio y actividades',cs:'Volný čas a aktivity',sq:'Kohë e lirë dhe aktivitete',sv:'Fritid och aktiviteter',nb:'Fritid og aktiviteter',it:'Tempo libero e attività'},icon:'Compass'},
@@ -2159,16 +2159,16 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-stone-50 font-sans text-slate-800 pb-32 max-w-md mx-auto shadow-2xl relative border-x border-slate-200">
-      <header className="p-5 pt-6 pb-2 bg-stone-50 sticky top-0 z-40 flex justify-between items-center">
-        <div className="flex items-center gap-2">
+      <header className="p-5 pt-6 pb-2 bg-stone-50 sticky top-0 z-40 flex items-center justify-between gap-2">
+        <div className="flex min-w-0 flex-1 items-center gap-2">
           {hotel.logoUrl ? (
-            <img src={hotel.logoUrl} alt="Logo" className="w-8 h-8 rounded-lg object-cover border" />
+            <img src={hotel.logoUrl} alt="Logo" className="h-8 w-8 shrink-0 rounded-lg border object-cover" />
           ) : (
-            <div className={`w-8 h-8 rounded-lg ${currentTheme.bg} text-white flex items-center justify-center text-xs font-black`}>B</div>
+            <div className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg ${currentTheme.bg} text-xs font-black text-white`}>B</div>
           )}
-          <span className="text-xs font-bold tracking-wider uppercase text-slate-800">{hotel.name}</span>
+          <span title={hotel.name} className="block min-w-0 flex-1 line-clamp-2 break-words text-[11px] font-bold leading-tight tracking-wider uppercase text-slate-800">{hotel.name}</span>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex shrink-0 items-center gap-2">
           <select value={lang} onChange={(e) => setLang(e.target.value)} className="bg-white border text-xs font-semibold rounded-xl px-2.5 py-1.5 cursor-pointer">
             <option value="de">🇩🇪 DE</option>
             <option value="en">🇬🇧 EN</option>
