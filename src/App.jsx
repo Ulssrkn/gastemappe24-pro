@@ -1482,7 +1482,10 @@ export default function App() {
       return field.default === undefined || JSON.stringify(value) !== JSON.stringify(field.default);
     });
     const hasUsefulCard = (Array.isArray(fieldValues.contentCards) ? fieldValues.contentCards : []).some(card =>
-      String(card.title || '').trim() && ['description', 'address', 'url', 'phone', 'hours'].some(key => String(card[key] || '').trim())
+      String(card.title || '').trim() && (
+        ['description', 'address', 'url', 'phone', 'hours'].some(key => String(card[key] || '').trim())
+        || Object.values(card.descriptionTranslations || {}).some(value => String(value || '').trim())
+      )
     );
     const hasDescription = String(category?.customText || '').trim().length >= 20;
     return hasChangedPresetField || hasUsefulCard || hasDescription;
