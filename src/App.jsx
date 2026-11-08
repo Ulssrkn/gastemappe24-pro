@@ -381,10 +381,13 @@ const CompactPresetEditorModal = ({ isOpen, onClose, onSave, currentTheme, lang,
   const [customTextTranslations, setCustomTextTranslations] = useState({});
   const [fieldValues, setFieldValues] = useState({});
   const [contentCards, setContentCards] = useState([]);
+  const [expandedContentCardId, setExpandedContentCardId] = useState(null);
   const [contentCardError, setContentCardError] = useState('');
   const gc = guestCardCopy[lang] || guestCardCopy.de;
   const titleRequiredCopy = { de:'Bitte gib für jede Empfehlung einen Titel ein.',en:'Add a title to each recommendation.',tr:'Her öneri için bir başlık girin.',fr:'Ajoutez un titre à chaque recommandation.',es:'Añade un título a cada recomendación.',cs:'Každé doporučení musí mít název.',sq:'Shto një titull për çdo rekomandim.',sv:'Ange en titel för varje tips.',nb:'Legg til en tittel for hver anbefaling.',it:'Aggiungi un titolo a ogni consiglio.'}[lang];
   const customTextHint = { de:'Dieser Text wird nicht automatisch übersetzt. Eigene Übersetzungen kannst du optional ergänzen, indem du die Dashboard-Sprache wechselst.',en:'This text is not translated automatically. You can add translations by switching the dashboard language.',tr:'Bu metin otomatik çevrilmez. Dashboard dilini değiştirerek isteğe bağlı çeviriler ekleyebilirsin.',fr:'Ce texte n’est pas traduit automatiquement. Changez la langue du tableau de bord pour ajouter des traductions.',es:'Este texto no se traduce automáticamente. Cambia el idioma del panel para añadir traducciones.',cs:'Tento text se nepřekládá automaticky. Překlady můžete doplnit změnou jazyka panelu.',sq:'Ky tekst nuk përkthehet automatikisht. Ndrysho gjuhën e panelit për të shtuar përkthime.',sv:'Texten översätts inte automatiskt. Byt språk i översikten om du vill lägga till översättningar.',nb:'Teksten oversettes ikke automatisk. Bytt språk i kontrollpanelet for å legge til oversettelser.',it:'Questo testo non viene tradotto automaticamente. Cambia la lingua del pannello per aggiungere traduzioni.'}[lang];
+  const cardSectionHint = {de:'Füge Orte oder Informationen als Karten hinzu. Adresse, Link, Telefon und Zeiten sind optional.',en:'Add places or information as cards. Address, link, phone, and hours are optional.',tr:'Yerleri veya bilgileri kart olarak ekle. Adres, bağlantı, telefon ve saat bilgileri isteğe bağlı.',fr:'Ajoutez des lieux ou des informations sous forme de cartes. Adresse, lien, téléphone et horaires sont facultatifs.',es:'Añade lugares o información en tarjetas. La dirección, el enlace, el teléfono y el horario son opcionales.',cs:'Přidávejte místa nebo informace jako karty. Adresa, odkaz, telefon a otevírací doba jsou volitelné.',sq:'Shto vende ose informacione si karta. Adresa, lidhja, telefoni dhe orari janë opsionale.',sv:'Lägg till platser eller information som kort. Adress, länk, telefon och tider är valfria.',nb:'Legg til steder eller informasjon som kort. Adresse, lenke, telefon og åpningstider er valgfrie.',it:'Aggiungi luoghi o informazioni come schede. Indirizzo, link, telefono e orari sono facoltativi.'}[lang];
+  const emptyCardsLabel = {de:'Noch keine Empfehlungen. Füge bei Bedarf eine hinzu.',en:'No recommendations yet. Add one whenever you need it.',tr:'Henüz öneri yok. İstersen şimdi ekleyebilirsin.',fr:'Aucune recommandation pour le moment. Ajoutez-en une si besoin.',es:'Aún no hay recomendaciones. Añade una cuando quieras.',cs:'Zatím žádná doporučení. Kdykoli můžete nějaké přidat.',sq:'Nuk ka ende rekomandime. Shto një kur të duash.',sv:'Inga tips ännu. Lägg till ett när du vill.',nb:'Ingen anbefalinger ennå. Legg til en når du ønsker.',it:'Ancora nessun consiglio. Aggiungine uno quando vuoi.'}[lang];
   const cardTranslationHint = { de:'Eigene Beschreibungen werden nicht automatisch übersetzt. Zum Übersetzen die Dashboard-Sprache wechseln; ohne Übersetzung bleibt der eigene Text in dieser Sprache verborgen.',en:'Custom descriptions are not translated automatically. Switch the dashboard language to add a translation; otherwise the custom text stays hidden in that language.',tr:'Özel açıklamalar otomatik çevrilmez. Çeviri eklemek için dashboard dilini değiştir; çeviri olmayan dillerde özel metin gösterilmez.',fr:'Les descriptions personnalisées ne sont pas traduites automatiquement. Changez la langue du tableau de bord pour ajouter une traduction ; sinon, le texte reste masqué dans cette langue.',es:'Las descripciones propias no se traducen automáticamente. Cambia el idioma del panel para añadir traducciones; si falta, el texto propio no se muestra en ese idioma.',cs:'Vlastní popisy se nepřekládají automaticky. Překlady přidejte změnou jazyka panelu; bez nich se text v daném jazyce skryje.',sq:'Përshkrimet personale nuk përkthehen automatikisht. Ndrysho gjuhën e panelit për të shtuar përkthime; pa to, teksti fshihet në atë gjuhë.',sv:'Egna beskrivningar översätts inte automatiskt. Byt språk i översikten för att lägga till översättningar; annars visas inte texten på det språket.',nb:'Egendefinerte beskrivelser oversettes ikke automatisk. Bytt språk i kontrollpanelet for å legge til oversettelser; ellers skjules teksten på det språket.',it:'Le descrizioni personalizzate non vengono tradotte automaticamente. Cambia la lingua del pannello per aggiungere traduzioni; in caso contrario, il testo non appare in quella lingua.'}[lang];
 
   useEffect(() => {
@@ -398,6 +401,7 @@ const CompactPresetEditorModal = ({ isOpen, onClose, onSave, currentTheme, lang,
       setCustomTextTranslations(editingCategory.customTextTranslations || {});
       setFieldValues(editingCategory.fieldValues || {});
       setContentCards(Array.isArray(editingCategory.fieldValues?.contentCards) ? editingCategory.fieldValues.contentCards : []);
+      setExpandedContentCardId(null);
       setContentCardError('');
     } else {
       setStep(1);
@@ -408,6 +412,7 @@ const CompactPresetEditorModal = ({ isOpen, onClose, onSave, currentTheme, lang,
       setCustomTextTranslations({});
       setFieldValues({});
       setContentCards([]);
+      setExpandedContentCardId(null);
       setContentCardError('');
     }
   }, [editingCategory, isOpen]);
@@ -437,7 +442,9 @@ const CompactPresetEditorModal = ({ isOpen, onClose, onSave, currentTheme, lang,
   };
 
   const addContentCard = () => {
-    setContentCards(previous => [...previous, { id: `${Date.now()}-${Math.random().toString(36).slice(2, 7)}`, title: '', descriptionTranslations: {}, address: '', url: '', phone: '', hours: '' }]);
+    const id = `${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
+    setContentCards(previous => [...previous, { id, title: '', descriptionTranslations: {}, address: '', url: '', phone: '', hours: '' }]);
+    setExpandedContentCardId(id);
     setContentCardError('');
   };
   const updateContentCard = (cardId, key, value) => setContentCards(previous => previous.map(card => card.id === cardId ? { ...card, [key]: value } : card));
@@ -578,6 +585,26 @@ const CompactPresetEditorModal = ({ isOpen, onClose, onSave, currentTheme, lang,
                 />
               </div>
 
+              <section className="space-y-3 rounded-2xl border border-slate-200 bg-slate-50/70 p-4">
+                <div className="flex items-center justify-between gap-3">
+                  <div><h3 className="text-sm font-bold text-slate-900">{gc.section}{contentCards.length ? ` · ${contentCards.length}` : ''}</h3><p className="mt-0.5 text-[10px] text-slate-500">{cardSectionHint}</p></div>
+                  <button type="button" onClick={addContentCard} className="inline-flex shrink-0 items-center gap-1.5 rounded-xl bg-slate-900 px-3 py-2 text-[10px] font-bold text-white hover:bg-slate-800"><Plus className="h-3.5 w-3.5"/>{gc.add}</button>
+                </div>
+                {contentCardError && <p role="alert" className="text-xs font-semibold text-rose-700">{contentCardError}</p>}
+                {contentCards.length === 0 && <p className="rounded-xl border border-dashed border-slate-300 bg-white px-3 py-3 text-xs text-slate-500">{emptyCardsLabel}</p>}
+                {contentCards.map((card,index)=><article key={card.id || index} className="space-y-3 rounded-xl border border-slate-200 bg-white p-3">
+                  <div className="flex items-start gap-2">
+                    <label className="min-w-0 flex-1 space-y-1"><span className="block text-[10px] font-bold uppercase tracking-wide text-slate-500">{gc.title} *</span><input value={card.title || ''} onChange={event=>updateContentCard(card.id,'title',event.target.value)} placeholder={lang==='tr'?'Örn. Stadtmuseum':'e.g. Stadtmuseum'} className="w-full rounded-lg border border-slate-200 px-3 py-2.5 text-xs outline-none focus:border-slate-400"/></label>
+                    <button type="button" onClick={()=>{setContentCards(previous=>previous.filter(item=>item.id!==card.id));if(expandedContentCardId===card.id)setExpandedContentCardId(null);}} aria-label={lang==='tr'?'Öneriyi kaldır':'Remove recommendation'} className="mt-5 rounded-lg p-2 text-slate-400 hover:bg-slate-100 hover:text-slate-700"><Trash2 className="h-4 w-4"/></button>
+                  </div>
+                  <label className="block space-y-1"><span className="block text-[10px] font-bold uppercase tracking-wide text-slate-500">{gc.description} · {lang.toUpperCase()}</span><textarea rows={2} value={card.descriptionTranslations?.[lang] || (lang==='de' ? card.description || '' : '')} onChange={event=>updateContentCardDescription(card.id,event.target.value)} className="w-full rounded-lg border border-slate-200 px-3 py-2 text-xs outline-none focus:border-slate-400"/><span className="block text-[10px] leading-relaxed text-slate-400">{cardTranslationHint || guestCardCopy.en.translationHint}</span></label>
+                  <details defaultOpen={expandedContentCardId===card.id} className="rounded-lg bg-slate-50 px-3 py-2"><summary className="cursor-pointer list-none text-[10px] font-bold text-slate-600">{gc.more}</summary><div className="mt-3 grid grid-cols-1 gap-2 sm:grid-cols-2">
+                    <label className="space-y-1"><span className="block text-[10px] font-semibold text-slate-500">{gc.address}</span><AddressAutocomplete lang={lang} value={card.address||''} onChange={value=>updateContentCard(card.id,'address',value)} className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs outline-none focus:border-slate-400"/></label>
+                    {[['url',gc.url,'url'],['phone',gc.phone,'tel'],['hours',gc.hours,'text']].map(([key,label,type])=><label key={key} className="space-y-1"><span className="block text-[10px] font-semibold text-slate-500">{label}</span><input type={type} value={card[key]||''} onChange={event=>updateContentCard(card.id,key,event.target.value)} className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs outline-none focus:border-slate-400"/></label>)}
+                  </div></details>
+                </article>)}
+              </section>
+
               <div className="space-y-3 bg-stone-50/60 p-4 rounded-2xl border border-stone-200/80">
 {(selectedPreset?.id === 'HOT_006' || selectedPreset?.id === 'room_info') ? (() => {
   const roomGroups = [
@@ -610,27 +637,6 @@ const CompactPresetEditorModal = ({ isOpen, onClose, onSave, currentTheme, lang,
                   )}
                 </div>
               )}
-
-              {contentCardError && <p role="alert" className="text-xs font-semibold text-rose-700">{contentCardError}</p>}
-              <details className="rounded-2xl border border-slate-200 bg-white overflow-hidden">
-                <summary className="flex cursor-pointer list-none items-center justify-between gap-3 bg-slate-50 px-4 py-3 text-xs font-bold text-slate-800">
-                  <span>{gc.section}{contentCards.length ? ` · ${contentCards.length}` : ''}</span><ChevronDown className="h-4 w-4 text-slate-400"/>
-                </summary>
-                <div className="space-y-3 border-t border-slate-100 p-4">
-                  <p className="text-[11px] leading-relaxed text-slate-500">{cardTranslationHint || guestCardCopy.en.translationHint}</p>
-                  {contentCards.map((card,index)=><article key={card.id || index} className="space-y-3 rounded-xl border border-slate-200 bg-white p-3">
-                    <div className="flex items-start gap-2">
-                      <label className="min-w-0 flex-1 space-y-1"><span className="block text-[10px] font-bold uppercase tracking-wide text-slate-500">{gc.title} *</span><input value={card.title || ''} onChange={event=>updateContentCard(card.id,'title',event.target.value)} placeholder={lang==='tr'?'Örn. Stadtmuseum':'e.g. Stadtmuseum'} className="w-full rounded-lg border border-slate-200 px-3 py-2 text-xs outline-none focus:border-slate-400"/></label>
-                      <button type="button" onClick={()=>setContentCards(previous=>previous.filter(item=>item.id!==card.id))} aria-label={lang==='tr'?'Öneriyi kaldır':'Remove recommendation'} className="mt-5 rounded-lg p-2 text-slate-400 hover:bg-slate-100 hover:text-slate-700"><Trash2 className="h-4 w-4"/></button>
-                    </div>
-                    <label className="block space-y-1"><span className="block text-[10px] font-bold uppercase tracking-wide text-slate-500">{gc.description} · {lang.toUpperCase()}</span><textarea rows={2} value={card.descriptionTranslations?.[lang] || (lang==='de' ? card.description || '' : '')} onChange={event=>updateContentCardDescription(card.id,event.target.value)} className="w-full rounded-lg border border-slate-200 px-3 py-2 text-xs outline-none focus:border-slate-400"/></label>
-                    <details className="rounded-lg bg-slate-50 px-3 py-2"><summary className="cursor-pointer list-none text-[10px] font-bold text-slate-600">{gc.more}</summary><div className="mt-3 grid grid-cols-1 gap-2 sm:grid-cols-2">
-                      {[['address',gc.address,'text'],['url',gc.url,'url'],['phone',gc.phone,'tel'],['hours',gc.hours,'text']].map(([key,label,type])=><label key={key} className="space-y-1"><span className="block text-[10px] font-semibold text-slate-500">{label}</span><input type={type} value={card[key] || ''} onChange={event=>updateContentCard(card.id,key,event.target.value)} className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs outline-none focus:border-slate-400"/></label>)}
-                    </div></details>
-                  </article>)}
-                  <button type="button" onClick={addContentCard} className="inline-flex items-center gap-2 rounded-xl border border-slate-200 px-3 py-2 text-xs font-bold text-slate-700 hover:bg-slate-50"><Plus className="h-4 w-4"/>{gc.add}</button>
-                </div>
-              </details>
 
               <div className="space-y-1">
                 <label className="block text-[10px] font-black uppercase text-amber-800 tracking-wider">{t.customTextLabel}</label>
@@ -742,7 +748,7 @@ const GuestCategoryDisplay = ({ category, currentTheme, lang, t }) => {
   );
 };
 
-const AddressAutocomplete = ({ value, onChange, className }) => {
+const AddressAutocomplete = ({ value, onChange, className, lang = 'de' }) => {
   const [suggestions, setSuggestions] = useState([]);
   const [open, setOpen] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
@@ -752,7 +758,8 @@ const AddressAutocomplete = ({ value, onChange, className }) => {
     const controller = new AbortController();
     const timer = setTimeout(async () => {
       try {
-        const response = await fetch('https://photon.komoot.io/api/?q=' + encodeURIComponent(query) + '&limit=5&lang=de', { signal: controller.signal });
+        const searchLang = lang === 'nb' ? 'no' : lang === 'cs' ? 'en' : lang;
+        const response = await fetch('https://photon.komoot.io/api/?q=' + encodeURIComponent(query) + '&limit=5&lang=' + searchLang, { signal: controller.signal });
         if (!response.ok) throw new Error('Address suggestions unavailable');
         const data = await response.json();
         const items = (data.features || []).map(feature => {
@@ -764,14 +771,14 @@ const AddressAutocomplete = ({ value, onChange, className }) => {
       } catch (error) { if (error.name !== 'AbortError') { setSuggestions([]); setOpen(false); } }
     }, 350);
     return () => { clearTimeout(timer); controller.abort(); };
-  }, [value]);
+  }, [value, lang]);
   return <div className="relative">
     <input type="text" value={value || ''} onChange={event => { setIsTyping(true); onChange(event.target.value); }} onFocus={() => { if (isTyping && suggestions.length) setOpen(true); }} onBlur={() => setTimeout(() => setOpen(false), 150)} autoComplete="off" className={className} />
     {open && suggestions.length > 0 && <div role="listbox" className="absolute z-50 left-0 right-0 top-full mt-1 rounded-xl border border-stone-200 bg-white shadow-xl overflow-hidden">
       {suggestions.map((item, index) => <button key={item.label + index} type="button" role="option" onMouseDown={event => event.preventDefault()} onClick={() => { onChange(item.label); setIsTyping(false); setOpen(false); setSuggestions([]); }} className="w-full px-3 py-2.5 text-left text-xs text-stone-700 hover:bg-amber-50 border-b last:border-b-0 border-stone-100">
         <MapPin className="inline w-3.5 h-3.5 mr-2 text-stone-400" />{item.label}
       </button>)}
-      <div className="px-3 py-1.5 text-[9px] text-stone-400">Adressvorschläge von OpenStreetMap / Photon</div>
+      <div className="px-3 py-1.5 text-[9px] text-stone-400">{{de:'Adressvorschläge von OpenStreetMap / Photon',en:'Address suggestions by OpenStreetMap / Photon',tr:'OpenStreetMap / Photon adres önerileri',fr:'Suggestions d’adresse par OpenStreetMap / Photon',es:'Sugerencias de OpenStreetMap / Photon',cs:'Návrhy adres OpenStreetMap / Photon',sq:'Sugjerime adrese nga OpenStreetMap / Photon',sv:'Adressförslag från OpenStreetMap / Photon',nb:'Adresseforslag fra OpenStreetMap / Photon',it:'Suggerimenti di indirizzi da OpenStreetMap / Photon'}[lang] || 'OpenStreetMap / Photon'}</div>
     </div>}
   </div>;
 };
@@ -1920,7 +1927,7 @@ export default function App() {
                 {key:'reviewPlatform',label:'Bewertungsplattform',type:'select'},
                 {key:'googleReviewUrl',label:hotel.reviewPlatform==='airbnb'?'Airbnb-Link (optional)':hotel.reviewPlatform==='booking'?'Booking.com-Bewertungslink':hotel.reviewPlatform==='tripadvisor'?'Tripadvisor-Bewertungslink':hotel.reviewPlatform==='custom'?'Bewertungslink':'Google-Bewertungslink',type:'url'},
                 {key:'locationTitle',label:'Region / Standort',type:'text'}
-              ].map(field=><div key={field.key} className="relative"><label className="block text-[10px] font-bold text-stone-500 uppercase mb-1">{field.label}</label>{field.key==='reviewPlatform' ? <select value={hotel.reviewPlatform || 'google'} onChange={e=>setHotel(prev=>({...prev,reviewPlatform:e.target.value}))} className="w-full p-3 text-sm border border-stone-200 rounded-xl bg-stone-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-200"><option value="google">Google</option><option value="airbnb">Airbnb</option><option value="booking">Booking.com</option><option value="tripadvisor">Tripadvisor</option><option value="custom">Andere Plattform</option></select> : field.autocomplete ? <AddressAutocomplete value={hotel[field.key] || ''} onChange={value => setHotel(prev => ({ ...prev, [field.key]: value }))} className="w-full p-3 text-sm border border-stone-200 rounded-xl bg-stone-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-200" /> : <input type={field.type} value={hotel[field.key]||''} onChange={e=>setHotel(prev=>({...prev,[field.key]:e.target.value}))} className="w-full p-3 text-sm border border-stone-200 rounded-xl bg-stone-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-200"/>}{field.key==='reviewPlatform' && <p className="mt-1 text-[10px] text-stone-400">Airbnb: Gäste können ihre Unterkunft nur über eine tatsächliche Airbnb-Buchung bewerten. Ein allgemeiner Link führt zum Airbnb-Reisebereich.</p>}{field.autocomplete && <p className="mt-1 text-[10px] text-stone-400">Tipp: Adresse möglichst mit Straße, PLZ und Ort eingeben. Die Wetterfunktion nutzt bei Bedarf den Region-/Standort-Eintrag.</p>}</div>)}
+              ].map(field=><div key={field.key} className="relative"><label className="block text-[10px] font-bold text-stone-500 uppercase mb-1">{field.label}</label>{field.key==='reviewPlatform' ? <select value={hotel.reviewPlatform || 'google'} onChange={e=>setHotel(prev=>({...prev,reviewPlatform:e.target.value}))} className="w-full p-3 text-sm border border-stone-200 rounded-xl bg-stone-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-200"><option value="google">Google</option><option value="airbnb">Airbnb</option><option value="booking">Booking.com</option><option value="tripadvisor">Tripadvisor</option><option value="custom">Andere Plattform</option></select> : field.autocomplete ? <AddressAutocomplete lang={lang} value={hotel[field.key] || ''} onChange={value => setHotel(prev => ({ ...prev, [field.key]: value }))} className="w-full p-3 text-sm border border-stone-200 rounded-xl bg-stone-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-200" /> : <input type={field.type} value={hotel[field.key]||''} onChange={e=>setHotel(prev=>({...prev,[field.key]:e.target.value}))} className="w-full p-3 text-sm border border-stone-200 rounded-xl bg-stone-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-200"/>}{field.key==='reviewPlatform' && <p className="mt-1 text-[10px] text-stone-400">Airbnb: Gäste können ihre Unterkunft nur über eine tatsächliche Airbnb-Buchung bewerten. Ein allgemeiner Link führt zum Airbnb-Reisebereich.</p>}{field.autocomplete && <p className="mt-1 text-[10px] text-stone-400">Tipp: Adresse möglichst mit Straße, PLZ und Ort eingeben. Die Wetterfunktion nutzt bei Bedarf den Region-/Standort-Eintrag.</p>}</div>)}
             </div>
             <p className="text-[11px] text-stone-500">Diese Angaben werden in der Gästemappe verwendet. Änderungen bitte oben rechts speichern.</p>
             <div className="border-t border-stone-100 pt-4 space-y-4">
