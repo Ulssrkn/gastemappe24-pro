@@ -811,6 +811,9 @@ export default function App() {
   const [lang, setLang] = useState('de');
   const t = translations[lang] || translations.de;
   const dw = dashboardWorkspaceCopy[lang] || dashboardWorkspaceCopy.de;
+  const localHour = new Date().getHours();
+  const dashboardGreetingPeriod = localHour < 5 || localHour >= 22 ? 'night' : localHour < 11 ? 'morning' : localHour < 18 ? 'day' : 'evening';
+  const dashboardGreeting = dw.greeting?.[dashboardGreetingPeriod] || dashboardWorkspaceCopy.en.greeting[dashboardGreetingPeriod];
   const quickAccessLabels = {
     de: { title: 'Schnellzugriff anzeigen', wifi: 'WLAN-Karte', parking: 'Parkplatz-Karte', breakfast: 'Frühstücks-Karte', checkin: 'Check-in / Check-out-Karte' },
     en: { title: 'Show quick access cards', wifi: 'Wi-Fi card', parking: 'Parking card', breakfast: 'Breakfast card', checkin: 'Check-in / Check-out card' },
@@ -1855,7 +1858,8 @@ export default function App() {
           <div className="flex flex-col justify-between gap-7 lg:flex-row lg:items-end">
             <div className="max-w-2xl">
               <div className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-1.5 text-[10px] font-bold tracking-wide text-slate-200"><Sparkles className="h-3.5 w-3.5 text-amber-300"/>{dw.hero.badge}</div>
-              <h1 className="mt-5 text-3xl font-semibold tracking-tight text-white sm:text-4xl">{dw.hero.title}</h1>
+              <p className="mt-5 text-xl font-semibold tracking-tight text-white sm:text-2xl">{dashboardGreeting}</p>
+              <h1 className="mt-2 text-3xl font-semibold tracking-tight text-white sm:text-4xl">{dw.hero.title}</h1>
               <p className="mt-3 max-w-xl text-sm leading-6 text-slate-300">{dw.hero.description}</p>
             </div>
             <div className="min-w-[220px] rounded-2xl border border-white/15 bg-white/[0.08] p-4 backdrop-blur-sm">
