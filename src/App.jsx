@@ -1880,26 +1880,26 @@ export default function App() {
           </details>
         </section>
         {/* REAL ANALYTICS STATUS — do not display invented figures */}
-        <div className={`${dashboardSection === 'analytics' ? '' : 'hidden'} w-full max-w-6xl mx-auto`}><div className="mb-4"><h1 className="text-2xl font-black tracking-tight text-slate-900">{dw.stats.analyticsTitle}</h1><p className="mt-1 text-sm text-slate-500">{dw.stats.analyticsIntro}</p></div></div>
-        <div id="analytics" className={`${dashboardSection === 'analytics' ? '' : 'hidden'} w-full max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-3 sm:gap-4`}>
-          <div className="rounded-2xl border border-slate-200/80 bg-white p-5 shadow-sm">
+        <div className={`${dashboardSection === 'analytics' ? '' : 'hidden'} w-full min-w-0 max-w-6xl mx-auto`}><div className="mb-4"><h1 className="text-2xl font-black tracking-tight text-slate-900">{dw.stats.analyticsTitle}</h1><p className="mt-1 text-sm text-slate-500">{dw.stats.analyticsIntro}</p></div></div>
+        <div id="analytics" className={`${dashboardSection === 'analytics' ? '' : 'hidden'} w-full min-w-0 max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 2xl:grid-cols-4 gap-3 sm:gap-4`}>
+          <div className="min-w-0 rounded-2xl border border-slate-200/80 bg-white p-4 sm:p-5 shadow-sm">
             <div className="flex items-center gap-3"><div className="p-3 rounded-2xl bg-stone-100 text-stone-500"><BarChart3 className="w-6 h-6"/></div><div><span className="text-[10px] font-extrabold text-stone-400 uppercase tracking-wider">{dw.stats.views}</span><h4 className="text-lg font-black text-slate-900">{analyticsLoading ? '…' : analyticsRows.reduce((sum, row) => sum + Number(row.views || 0), 0)}</h4></div></div>
             <p className="text-[11px] text-stone-500 mt-3">{dw.stats.viewsNote}</p>
           </div>
-          <div className="rounded-2xl border border-slate-200/80 bg-white p-5 shadow-sm">
-            <div className="flex items-center gap-3"><div className="rounded-xl bg-slate-100 p-3 text-slate-600"><TrendingUp className="h-5 w-5"/></div><div className="min-w-0"><span className="text-[10px] font-extrabold uppercase tracking-wider text-slate-400">{dw.stats.topPage}</span><h4 className="truncate text-lg font-black text-slate-900">{analyticsLoading ? '…' : mostVisitedPageName}</h4></div></div>
+          <div className="min-w-0 rounded-2xl border border-slate-200/80 bg-white p-4 sm:p-5 shadow-sm">
+            <div className="flex min-w-0 items-center gap-3"><div className="shrink-0 rounded-xl bg-slate-100 p-3 text-slate-600"><TrendingUp className="h-5 w-5"/></div><div className="min-w-0"><span className="block text-[10px] font-extrabold uppercase leading-4 tracking-wider text-slate-400">{dw.stats.topPage}</span><h4 className="line-clamp-2 break-words text-base font-black leading-tight text-slate-900 sm:text-lg">{analyticsLoading ? '…' : mostVisitedPageName}</h4></div></div>
             <p className="mt-3 text-[11px] text-slate-500">{mostVisitedPage ? `${mostVisitedPage[1]} ${dw.stats.recorded}` : analyticsLoading ? dw.stats.loading : dw.stats.topEmpty}</p>
           </div>
-          <div className="rounded-2xl border border-slate-200/80 bg-white p-5 shadow-sm">
+          <div className="min-w-0 rounded-2xl border border-slate-200/80 bg-white p-4 sm:p-5 shadow-sm">
             <div className="flex items-center gap-3"><div className="p-3 rounded-2xl bg-stone-100 text-stone-500"><Activity className="w-6 h-6"/></div><div><span className="text-[10px] font-extrabold text-stone-400 uppercase tracking-wider">{dw.stats.weekly}</span><h4 className="text-lg font-black text-slate-900">{analyticsLoading ? '…' : weeklyInteractionCount}</h4></div></div>
             <p className="text-[11px] text-stone-500 mt-3">{dw.stats.weeklyNote}</p>
           </div>
-          <div className="rounded-2xl border border-slate-200/80 bg-white p-5 shadow-sm">
-            <div className="flex items-center gap-3"><div className="rounded-xl bg-slate-100 p-3 text-slate-600"><Activity className="h-5 w-5"/></div><div><span className="text-[10px] font-extrabold uppercase tracking-wider text-slate-400">{dw.stats.cloudTitle}</span><h4 className="text-lg font-black text-slate-900">{analyticsLoading ? '…' : dw.stats.cloudTitle}</h4></div></div>
+          <div className="min-w-0 rounded-2xl border border-slate-200/80 bg-white p-4 sm:p-5 shadow-sm">
+            <div className="flex min-w-0 items-center gap-3"><div className="shrink-0 rounded-xl bg-slate-100 p-3 text-slate-600"><Activity className="h-5 w-5"/></div><div className="min-w-0"><span className="block text-[10px] font-extrabold uppercase leading-4 tracking-wider text-slate-400">{dw.stats.cloudTitle}</span><h4 className="line-clamp-2 break-words text-base font-black leading-tight text-slate-900 sm:text-lg">{analyticsLoading ? '…' : dw.stats.cloudTitle}</h4></div></div>
             <p className="mt-3 text-[11px] text-slate-500">{dw.stats.cloudNote}</p>
           </div>
         </div>
-        <div className={`${dashboardSection === 'analytics' ? '' : 'hidden'} max-w-6xl mx-auto bg-white rounded-3xl p-6 border border-stone-200 shadow-sm space-y-3`}>
+        <div className={`${dashboardSection === 'analytics' ? '' : 'hidden'} w-full min-w-0 max-w-6xl mx-auto bg-white rounded-3xl p-6 border border-stone-200 shadow-sm space-y-3`}>
           <div className="flex items-center gap-3"><div className="p-3 rounded-2xl bg-stone-100 text-stone-500"><TrendingUp className="w-6 h-6"/></div><div><h3 className="font-black text-xs text-slate-800 uppercase tracking-wider">{(dashboardCopy[lang] || dashboardCopy.de).analyticsTitle}</h3><p className="text-xs text-stone-500">{(dashboardCopy[lang] || dashboardCopy.de).analyticsIntro}</p></div></div>
           <div className="rounded-2xl border border-stone-200 bg-stone-50 p-5 space-y-3">
             <div className="flex items-center justify-between gap-3"><span className="text-sm font-bold text-slate-800">{dw.stats.total}</span><span className="text-2xl font-black text-slate-900 tabular-nums">{analyticsLoading ? '…' : analyticsRows.reduce((sum, row) => sum + Number(row.views || 0), 0)}</span></div>
