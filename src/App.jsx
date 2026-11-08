@@ -979,7 +979,7 @@ export default function App() {
   const guestNavigationRef = useRef({ activeTab: 'home', selectedCategory: null });
   useEffect(() => { guestNavigationRef.current = { activeTab, selectedCategory }; }, [activeTab, selectedCategory]);
   const navigateGuest = (tab, category = null) => {
-    if (typeof window !== 'undefined' && !window.location.hash.startsWith('#dashboard-') && !['#accommodations', '#analytics', '#editor', '#membership'].includes(window.location.hash)) {
+    if (typeof window !== 'undefined' && !document.getElementById('dashboard-overview')) {
       window.history.pushState({ gm24Guest: true, activeTab: tab, selectedCategory: category }, '');
     }
     setActiveTab(tab);
@@ -987,7 +987,7 @@ export default function App() {
   };
   useEffect(() => {
     if (typeof window === 'undefined') return undefined;
-    const isDashboard = () => Boolean(document.getElementById('dashboard-overview')) || window.location.hash.startsWith('#dashboard-') || ['#accommodations', '#analytics', '#editor', '#membership'].includes(window.location.hash);
+    const isDashboard = () => Boolean(document.getElementById('dashboard-overview'));
     if (!isDashboard()) window.history.replaceState({ ...(window.history.state || {}), gm24Guest: true, activeTab: 'home', selectedCategory: null }, '');
     const handlePopState = event => {
       if (isDashboard()) {
