@@ -37,7 +37,7 @@ export default function GuestGuide({
   t,
 }) {
   const { activeTab, navigateGuest, selectedCategory, setShowWelcomeScreen, showWelcomeScreen } = navigation;
-  const { guestFeedback, guestPageStatus, setGuestFeedback, trackGuestEvent, trackGuestPageView } = published;
+  const { guestFeedback, guestPageStatus, feedbackPending, feedbackFailed, submitGuestFeedback, trackGuestEvent, trackGuestPageView } = published;
   const { getWeatherDescription, weather, weatherLabels } = forecast;
   const showGuideFeedback =
     guestSlug && supabase && guestPageStatus === 'ready' && activeTab === 'services' && !selectedCategory;
@@ -376,38 +376,23 @@ export default function GuestGuide({
               <div className="mt-3 flex gap-2">
                 <button
                   type="button"
-                  onClick={() => {
-                    trackGuestEvent('feedback_helpful');
-                    setGuestFeedback('yes');
-                    try {
-                      sessionStorage.setItem(
-                        `gm24_feedback_${guestSlug}_${new Date().toISOString().slice(0, 10)}`,
-                        'yes'
-                      );
-                    } catch {}
-                  }}
-                  className="rounded-xl bg-slate-900 px-4 py-2 text-xs font-bold text-white"
+                  onClick={() => submitGuestFeedback('yes')}
+                  disabled={feedbackPending}
+                  className="rounded-xl bg-slate-900 px-4 py-2 text-xs font-bold text-white disabled:opacity-50"
                 >
                   {ac.yes}
                 </button>
                 <button
                   type="button"
-                  onClick={() => {
-                    trackGuestEvent('feedback_not_helpful');
-                    setGuestFeedback('no');
-                    try {
-                      sessionStorage.setItem(
-                        `gm24_feedback_${guestSlug}_${new Date().toISOString().slice(0, 10)}`,
-                        'no'
-                      );
-                    } catch {}
-                  }}
-                  className="rounded-xl border border-slate-200 px-4 py-2 text-xs font-bold text-slate-700"
+                  onClick={() => submitGuestFeedback('no')}
+                  disabled={feedbackPending}
+                  className="rounded-xl border border-slate-200 px-4 py-2 text-xs font-bold text-slate-700 disabled:opacity-50"
                 >
                   {ac.no}
                 </button>
               </div>
             )}
+            {feedbackFailed && <p className="mt-2 text-sm text-red-700">{ac.feedbackRetry}</p>}
           </section>
         )}
         <LegalLinks copy={pilot} />
