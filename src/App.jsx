@@ -1694,7 +1694,7 @@ export default function App() {
 
   if (appMode === 'dashboard') {
     return (
-      <div className="min-h-screen w-full max-w-full overflow-x-hidden box-border bg-[#f5f6f8] font-sans text-slate-800 p-3 sm:p-6 md:py-8 md:pr-10 md:pl-[18rem] space-y-6 sm:space-y-8 relative pb-28">
+      <div className="min-h-screen w-full max-w-full overflow-x-clip box-border bg-[#f5f6f8] font-sans text-slate-800 p-3 sm:p-6 md:py-8 md:pr-10 md:pl-[18rem] space-y-6 sm:space-y-8 relative pb-28">
 
         <aside className="fixed inset-y-0 left-0 z-40 hidden w-64 flex-col border-r border-slate-200/80 bg-white px-5 py-7 md:flex">
           <button type="button" onClick={()=>navigateDashboardSection('overview')} className="flex items-center gap-3 px-2 text-left">
