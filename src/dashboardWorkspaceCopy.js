@@ -1,5 +1,6 @@
 const dashboardWorkspaceCopy = {
   de: {
+    greeting: { morning: 'Guten Morgen', day: 'Guten Tag', evening: 'Guten Abend', night: 'Willkommen' },
     nav: { overview: 'Übersicht', accommodations: 'Unterkünfte', analytics: 'Analytik', editor: 'Gästemappe bearbeiten', package: 'Paket & Testphase', start: 'Start', edit: 'Bearbeiten' },
     editorSections: { profile: 'Profil', guestContent: 'Gästebereiche', quickAccess: 'Schnellzugriff', theme: 'Design', logo: 'Logo', photos: 'Fotos', qr: 'QR-Code' },
     hero: { badge: 'DEIN GASTGEBER-WORKSPACE', title: 'Alles für deine Gäste. An einem Ort.', description: 'Verwalte deine digitalen Gästemappen, behalte die Nutzung im Blick und passe dein Gästeerlebnis ganz einfach an.', connected: 'Cloud verbunden', error: 'Cloud-Prüfung nötig', status: 'Workspace-Status', one: 'Unterkunft', many: 'Unterkünfte' },
@@ -10,6 +11,7 @@ const dashboardWorkspaceCopy = {
     detail: { back: 'Zurück', recommendations: 'Empfehlungen & Hinweise', route: 'Route öffnen', website: 'Mehr erfahren', addRecommendation: 'Empfehlung hinzufügen', recommendationName: 'Name des Ortes', description: 'Was sollten Gäste wissen?', address: 'Adresse (optional)', url: 'Website oder Ticket-Link (optional)', remove: 'Entfernen' }
   },
   en: {
+    greeting: { morning: 'Good morning', day: 'Good afternoon', evening: 'Good evening', night: 'Welcome' },
     nav: { overview: 'Overview', accommodations: 'Accommodations', analytics: 'Analytics', editor: 'Edit guest guide', package: 'Plan & trial', start: 'Home', edit: 'Edit' },
     editorSections: { profile: 'Profile', guestContent: 'Guest content', quickAccess: 'Quick access', theme: 'Appearance', logo: 'Logo', photos: 'Photos', qr: 'QR code' },
     hero: { badge: 'YOUR HOST WORKSPACE', title: 'Everything your guests need. In one place.', description: 'Manage your digital guest guides, see how guests use them and shape a better stay.', connected: 'Cloud connected', error: 'Cloud needs attention', status: 'Workspace status', one: 'accommodation', many: 'accommodations' },
@@ -20,6 +22,7 @@ const dashboardWorkspaceCopy = {
     detail: { back: 'Back', recommendations: 'Recommendations & notes', route: 'Open directions', website: 'Learn more', addRecommendation: 'Add recommendation', recommendationName: 'Place name', description: 'What should guests know?', address: 'Address (optional)', url: 'Website or ticket link (optional)', remove: 'Remove' }
   },
   tr: {
+    greeting: { morning: 'Günaydın', day: 'İyi günler', evening: 'İyi akşamlar', night: 'Hoş geldin' },
     nav: { overview: 'Genel Bakış', accommodations: 'Tesisler', analytics: 'Analitik', editor: 'Misafir rehberini düzenle', package: 'Paket ve deneme', start: 'Başlangıç', edit: 'Düzenle' },
     editorSections: { profile: 'Tesis profili', guestContent: 'Rehber içerikleri', quickAccess: 'Hızlı erişim', theme: 'Tema', logo: 'Logo', photos: 'Fotoğraflar', qr: 'QR kodu' },
     hero: { badge: 'EV SAHİBİ ÇALIŞMA ALANIN', title: 'Misafirlerin için gereken her şey. Tek yerde.', description: 'Dijital misafir rehberlerini yönet, ziyaretleri takip et ve misafir deneyimini kolayca iyileştir.', connected: 'Bulut bağlantısı aktif', error: 'Bulut bağlantısını kontrol et', status: 'Çalışma alanı durumu', one: 'tesis', many: 'tesis' },
@@ -30,6 +33,7 @@ const dashboardWorkspaceCopy = {
     detail: { back: 'Geri dön', recommendations: 'Öneriler ve notlar', route: 'Yol tarifi al', website: 'Daha fazla bilgi', addRecommendation: 'Öneri ekle', recommendationName: 'Yer adı', description: 'Misafirler ne bilmeli?', address: 'Adres (isteğe bağlı)', url: 'Web sitesi veya bilet bağlantısı (isteğe bağlı)', remove: 'Kaldır' }
   },
   fr: {
+    greeting: { morning: 'Bonjour', day: 'Bonjour', evening: 'Bonsoir', night: 'Bienvenue' },
     nav: { overview: 'Aperçu', accommodations: 'Hébergements', analytics: 'Analyses', editor: 'Modifier le guide invité', package: 'Offre et essai', start: 'Accueil', edit: 'Modifier' },
     editorSections: { profile: 'Profil du site', guestContent: 'Contenus du guide', quickAccess: 'Accès rapides', theme: 'Apparence', logo: 'Logo', photos: 'Photos', qr: 'Code QR' },
     hero: { badge: 'ESPACE HÔTE', title: 'Tout pour vos voyageurs. Au même endroit.', description: 'Gérez vos guides numériques, suivez leur utilisation et améliorez facilement le séjour.', connected: 'Cloud connecté', error: 'Vérifier le cloud', status: 'État de l’espace', one: 'hébergement', many: 'hébergements' },
@@ -40,6 +44,7 @@ const dashboardWorkspaceCopy = {
     detail: { back: 'Retour', recommendations: 'Recommandations et notes', route: 'Itinéraire', website: 'En savoir plus', addRecommendation: 'Ajouter une recommandation', recommendationName: 'Nom du lieu', description: 'Informations utiles aux voyageurs', address: 'Adresse (facultatif)', url: 'Site ou lien de billetterie (facultatif)', remove: 'Supprimer' }
   },
   es: {
+    greeting: { morning: 'Buenos días', day: 'Buenas tardes', evening: 'Buenas noches', night: 'Te damos la bienvenida' },
     nav: { overview: 'Resumen', accommodations: 'Alojamientos', analytics: 'Analítica', editor: 'Editar guía de huéspedes', package: 'Plan y prueba', start: 'Inicio', edit: 'Editar' },
     editorSections: { profile: 'Perfil del alojamiento', guestContent: 'Contenido de la guía', quickAccess: 'Accesos rápidos', theme: 'Apariencia', logo: 'Logotipo', photos: 'Fotos', qr: 'Código QR' },
     hero: { badge: 'ESPACIO DEL ANFITRIÓN', title: 'Todo para tus huéspedes. En un solo lugar.', description: 'Gestiona tus guías digitales, consulta su uso y mejora fácilmente la estancia.', connected: 'Nube conectada', error: 'Revisa la conexión', status: 'Estado del espacio', one: 'alojamiento', many: 'alojamientos' },
@@ -50,6 +55,7 @@ const dashboardWorkspaceCopy = {
     detail: { back: 'Volver', recommendations: 'Recomendaciones y notas', route: 'Cómo llegar', website: 'Más información', addRecommendation: 'Añadir recomendación', recommendationName: 'Nombre del lugar', description: 'Información útil para huéspedes', address: 'Dirección (opcional)', url: 'Web o entradas (opcional)', remove: 'Eliminar' }
   },
   cs: {
+    greeting: { morning: 'Dobré ráno', day: 'Dobrý den', evening: 'Dobrý večer', night: 'Vítejte' },
     nav: { overview: 'Přehled', accommodations: 'Ubytování', analytics: 'Analytika', editor: 'Upravit průvodce', package: 'Tarif a zkušební verze', start: 'Domů', edit: 'Upravit' },
     editorSections: { profile: 'Profil ubytování', guestContent: 'Obsah průvodce', quickAccess: 'Rychlý přístup', theme: 'Vzhled', logo: 'Logo', photos: 'Fotografie', qr: 'QR kód' },
     hero: { badge: 'PROSTOR PRO HOSTITELE', title: 'Vše pro vaše hosty. Na jednom místě.', description: 'Spravujte digitální průvodce, sledujte jejich využití a snadno vylepšujte pobyt hostů.', connected: 'Cloud připojen', error: 'Zkontrolujte cloud', status: 'Stav pracovního prostoru', one: 'ubytování', many: 'ubytování' },
@@ -60,6 +66,7 @@ const dashboardWorkspaceCopy = {
     detail: { back: 'Zpět', recommendations: 'Doporučení a poznámky', route: 'Otevřít trasu', website: 'Více informací', addRecommendation: 'Přidat doporučení', recommendationName: 'Název místa', description: 'Co by měli hosté vědět?', address: 'Adresa (volitelné)', url: 'Web nebo vstupenky (volitelné)', remove: 'Odebrat' }
   },
   sq: {
+    greeting: { morning: 'Mirëmëngjes', day: 'Mirëdita', evening: 'Mirëmbrëma', night: 'Mirë se erdhët' },
     nav: { overview: 'Përmbledhje', accommodations: 'Akomodimet', analytics: 'Analitika', editor: 'Ndrysho udhëzuesin', package: 'Paketa dhe prova', start: 'Kryefaqja', edit: 'Ndrysho' },
     editorSections: { profile: 'Profili i akomodimit', guestContent: 'Përmbajtja e udhëzuesit', quickAccess: 'Qasje e shpejtë', theme: 'Pamja', logo: 'Logo', photos: 'Fotografitë', qr: 'Kodi QR' },
     hero: { badge: 'HAPËSIRA JUAJ E PUNËS', title: 'Gjithçka për mysafirët. Në një vend.', description: 'Menaxhoni udhëzuesit digjitalë, ndiqni përdorimin dhe përmirësoni qëndrimin e mysafirëve.', connected: 'Cloud-i është lidhur', error: 'Kontrolloni cloud-in', status: 'Statusi i hapësirës', one: 'akomodim', many: 'akomodime' },
@@ -70,6 +77,7 @@ const dashboardWorkspaceCopy = {
     detail: { back: 'Kthehu', recommendations: 'Rekomandime dhe shënime', route: 'Hap udhëzimet', website: 'Mëso më shumë', addRecommendation: 'Shto rekomandim', recommendationName: 'Emri i vendit', description: 'Çfarë duhet të dinë mysafirët?', address: 'Adresa (opsionale)', url: 'Faqja ose biletat (opsionale)', remove: 'Hiq' }
   },
   sv: {
+    greeting: { morning: 'God morgon', day: 'God dag', evening: 'God kväll', night: 'Välkommen' },
     nav: { overview: 'Översikt', accommodations: 'Boenden', analytics: 'Analys', editor: 'Redigera gästguiden', package: 'Paket och provperiod', start: 'Start', edit: 'Redigera' },
     editorSections: { profile: 'Boendeprofil', guestContent: 'Guideinnehåll', quickAccess: 'Snabbåtkomst', theme: 'Utseende', logo: 'Logotyp', photos: 'Foton', qr: 'QR-kod' },
     hero: { badge: 'DIN VÄRDARBETSPLATS', title: 'Allt dina gäster behöver. På ett ställe.', description: 'Hantera digitala gästguider, följ användningen och förbättra vistelsen.', connected: 'Molnet är anslutet', error: 'Kontrollera molnet', status: 'Arbetsplatsstatus', one: 'boende', many: 'boenden' },
@@ -80,6 +88,7 @@ const dashboardWorkspaceCopy = {
     detail: { back: 'Tillbaka', recommendations: 'Tips och anteckningar', route: 'Visa vägbeskrivning', website: 'Läs mer', addRecommendation: 'Lägg till tips', recommendationName: 'Platsens namn', description: 'Vad behöver gästerna veta?', address: 'Adress (valfritt)', url: 'Webbplats eller biljettlänk (valfritt)', remove: 'Ta bort' }
   },
   nb: {
+    greeting: { morning: 'God morgen', day: 'God ettermiddag', evening: 'God kveld', night: 'Velkommen' },
     nav: { overview: 'Oversikt', accommodations: 'Overnattingssteder', analytics: 'Analyse', editor: 'Rediger gjesteguiden', package: 'Pakke og prøveperiode', start: 'Start', edit: 'Rediger' },
     editorSections: { profile: 'Overnattingsprofil', guestContent: 'Guideinnhold', quickAccess: 'Hurtigtilgang', theme: 'Utseende', logo: 'Logo', photos: 'Bilder', qr: 'QR-kode' },
     hero: { badge: 'DIN VERTSARBEIDSPLASS', title: 'Alt gjestene trenger. På ett sted.', description: 'Administrer digitale gjesteguider, følg bruken og gjør oppholdet bedre.', connected: 'Skyen er tilkoblet', error: 'Kontroller skytilkoblingen', status: 'Arbeidsplassstatus', one: 'overnattingssted', many: 'overnattingssteder' },
@@ -90,6 +99,7 @@ const dashboardWorkspaceCopy = {
     detail: { back: 'Tilbake', recommendations: 'Anbefalinger og notater', route: 'Åpne veibeskrivelse', website: 'Les mer', addRecommendation: 'Legg til anbefaling', recommendationName: 'Stedets navn', description: 'Hva bør gjestene vite?', address: 'Adresse (valgfritt)', url: 'Nettsted eller billettlenke (valgfritt)', remove: 'Fjern' }
   },
   it: {
+    greeting: { morning: 'Buongiorno', day: 'Buon pomeriggio', evening: 'Buonasera', night: 'Ti diamo il benvenuto' },
     nav: { overview: 'Panoramica', accommodations: 'Alloggi', analytics: 'Analisi', editor: 'Modifica la guida ospiti', package: 'Piano e prova', start: 'Inizio', edit: 'Modifica' },
     editorSections: { profile: 'Profilo della struttura', guestContent: 'Contenuti della guida', quickAccess: 'Accessi rapidi', theme: 'Aspetto', logo: 'Logo', photos: 'Foto', qr: 'Codice QR' },
     hero: { badge: 'AREA HOST', title: 'Tutto per i tuoi ospiti. In un solo posto.', description: 'Gestisci le guide digitali, controlla l’utilizzo e migliora facilmente il soggiorno.', connected: 'Cloud connesso', error: 'Controlla il cloud', status: 'Stato dell’area di lavoro', one: 'alloggio', many: 'alloggi' },
