@@ -39,6 +39,8 @@ export default function GuestGuide({
   const { activeTab, navigateGuest, selectedCategory, setShowWelcomeScreen, showWelcomeScreen } = navigation;
   const { guestFeedback, guestPageStatus, setGuestFeedback, trackGuestEvent, trackGuestPageView } = published;
   const { getWeatherDescription, weather, weatherLabels } = forecast;
+  const showGuideFeedback =
+    guestSlug && supabase && guestPageStatus === 'ready' && activeTab === 'services' && !selectedCategory;
   const [currentSlide] = useState(0);
   const [copiedWifi, setCopiedWifi] = useState(false);
   const copyWifiLabels = {
@@ -367,7 +369,7 @@ export default function GuestGuide({
             ))}
           </div>
         )}
-        {guestSlug && supabase && guestPageStatus === 'ready' && (
+        {showGuideFeedback && (
           <section className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm" aria-live="polite">
             <p className="text-sm font-bold text-slate-900">{guestFeedback ? ac.thanks : ac.helpfulPrompt}</p>
             {!guestFeedback && (
