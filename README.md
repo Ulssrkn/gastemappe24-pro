@@ -4,6 +4,16 @@
 
 Use Node 24 and run `npm ci`, `npm test` and `npm run build`. The tests apply the versioned migrations to an isolated PostgreSQL fixture and exercise guest reads, publishing, account isolation, deletion and analytics limits. For local browser testing, supply the variables in `.env.example` for a test Supabase environment.
 
+## Frontend layout
+
+- `src/App.jsx` connects authentication, navigation and shared guide state. It selects the guest or dashboard view.
+- `src/guest` contains the public guide, category rendering, published data and weather.
+- `src/dashboard` contains the owner workspace, Supabase queries, analytics, editor and QR print panel.
+- `src/guide` contains the preset catalog, guide defaults, reusable editing components and PDF export.
+- `src/i18n/guideCopy.js` contains the main guest and dashboard interface labels.
+
+The dashboard UI is loaded separately when the owner opens it. Published guide reads and owner writes still use their separate Supabase paths.
+
 ## Pilot release
 
 1. Match the active Vercel production deployment to a known source release before choosing the production branch. The production alias and GitHub `main` were serving different application versions during the audit.
