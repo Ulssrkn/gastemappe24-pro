@@ -1943,8 +1943,21 @@ export default function App() {
         {/* DASHBOARD CONTENT SECTIONS */}
         <div id="editor" className={`${dashboardSection === 'editor' ? '' : 'hidden'} max-w-6xl mx-auto space-y-6`}>
           <div><p className="text-[10px] font-black uppercase tracking-[.2em] text-amber-700">{dw.accommodations.workspace}</p><h1 className="mt-1 text-2xl font-black tracking-tight text-slate-900">{dw.nav.editor}</h1><p className="mt-1 text-sm text-slate-500">{dw.accommodations.description}</p></div>
+          <nav aria-label={dw.nav.editor} className="sticky top-2 z-30 rounded-2xl border border-slate-200 bg-white/95 p-2 shadow-sm backdrop-blur">
+            <div className="flex gap-1 overflow-x-auto">
+              {[
+                ['editor-property-profile', dw.editorSections.profile],
+                ['editor-guest-sections', dw.editorSections.guestContent],
+                ['editor-quick-access', dw.editorSections.quickAccess],
+                ['editor-theme', dw.editorSections.theme],
+                ['editor-logo', dw.editorSections.logo],
+                ['editor-photos', dw.editorSections.photos],
+                ['editor-qr', dw.editorSections.qr]
+              ].map(([target, label]) => <button key={target} type="button" onClick={() => document.getElementById(target)?.scrollIntoView({ behavior: 'smooth', block: 'start' })} className="shrink-0 rounded-xl px-3 py-2 text-[10px] font-semibold text-slate-600 transition hover:bg-slate-100 hover:text-slate-900">{label}</button>)}
+            </div>
+          </nav>
           {/* 1. HOTEL BİLGİLERİ */}
-          <div id="editor-property-profile" className="scroll-mt-6 bg-white rounded-3xl p-6 border border-stone-200 shadow-sm space-y-4">
+          <div id="editor-property-profile" className="scroll-mt-24 bg-white rounded-3xl p-6 border border-stone-200 shadow-sm space-y-4">
             <h3 className={`font-black text-xs ${currentTheme.text} uppercase tracking-wider`}>{t.sec1Title}</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
               {[
@@ -1959,116 +1972,10 @@ export default function App() {
               ].map(field=><div key={field.key} className="relative"><label className="block text-[10px] font-bold text-stone-500 uppercase mb-1">{field.label}</label>{field.key==='reviewPlatform' ? <select value={hotel.reviewPlatform || 'google'} onChange={e=>setHotel(prev=>({...prev,reviewPlatform:e.target.value}))} className="w-full p-3 text-sm border border-stone-200 rounded-xl bg-stone-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-200"><option value="google">Google</option><option value="airbnb">Airbnb</option><option value="booking">Booking.com</option><option value="tripadvisor">Tripadvisor</option><option value="custom">Andere Plattform</option></select> : field.autocomplete ? <AddressAutocomplete lang={lang} value={hotel[field.key] || ''} onChange={value => setHotel(prev => ({ ...prev, [field.key]: value }))} className="w-full p-3 text-sm border border-stone-200 rounded-xl bg-stone-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-200" /> : <input type={field.type} value={hotel[field.key]||''} onChange={e=>setHotel(prev=>({...prev,[field.key]:e.target.value}))} className="w-full p-3 text-sm border border-stone-200 rounded-xl bg-stone-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-200"/>}{field.key==='reviewPlatform' && <p className="mt-1 text-[10px] text-stone-400">Airbnb: Gäste können ihre Unterkunft nur über eine tatsächliche Airbnb-Buchung bewerten. Ein allgemeiner Link führt zum Airbnb-Reisebereich.</p>}{field.autocomplete && <p className="mt-1 text-[10px] text-stone-400">Tipp: Adresse möglichst mit Straße, PLZ und Ort eingeben. Die Wetterfunktion nutzt bei Bedarf den Region-/Standort-Eintrag.</p>}</div>)}
             </div>
             <p className="text-[11px] text-stone-500">Diese Angaben werden in der Gästemappe verwendet. Änderungen bitte oben rechts speichern.</p>
-            <div id="editor-quick-access" className="scroll-mt-6 border-t border-stone-100 pt-4 space-y-4">
-              <div className="flex flex-wrap items-center justify-between gap-3">
-                <div><h4 className="text-xs font-black uppercase tracking-wider text-stone-700">Schnellzugriff · Preset-Editor</h4><p className="text-[11px] text-stone-500 mt-1">Kartentexte je Sprache bearbeiten. WLAN-Zugangsdaten gelten für alle Sprachen.</p></div>
-                <select aria-label="Sprache der Schnellzugriff-Presets" value={quickEditLang} onChange={e => setQuickEditLang(e.target.value)} className="bg-white border border-stone-200 text-xs rounded-xl px-3 py-2">
-                  <option value="de">🇩🇪 Deutsch</option><option value="en">🇬🇧 English</option><option value="tr">🇹🇷 Türkçe</option><option value="fr">🇫🇷 Français</option><option value="hr">🇭🇷 Hrvatski</option><option value="it">🇮🇹 Italiano</option><option value="es">🇪🇸 Español</option><option value="sv">🇸🇪 Svenska</option><option value="no">🇳🇴 Norsk</option><option value="sq">🇦🇱 Shqip</option>
-                </select>
-              </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                {[{id:'wifi',enabled:'showWifi',label:'WLAN'},{id:'parking',enabled:'showParking',label:'Parkplatz'},{id:'breakfast',enabled:'showBreakfast',label:'Frühstück'},{id:'checkin',enabled:'showCheckInOut',label:'Check-in / Check-out'}].map(card => (
-                  <div key={card.id} className="rounded-2xl border border-stone-200 bg-stone-50 p-3 space-y-3">
-                    <div className="flex items-center justify-between gap-2"><span className="text-xs font-bold text-slate-800">{card.label}</span><label className="flex items-center gap-2 text-[11px] font-semibold text-stone-600 cursor-pointer"><input type="checkbox" checked={hotel[card.enabled] !== false} onChange={e => setHotel(prev => ({...prev,[card.enabled]:e.target.checked}))} className="accent-emerald-700 w-4 h-4" />Anzeigen</label></div>
-                    <label className="block text-[10px] font-bold uppercase text-stone-500">Titel<input value={hotel.quickAccessContent?.[quickEditLang]?.[card.id]?.title ?? quickAccessDefaults[quickEditLang][card.id].title} onChange={e => updateQuickCardText(card.id,'title',e.target.value)} className="mt-1 w-full rounded-lg border border-stone-200 bg-white p-2.5 text-xs" /></label>
-                    <label className="block text-[10px] font-bold uppercase text-stone-500">Beschreibung<textarea rows="2" value={hotel.quickAccessContent?.[quickEditLang]?.[card.id]?.description ?? quickAccessDefaults[quickEditLang][card.id].description} onChange={e => updateQuickCardText(card.id,'description',e.target.value)} className="mt-1 w-full rounded-lg border border-stone-200 bg-white p-2.5 text-xs resize-y" /></label>
-                  </div>
-                ))}
-              </div>
-              <div className="rounded-2xl border border-sky-200 bg-sky-50/70 p-3 space-y-3"><div className="text-xs font-bold text-slate-800">WLAN-Zugangsdaten · für alle Sprachen</div><div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <label className="block text-[10px] font-bold uppercase text-stone-500">Netzwerkname (SSID)<input value={hotel.wifiSsid || ''} onChange={e => setHotel(prev => ({...prev,wifiSsid:e.target.value}))} className="mt-1 w-full rounded-lg border border-stone-200 bg-white p-2.5 text-xs" /></label>
-                <label className="block text-[10px] font-bold uppercase text-stone-500">WLAN-Passwort<input value={hotel.wifiPass || ''} onChange={e => setHotel(prev => ({...prev,wifiPass:e.target.value}))} className="mt-1 w-full rounded-lg border border-stone-200 bg-white p-2.5 text-xs" /></label>
-              </div></div>
-            </div>
+            
           </div>
 
-          {/* 2. TEMA RENKLERİ */}
-          <div className="bg-white rounded-3xl p-6 border border-stone-200 shadow-sm space-y-4">
-            <h3 className={`font-black text-xs ${currentTheme.text} uppercase tracking-wider`}>{t.sec2Title}</h3>
-            <div className="flex flex-wrap gap-2.5">
-              {themeColors.map(tc => (
-                <button
-                  key={tc.id}
-                  onClick={() => setHotel({ ...hotel, themeColor: tc.id })}
-                  className={`px-4 py-2 rounded-xl text-xs font-bold border transition cursor-pointer flex items-center gap-2 ${hotel.themeColor === tc.id ? `${tc.bg} text-white border-transparent shadow` : 'bg-stone-50 text-stone-700 border-stone-200'}`}
-                >
-                  <span className={`w-3 h-3 rounded-full ${tc.bg}`}></span>
-                  {tc.name}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* 3. LOGO YÜKLEME */}
-          <div id="editor-logo" className="scroll-mt-6 bg-white rounded-3xl p-6 border border-stone-200 shadow-sm space-y-4">
-            <h3 className={`font-black text-xs ${currentTheme.text} uppercase tracking-wider`}>{t.sec3Title}</h3>
-            <div className="flex items-center gap-4">
-              {hotel.logoUrl ? (
-                <img src={hotel.logoUrl} alt="Logo" className="w-12 h-12 rounded-xl object-cover border shadow-xs" />
-              ) : (
-                <div className={`w-12 h-12 rounded-xl ${currentTheme.bgLight} ${currentTheme.text} flex items-center justify-center font-black`}>LOGO</div>
-              )}
-              <label className={`px-4 py-2.5 rounded-xl text-xs font-bold text-white ${currentTheme.bg} cursor-pointer shadow hover:opacity-95`}>
-                <Upload className="w-4 h-4 inline mr-1.5" /> Logo Seç / Yükle
-                <input type="file" accept="image/*" onChange={handleLogoUpload} className="hidden" />
-              </label>
-            </div>
-          </div>
-
-          {/* 4. SLIDER FOTOĞRAF YÖNETİMİ */}
-          <div id="editor-photos" className="scroll-mt-6 bg-white rounded-3xl p-6 border border-stone-200 shadow-sm space-y-4">
-            <div className="flex items-center justify-between">
-              <h3 className={`font-black text-xs ${currentTheme.text} uppercase tracking-wider`}>{t.sec4Title}</h3>
-              <label className={`px-4 py-2 rounded-xl text-xs font-bold text-white ${currentTheme.bg} cursor-pointer shadow hover:opacity-95 flex items-center gap-1.5`}>
-                <Plus className="w-4 h-4" /> Fotoğraf Ekle
-                <input type="file" accept="image/*" onChange={handleImageUpload} className="hidden" />
-              </label>
-            </div>
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-              {(Array.isArray(hotel.images) ? hotel.images : []).map((img, idx) => (
-                <div key={idx} className="relative rounded-2xl overflow-hidden border aspect-video group shadow-xs bg-stone-100">
-                  <img src={img} alt={`Slide ${idx}`} className="w-full h-full object-cover" />
-                  <button 
-                    onClick={() => removeImage(idx)} 
-                    className="absolute top-2 right-2 p-1.5 bg-rose-600 text-white rounded-xl opacity-0 group-hover:opacity-100 transition shadow cursor-pointer"
-                  >
-                    <Trash2 className="w-3.5 h-3.5" />
-                  </button>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* 5. QR-CODE & PRINT CENTER (YAZDIRMA MERKEZİ) */}
-          <div className="bg-white rounded-3xl p-6 border border-stone-200 shadow-sm space-y-4">
-            <div className="flex items-center gap-3">
-              <div className={`p-3 rounded-2xl ${currentTheme.bgLight} ${currentTheme.text}`}><QrCode className="w-6 h-6" /></div>
-              <div>
-                <h3 className={`font-black text-xs ${currentTheme.text} uppercase tracking-wider`}>{t.sec5Title}</h3>
-                <p className="text-xs text-stone-500">{t.qrTitle}</p>
-              </div>
-            </div>
-            <style>{`@page { size: ${qrPrintFormat==='a4'?'A4 portrait':qrPrintFormat==='a5'?'A5 portrait':'150mm 100mm'};margin:0 } @media print { html,body{margin:0!important;padding:0!important;width:100%!important;height:100%!important} body *{visibility:hidden!important} #qr-print-area,#qr-print-area *{visibility:visible!important} #qr-print-area{display:block!important;position:fixed!important;inset:0;width:100%;height:100%;background:#f4f1e9!important} #qr-print-area .qr-sheet{box-sizing:border-box;width:100%;height:100%;padding:10mm;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;font-family:Arial,sans-serif;color:#172b3a} #qr-print-area .qr-frame{width:fit-content;max-width:100%;padding:9mm;border:1px solid #e7e1d5;border-radius:8mm;background:#fff;display:flex;flex-direction:column;align-items:center;gap:3mm} #qr-print-area .qr-frame img{width:14mm;height:14mm;object-fit:cover;border-radius:50%} #qr-print-area .qr-frame>div{font-size:9pt;letter-spacing:3pt;color:#a47b3b;font-weight:bold} #qr-print-area h1{font-size:26pt;font-weight:800;margin:0} #qr-print-area p{margin:0;color:#697783} #qr-print-area svg{width:${qrPrintFormat==='a4'?'76mm':qrPrintFormat==='a5'?'62mm':'34mm'}!important;height:auto!important} #qr-print-area strong{font-size:14pt} #qr-print-area span,#qr-print-area footer{font-size:8pt;color:#77828b;letter-spacing:1pt} }`}</style>
-            <div className="grid grid-cols-1 lg:grid-cols-[.9fr_1.1fr] gap-6 items-center pt-2">
-              <div className="space-y-4">
-                <div className="flex flex-wrap gap-2">{[['a4','A4'],['a5','A5'],['card','Karte']].map(([v,l])=><button key={v} onClick={()=>setQrPrintFormat(v)} className={`px-4 py-2 rounded-xl text-xs font-bold border ${qrPrintFormat===v?'bg-slate-900 text-white border-slate-900':'bg-white text-slate-600 border-stone-200'}`}>{l}</button>)}</div>
-                <div className="rounded-2xl bg-slate-900 text-white p-5"><span className="text-[10px] uppercase tracking-[.24em] text-amber-300 font-bold">Gastemappe24 Pro</span><h4 className="text-lg font-black mt-2">Ein QR-Code. Alles für Ihre Gäste.</h4><p className="text-xs text-slate-300 mt-2">Scannen und direkt die digitale Gästemappe öffnen – ohne App und ohne Anmeldung.</p></div>
-                <div className="flex flex-wrap gap-2"><button onClick={()=>window.print()} className="px-4 py-2.5 rounded-xl bg-slate-900 text-white text-xs font-bold flex items-center gap-2"><Printer className="w-4 h-4"/>Drucken</button>
-                  <button onClick={async()=>{try{const el=document.querySelector('#qr-print-area svg');if(!el)throw Error('QR fehlt');await createQrPdf({svg:new XMLSerializer().serializeToString(el),hotelName:hotel.name,logoUrl:hotel.logoUrl,format:qrPrintFormat})}catch(e){console.error(e);alert('PDF konnte nicht erstellt werden. Bitte erneut versuchen.')}}} className="px-4 py-2.5 rounded-xl border border-emerald-700 text-emerald-800 bg-emerald-50 text-xs font-bold flex items-center gap-2"><Save className="w-4 h-4"/>PDF herunterladen</button>
-                  <button onClick={()=>navigator.clipboard?.writeText(guestPageUrl)} className="px-4 py-2.5 rounded-xl border border-stone-200 bg-white text-xs font-bold flex items-center gap-2"><Copy className="w-4 h-4"/>Link kopieren</button></div>
-                <p className="text-[10px] text-stone-400 break-all">{guestPageUrl}</p><p className="text-[10px] text-emerald-700 font-semibold">Kostenlos · Keine externe API · Keine laufenden Zusatzkosten</p>
-              </div>
-              <div className="rounded-[28px] bg-[#f4f1e9] p-4 sm:p-7 border border-stone-200"><div className="mx-auto max-w-[390px] bg-white rounded-[24px] overflow-hidden shadow-xl border border-stone-200"><div className="h-2 bg-[#172b3a]"/><div className="px-6 py-7 text-center">
-                {hotel.logoUrl?<img src={hotel.logoUrl} alt="Hotel Logo" className="w-12 h-12 rounded-full object-cover mx-auto mb-4 border"/>:<div className="w-12 h-12 rounded-full bg-[#172b3a] text-amber-300 mx-auto mb-4 flex items-center justify-center font-black text-lg">{(hotel.name||'H').slice(0,1).toUpperCase()}</div>}
-                <p className="text-[9px] font-black tracking-[.28em] text-amber-700 uppercase mb-2">Willkommen</p><h4 className="text-2xl font-black tracking-tight text-slate-900">{hotel.name||'Ihre Unterkunft'}</h4><p className="text-xs text-stone-500 mt-1">Ihre digitale Gästemappe</p>
-                <div className="my-5 inline-flex p-3 rounded-2xl border border-stone-100"><QRCodeSVG value={guestPageUrl||'https://example.com'} size={qrPrintFormat==='card'?130:190} level="H" includeMargin/></div><p className="text-sm font-extrabold text-slate-900">Scannen & entdecken</p><p className="text-[10px] text-stone-500 mt-1">WLAN · Services · Informationen · Umgebung</p>
-              </div><div className="bg-[#172b3a] text-white text-center py-3 text-[9px] font-bold tracking-[.2em]">GASTEMAPPE24 PRO</div></div><p className="text-center text-[10px] text-stone-500 mt-3">Live-Vorschau · {qrPrintFormat.toUpperCase()}</p></div>
-            </div>
-            <div id="qr-print-area" className="hidden"><div className="qr-sheet"><div className="qr-frame">{hotel.logoUrl&&<img src={hotel.logoUrl} alt="Logo"/>}<div>WILLKOMMEN</div><h1>{hotel.name||'Ihre Unterkunft'}</h1><p>Ihre digitale Gästemappe</p><QRCodeSVG value={guestPageUrl||'https://example.com'} size={320} level="H" includeMargin/><strong>Scannen & entdecken</strong><span>WLAN · Services · Informationen · Umgebung</span></div><footer>GASTEMAPPE24 PRO</footer></div></div>
-          </div>
-
-          {/* 6. DİNAMİK PRESET KATEGORİLER (3-ADIMLI MODAL SİSTEMİ) */}
-          <div id="editor-guest-sections" className="scroll-mt-6 bg-white rounded-3xl p-6 border border-stone-200 shadow-sm space-y-6">
+          <div id="editor-guest-sections" className="scroll-mt-24 bg-white rounded-3xl p-6 border border-stone-200 shadow-sm space-y-6">
             <div className="flex flex-wrap items-center justify-between gap-4">
               <h3 className={`font-black text-xs ${currentTheme.text} uppercase tracking-wider`}>{t.sec6Title}</h3>
               <button
@@ -2118,6 +2025,117 @@ export default function App() {
               ))}
             </div>
           </div>
+
+          <div id="editor-quick-access" className="scroll-mt-24 rounded-3xl border border-stone-200 bg-white p-6 shadow-sm space-y-4">
+              <div className="flex flex-wrap items-center justify-between gap-3">
+                <div><h4 className="text-xs font-black uppercase tracking-wider text-stone-700">Schnellzugriff · Preset-Editor</h4><p className="text-[11px] text-stone-500 mt-1">Kartentexte je Sprache bearbeiten. WLAN-Zugangsdaten gelten für alle Sprachen.</p></div>
+                <select aria-label="Sprache der Schnellzugriff-Presets" value={quickEditLang} onChange={e => setQuickEditLang(e.target.value)} className="bg-white border border-stone-200 text-xs rounded-xl px-3 py-2">
+                  <option value="de">🇩🇪 Deutsch</option><option value="en">🇬🇧 English</option><option value="tr">🇹🇷 Türkçe</option><option value="fr">🇫🇷 Français</option><option value="hr">🇭🇷 Hrvatski</option><option value="it">🇮🇹 Italiano</option><option value="es">🇪🇸 Español</option><option value="sv">🇸🇪 Svenska</option><option value="no">🇳🇴 Norsk</option><option value="sq">🇦🇱 Shqip</option>
+                </select>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {[{id:'wifi',enabled:'showWifi',label:'WLAN'},{id:'parking',enabled:'showParking',label:'Parkplatz'},{id:'breakfast',enabled:'showBreakfast',label:'Frühstück'},{id:'checkin',enabled:'showCheckInOut',label:'Check-in / Check-out'}].map(card => (
+                  <div key={card.id} className="rounded-2xl border border-stone-200 bg-stone-50 p-3 space-y-3">
+                    <div className="flex items-center justify-between gap-2"><span className="text-xs font-bold text-slate-800">{card.label}</span><label className="flex items-center gap-2 text-[11px] font-semibold text-stone-600 cursor-pointer"><input type="checkbox" checked={hotel[card.enabled] !== false} onChange={e => setHotel(prev => ({...prev,[card.enabled]:e.target.checked}))} className="accent-emerald-700 w-4 h-4" />Anzeigen</label></div>
+                    <label className="block text-[10px] font-bold uppercase text-stone-500">Titel<input value={hotel.quickAccessContent?.[quickEditLang]?.[card.id]?.title ?? quickAccessDefaults[quickEditLang][card.id].title} onChange={e => updateQuickCardText(card.id,'title',e.target.value)} className="mt-1 w-full rounded-lg border border-stone-200 bg-white p-2.5 text-xs" /></label>
+                    <label className="block text-[10px] font-bold uppercase text-stone-500">Beschreibung<textarea rows="2" value={hotel.quickAccessContent?.[quickEditLang]?.[card.id]?.description ?? quickAccessDefaults[quickEditLang][card.id].description} onChange={e => updateQuickCardText(card.id,'description',e.target.value)} className="mt-1 w-full rounded-lg border border-stone-200 bg-white p-2.5 text-xs resize-y" /></label>
+                  </div>
+                ))}
+              </div>
+              <div className="rounded-2xl border border-sky-200 bg-sky-50/70 p-3 space-y-3"><div className="text-xs font-bold text-slate-800">WLAN-Zugangsdaten · für alle Sprachen</div><div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <label className="block text-[10px] font-bold uppercase text-stone-500">Netzwerkname (SSID)<input value={hotel.wifiSsid || ''} onChange={e => setHotel(prev => ({...prev,wifiSsid:e.target.value}))} className="mt-1 w-full rounded-lg border border-stone-200 bg-white p-2.5 text-xs" /></label>
+                <label className="block text-[10px] font-bold uppercase text-stone-500">WLAN-Passwort<input value={hotel.wifiPass || ''} onChange={e => setHotel(prev => ({...prev,wifiPass:e.target.value}))} className="mt-1 w-full rounded-lg border border-stone-200 bg-white p-2.5 text-xs" /></label>
+              </div></div>
+            </div>
+
+
+          {/* 2. TEMA RENKLERİ */}
+          <div id="editor-theme" className="scroll-mt-24 bg-white rounded-3xl p-6 border border-stone-200 shadow-sm space-y-4">
+            <h3 className={`font-black text-xs ${currentTheme.text} uppercase tracking-wider`}>{t.sec2Title}</h3>
+            <div className="flex flex-wrap gap-2.5">
+              {themeColors.map(tc => (
+                <button
+                  key={tc.id}
+                  onClick={() => setHotel({ ...hotel, themeColor: tc.id })}
+                  className={`px-4 py-2 rounded-xl text-xs font-bold border transition cursor-pointer flex items-center gap-2 ${hotel.themeColor === tc.id ? `${tc.bg} text-white border-transparent shadow` : 'bg-stone-50 text-stone-700 border-stone-200'}`}
+                >
+                  <span className={`w-3 h-3 rounded-full ${tc.bg}`}></span>
+                  {tc.name}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* 3. LOGO YÜKLEME */}
+          <div id="editor-logo" className="scroll-mt-24 bg-white rounded-3xl p-6 border border-stone-200 shadow-sm space-y-4">
+            <h3 className={`font-black text-xs ${currentTheme.text} uppercase tracking-wider`}>{t.sec3Title}</h3>
+            <div className="flex items-center gap-4">
+              {hotel.logoUrl ? (
+                <img src={hotel.logoUrl} alt="Logo" className="w-12 h-12 rounded-xl object-cover border shadow-xs" />
+              ) : (
+                <div className={`w-12 h-12 rounded-xl ${currentTheme.bgLight} ${currentTheme.text} flex items-center justify-center font-black`}>LOGO</div>
+              )}
+              <label className={`px-4 py-2.5 rounded-xl text-xs font-bold text-white ${currentTheme.bg} cursor-pointer shadow hover:opacity-95`}>
+                <Upload className="w-4 h-4 inline mr-1.5" /> Logo Seç / Yükle
+                <input type="file" accept="image/*" onChange={handleLogoUpload} className="hidden" />
+              </label>
+            </div>
+          </div>
+
+          {/* 4. SLIDER FOTOĞRAF YÖNETİMİ */}
+          <div id="editor-photos" className="scroll-mt-24 bg-white rounded-3xl p-6 border border-stone-200 shadow-sm space-y-4">
+            <div className="flex items-center justify-between">
+              <h3 className={`font-black text-xs ${currentTheme.text} uppercase tracking-wider`}>{t.sec4Title}</h3>
+              <label className={`px-4 py-2 rounded-xl text-xs font-bold text-white ${currentTheme.bg} cursor-pointer shadow hover:opacity-95 flex items-center gap-1.5`}>
+                <Plus className="w-4 h-4" /> Fotoğraf Ekle
+                <input type="file" accept="image/*" onChange={handleImageUpload} className="hidden" />
+              </label>
+            </div>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+              {(Array.isArray(hotel.images) ? hotel.images : []).map((img, idx) => (
+                <div key={idx} className="relative rounded-2xl overflow-hidden border aspect-video group shadow-xs bg-stone-100">
+                  <img src={img} alt={`Slide ${idx}`} className="w-full h-full object-cover" />
+                  <button 
+                    onClick={() => removeImage(idx)} 
+                    className="absolute top-2 right-2 p-1.5 bg-rose-600 text-white rounded-xl opacity-0 group-hover:opacity-100 transition shadow cursor-pointer"
+                  >
+                    <Trash2 className="w-3.5 h-3.5" />
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* 5. QR-CODE & PRINT CENTER (YAZDIRMA MERKEZİ) */}
+          <div id="editor-qr" className="scroll-mt-24 bg-white rounded-3xl p-6 border border-stone-200 shadow-sm space-y-4">
+            <div className="flex items-center gap-3">
+              <div className={`p-3 rounded-2xl ${currentTheme.bgLight} ${currentTheme.text}`}><QrCode className="w-6 h-6" /></div>
+              <div>
+                <h3 className={`font-black text-xs ${currentTheme.text} uppercase tracking-wider`}>{t.sec5Title}</h3>
+                <p className="text-xs text-stone-500">{t.qrTitle}</p>
+              </div>
+            </div>
+            <style>{`@page { size: ${qrPrintFormat==='a4'?'A4 portrait':qrPrintFormat==='a5'?'A5 portrait':'150mm 100mm'};margin:0 } @media print { html,body{margin:0!important;padding:0!important;width:100%!important;height:100%!important} body *{visibility:hidden!important} #qr-print-area,#qr-print-area *{visibility:visible!important} #qr-print-area{display:block!important;position:fixed!important;inset:0;width:100%;height:100%;background:#f4f1e9!important} #qr-print-area .qr-sheet{box-sizing:border-box;width:100%;height:100%;padding:10mm;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;font-family:Arial,sans-serif;color:#172b3a} #qr-print-area .qr-frame{width:fit-content;max-width:100%;padding:9mm;border:1px solid #e7e1d5;border-radius:8mm;background:#fff;display:flex;flex-direction:column;align-items:center;gap:3mm} #qr-print-area .qr-frame img{width:14mm;height:14mm;object-fit:cover;border-radius:50%} #qr-print-area .qr-frame>div{font-size:9pt;letter-spacing:3pt;color:#a47b3b;font-weight:bold} #qr-print-area h1{font-size:26pt;font-weight:800;margin:0} #qr-print-area p{margin:0;color:#697783} #qr-print-area svg{width:${qrPrintFormat==='a4'?'76mm':qrPrintFormat==='a5'?'62mm':'34mm'}!important;height:auto!important} #qr-print-area strong{font-size:14pt} #qr-print-area span,#qr-print-area footer{font-size:8pt;color:#77828b;letter-spacing:1pt} }`}</style>
+            <div className="grid grid-cols-1 lg:grid-cols-[.9fr_1.1fr] gap-6 items-center pt-2">
+              <div className="space-y-4">
+                <div className="flex flex-wrap gap-2">{[['a4','A4'],['a5','A5'],['card','Karte']].map(([v,l])=><button key={v} onClick={()=>setQrPrintFormat(v)} className={`px-4 py-2 rounded-xl text-xs font-bold border ${qrPrintFormat===v?'bg-slate-900 text-white border-slate-900':'bg-white text-slate-600 border-stone-200'}`}>{l}</button>)}</div>
+                <div className="rounded-2xl bg-slate-900 text-white p-5"><span className="text-[10px] uppercase tracking-[.24em] text-amber-300 font-bold">Gastemappe24 Pro</span><h4 className="text-lg font-black mt-2">Ein QR-Code. Alles für Ihre Gäste.</h4><p className="text-xs text-slate-300 mt-2">Scannen und direkt die digitale Gästemappe öffnen – ohne App und ohne Anmeldung.</p></div>
+                <div className="flex flex-wrap gap-2"><button onClick={()=>window.print()} className="px-4 py-2.5 rounded-xl bg-slate-900 text-white text-xs font-bold flex items-center gap-2"><Printer className="w-4 h-4"/>Drucken</button>
+                  <button onClick={async()=>{try{const el=document.querySelector('#qr-print-area svg');if(!el)throw Error('QR fehlt');await createQrPdf({svg:new XMLSerializer().serializeToString(el),hotelName:hotel.name,logoUrl:hotel.logoUrl,format:qrPrintFormat})}catch(e){console.error(e);alert('PDF konnte nicht erstellt werden. Bitte erneut versuchen.')}}} className="px-4 py-2.5 rounded-xl border border-emerald-700 text-emerald-800 bg-emerald-50 text-xs font-bold flex items-center gap-2"><Save className="w-4 h-4"/>PDF herunterladen</button>
+                  <button onClick={()=>navigator.clipboard?.writeText(guestPageUrl)} className="px-4 py-2.5 rounded-xl border border-stone-200 bg-white text-xs font-bold flex items-center gap-2"><Copy className="w-4 h-4"/>Link kopieren</button></div>
+                <p className="text-[10px] text-stone-400 break-all">{guestPageUrl}</p><p className="text-[10px] text-emerald-700 font-semibold">Kostenlos · Keine externe API · Keine laufenden Zusatzkosten</p>
+              </div>
+              <div className="rounded-[28px] bg-[#f4f1e9] p-4 sm:p-7 border border-stone-200"><div className="mx-auto max-w-[390px] bg-white rounded-[24px] overflow-hidden shadow-xl border border-stone-200"><div className="h-2 bg-[#172b3a]"/><div className="px-6 py-7 text-center">
+                {hotel.logoUrl?<img src={hotel.logoUrl} alt="Hotel Logo" className="w-12 h-12 rounded-full object-cover mx-auto mb-4 border"/>:<div className="w-12 h-12 rounded-full bg-[#172b3a] text-amber-300 mx-auto mb-4 flex items-center justify-center font-black text-lg">{(hotel.name||'H').slice(0,1).toUpperCase()}</div>}
+                <p className="text-[9px] font-black tracking-[.28em] text-amber-700 uppercase mb-2">Willkommen</p><h4 className="text-2xl font-black tracking-tight text-slate-900">{hotel.name||'Ihre Unterkunft'}</h4><p className="text-xs text-stone-500 mt-1">Ihre digitale Gästemappe</p>
+                <div className="my-5 inline-flex p-3 rounded-2xl border border-stone-100"><QRCodeSVG value={guestPageUrl||'https://example.com'} size={qrPrintFormat==='card'?130:190} level="H" includeMargin/></div><p className="text-sm font-extrabold text-slate-900">Scannen & entdecken</p><p className="text-[10px] text-stone-500 mt-1">WLAN · Services · Informationen · Umgebung</p>
+              </div><div className="bg-[#172b3a] text-white text-center py-3 text-[9px] font-bold tracking-[.2em]">GASTEMAPPE24 PRO</div></div><p className="text-center text-[10px] text-stone-500 mt-3">Live-Vorschau · {qrPrintFormat.toUpperCase()}</p></div>
+            </div>
+            <div id="qr-print-area" className="hidden"><div className="qr-sheet"><div className="qr-frame">{hotel.logoUrl&&<img src={hotel.logoUrl} alt="Logo"/>}<div>WILLKOMMEN</div><h1>{hotel.name||'Ihre Unterkunft'}</h1><p>Ihre digitale Gästemappe</p><QRCodeSVG value={guestPageUrl||'https://example.com'} size={320} level="H" includeMargin/><strong>Scannen & entdecken</strong><span>WLAN · Services · Informationen · Umgebung</span></div><footer>GASTEMAPPE24 PRO</footer></div></div>
+          </div>
+
+          {/* 6. DİNAMİK PRESET KATEGORİLER (3-ADIMLI MODAL SİSTEMİ) */}
+          
         </div>
       </div>
     );
