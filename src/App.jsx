@@ -2131,9 +2131,9 @@ export default function App() {
           <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-slate-950/20"></div>
         </div>
 
-        <div className="relative z-10 p-6 flex justify-between items-center text-white">
-          <span className="text-xs font-bold uppercase">{hotel.name}</span>
-          <select value={lang} onChange={(e) => setLang(e.target.value)} className="bg-black/40 border border-white/30 text-white text-xs rounded-xl px-2.5 py-1.5 cursor-pointer">
+        <div className="relative z-10 flex min-w-0 items-center justify-between gap-3 p-6 text-white">
+          <span title={hotel.name} className="min-w-0 flex-1 line-clamp-2 break-words text-xs font-bold uppercase leading-tight">{hotel.name}</span>
+          <select value={lang} onChange={(e) => setLang(e.target.value)} className="shrink-0 rounded-xl border border-white/30 bg-black/40 px-2.5 py-1.5 text-xs text-white cursor-pointer">
             <option value="de">🇩🇪 DE</option>
             <option value="en">🇬🇧 EN</option>
             <option value="tr">🇹🇷 TR</option>
@@ -2148,7 +2148,7 @@ export default function App() {
         </div>
 
         <div className="relative z-10 px-6 pt-4 pb-[calc(env(safe-area-inset-bottom)+1.5rem)] space-y-4 text-white shrink-0">
-          <h1 className="text-3xl font-black">{hotel.name}</h1>
+          <h1 className="line-clamp-3 break-words text-3xl font-black leading-tight">{hotel.name}</h1>
           <button onClick={() => setShowWelcomeScreen(false)} className={`w-full ${currentTheme.bg} text-white py-4 rounded-2xl font-bold text-sm shadow-2xl flex items-center justify-center gap-2 cursor-pointer`}>
             <span>{t.welcomeButton}</span><ArrowRight className="w-4 h-4" />
           </button>
