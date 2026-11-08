@@ -47,7 +47,6 @@ create policy "Hotel owners read their own aggregate analytics"
     )
   );
 
--- Only the server-side tracking function (service_role) can increment counters.
 create or replace function public.gm24_increment_page_view(p_hotel_id uuid, p_page_key text)
 returns void
 language plpgsql

@@ -13,8 +13,6 @@ declare
   accommodation_count bigint;
   accommodation_limit integer;
 begin
-  -- Serialize concurrent inserts for one owner, including the first insert
-  -- before the AFTER INSERT trial initializer has created an account row.
   perform pg_advisory_xact_lock(hashtextextended(new.owner_id::text, 240324));
 
   select count(*) into accommodation_count

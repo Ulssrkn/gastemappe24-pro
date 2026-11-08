@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { Eye, EyeOff } from 'lucide-react';
+import pilotCopy from '../pilotCopy.js';
 
-export default function AuthGate({ supabase }) {
+export default function AuthGate({ supabase, lang, recovery = false, onRecovered }) {
+  const copy = pilotCopy[lang] || pilotCopy.de;
   const [mode, setMode] = useState('login');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -10,112 +12,87 @@ export default function AuthGate({ supabase }) {
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
 
-  const submit = async (event) => {
+  const switchMode = next => {
+    setMode(next);
+    setPassword('');
+    setShowPassword(false);
+    setMessage('');
+    setError('');
+  };
+
+  const submit = async event => {
     event.preventDefault();
+    if (busy) return;
     setBusy(true);
     setMessage('');
     setError('');
     try {
-      if (mode === 'reset') {
-        const { error: requestError } = await supabase.auth.resetPasswordForEmail(email, {
-          redirectTo: window.location.origin
-        });
-        if (requestError) throw requestError;
-        setMessage('Wenn diese E-Mail registriert ist, erhältst du einen Link zum Zurücksetzen des Passworts.');
+      if (recovery) {
+        const result = await supabase.auth.updateUser({ password });
+        if (result.error) throw result.error;
+        setPassword('');
+        onRecovered();
+      } else if (mode === 'reset') {
+        const result = await supabase.auth.resetPasswordForEmail(email.trim(), { redirectTo: window.location.origin });
+        if (result.error) throw result.error;
+        setMessage(copy.resetSent);
       } else if (mode === 'signup') {
-        const { data, error: signUpError } = await supabase.auth.signUp({
-          email: email.trim(),
-          password
-        });
-        if (signUpError) throw signUpError;
-        setMessage(data.session
-          ? 'Konto erstellt. Du wirst angemeldet …'
-          : 'Konto erstellt. Bitte bestätige zuerst deine E-Mail-Adresse über den zugesandten Link.');
+        const result = await supabase.auth.signUp({ email: email.trim(), password });
+        if (result.error) throw result.error;
+        if (!result.data.session) setMessage(copy.confirmEmail);
       } else {
-        const { error: signInError } = await supabase.auth.signInWithPassword({
-          email: email.trim(),
-          password
-        });
-        if (signInError) throw signInError;
+        const result = await supabase.auth.signInWithPassword({ email: email.trim(), password });
+        if (result.error) throw result.error;
       }
-    } catch (err) {
-      setError(err?.message || 'Anmeldung fehlgeschlagen. Bitte versuche es erneut.');
+    } catch {
+      setError(copy.authError);
     } finally {
       setBusy(false);
     }
   };
 
-  const title = mode === 'signup' ? 'Hotelkonto erstellen'
-    : mode === 'reset' ? 'Passwort zurücksetzen'
-    : 'Hotel-Dashboard';
-  const submitLabel = mode === 'signup' ? 'Konto erstellen'
-    : mode === 'reset' ? 'Reset-Link senden'
-    : 'Anmelden';
+  const title = recovery ? copy.recovery : mode === 'signup' ? copy.signup : mode === 'reset' ? copy.reset : copy.login;
+  const submitLabel = recovery ? copy.savePassword : mode === 'reset' ? copy.sendReset : title;
 
   return (
     <main className="min-h-screen bg-[#FBF9F5] flex items-center justify-center p-4">
       <section className="w-full max-w-md bg-white border border-stone-200 rounded-3xl shadow-sm p-6 sm:p-8 space-y-6">
         <header className="space-y-2">
-          <div className="inline-flex items-center gap-2">
-            <span className="bg-stone-900 text-white font-black px-3 py-1.5 rounded-xl text-sm">G</span>
-            <span className="font-extrabold tracking-tight">gastemappe24 <span className="text-amber-700 text-xs">PRO</span></span>
-          </div>
+          <p className="text-sm font-extrabold tracking-tight">Gastemappe24 Pro</p>
           <h1 className="text-2xl font-black text-slate-900">{title}</h1>
-          <p className="text-sm text-stone-500">
-            {mode === 'signup'
-              ? 'Erstelle ein persönliches Konto für die Verwaltung deiner Unterkunft.'
-              : mode === 'reset'
-                ? 'Wir senden dir einen Link an deine E-Mail-Adresse.'
-                : 'Bitte melde dich an, um deine Unterkunft zu verwalten.'}
-          </p>
         </header>
-
         <form onSubmit={submit} className="space-y-4">
-          <div className="space-y-1.5">
-            <label htmlFor="gm24-auth-email" className="block text-xs font-bold text-stone-600">E-Mail-Adresse</label>
-            <input id="gm24-auth-email" type="email" autoComplete="email" required value={email}
-              onChange={event => setEmail(event.target.value)}
-              className="w-full rounded-xl border border-stone-200 bg-stone-50 px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-amber-200" />
-          </div>
-          {mode !== 'reset' && (
-            <div className="space-y-1.5">
-              <label htmlFor="gm24-auth-password" className="block text-xs font-bold text-stone-600">Passwort</label>
-              <div className="relative">
-                <input id="gm24-auth-password" type={showPassword ? 'text' : 'password'} autoComplete={mode === 'signup' ? 'new-password' : 'current-password'}
-                  minLength={8} required value={password} onChange={event => setPassword(event.target.value)}
-                  className="w-full rounded-xl border border-stone-200 bg-stone-50 px-4 py-3 pr-12 text-sm outline-none focus:ring-2 focus:ring-amber-200" />
-                <button type="button" onClick={() => setShowPassword(value => !value)}
-                  aria-label={showPassword ? 'Passwort verbergen' : 'Passwort anzeigen'}
-                  aria-pressed={showPassword}
-                  className="absolute inset-y-0 right-0 flex items-center px-4 text-stone-500 hover:text-stone-900"
-                  title={showPassword ? 'Passwort verbergen' : 'Passwort anzeigen'}>
-                  {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                </button>
-              </div>
-              {mode === 'signup' && <p className="text-[11px] text-stone-400">Mindestens 8 Zeichen.</p>}
-            </div>
-          )}
-          {error && <p role="alert" className="rounded-xl bg-red-50 border border-red-100 p-3 text-sm text-red-700">{error}</p>}
-          {message && <p role="status" className="rounded-xl bg-emerald-50 border border-emerald-100 p-3 text-sm text-emerald-800">{message}</p>}
+          {!recovery && <label className="block text-xs font-bold text-stone-600">
+            {copy.email}
+            <input type="email" autoComplete="email" required value={email} onChange={event => setEmail(event.target.value)}
+              className="mt-1 w-full rounded-xl border border-stone-200 bg-stone-50 px-4 py-3 text-sm focus:ring-2 focus:ring-amber-600" />
+          </label>}
+          {(mode !== 'reset' || recovery) && <div className="relative">
+            <label className="block text-xs font-bold text-stone-600">
+              {copy.password}
+              <input type={showPassword ? 'text' : 'password'} autoComplete={recovery || mode === 'signup' ? 'new-password' : 'current-password'}
+                minLength={recovery || mode === 'signup' ? 8 : undefined} required value={password} onChange={event => setPassword(event.target.value)}
+                className="mt-1 w-full rounded-xl border border-stone-200 bg-stone-50 px-4 py-3 pr-12 text-sm focus:ring-2 focus:ring-amber-600" />
+            </label>
+            <button type="button" onClick={() => setShowPassword(value => !value)}
+              aria-label={showPassword ? copy.hidePassword : copy.showPassword} aria-pressed={showPassword}
+              className="absolute bottom-0 right-0 px-4 py-3 text-slate-600">
+              {showPassword ? <EyeOff aria-hidden="true" className="w-5 h-5" /> : <Eye aria-hidden="true" className="w-5 h-5" />}
+            </button>
+          </div>}
+          {error && <p role="alert" className="text-sm text-red-700">{error}</p>}
+          {message && <p role="status" className="text-sm text-emerald-700">{message}</p>}
           <button type="submit" disabled={busy}
-            className="w-full rounded-xl bg-stone-900 px-4 py-3 text-sm font-bold text-white hover:bg-black disabled:opacity-50">
-            {busy ? 'Bitte warten …' : submitLabel}
+            className="w-full rounded-xl bg-slate-900 px-4 py-3 text-sm font-bold text-white disabled:opacity-50">
+            {submitLabel}
           </button>
         </form>
-
-        <div className="flex flex-wrap justify-between gap-3 text-xs">
-          {mode === 'login' ? (
-            <>
-              <button type="button" onClick={() => { setMode('signup'); setError(''); setMessage(''); }} className="font-bold text-amber-800">Konto erstellen</button>
-              <button type="button" onClick={() => { setMode('reset'); setError(''); setMessage(''); }} className="text-stone-500 underline">Passwort vergessen?</button>
-            </>
-          ) : (
-            <button type="button" onClick={() => { setMode('login'); setError(''); setMessage(''); }} className="font-bold text-amber-800">Zurück zur Anmeldung</button>
-          )}
-        </div>
-        <p className="text-[11px] leading-relaxed text-stone-400">
-          Deine Zugangsdaten werden direkt von Supabase Auth verarbeitet. Teile dein Passwort niemals mit dem Support.
-        </p>
+        {!recovery && <div className="flex flex-wrap justify-between gap-3 text-xs font-bold text-amber-900">
+          {mode === 'login' ? <>
+            <button type="button" onClick={() => switchMode('signup')}>{copy.signup}</button>
+            <button type="button" onClick={() => switchMode('reset')}>{copy.reset}</button>
+          </> : <button type="button" onClick={() => switchMode('login')}>{copy.login}</button>}
+        </div>}
       </section>
     </main>
   );

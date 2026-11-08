@@ -1,0 +1,4 @@
+project_id = "gastemappe24-pro"
+
+[functions.track-view]
+verify_jwt = false

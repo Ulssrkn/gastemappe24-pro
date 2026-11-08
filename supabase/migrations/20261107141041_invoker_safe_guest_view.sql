@@ -1,6 +1,3 @@
--- Correct the public guest projection to use invoker permissions and RLS.
--- Public access is restricted to explicitly published rows and three safe columns.
-
 drop view if exists public.gm24_guest_pages;
 
 drop policy if exists "Public can read published guest pages" on public.gm24_hotels;
