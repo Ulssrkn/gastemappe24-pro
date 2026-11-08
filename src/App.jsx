@@ -951,10 +951,24 @@ export default function App() {
   const [isEditorModalOpen, setIsEditorModalOpen] = useState(false);
   const [editingCategory, setEditingCategory] = useState(null);
   const [isSaved, setIsSaved] = useState(false);
+  const [dashboardSection, setDashboardSection] = useState(() => {
+    const hash = typeof window === 'undefined' ? '' : window.location.hash;
+    if (hash === '#accommodations' || hash === '#dashboard-accommodations') return 'accommodations';
+    if (hash === '#analytics' || hash === '#dashboard-analytics') return 'analytics';
+    if (hash === '#editor' || hash === '#dashboard-editor') return 'editor';
+    return 'overview';
+  });
 
   const [activeTab, setActiveTab] = useState('home');
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [showWelcomeScreen, setShowWelcomeScreen] = useState(true);
+  const navigateDashboardSection = section => {
+    const normalized = ['overview','accommodations','analytics','editor'].includes(section) ? section : 'overview';
+    const nextHash = `#dashboard-${normalized}`;
+    if (typeof window !== 'undefined' && window.location.hash !== nextHash) window.history.pushState({ gm24Dashboard: true, dashboardSection: normalized }, '', nextHash);
+    setDashboardSection(normalized);
+    if (typeof window !== 'undefined') window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
   const guestNavigationRef = useRef({ activeTab: 'home', selectedCategory: null });
   useEffect(() => { guestNavigationRef.current = { activeTab, selectedCategory }; }, [activeTab, selectedCategory]);
   const navigateGuest = (tab, category = null) => {
@@ -970,7 +984,10 @@ export default function App() {
     if (!isDashboard()) window.history.replaceState({ ...(window.history.state || {}), gm24Guest: true, activeTab: 'home', selectedCategory: null }, '');
     const handlePopState = event => {
       if (isDashboard()) {
-        if (!window.location.hash) window.location.hash = 'dashboard-overview';
+        const hash = window.location.hash;
+        const section = hash.includes('accommodations') ? 'accommodations' : hash.includes('analytics') ? 'analytics' : hash.includes('editor') ? 'editor' : 'overview';
+        setDashboardSection(section);
+        if (!hash) window.location.hash = 'dashboard-overview';
         return;
       }
       if (event.state?.gm24Guest) {
@@ -1644,20 +1661,20 @@ export default function App() {
       <div className="min-h-screen w-full max-w-full overflow-x-hidden box-border bg-[#f5f6f8] font-sans text-slate-800 p-3 sm:p-6 md:py-8 md:pr-10 md:pl-[18rem] space-y-6 sm:space-y-8 relative pb-28">
 
         <aside className="fixed inset-y-0 left-0 z-40 hidden w-64 flex-col border-r border-slate-200/80 bg-white px-5 py-7 md:flex">
-          <a href="#dashboard-home" className="flex items-center gap-3 px-2">
+          <button type="button" onClick={()=>navigateDashboardSection('overview')} className="flex items-center gap-3 px-2 text-left">
             <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-900 text-lg font-black text-amber-300 shadow-sm">G</span>
             <span className="text-[15px] font-extrabold tracking-tight text-slate-900">gastemappe<span className="text-amber-700">24</span><span className="block pt-0.5 text-[9px] font-bold uppercase tracking-[.2em] text-slate-400">Gastgeber-Workspace</span></span>
-          </a>
+          </button>
           <div className="mt-10 px-3 text-[10px] font-extrabold uppercase tracking-[.18em] text-slate-400">Arbeitsbereich</div>
           <nav className="mt-3 space-y-1.5">
-            {[[LayoutDashboard,dw.nav.overview,'#dashboard-overview'],[Building2,dw.nav.accommodations,'#accommodations'],[BarChart3,dw.nav.analytics,'#analytics'],[Settings,dw.nav.editor,'#editor']].map(([Icon,label,href])=><a key={label} href={href} className="flex items-center gap-3 rounded-xl px-3 py-3 text-[13px] font-semibold text-slate-600 transition hover:bg-slate-100 hover:text-slate-900"><Icon className="h-[17px] w-[17px]"/>{label}</a>)}
+            {[[LayoutDashboard,dw.nav.overview,'overview'],[Building2,dw.nav.accommodations,'accommodations'],[BarChart3,dw.nav.analytics,'analytics'],[Settings,dw.nav.editor,'editor']].map(([Icon,label,section])=><button key={label} type="button" onClick={()=>navigateDashboardSection(section)} aria-current={dashboardSection===section?'page':undefined} className={`flex w-full items-center gap-3 rounded-xl px-3 py-3 text-left text-[13px] font-semibold transition ${dashboardSection===section?'bg-slate-100 text-slate-900':'text-slate-600 hover:bg-slate-100 hover:text-slate-900'}`}><Icon className="h-[17px] w-[17px]"/>{label}</button>)}
           </nav>
           <div className="mt-8 px-3 text-[10px] font-extrabold uppercase tracking-[.18em] text-slate-400">Konto</div>
-          <a href="#membership" className="mt-3 flex items-center gap-3 rounded-xl px-3 py-3 text-[13px] font-semibold text-slate-600 transition hover:bg-slate-100 hover:text-slate-900"><CreditCard className="h-[17px] w-[17px]"/>{dw.nav.package}</a>
+          <button type="button" onClick={()=>{navigateDashboardSection('overview');setTimeout(()=>document.getElementById('membership')?.scrollIntoView({behavior:'smooth',block:'center'}),60);}} className="mt-3 flex w-full items-center gap-3 rounded-xl px-3 py-3 text-left text-[13px] font-semibold text-slate-600 transition hover:bg-slate-100 hover:text-slate-900"><CreditCard className="h-[17px] w-[17px]"/>{dw.nav.package}</button>
           <div className="mt-auto rounded-2xl border border-slate-200 bg-slate-50 p-4"><div className="flex items-center gap-2 text-xs font-bold text-slate-800"><span className="h-2 w-2 rounded-full bg-emerald-500"/>{dw.hero.status}</div><p className="mt-2 text-[11px] leading-relaxed text-slate-500">{dw.hero.description}</p></div>
         </aside>
         <nav className="fixed inset-x-3 bottom-3 z-40 grid grid-cols-4 rounded-2xl border border-slate-200 bg-white/95 p-1.5 shadow-xl backdrop-blur md:hidden">
-          {[[LayoutDashboard,dw.nav.start,'#dashboard-overview'],[Building2,dw.nav.accommodations,'#accommodations'],[BarChart3,dw.nav.analytics,'#analytics'],[Settings,dw.nav.edit,'#editor']].map(([Icon,label,href])=><a key={label} href={href} className="flex flex-col items-center gap-1 rounded-xl py-2 text-[9px] font-semibold text-slate-500 hover:bg-slate-100 hover:text-slate-900"><Icon className="h-4 w-4"/>{label}</a>)}
+          {[[LayoutDashboard,dw.nav.start,'overview'],[Building2,dw.nav.accommodations,'accommodations'],[BarChart3,dw.nav.analytics,'analytics'],[Settings,dw.nav.edit,'editor']].map(([Icon,label,section])=><button key={label} type="button" onClick={()=>navigateDashboardSection(section)} aria-current={dashboardSection===section?'page':undefined} className={`flex flex-col items-center gap-1 rounded-xl py-2 text-[9px] font-semibold ${dashboardSection===section?'bg-slate-100 text-slate-900':'text-slate-500 hover:bg-slate-100 hover:text-slate-900'}`}><Icon className="h-4 w-4"/>{label}</button>)}
         </nav>
         
         {createAccommodationOpen && (
@@ -1743,7 +1760,7 @@ export default function App() {
           </div>
         </div>
 
-        <section id="dashboard-overview" className="w-full max-w-6xl mx-auto overflow-hidden rounded-[28px] border border-slate-800 bg-gradient-to-br from-[#142536] via-[#1c3447] to-[#294456] px-6 py-7 text-white shadow-xl shadow-slate-900/10 sm:px-9 sm:py-9">
+        <section id="dashboard-overview" className={`${dashboardSection === 'overview' ? '' : 'hidden'} w-full max-w-6xl mx-auto overflow-hidden rounded-[28px] border border-slate-800 bg-gradient-to-br from-[#142536] via-[#1c3447] to-[#294456] px-6 py-7 text-white shadow-xl shadow-slate-900/10 sm:px-9 sm:py-9`}>
           <div className="flex flex-col justify-between gap-7 lg:flex-row lg:items-end">
             <div className="max-w-2xl">
               <div className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-1.5 text-[10px] font-bold tracking-wide text-slate-200"><Sparkles className="h-3.5 w-3.5 text-amber-300"/>{dw.hero.badge}</div>
@@ -1754,11 +1771,12 @@ export default function App() {
               <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-[.14em] text-slate-300"><span className={`h-2 w-2 rounded-full ${cloudDataStatus === 'ready' ? 'bg-emerald-400' : cloudDataStatus === 'error' ? 'bg-rose-400' : 'bg-amber-300'}`}/>{cloudDataStatus === 'ready' ? dw.hero.connected : cloudDataStatus === 'error' ? dw.hero.error : dw.hero.status}</div>
               <p className="mt-2 truncate text-base font-bold text-white">{hotelRecord?.name || hotel.name || 'Deine Unterkunft'}</p>
               <p className="mt-1 text-xs text-slate-300">{hotelRecords.length} {hotelRecords.length === 1 ? dw.hero.one : dw.hero.many}</p>
+              <button type="button" onClick={()=>navigateDashboardSection('editor')} className="mt-3 inline-flex items-center gap-2 rounded-lg bg-white px-3 py-2 text-[10px] font-bold text-slate-800 hover:bg-slate-100"><Settings className="h-3.5 w-3.5"/>{dw.nav.editor}</button>
             </div>
           </div>
         </section>
 
-        <section id="setup-guide" className="w-full max-w-6xl mx-auto rounded-3xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
+        <section id="setup-guide" className={`${dashboardSection === 'overview' ? '' : 'hidden'} w-full max-w-6xl mx-auto rounded-3xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6`}>
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <p className="text-[10px] font-extrabold uppercase tracking-[.17em] text-amber-700">{dw.setup.label}</p>
@@ -1770,15 +1788,15 @@ export default function App() {
             </div>
           </div>
           <div className="mt-5 grid grid-cols-1 gap-2 sm:grid-cols-2 xl:grid-cols-3">
-            {setupSteps.map((step,index)=><a key={step.label} href="#editor" className="flex items-center gap-3 rounded-xl border border-slate-100 bg-slate-50/70 px-3 py-2.5 transition hover:border-slate-200 hover:bg-white">
+            {setupSteps.map((step,index)=><button key={step.label} type="button" onClick={()=>navigateDashboardSection('editor')} className="flex items-center gap-3 rounded-xl border border-slate-100 bg-slate-50/70 px-3 py-2.5 text-left transition hover:border-slate-200 hover:bg-white">
               {step.done ? <CheckCircle2 className="h-4 w-4 shrink-0 text-emerald-600"/> : <span className="flex h-4 w-4 shrink-0 items-center justify-center rounded-full border border-slate-300 text-[9px] font-bold text-slate-400">{index+1}</span>}
               <span className={`text-[11px] font-semibold ${step.done ? 'text-slate-500' : 'text-slate-800'}`}>{dw.setup.items[index]}</span>
               {!step.done && <ArrowRight className="ml-auto h-3.5 w-3.5 text-slate-400"/>}
-            </a>)}
+            </button>)}
           </div>
         </section>
 
-        <section id="accommodations" className="w-full max-w-6xl mx-auto space-y-4">
+        <section id="accommodations" className={`${dashboardSection === 'accommodations' ? '' : 'hidden'} w-full max-w-6xl mx-auto space-y-4`}>
           <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3">
             <div>
               <p className="text-[10px] font-black uppercase tracking-[0.22em] text-amber-700">{dw.accommodations.workspace}</p>
@@ -1821,7 +1839,7 @@ export default function App() {
           </div>
         </section>
 
-        <section id="membership" className="w-full max-w-6xl mx-auto rounded-3xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
+        <section id="membership" className={`${dashboardSection === 'overview' ? '' : 'hidden'} w-full max-w-6xl mx-auto rounded-3xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6`}>
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div className="flex items-start gap-3">
               <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-amber-50 text-amber-700"><CreditCard className="h-5 w-5"/></div>
@@ -1855,7 +1873,8 @@ export default function App() {
           </details>
         </section>
         {/* REAL ANALYTICS STATUS — do not display invented figures */}
-        <div id="analytics" className="w-full max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-3 sm:gap-4">
+        <div className={`${dashboardSection === 'analytics' ? '' : 'hidden'} w-full max-w-6xl mx-auto`}><div className="mb-4"><h1 className="text-2xl font-black tracking-tight text-slate-900">{dw.stats.analyticsTitle}</h1><p className="mt-1 text-sm text-slate-500">{dw.stats.analyticsIntro}</p></div></div>
+        <div id="analytics" className={`${dashboardSection === 'analytics' ? '' : 'hidden'} w-full max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-3 sm:gap-4`}>
           <div className="rounded-2xl border border-slate-200/80 bg-white p-5 shadow-sm">
             <div className="flex items-center gap-3"><div className="p-3 rounded-2xl bg-stone-100 text-stone-500"><BarChart3 className="w-6 h-6"/></div><div><span className="text-[10px] font-extrabold text-stone-400 uppercase tracking-wider">{dw.stats.views}</span><h4 className="text-lg font-black text-slate-900">{analyticsLoading ? '…' : analyticsRows.reduce((sum, row) => sum + Number(row.views || 0), 0)}</h4></div></div>
             <p className="text-[11px] text-stone-500 mt-3">{dw.stats.viewsNote}</p>
@@ -1873,7 +1892,7 @@ export default function App() {
             <p className="mt-3 text-[11px] text-slate-500">{dw.stats.cloudNote}</p>
           </div>
         </div>
-        <div className="max-w-6xl mx-auto bg-white rounded-3xl p-6 border border-stone-200 shadow-sm space-y-3">
+        <div className={`${dashboardSection === 'analytics' ? '' : 'hidden'} max-w-6xl mx-auto bg-white rounded-3xl p-6 border border-stone-200 shadow-sm space-y-3`}>
           <div className="flex items-center gap-3"><div className="p-3 rounded-2xl bg-stone-100 text-stone-500"><TrendingUp className="w-6 h-6"/></div><div><h3 className="font-black text-xs text-slate-800 uppercase tracking-wider">{(dashboardCopy[lang] || dashboardCopy.de).analyticsTitle}</h3><p className="text-xs text-stone-500">{(dashboardCopy[lang] || dashboardCopy.de).analyticsIntro}</p></div></div>
           <div className="rounded-2xl border border-stone-200 bg-stone-50 p-5 space-y-3">
             <div className="flex items-center justify-between gap-3"><span className="text-sm font-bold text-slate-800">{dw.stats.total}</span><span className="text-2xl font-black text-slate-900 tabular-nums">{analyticsLoading ? '…' : analyticsRows.reduce((sum, row) => sum + Number(row.views || 0), 0)}</span></div>
@@ -1886,7 +1905,8 @@ export default function App() {
         </div>
 
         {/* DASHBOARD CONTENT SECTIONS */}
-        <div id="editor" className="max-w-6xl mx-auto space-y-6">
+        <div id="editor" className={`${dashboardSection === 'editor' ? '' : 'hidden'} max-w-6xl mx-auto space-y-6`}>
+          <div><p className="text-[10px] font-black uppercase tracking-[.2em] text-amber-700">{dw.accommodations.workspace}</p><h1 className="mt-1 text-2xl font-black tracking-tight text-slate-900">{dw.nav.editor}</h1><p className="mt-1 text-sm text-slate-500">{dw.accommodations.description}</p></div>
           {/* 1. HOTEL BİLGİLERİ */}
           <div className="bg-white rounded-3xl p-6 border border-stone-200 shadow-sm space-y-4">
             <h3 className={`font-black text-xs ${currentTheme.text} uppercase tracking-wider`}>{t.sec1Title}</h3>
