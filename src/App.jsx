@@ -1530,6 +1530,7 @@ export default function App() {
   const setupCompletedCount = setupSteps.filter(step => step.done).length;
   const setupProgress = Math.round((setupCompletedCount / setupSteps.length) * 100);
   const ac = analyticsCopy[lang] || analyticsCopy.en;
+  const analyticsDashboardTitles = { de:'Was deine Gäste wirklich nutzen', en:'What your guests really use', tr:'Misafirlerinin gerçekten kullandıkları', fr:'Ce que vos voyageurs utilisent vraiment', es:'Lo que tus huéspedes realmente usan', cs:'Co hosté skutečně používají', sq:'Çfarë përdorin vërtet mysafirët', sv:'Vad dina gäster faktiskt använder', nb:'Hva gjestene faktisk bruker', no:'Hva gjestene faktisk bruker', it:'Cosa usano davvero i tuoi ospiti', hr:'Što vaši gosti zaista koriste' };
   const analyticsToday = new Date();
   const todayKey = analyticsToday.toISOString().slice(0,10);
   const currentStart = new Date(analyticsToday.getTime()-29*86400000).toISOString().slice(0,10);
@@ -1939,19 +1940,40 @@ export default function App() {
             <p className="mt-4 text-[10px] leading-relaxed text-slate-500">{dw.package.disclaimer}</p>
           </details>
         </section>
-        <section id="analytics" className={`${dashboardSection==='analytics'?'':'hidden'} mx-auto w-full min-w-0 max-w-6xl space-y-5`}>
-          <header><p className="text-[10px] font-black uppercase tracking-[.2em] text-amber-700">{ac.range}</p><h1 className="mt-1 text-2xl font-black tracking-tight text-slate-900">{dw.stats.analyticsTitle}</h1><p className="mt-1 text-sm text-slate-500">{ac.intro}</p></header>
-          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-4">
-            <article className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm"><p className="text-[10px] font-extrabold uppercase tracking-wider text-slate-400">{ac.views}</p><p className="mt-2 text-3xl font-black tabular-nums text-slate-900">{analyticsLoading?'…':guideViews}</p><p className="mt-1 text-[11px] text-slate-500">{guideChange===null?ac.noComparison:`${guideChange>0?'+':''}${guideChange}% ${ac.comparison}`}</p></article>
-            <article className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm"><p className="text-[10px] font-extrabold uppercase tracking-wider text-slate-400">{ac.topSection}</p><p className="mt-2 line-clamp-2 text-lg font-black text-slate-900">{analyticsLoading?'…':topCategory?getAnalyticsPageLabel(topCategory[0]):'—'}</p><p className="mt-1 text-[11px] text-slate-500">{topCategory?`${topCategory[1]} ${ac.viewsUnit}`:ac.noSections}</p></article>
-            <article className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm"><p className="text-[10px] font-extrabold uppercase tracking-wider text-slate-400">{ac.actions}</p><p className="mt-2 text-3xl font-black tabular-nums text-slate-900">{analyticsLoading?'…':usefulClicks}</p><p className="mt-1 text-[11px] text-slate-500">{ac.actionsNote}</p></article>
-            <article className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm"><p className="text-[10px] font-extrabold uppercase tracking-wider text-slate-400">{ac.helpful}</p><p className="mt-2 text-3xl font-black tabular-nums text-slate-900">{analyticsLoading?'…':feedbackRate===null?'—':feedbackRate+'%'}</p><p className="mt-1 text-[11px] text-slate-500">{feedbackTotal?feedbackTotal+' '+ac.responses:ac.noResponses}</p></article>
+        <section id="analytics" className={`${dashboardSection==='analytics'?'':'hidden'} mx-auto w-full min-w-0 max-w-6xl space-y-6 sm:space-y-8`}>
+          <section className="border-b border-slate-200 pb-5 sm:pb-6">
+            <div className="flex items-end justify-between gap-3">
+              <div><p className="text-[10px] font-extrabold uppercase tracking-[.17em] text-emerald-800">{dw.setup.label}</p><h2 className="mt-1 text-lg font-bold tracking-tight text-slate-900">{setupProgress===100?dw.setup.ready:dw.setup.title}</h2><p className="mt-1 text-xs text-slate-500">{setupCompletedCount} {dw.setup.of} {setupSteps.length} {dw.setup.steps} · {setupProgress}%</p></div>
+            </div>
+            <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-slate-200"><div className="h-full rounded-full bg-emerald-700 transition-all duration-500" style={{width:`${setupProgress}%`}}/></div>
+            <div className="mt-4 grid grid-cols-5 gap-1 sm:gap-3">{setupSteps.map((step,index)=><button key={step.target} type="button" onClick={()=>{navigateDashboardSection('editor');setTimeout(()=>document.getElementById(step.target)?.scrollIntoView({behavior:'smooth',block:'start'}),80);}} className="min-w-0 text-center"><span className={`mx-auto flex h-7 w-7 items-center justify-center rounded-full ${step.done?'bg-emerald-700 text-white':'border border-amber-600 bg-white text-amber-800'}`}>{step.done?<Check className="h-3.5 w-3.5"/>:<span className="text-[10px] font-bold">{index+1}</span>}</span><span className={`mt-1.5 block text-[9px] leading-tight sm:text-[10px] ${step.done?'text-slate-500':'font-semibold text-slate-800'}`}>{dw.setup.items[index]}</span></button>)}</div>
+          </section>
+
+          <header className="flex flex-wrap items-end justify-between gap-3">
+            <div><p className="text-[10px] font-black uppercase tracking-[.2em] text-emerald-800">{ac.range}</p><h1 className="mt-1 text-2xl font-black tracking-tight text-slate-900 sm:text-3xl">{analyticsDashboardTitles[lang]||analyticsDashboardTitles.en}</h1><p className="mt-1 text-sm text-slate-500">{ac.intro}</p></div>
+            <span className="mb-0.5 shrink-0 text-xs font-semibold text-slate-500">{ac.range}</span>
+          </header>
+
+          <div className="grid grid-cols-2 gap-x-4 sm:grid-cols-4 sm:gap-x-7">
+            <article className="border-b border-slate-200 py-3 sm:border-b-0"><p className="text-[10px] font-bold uppercase leading-snug tracking-wide text-slate-500">{ac.views}</p><p className="mt-1 text-3xl font-black tabular-nums tracking-tight text-slate-900">{analyticsLoading?'…':guideViews}</p><p className="mt-1 text-[10px] leading-snug text-slate-500">{guideChange===null?ac.noComparison:`${guideChange>0?'+':''}${guideChange}% ${ac.comparison}`}</p></article>
+            <article className="border-b border-slate-200 py-3 sm:border-b-0"><p className="text-[10px] font-bold uppercase leading-snug tracking-wide text-slate-500">{ac.topSection}</p><p className="mt-1 line-clamp-2 text-base font-extrabold leading-tight text-slate-900">{analyticsLoading?'…':topCategory?getAnalyticsPageLabel(topCategory[0]):'—'}</p><p className="mt-1 text-[10px] leading-snug text-slate-500">{topCategory?`${topCategory[1]} ${ac.viewsUnit}`:ac.noSections}</p></article>
+            <article className="py-3"><p className="text-[10px] font-bold uppercase leading-snug tracking-wide text-slate-500">{ac.actions}</p><p className="mt-1 text-3xl font-black tabular-nums tracking-tight text-slate-900">{analyticsLoading?'…':usefulClicks}</p><p className="mt-1 line-clamp-2 text-[10px] leading-snug text-slate-500">{ac.actionsNote}</p></article>
+            <article className="py-3"><p className="text-[10px] font-bold uppercase leading-snug tracking-wide text-slate-500">{ac.helpful}</p><p className="mt-1 text-3xl font-black tabular-nums tracking-tight text-slate-900">{analyticsLoading?'…':feedbackRate===null?'—':feedbackRate+'%'}</p><p className="mt-1 text-[10px] leading-snug text-slate-500">{feedbackTotal?`${feedbackTotal} ${ac.responses}`:ac.noResponses}</p></article>
           </div>
-          <div className="grid grid-cols-1 gap-4 lg:grid-cols-[1.4fr_1fr]">
-            <section className="rounded-3xl border border-slate-200 bg-white p-4 shadow-sm sm:p-5"><div className="flex items-center justify-between gap-3"><div><h2 className="text-sm font-black text-slate-900">{ac.trend}</h2><p className="mt-1 text-[11px] text-slate-500">{ac.viewsNote}</p></div><span className="text-xs font-bold text-slate-500">{guideViews} {ac.viewsUnit}</span></div><div className="mt-5 flex h-36 items-end gap-1.5 sm:gap-2">{dailyGuideViews.map(day=><div key={day.date} title={day.date+': '+day.value} className="flex h-full min-w-0 flex-1 items-end"><div className="w-full rounded-t-md bg-slate-800" style={{height:day.value?Math.max(7,day.value/chartMax*100)+'%':'3px',opacity:day.value?.9:.16}} /></div>)}</div><div className="mt-2 flex justify-between text-[9px] text-slate-400"><span>{currentStart}</span><span>{todayKey}</span></div></section>
-            <section className="rounded-3xl border border-slate-200 bg-white p-4 shadow-sm sm:p-5"><h2 className="text-sm font-black text-slate-900">{ac.topList}</h2><div className="mt-3 space-y-3">{topCategories.map(([key,value],i)=><div key={key}><div className="flex justify-between gap-3 text-xs"><span className="truncate font-semibold text-slate-700">{i+1}. {getAnalyticsPageLabel(key)}</span><strong>{value}</strong></div><div className="mt-1.5 h-1.5 overflow-hidden rounded-full bg-slate-100"><div className="h-full rounded-full bg-amber-500" style={{width:Math.max(5,value/(topCategory?.[1]||1)*100)+'%'}} /></div></div>)}{!analyticsLoading&&!topCategories.length&&<p className="py-4 text-xs text-slate-500">{ac.noSections}</p>}</div></section>
-          </div>
-          <section className="rounded-2xl border border-amber-200 bg-amber-50/70 p-4"><p className="text-[10px] font-black uppercase tracking-wider text-amber-800">{ac.insight}</p><p className="mt-1 text-sm font-semibold text-slate-800">{topCategory?ac.insightText.replace('{section}',getAnalyticsPageLabel(topCategory[0])):ac.noInsight}</p></section><p className="px-1 text-[10px] leading-relaxed text-slate-400">{ac.privacy}</p>
+
+          <p className="border-l-2 border-amber-500 py-1 pl-3 text-xs leading-relaxed text-slate-700">{topCategory?ac.insightText.replace('{section}',getAnalyticsPageLabel(topCategory[0])):ac.noInsight}</p>
+
+          <section>
+            <div className="flex items-end justify-between gap-3"><div><h2 className="text-base font-bold text-slate-900">{ac.trend}</h2><p className="mt-1 text-[11px] text-slate-500">{ac.viewsNote}</p></div><span className="shrink-0 text-xs font-semibold tabular-nums text-slate-600">{guideViews} {ac.viewsUnit}</span></div>
+            <div className="mt-4 flex h-32 items-end gap-[3px] sm:h-40 sm:gap-1">{dailyGuideViews.map(day=><div key={day.date} title={day.date+': '+day.value} className="flex h-full min-w-0 flex-1 items-end"><div className="w-full rounded-t-[2px] bg-emerald-800" style={{height:day.value?Math.max(7,day.value/chartMax*100)+'%':'2px',opacity:day.value?0.82:0.12}} /></div>)}</div>
+            <div className="mt-2 flex justify-between text-[9px] text-slate-400"><span>{currentStart}</span><span>{todayKey}</span></div>
+          </section>
+
+          <section className="border-t border-slate-200 pt-4">
+            <div className="flex items-end justify-between gap-3"><h2 className="text-base font-bold text-slate-900">{ac.topList}</h2><span className="text-[10px] font-semibold text-slate-500">{ac.range}</span></div>
+            <div className="mt-2 divide-y divide-slate-200">{topCategories.map(([key,value],index)=><div key={key} className="grid grid-cols-[24px_minmax(0,1fr)_minmax(52px,.7fr)_auto] items-center gap-2 py-3 sm:gap-4"><span className="flex h-6 w-6 items-center justify-center rounded-full bg-emerald-50 text-[10px] font-bold text-emerald-900">{index+1}</span><span className="min-w-0 truncate text-xs font-semibold text-slate-800">{getAnalyticsPageLabel(key)}</span><span className="h-1.5 overflow-hidden rounded-full bg-slate-100"><span className="block h-full rounded-full bg-emerald-700" style={{width:Math.max(5,value/(topCategory?.[1]||1)*100)+'%'}} /></span><strong className="whitespace-nowrap text-[10px] font-bold tabular-nums text-slate-600">{value} {ac.viewsUnit}</strong></div>)}{!analyticsLoading&&!topCategories.length&&<p className="py-4 text-xs text-slate-500">{ac.noSections}</p>}</div>
+          </section>
+          <p className="text-[10px] leading-relaxed text-slate-400">{ac.privacy}</p>
         </section>
 
         {/* DASHBOARD CONTENT SECTIONS */}
