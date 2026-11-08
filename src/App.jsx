@@ -1414,7 +1414,12 @@ export default function App() {
   };
 
   const trialEndsAt = accountRecord?.trial_ends_at ? new Date(accountRecord.trial_ends_at).getTime() : null;
-  const trialDaysLeft = trialEndsAt ? Math.max(0, Math.ceil((trialEndsAt - trialNow) / 86400000)) : null;
+  const trialEndDate = trialEndsAt ? new Date(trialEndsAt) : null;
+  const trialToday = new Date(trialNow);
+  const trialDaysLeft = trialEndDate ? Math.max(0, Math.round((
+    Date.UTC(trialEndDate.getFullYear(), trialEndDate.getMonth(), trialEndDate.getDate())
+    - Date.UTC(trialToday.getFullYear(), trialToday.getMonth(), trialToday.getDate())
+  ) / 86400000)) : null;
   const trialExpired = accountRecord?.subscription_status === 'suspended'
     || (accountRecord?.subscription_status === 'trial' && trialEndsAt !== null && trialEndsAt <= trialNow);
   const accommodationLimit = accountRecord?.subscription_status === 'trial'
