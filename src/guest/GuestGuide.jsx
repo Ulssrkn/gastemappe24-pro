@@ -40,7 +40,9 @@ export default function GuestGuide({
   const { guestFeedback, guestPageStatus, feedbackPending, feedbackFailed, submitGuestFeedback, trackGuestEvent, trackGuestPageView } = published;
   const { getWeatherDescription, weather, weatherLabels } = forecast;
   const selectedCategoryTitle = selectedCategory?.presetData?.title?.[lang] || selectedCategory?.title;
-  const selectedCategoryGroup = selectedCategory?.mainCatObj?.name?.[lang] || selectedCategory?.groupName;
+  const selectedCategoryGroup = selectedCategory
+    ? Object.entries(groupedCategories).find(([, items]) => items.some((item) => item.id === selectedCategory.id))?.[0] || selectedCategory.groupName
+    : '';
   const showGuideFeedback =
     guestSlug && supabase && guestPageStatus === 'ready' && activeTab === 'services' && !selectedCategory;
   const [currentSlide] = useState(0);
