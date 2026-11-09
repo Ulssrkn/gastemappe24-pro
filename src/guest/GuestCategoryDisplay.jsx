@@ -187,6 +187,7 @@ const GuestCategoryDisplay = ({ category, currentTheme, lang, t, onGuestEvent })
   const presetObj = categoryPresets.find((p) => p.id === category.presetId);
   const fieldValues = category.fieldValues || {};
   const copy = guestCardCopy[lang] || guestCardCopy.de;
+  const roomDetailsCopy = roomDetailsCopyByLang[lang] || roomDetailsCopyByLang.en;
   const typeDetails = { museum: copy.museum, nature: copy.nature, guided: copy.guided };
   const selectedAttractionTypes =
     presetObj?.id === 'UMG_001' && Array.isArray(fieldValues.attraction_types)
