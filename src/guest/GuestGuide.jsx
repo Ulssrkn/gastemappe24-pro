@@ -298,7 +298,7 @@ export default function GuestGuide({
                     <h2 className="min-w-0 flex-1 truncate text-sm font-black tracking-tight text-slate-900">{groupName}</h2>
                     <span className={"flex h-7 min-w-7 items-center justify-center rounded-full bg-white px-2 text-xs font-bold " + currentTheme.text}>{groupItems.length}</span>
                   </div>
-                  <div className="grid grid-cols-2 gap-2.5 p-3">
+                  <div className={"grid gap-2.5 p-3 " + (groupItems.length === 1 ? "grid-cols-1" : "grid-cols-2")}>
                     {(groupItems || []).map((cat) => {
                       const presetObj = cat.presetData;
                       const title = cat.customTitle || (presetObj && presetObj.title && (presetObj.title[lang] || presetObj.title.de)) || 'Kategorie';
@@ -307,12 +307,22 @@ export default function GuestGuide({
                           const analyticsCategoryId = String(cat.id).replace(/[^A-Za-z0-9_-]/g, "").slice(0, 68);
                           trackGuestPageView('category_' + analyticsCategoryId);
                           navigateGuest('services', { ...cat, title, groupName });
-                        }} className="group flex min-h-[112px] w-full flex-col items-start justify-between rounded-2xl border border-slate-200/80 bg-white p-3.5 text-left shadow-sm transition duration-200 hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400">
-                          <span className="flex w-full items-center justify-between gap-2">
-                            <span className={"flex h-9 w-9 items-center justify-center rounded-xl " + currentTheme.bgLight + " " + currentTheme.text}>{renderSafeIconByName(cat.icon, currentTheme)}</span>
-                            <ChevronRight className="h-4 w-4 shrink-0 text-slate-300 transition group-hover:translate-x-0.5 group-hover:text-slate-500" />
-                          </span>
-                          <span className="mt-3 line-clamp-2 text-xs font-extrabold leading-snug text-slate-900">{title}</span>
+                        }} className={"group flex w-full rounded-2xl border border-slate-200/80 bg-white text-left shadow-sm transition duration-200 hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 " + (groupItems.length === 1 ? "min-h-16 flex-row items-center gap-3 p-3.5" : "min-h-[112px] flex-col items-start justify-between p-3.5")}>
+                          {groupItems.length === 1 ? (
+                            <>
+                              <span className={"flex h-9 w-9 shrink-0 items-center justify-center rounded-xl " + currentTheme.bgLight + " " + currentTheme.text}>{renderSafeIconByName(cat.icon, currentTheme)}</span>
+                              <span className="min-w-0 flex-1 line-clamp-2 text-xs font-extrabold leading-snug text-slate-900">{title}</span>
+                              <ChevronRight className="h-4 w-4 shrink-0 text-slate-300 transition group-hover:translate-x-0.5 group-hover:text-slate-500" />
+                            </>
+                          ) : (
+                            <>
+                              <span className="flex w-full items-center justify-between gap-2">
+                                <span className={"flex h-9 w-9 items-center justify-center rounded-xl " + currentTheme.bgLight + " " + currentTheme.text}>{renderSafeIconByName(cat.icon, currentTheme)}</span>
+                                <ChevronRight className="h-4 w-4 shrink-0 text-slate-300 transition group-hover:translate-x-0.5 group-hover:text-slate-500" />
+                              </span>
+                              <span className="mt-3 line-clamp-2 text-xs font-extrabold leading-snug text-slate-900">{title}</span>
+                            </>
+                          )}
                         </button>
                       );
                     })}
