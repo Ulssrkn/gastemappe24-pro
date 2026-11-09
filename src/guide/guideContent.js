@@ -323,4 +323,19 @@ export const demoCategories = [
       ],
     },
   },
+  {
+    id: 'demo-sustainability-concept',
+    categoryId: 'cat_sustainability',
+    presetId: 'sustainability_concept',
+    icon: 'Recycle',
+    fieldValues: {
+      concept_description: 'Regionale Produkte, 100 % Ökostrom und Mehrweg statt Einweg.',
+      contentCards: [
+        demoCard(
+          ['Unser Nachhaltigkeitskonzept', 'Our sustainability approach', 'Sürdürülebilirlik yaklaşımımız', 'Notre approche durable', 'Nuestro enfoque sostenible', 'Naš pristup održivosti', 'Qasja jonë për qëndrueshmëri', 'Vårt hållbarhetsarbete', 'Vårt bærekraftsarbeid', 'Il nostro impegno per la sostenibilità'],
+          ['Regionale Produkte beim Frühstück, Ökostrom im gesamten Haus und wiederverwendbare Pflegeprodukte.', 'Regional breakfast ingredients, renewable electricity throughout and refillable bathroom products.', 'Kahvaltıda yöresel ürünler, tesis genelinde yenilenebilir elektrik ve yeniden doldurulabilir banyo ürünleri.', 'Produits régionaux au petit-déjeuner, électricité renouvelable et produits de toilette rechargeables.', 'Productos locales en el desayuno, electricidad renovable y artículos de baño recargables.', 'Lokalni proizvodi za doručak, obnovljiva električna energija i punjivi proizvodi za kupaonicu.', 'Produkte vendase në mëngjes, energji e rinovueshme dhe produkte banjoje të rimbushshme.', 'Lokala frukostprodukter, förnybar el och påfyllningsbara badrumsprodukter.', 'Lokale frokostprodukter, fornybar strøm og påfyllbare baderomsprodukter.', 'Prodotti locali a colazione, elettricità rinnovabile e prodotti da bagno ricaricabili.']
+        ),
+      ],
+    },
+  },
 ];
