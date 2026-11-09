@@ -283,19 +283,14 @@ const GuestCategoryDisplay = ({ category, currentTheme, lang, t, onGuestEvent })
                       {renderSafeIconByName(category.icon || presetObj?.icon || "MapPin", currentTheme)}
                     </span>
                     <div className="min-w-0 flex-1">
-                      <div className="flex flex-wrap items-center justify-between gap-2">
-                        <h3 className="text-sm font-bold text-slate-900">{card.titleTranslations?.[lang] || card.titleTranslations?.de || card.title}</h3>
-                        <span className={"rounded-full px-2.5 py-1 text-[9px] font-bold " + currentTheme.bgLight + " " + currentTheme.text}>
-                          {presetObj?.title?.[lang] || presetObj?.title?.de || category.title}
-                        </span>
-                      </div>
+                      <h3 className="text-sm font-bold leading-snug text-slate-900">{card.titleTranslations?.[lang] || card.titleTranslations?.de || card.title}</h3>
                       {card.hours && <p className="mt-1 text-[10px] font-semibold uppercase tracking-wide text-slate-500">{card.hours}</p>}
                       {description && <p className="mt-2 text-xs leading-relaxed text-slate-600">{description}</p>}
                       {card.address && <p className="mt-2 flex items-start gap-1.5 text-[11px] text-slate-500"><MapPin className="mt-0.5 h-3.5 w-3.5 shrink-0" />{card.address}</p>}
                     </div>
                   </div>
                 </div>
-                {(website || mapUrl || tel) && <div className="flex flex-wrap gap-2 border-t border-slate-200 bg-stone-50/80 px-3 py-3">
+                {(website || mapUrl || tel) && <div className={"flex flex-wrap gap-2 border-t border-slate-200 px-3 py-3 " + currentTheme.bgLight}>
                   {mapUrl && <a href={mapUrl} onClick={() => onGuestEvent?.("action_route")} target="_blank" rel="noreferrer" className={"inline-flex items-center gap-1.5 rounded-xl px-3 py-2 text-[10px] font-bold text-white transition hover:opacity-90 " + currentTheme.bg}><Navigation className="h-3.5 w-3.5" />{copy.route}</a>}
                   {website && <a href={website} onClick={() => onGuestEvent?.("action_website")} target="_blank" rel="noreferrer" className={"inline-flex items-center gap-1.5 rounded-xl bg-white px-3 py-2 text-[10px] font-bold ring-1 transition hover:brightness-95 " + currentTheme.text + " " + currentTheme.border}><ExternalLink className="h-3.5 w-3.5" />{copy.website}</a>}
                   {tel && <a href={"tel:" + tel} onClick={() => onGuestEvent?.("action_call")} className={"inline-flex items-center gap-1.5 rounded-xl bg-white px-3 py-2 text-[10px] font-bold ring-1 transition hover:brightness-95 " + currentTheme.text + " " + currentTheme.border}><Phone className="h-3.5 w-3.5" />{copy.call}</a>}
