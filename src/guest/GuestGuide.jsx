@@ -39,6 +39,8 @@ export default function GuestGuide({
   const { activeTab, navigateGuest, selectedCategory, setShowWelcomeScreen, showWelcomeScreen } = navigation;
   const { guestFeedback, guestPageStatus, feedbackPending, feedbackFailed, submitGuestFeedback, trackGuestEvent, trackGuestPageView } = published;
   const { getWeatherDescription, weather, weatherLabels } = forecast;
+  const selectedCategoryTitle = selectedCategory?.presetData?.title?.[lang] || selectedCategory?.title;
+  const selectedCategoryGroup = selectedCategory?.mainCatObj?.name?.[lang] || selectedCategory?.groupName;
   const showGuideFeedback =
     guestSlug && supabase && guestPageStatus === 'ready' && activeTab === 'services' && !selectedCategory;
   const [currentSlide] = useState(0);
@@ -239,10 +241,10 @@ export default function GuestGuide({
                 </div>
                 <div>
                   <h2 className="text-base font-black text-slate-900 leading-tight">
-                    {selectedCategory.title}
+                    {selectedCategoryTitle}
                   </h2>
                   <span className={`text-[10px] font-extrabold uppercase tracking-wider ${currentTheme.text}`}>
-                    {selectedCategory.groupName}
+                    {selectedCategoryGroup}
                   </span>
                 </div>
               </div>
