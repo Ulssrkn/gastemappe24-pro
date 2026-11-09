@@ -115,7 +115,7 @@ export const demoHotel = () => ({
       checkin: { title: 'Arrivo e partenza', description: 'Check-in dalle 15:00 · check-out entro le 11:00.' },
     },
   },
-  images: [],
+  images: ['/demo/waldquell-tegernsee.png'],
 });
 
 export const normalizeHotel = (saved, name) => ({
