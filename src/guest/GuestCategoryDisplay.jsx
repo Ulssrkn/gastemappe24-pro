@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Check, CheckCircle2, ExternalLink, MapPin, Navigation, Phone, XCircle } from 'lucide-react';
+import { Bed, Check, CheckCircle2, ChevronRight, ExternalLink, MapPin, Navigation, Phone, XCircle } from 'lucide-react';
 import { OTHER_CUSTOM, customTextLabels, optionId, optionLabel } from '../guide/presetOptions.js';
 import { categoryPresets } from '../guide/presetCatalog.js';
 import guestCardCopy from '../guestCardCopy.js';
@@ -112,6 +112,77 @@ const GuestCheckoutChecklist = ({ field, selected, customTask, lang }) => {
   );
 };
 
+const roomFeatureKeys = new Set([
+  'room_amenities', 'bed_types', 'bathroom_features', 'room_technology',
+  'room_outdoor_view', 'room_capacity', 'room_max_guests', 'room_floor_number',
+  'room_smoking_policy', 'room_accessibility',
+]);
+const roomDetailsCopyByLang = {
+  de: { empty: 'Für diesen Zimmertyp wurden noch keine Ausstattungsdetails hinterlegt.', general: 'Bisher allgemeine Zimmerangaben – noch keinem Zimmertyp zugeordnet.' },
+  en: { empty: 'No features have been added for this room type yet.', general: 'Previously shared room details — not assigned to a specific room type.' },
+  tr: { empty: 'Bu oda tipi için henüz özellik girilmemiş.', general: 'Önceden ortak girilen oda bilgileri — henüz bir oda tipine bağlanmadı.' },
+  fr: { empty: 'Aucun équipement n’a encore été indiqué pour ce type de chambre.', general: 'Informations générales existantes — non attribuées à un type de chambre.' },
+  es: { empty: 'Aún no se han añadido características para este tipo de habitación.', general: 'Información general existente — todavía no asignada a un tipo de habitación.' },
+  hr: { empty: 'Za ovu vrstu sobe još nisu unesene značajke.', general: 'Postojeći opći podaci — još nisu dodijeljeni vrsti sobe.' },
+  sq: { empty: 'Nuk janë shtuar ende pajisje për këtë lloj dhome.', general: 'Të dhënat e përgjithshme ekzistuese — ende të palidhura me një lloj dhome.' },
+  sv: { empty: 'Inga funktioner har lagts till för denna rumstyp ännu.', general: 'Befintliga allmänna rumsuppgifter — inte kopplade till en rumstyp ännu.' },
+  nb: { empty: 'Ingen fasiliteter er lagt til for denne romtypen ennå.', general: 'Eksisterende generelle romopplysninger — ikke knyttet til en romtype ennå.' },
+  no: { empty: 'Ingen fasiliteter er lagt til for denne romtypen ennå.', general: 'Eksisterende generelle romopplysninger — ikke knyttet til en romtype ennå.' },
+  it: { empty: 'Non sono ancora state aggiunte dotazioni per questo tipo di camera.', general: 'Informazioni generali esistenti — non ancora associate a un tipo di camera.' },
+};
+const RoomTypeCard = ({ card, fields, lang, currentTheme, description }) => {
+  const roomDetailsCopy = roomDetailsCopyByLang[lang] || roomDetailsCopyByLang.en;
+  const values = card.roomFeatures || {};
+  const hasFeatures = fields.some((field) => {
+    const value = values[field.key];
+    return Array.isArray(value) ? value.length > 0 : value !== undefined && value !== null && String(value).trim() !== '';
+  });
+  return (
+    <details className="group overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+      <summary className="flex cursor-pointer list-none items-center gap-3 p-4">
+        <span className={"flex h-10 w-10 shrink-0 items-center justify-center rounded-xl " + currentTheme.bgLight + " " + currentTheme.text}>
+          <Bed className="h-5 w-5" />
+        </span>
+        <span className="min-w-0 flex-1">
+          <span className="block text-sm font-bold text-slate-900">{card.title}</span>
+          {description && <span className="mt-1 block line-clamp-2 text-xs leading-relaxed text-slate-500">{description}</span>}
+        </span>
+        <ChevronRight className="h-4 w-4 shrink-0 text-slate-400 transition group-open:rotate-90" />
+      </summary>
+      <div className="space-y-3 border-t border-slate-100 px-4 py-4">
+        {description && <p className="text-xs leading-relaxed text-slate-600">{description}</p>}
+        {fields.map((field) => {
+          const rawValue = values[field.key];
+          if (rawValue === undefined || rawValue === null || rawValue === '' || (Array.isArray(rawValue) && rawValue.length === 0)) return null;
+          const label = (field.label && (field.label[lang] || field.label.de)) || field.key;
+          const selected = Array.isArray(rawValue) ? rawValue : [rawValue];
+          const visible = selected.filter((item) => item !== OTHER_CUSTOM);
+          const customText = values[field.key + '__customText'];
+          const items = visible.map((item) => {
+            const option = (field.options || []).find((candidate) => optionId(candidate) === item);
+            return option ? optionLabel(option, lang) : String(item);
+          });
+          if (selected.includes(OTHER_CUSTOM) && customText) items.push(customText);
+          if (!items.length) return null;
+          return (
+            <div key={field.key} className="space-y-1.5">
+              <h4 className="text-[10px] font-bold uppercase tracking-wide text-slate-500">{label}</h4>
+              <div className="flex flex-wrap gap-2">
+                {items.map((item, index) => (
+                  <span key={field.key + '-' + index} className="rounded-full bg-slate-50 px-3 py-1.5 text-xs font-medium text-slate-700 ring-1 ring-slate-200">
+                    {item}
+                  </span>
+                ))}
+              </div>
+            </div>
+          );
+        })}
+        {!hasFeatures && <p className="text-xs text-slate-500">{roomDetailsCopy.empty}</p>}
+      </div>
+    </details>
+  );
+};
+
 const GuestCategoryDisplay = ({ category, currentTheme, lang, t, onGuestEvent }) => {
   const presetObj = categoryPresets.find((p) => p.id === category.presetId);
   const fieldValues = category.fieldValues || {};
@@ -126,6 +197,12 @@ const GuestCategoryDisplay = ({ category, currentTheme, lang, t, onGuestEvent })
         String(card.titleTranslations?.[lang] || card.titleTranslations?.de || card.title || '').trim()
       )
     : [];
+  const isRoomPreset = presetObj?.id === 'HOT_006' || presetObj?.id === 'room_info';
+  const roomFeatureFields = (presetObj?.schema || []).filter((field) => roomFeatureKeys.has(field.key));
+  const hasRoomSpecificFeatures = contentCards.some((card) => roomFeatureFields.some((field) => {
+    const value = card.roomFeatures?.[field.key];
+    return Array.isArray(value) ? value.length > 0 : value !== undefined && value !== null && String(value).trim() !== '';
+  }));
   const safeWebUrl = (value) => {
     try {
       const url = new URL(String(value || '').trim());
@@ -174,7 +251,21 @@ const GuestCategoryDisplay = ({ category, currentTheme, lang, t, onGuestEvent })
           })}
         </div>
       )}
-      {contentCards.length > 0 && (
+      {isRoomPreset && contentCards.length > 0 && (
+        <div className="space-y-3">
+          {contentCards.map((card, index) => (
+            <RoomTypeCard
+              key={card.id || index}
+              card={card}
+              fields={roomFeatureFields}
+              currentTheme={currentTheme}
+              lang={lang}
+              description={card.descriptionTranslations?.[lang] || (lang === 'de' ? card.description : '') || ''}
+            />
+          ))}
+        </div>
+      )}
+      {contentCards.length > 0 && !isRoomPreset && (
         <div className="grid grid-cols-1 gap-3">
           {contentCards.map((card, index) => {
             const description =
@@ -213,8 +304,9 @@ const GuestCategoryDisplay = ({ category, currentTheme, lang, t, onGuestEvent })
           })}
         </div>
       )}
-      {presetObj && presetObj.schema && presetObj.schema.length > 0 && (
+      {presetObj && presetObj.schema && presetObj.schema.length > 0 && (!isRoomPreset || !hasRoomSpecificFeatures) && (
         <div className="bg-white p-5 rounded-3xl shadow-sm border border-slate-200 space-y-5">
+          {isRoomPreset && <p className="text-[10px] font-semibold text-slate-500">{roomDetailsCopy.general}</p>}
           {(Array.isArray(presetObj.schema) ? presetObj.schema : []).map((field) => {
             const rawVal = fieldValues[field.key] !== undefined ? fieldValues[field.key] : field.default;
             const fieldLabel = (field.label && (field.label[lang] || field.label.de)) || field.key;
