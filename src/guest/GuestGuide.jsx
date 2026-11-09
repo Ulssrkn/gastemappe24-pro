@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import LanguageSelect from '../components/LanguageSelect.jsx';
 import {
   ArrowRight,
-  ExternalLink,
   Car,
   Check,
   ChevronRight,
@@ -12,7 +11,6 @@ import {
   Copy,
   Info,
   Navigation,
-  Phone,
   Star,
   Sun,
   Wifi,
@@ -20,7 +18,6 @@ import {
 import GuestCategoryDisplay from './GuestCategoryDisplay.jsx';
 import LegalLinks from '../guide/LegalLinks.jsx';
 import analyticsCopy from '../analyticsCopy.js';
-import guestCardCopy from '../guestCardCopy.js';
 import { quickAccessDefaults } from '../guide/guideContent.js';
 import renderSafeIconByName from '../guide/PresetIcon.jsx';
 import { supabase } from '../lib/supabaseClient.js';
@@ -87,7 +84,6 @@ export default function GuestGuide({
   ].filter(Boolean);
   const selectedQuickItem = quickAccessItems.find((item) => item.id === selectedQuickAccess) || quickAccessItems[0];
 
-  const quickCopy = guestCardCopy[lang] || guestCardCopy.en;
   const ac = analyticsCopy[lang] || analyticsCopy.en;
   if (showWelcomeScreen) {
     return (
@@ -286,9 +282,6 @@ export default function GuestGuide({
                     {selectedQuickItem.id === 'wifi' && hotel.wifiPass && <button type="button" onClick={copyWifiPassword} aria-label={copiedWifi ? copyWifiLabel.copied : copyWifiLabel.copy} className={"inline-flex shrink-0 items-center gap-1.5 rounded-xl px-3 py-2 text-[10px] font-bold " + currentTheme.bg + " text-white"}>{copiedWifi ? <Check className="h-3.5 w-3.5" /> : <Copy className="h-3.5 w-3.5" />}{copiedWifi ? copyWifiLabel.copied : copyWifiLabel.copy}</button>}
                   </div>
                   {selectedQuickItem.id === 'wifi' && (hotel.wifiSsid || hotel.wifiPass) && <div className="mt-3 flex flex-wrap gap-2">{hotel.wifiSsid && <span className="rounded-lg bg-white px-3 py-2 font-mono text-[11px] text-slate-700 ring-1 ring-slate-200">{hotel.wifiSsid}</span>}{hotel.wifiPass && <span className="rounded-lg bg-white px-3 py-2 font-mono text-[11px] text-slate-700 ring-1 ring-slate-200">{hotel.wifiPass}</span>}</div>}
-                  {hotel.address && <a href={"https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(hotel.address)} onClick={() => trackGuestEvent("action_route")} target="_blank" rel="noreferrer" className="mt-3 inline-flex items-center gap-2 rounded-xl bg-white px-3 py-2.5 text-[11px] font-bold text-slate-700 ring-1 ring-slate-200"><Navigation className="h-4 w-4" />{t.navRoute}</a>}
-                  {hotel.website && /^https?:\/\//i.test(hotel.website) && <a href={hotel.website} onClick={() => trackGuestEvent("action_website")} target="_blank" rel="noreferrer" className="ml-2 mt-3 inline-flex items-center gap-2 rounded-xl bg-white px-3 py-2.5 text-[11px] font-bold text-slate-700 ring-1 ring-slate-200"><ExternalLink className="h-4 w-4" />{quickCopy.website}</a>}
-                  {hotel.phone && <a href={"tel:" + hotel.phone.replace(/[^0-9+*#]/g, "")} onClick={() => trackGuestEvent("action_call")} className="ml-2 mt-3 inline-flex items-center gap-2 rounded-xl bg-white px-3 py-2.5 text-[11px] font-bold text-slate-700 ring-1 ring-slate-200"><Phone className="h-4 w-4" />{quickCopy.call}</a>}
                 </div>}
               </section>
             )}
