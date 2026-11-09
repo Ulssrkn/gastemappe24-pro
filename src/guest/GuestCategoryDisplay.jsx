@@ -203,7 +203,7 @@ const GuestCategoryDisplay = ({ category, currentTheme, lang, t, onGuestEvent })
                     </div>
                   </div>
                 </div>
-                {(website || mapUrl || tel) && <div className={"flex flex-wrap gap-2 border-t px-3 py-3 " + currentTheme.bgLight + " " + currentTheme.border}>
+                {(website || mapUrl || tel) && <div className="flex flex-wrap gap-2 border-t border-slate-200 bg-stone-50/80 px-3 py-3">
                   {mapUrl && <a href={mapUrl} onClick={() => onGuestEvent?.("action_route")} target="_blank" rel="noreferrer" className={"inline-flex items-center gap-1.5 rounded-xl px-3 py-2 text-[10px] font-bold text-white transition hover:opacity-90 " + currentTheme.bg}><Navigation className="h-3.5 w-3.5" />{copy.route}</a>}
                   {website && <a href={website} onClick={() => onGuestEvent?.("action_website")} target="_blank" rel="noreferrer" className={"inline-flex items-center gap-1.5 rounded-xl bg-white px-3 py-2 text-[10px] font-bold ring-1 transition hover:brightness-95 " + currentTheme.text + " " + currentTheme.border}><ExternalLink className="h-3.5 w-3.5" />{copy.website}</a>}
                   {tel && <a href={"tel:" + tel} onClick={() => onGuestEvent?.("action_call")} className={"inline-flex items-center gap-1.5 rounded-xl bg-white px-3 py-2 text-[10px] font-bold ring-1 transition hover:brightness-95 " + currentTheme.text + " " + currentTheme.border}><Phone className="h-3.5 w-3.5" />{copy.call}</a>}
