@@ -184,70 +184,30 @@ const GuestCategoryDisplay = ({ category, currentTheme, lang, t, onGuestEvent })
             const phone = String(card.phone || '').trim();
             const tel = phone.replace(/[^0-9+*#]/g, '');
             return (
-              <article
-                key={card.id || index}
-                className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm"
-              >
+              <article key={card.id || index} className="rounded-2xl border border-slate-200 bg-white shadow-sm transition hover:shadow-md">
                 <div className="p-4">
-                  <div className="flex items-start justify-between gap-3">
-                    <div className="min-w-0">
-                      <h3 className="text-sm font-bold text-slate-900">{card.titleTranslations?.[lang] || card.titleTranslations?.de || card.title}</h3>
-                      {card.hours && (
-                        <p className="mt-1 text-[10px] font-semibold uppercase tracking-wide text-slate-500">
-                          {card.hours}
-                        </p>
-                      )}
-                    </div>
-                    <span className="rounded-full bg-slate-100 px-2.5 py-1 text-[9px] font-bold text-slate-600">
-                      {presetObj?.title?.[lang] || presetObj?.title?.de || category.title}
+                  <div className="flex items-start gap-3">
+                    <span className={"flex h-10 w-10 shrink-0 items-center justify-center rounded-xl " + currentTheme.bgLight + " " + currentTheme.text}>
+                      {renderSafeIconByName(category.icon || presetObj?.icon || "MapPin", currentTheme)}
                     </span>
+                    <div className="min-w-0 flex-1">
+                      <div className="flex flex-wrap items-center justify-between gap-2">
+                        <h3 className="text-sm font-bold text-slate-900">{card.titleTranslations?.[lang] || card.titleTranslations?.de || card.title}</h3>
+                        <span className={"rounded-full px-2.5 py-1 text-[9px] font-bold " + currentTheme.bgLight + " " + currentTheme.text}>
+                          {presetObj?.title?.[lang] || presetObj?.title?.de || category.title}
+                        </span>
+                      </div>
+                      {card.hours && <p className="mt-1 text-[10px] font-semibold uppercase tracking-wide text-slate-500">{card.hours}</p>}
+                      {description && <p className="mt-2 text-xs leading-relaxed text-slate-600">{description}</p>}
+                      {card.address && <p className="mt-2 flex items-start gap-1.5 text-[11px] text-slate-500"><MapPin className="mt-0.5 h-3.5 w-3.5 shrink-0" />{card.address}</p>}
+                    </div>
                   </div>
-                  {description && <p className="mt-2 text-xs leading-relaxed text-slate-600">{description}</p>}
-                  {card.address && (
-                    <p className="mt-2 flex items-start gap-1.5 text-[11px] text-slate-500">
-                      <MapPin className="mt-0.5 h-3.5 w-3.5 shrink-0" />
-                      {card.address}
-                    </p>
-                  )}
                 </div>
-                {(website || mapUrl || tel) && (
-                  <div className="flex flex-wrap gap-2 border-t border-slate-100 bg-slate-50/70 p-3">
-                    {mapUrl && (
-                      <a
-                        href={mapUrl}
-                        onClick={() => onGuestEvent?.('action_route')}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="inline-flex items-center gap-1.5 rounded-lg bg-white px-3 py-2 text-[10px] font-bold text-slate-700 ring-1 ring-slate-200"
-                      >
-                        <Navigation className="h-3.5 w-3.5" />
-                        {copy.route}
-                      </a>
-                    )}
-                    {website && (
-                      <a
-                        href={website}
-                        onClick={() => onGuestEvent?.('action_website')}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="inline-flex items-center gap-1.5 rounded-lg bg-white px-3 py-2 text-[10px] font-bold text-slate-700 ring-1 ring-slate-200"
-                      >
-                        <ExternalLink className="h-3.5 w-3.5" />
-                        {copy.website}
-                      </a>
-                    )}
-                    {tel && (
-                      <a
-                        href={`tel:${tel}`}
-                        onClick={() => onGuestEvent?.('action_call')}
-                        className="inline-flex items-center gap-1.5 rounded-lg bg-white px-3 py-2 text-[10px] font-bold text-slate-700 ring-1 ring-slate-200"
-                      >
-                        <Phone className="h-3.5 w-3.5" />
-                        {copy.call}
-                      </a>
-                    )}
-                  </div>
-                )}
+                {(website || mapUrl || tel) && <div className={"flex flex-wrap gap-2 border-t px-3 py-3 " + currentTheme.bgLight + " " + currentTheme.border}>
+                  {mapUrl && <a href={mapUrl} onClick={() => onGuestEvent?.("action_route")} target="_blank" rel="noreferrer" className={"inline-flex items-center gap-1.5 rounded-xl px-3 py-2 text-[10px] font-bold text-white transition hover:opacity-90 " + currentTheme.bg}><Navigation className="h-3.5 w-3.5" />{copy.route}</a>}
+                  {website && <a href={website} onClick={() => onGuestEvent?.("action_website")} target="_blank" rel="noreferrer" className={"inline-flex items-center gap-1.5 rounded-xl bg-white px-3 py-2 text-[10px] font-bold ring-1 transition hover:brightness-95 " + currentTheme.text + " " + currentTheme.border}><ExternalLink className="h-3.5 w-3.5" />{copy.website}</a>}
+                  {tel && <a href={"tel:" + tel} onClick={() => onGuestEvent?.("action_call")} className={"inline-flex items-center gap-1.5 rounded-xl bg-white px-3 py-2 text-[10px] font-bold ring-1 transition hover:brightness-95 " + currentTheme.text + " " + currentTheme.border}><Phone className="h-3.5 w-3.5" />{copy.call}</a>}
+                </div>}
               </article>
             );
           })}
