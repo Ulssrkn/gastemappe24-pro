@@ -27,6 +27,8 @@ import {
   Wifi,
 } from 'lucide-react';
 
+export const presetIconNames = ['Building','Bed','Key','Utensils','Coffee','Waves','Sparkles','Compass','MapPin','Car','Phone','ShieldCheck','Wifi','Clock','Recycle','Award','Baby','Accessibility','ShoppingBag','Lock','Sun','Flame','Heart','Users'];
+
 const renderSafeIconByName = (iconName, currentTheme) => {
   const themeClass = currentTheme ? currentTheme.text : 'text-slate-800';
   const className = `w-5 h-5 ${themeClass}`;
