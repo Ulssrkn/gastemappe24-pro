@@ -122,7 +122,9 @@ const GuestCategoryDisplay = ({ category, currentTheme, lang, t, onGuestEvent })
       ? fieldValues.attraction_types.filter((type) => type in typeDetails)
       : [];
   const contentCards = Array.isArray(fieldValues.contentCards)
-    ? fieldValues.contentCards.filter((card) => String(card.title || '').trim())
+    ? fieldValues.contentCards.filter((card) =>
+        String(card.titleTranslations?.[lang] || card.titleTranslations?.de || card.title || '').trim()
+      )
     : [];
   const safeWebUrl = (value) => {
     try {
@@ -189,7 +191,7 @@ const GuestCategoryDisplay = ({ category, currentTheme, lang, t, onGuestEvent })
                 <div className="p-4">
                   <div className="flex items-start justify-between gap-3">
                     <div className="min-w-0">
-                      <h3 className="text-sm font-bold text-slate-900">{card.title}</h3>
+                      <h3 className="text-sm font-bold text-slate-900">{card.titleTranslations?.[lang] || card.titleTranslations?.de || card.title}</h3>
                       {card.hours && (
                         <p className="mt-1 text-[10px] font-semibold uppercase tracking-wide text-slate-500">
                           {card.hours}
