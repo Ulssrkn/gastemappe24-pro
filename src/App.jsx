@@ -829,7 +829,8 @@ export default function App() {
   };
   const quickLabels = quickAccessLabels[lang] || quickAccessLabels.de;
 
-  const [appMode, setAppMode] = useState('guest');
+  const [appMode, setAppMode] = useState(() => typeof window !== 'undefined' && (new URLSearchParams(window.location.search).get('mode') === 'dashboard' || window.location.hash.includes('type=recovery')) ? 'dashboard' : 'guest');
+  const [passwordRecoveryPending, setPasswordRecoveryPending] = useState(() => typeof window !== 'undefined' && window.location.hash.includes('type=recovery'));
   const guestSlug = typeof window !== 'undefined'
     ? (window.location.pathname.match(/^\/g\/([a-z0-9-]+)\/?$/i)?.[1] || null)
     : null;
@@ -877,7 +878,8 @@ export default function App() {
       setAuthSession(data?.session || null);
       setAuthLoading(false);
     });
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event === 'PASSWORD_RECOVERY') { setPasswordRecoveryPending(true); setAppMode('dashboard'); }
       setAuthSession(session || null);
       setAuthLoading(false);
     });
@@ -1728,8 +1730,17 @@ export default function App() {
     return <main className="min-h-screen bg-[#FBF9F5] flex items-center justify-center text-sm text-stone-500">Anmeldestatus wird geprüft …</main>;
   }
 
+  if (appMode === 'dashboard' && passwordRecoveryPending) {
+    return <AuthGate supabase={supabase} lang={lang} onLangChange={setLang} passwordRecovery
+      onPasswordUpdated={() => {
+        setPasswordRecoveryPending(false);
+        setAppMode('dashboard');
+        window.history.replaceState({}, document.title, `${window.location.pathname}?mode=dashboard#dashboard-overview`);
+      }} />;
+  }
+
   if (appMode === 'dashboard' && !authSession?.user) {
-    return <AuthGate supabase={supabase} />;
+    return <AuthGate supabase={supabase} lang={lang} onLangChange={setLang} />;
   }
 
   if (appMode === 'dashboard' && accountRecord && trialExpired) {
