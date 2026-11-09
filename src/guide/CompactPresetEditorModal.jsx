@@ -12,7 +12,7 @@ import {
 import { categoryPresets, mainCategories } from './presetCatalog.js';
 import guestCardCopy from '../guestCardCopy.js';
 import pilotCopy from '../pilotCopy.js';
-import renderSafeIconByName from './PresetIcon.jsx';
+import renderSafeIconByName, { presetIconNames } from './PresetIcon.jsx';
 
 const PresetFieldEditor = ({
   field,
@@ -117,6 +117,7 @@ const CompactPresetEditorModal = ({ isOpen, onClose, onSave, currentTheme, lang,
   const [showMoreInfo, setShowMoreInfo] = useState(false);
 
   const [customTitle, setCustomTitle] = useState('');
+  const [selectedIcon, setSelectedIcon] = useState('Info');
   const [customText, setCustomText] = useState('');
   const [customTextTranslations, setCustomTextTranslations] = useState({});
   const [fieldValues, setFieldValues] = useState({});
@@ -124,6 +125,7 @@ const CompactPresetEditorModal = ({ isOpen, onClose, onSave, currentTheme, lang,
   const [expandedContentCardId, setExpandedContentCardId] = useState(null);
   const [contentCardError, setContentCardError] = useState('');
   const gc = guestCardCopy[lang] || guestCardCopy.de;
+  const iconPickerText = ({ de: { label: 'Symbol (optional)', reset: 'Preset-Symbol verwenden' }, en: { label: 'Icon (optional)', reset: 'Use preset icon' }, tr: { label: 'Simge (isteğe bağlı)', reset: 'Preset simgesini kullan' }, fr: { label: 'Icône (facultatif)', reset: 'Utiliser l’icône du preset' }, es: { label: 'Icono (opcional)', reset: 'Usar icono del preset' }, hr: { label: 'Ikona (neobavezno)', reset: 'Koristi zadanu ikonu' }, sq: { label: 'Ikonë (opsionale)', reset: 'Përdor ikonën e presetit' }, sv: { label: 'Ikon (valfritt)', reset: 'Använd preset-ikon' }, nb: { label: 'Ikon (valgfritt)', reset: 'Bruk preset-ikon' }, no: { label: 'Ikon (valgfritt)', reset: 'Bruk preset-ikon' }, it: { label: 'Icona (facoltativa)', reset: 'Usa l’icona del preset' } })[lang] || { label: 'Icon (optional)', reset: 'Use preset icon' };
   const titleRequiredCopy = {
     de: 'Bitte gib für jede Empfehlung einen Titel ein.',
     en: 'Add a title to each recommendation.',
@@ -192,6 +194,7 @@ const CompactPresetEditorModal = ({ isOpen, onClose, onSave, currentTheme, lang,
       const presetObj = categoryPresets.find((p) => p.id === editingCategory.presetId);
       setSelectedPreset(presetObj || null);
       setCustomTitle(editingCategory.customTitle || '');
+      setSelectedIcon(editingCategory.icon || presetObj?.icon || 'Info');
       setCustomText(editingCategory.customText || '');
       setCustomTextTranslations(editingCategory.customTextTranslations || {});
       setFieldValues(editingCategory.fieldValues || {});
@@ -205,6 +208,7 @@ const CompactPresetEditorModal = ({ isOpen, onClose, onSave, currentTheme, lang,
       setSelectedMainCat(null);
       setSelectedPreset(null);
       setCustomTitle('');
+      setSelectedIcon('Info');
       setCustomText('');
       setCustomTextTranslations({});
       setFieldValues({});
@@ -223,6 +227,7 @@ const CompactPresetEditorModal = ({ isOpen, onClose, onSave, currentTheme, lang,
 
   const handleSelectPreset = (preset) => {
     setSelectedPreset(preset);
+    setSelectedIcon(preset?.icon || 'Info');
     const initialVals = {};
     if (preset && preset.schema) {
       preset.schema.forEach((f) => {
@@ -271,7 +276,7 @@ const CompactPresetEditorModal = ({ isOpen, onClose, onSave, currentTheme, lang,
       id: editingCategory ? editingCategory.id : Date.now().toString(),
       presetId: selectedPreset ? selectedPreset.id : 'custom',
       categoryId: selectedMainCat || 'cat_hotel',
-      icon: selectedPreset ? selectedPreset.icon : 'Info',
+      icon: selectedIcon || (selectedPreset ? selectedPreset.icon : 'Info'),
       customTitle: customTitle,
       fieldValues: { ...fieldValues, contentCards },
       customText: customText,
@@ -428,6 +433,20 @@ const CompactPresetEditorModal = ({ isOpen, onClose, onSave, currentTheme, lang,
                   className="w-full p-2.5 text-xs font-bold border border-stone-200 rounded-xl bg-stone-50 focus:bg-white"
                 />
               </div>
+              <section className="space-y-2 rounded-2xl border border-stone-200 bg-stone-50/60 p-3">
+                <div className="flex items-center justify-between gap-3">
+                  <span className="text-[10px] font-black uppercase tracking-wider text-stone-600">{iconPickerText.label}</span>
+                  <button type="button" onClick={() => setSelectedIcon(selectedPreset?.icon || "Info")} className="text-[10px] font-semibold text-stone-500 underline-offset-2 hover:underline">{iconPickerText.reset}</button>
+                </div>
+                <div className="grid grid-cols-6 gap-2 sm:grid-cols-8">
+                  {presetIconNames.map((iconName) => {
+                    const selected = selectedIcon === iconName;
+                    return <button key={iconName} type="button" aria-label={iconPickerText.label + ": " + iconName} title={iconName} aria-pressed={selected} onClick={() => setSelectedIcon(iconName)} className={"flex h-10 items-center justify-center rounded-xl border transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 " + (selected ? currentTheme.bgLight + " " + currentTheme.border : "border-stone-200 bg-white hover:border-stone-300")}>
+                      {renderSafeIconByName(iconName, currentTheme)}
+                    </button>;
+                  })}
+                </div>
+              </section>
 
               {selectedPreset?.id !== 'REG_004' && (
                 <section className="space-y-3 rounded-2xl border border-slate-200 bg-slate-50/70 p-4">
