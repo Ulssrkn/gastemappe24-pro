@@ -3,25 +3,46 @@ import { supabase } from '../lib/supabaseClient.js';
 import { normalizeHotel } from '../guide/guideContent.js';
 
 export default function usePublishedGuide(guestSlug, setHotel, setCategories) {
-  const trackGuestPageView = (pageKey) => {
-    if (!guestSlug || !supabase || !/^[a-zA-Z0-9_-]{1,80}$/.test(pageKey)) return;
-    supabase.functions
-      .invoke('track-view', { body: { slug: guestSlug, page_key: pageKey } })
-      .then(({ error }) => {
-        if (error) throw error;
-      })
-      .catch((error) => console.warn('Analytics tracking unavailable:', error));
+  const feedbackKey = () => `gm24_confirmed_feedback_${guestSlug}_${new Date().toISOString().slice(0, 10)}`;
+  const trackGuestPageView = async (pageKey) => {
+    if (!guestSlug || !supabase || !/^[a-zA-Z0-9_-]{1,80}$/.test(pageKey)) return false;
+    try {
+      const { data, error } = await supabase.functions.invoke('track-view', {
+        body: { slug: guestSlug, page_key: pageKey },
+      });
+      if (error) throw error;
+      return data?.ok === true;
+    } catch (error) {
+      console.warn('Analytics tracking unavailable:', error);
+      return false;
+    }
   };
   const trackGuestEvent = trackGuestPageView;
   const [guestFeedback, setGuestFeedback] = useState(() => {
     try {
-      return guestSlug
-        ? sessionStorage.getItem(`gm24_feedback_${guestSlug}_${new Date().toISOString().slice(0, 10)}`) || ''
-        : '';
+      return guestSlug ? sessionStorage.getItem(feedbackKey()) || '' : '';
     } catch {
       return '';
     }
   });
+  const [feedbackPending, setFeedbackPending] = useState(false);
+  const [feedbackFailed, setFeedbackFailed] = useState(false);
+
+  const submitGuestFeedback = async (answer) => {
+    if (guestFeedback || feedbackPending) return;
+    setFeedbackPending(true);
+    setFeedbackFailed(false);
+    const saved = await trackGuestEvent(answer === 'yes' ? 'feedback_helpful' : 'feedback_not_helpful');
+    setFeedbackPending(false);
+    if (!saved) {
+      setFeedbackFailed(true);
+      return;
+    }
+    setGuestFeedback(answer);
+    try {
+      sessionStorage.setItem(feedbackKey(), answer);
+    } catch {}
+  };
   const [guestPageStatus, setGuestPageStatus] = useState('idle');
 
   useEffect(() => {
@@ -62,5 +83,5 @@ export default function usePublishedGuide(guestSlug, setHotel, setCategories) {
       active = false;
     };
   }, [guestSlug]);
-  return { trackGuestPageView, trackGuestEvent, guestFeedback, setGuestFeedback, guestPageStatus };
+  return { trackGuestPageView, trackGuestEvent, guestFeedback, feedbackPending, feedbackFailed, submitGuestFeedback, guestPageStatus };
 }
