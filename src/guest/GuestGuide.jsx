@@ -87,6 +87,7 @@ export default function GuestGuide({
   ].filter(Boolean);
   const selectedQuickItem = quickAccessItems.find((item) => item.id === selectedQuickAccess) || quickAccessItems[0];
 
+  const quickCopy = guestCardCopy[lang] || guestCardCopy.en;
   const ac = analyticsCopy[lang] || analyticsCopy.en;
   if (showWelcomeScreen) {
     return (
