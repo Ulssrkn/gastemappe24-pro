@@ -292,13 +292,15 @@ export default function GuestGuide({
             {Object.entries(groupedCategories).map(([groupName, groupItems]) => {
               const groupIcon = groupItems[0]?.mainCatObj?.icon || 'Compass';
               return (
-                <section key={groupName} className="overflow-hidden rounded-[1.6rem] border border-slate-200 bg-white shadow-sm">
-                  <div className="flex items-center gap-3 border-b border-slate-100 bg-white px-4 py-3.5">
-                    <span className={"flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-white/90 " + currentTheme.text + " shadow-sm"}>{renderSafeIconByName(groupIcon, currentTheme)}</span>
-                    <h2 className="min-w-0 flex-1 truncate text-sm font-black tracking-tight text-slate-900">{groupName}</h2>
-                    <span className={"flex h-7 min-w-7 items-center justify-center rounded-full bg-white px-2 text-xs font-bold " + currentTheme.text}>{groupItems.length}</span>
+                <section key={groupName} className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm">
+                  <div className="flex items-center gap-3 border-b border-slate-100 bg-gradient-to-r from-stone-50 to-white px-4 py-3.5">
+                    <span className={"flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl " + currentTheme.bgLight + " " + currentTheme.text}>
+                      {renderSafeIconByName(groupIcon, currentTheme)}
+                    </span>
+                    <h2 className="min-w-0 flex-1 text-sm font-black tracking-tight text-slate-900">{groupName}</h2>
+                    <span className={"flex h-7 min-w-7 items-center justify-center rounded-full px-2 text-xs font-bold " + currentTheme.bgLight + " " + currentTheme.text}>{groupItems.length}</span>
                   </div>
-                  <div className={"grid gap-2.5 p-3 " + (groupItems.length === 1 ? "grid-cols-1" : "grid-cols-2")}>
+                  <div className={"grid gap-2.5 bg-slate-50/60 p-3 " + (groupItems.length === 1 ? "grid-cols-1" : "grid-cols-2")}>
                     {(groupItems || []).map((cat) => {
                       const presetObj = cat.presetData;
                       const title = cat.customTitle || (presetObj && presetObj.title && (presetObj.title[lang] || presetObj.title.de)) || 'Kategorie';
@@ -307,18 +309,23 @@ export default function GuestGuide({
                           const analyticsCategoryId = String(cat.id).replace(/[^A-Za-z0-9_-]/g, "").slice(0, 68);
                           trackGuestPageView('category_' + analyticsCategoryId);
                           navigateGuest('services', { ...cat, title, groupName });
-                        }} className={"group flex w-full rounded-2xl border border-slate-200/80 bg-white text-left shadow-sm transition duration-200 hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 " + (groupItems.length === 1 ? "min-h-16 flex-row items-center gap-3 p-3.5" : "min-h-[112px] flex-col items-start justify-between p-3.5")}>
+                        }} className={"group relative flex w-full overflow-hidden rounded-2xl border border-slate-200/80 bg-white text-left transition duration-200 hover:border-slate-300 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 " + (groupItems.length === 1 ? "min-h-16 flex-row items-center gap-3 px-3.5 py-3" : "min-h-[112px] flex-col items-start justify-between p-3.5")}>
+                          <span className={"absolute inset-y-3 left-0 w-1 rounded-r-full " + currentTheme.bg + " opacity-0 transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100"} />
                           {groupItems.length === 1 ? (
                             <>
                               <span className={"flex h-9 w-9 shrink-0 items-center justify-center rounded-xl " + currentTheme.bgLight + " " + currentTheme.text}>{renderSafeIconByName(cat.icon, currentTheme)}</span>
                               <span className="min-w-0 flex-1 line-clamp-2 text-xs font-extrabold leading-snug text-slate-900">{title}</span>
-                              <ChevronRight className="h-4 w-4 shrink-0 text-slate-300 transition group-hover:translate-x-0.5 group-hover:text-slate-500" />
+                              <span className={"flex h-7 w-7 shrink-0 items-center justify-center rounded-full " + currentTheme.bgLight + " " + currentTheme.text}>
+                                <ChevronRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+                              </span>
                             </>
                           ) : (
                             <>
                               <span className="flex w-full items-center justify-between gap-2">
                                 <span className={"flex h-9 w-9 items-center justify-center rounded-xl " + currentTheme.bgLight + " " + currentTheme.text}>{renderSafeIconByName(cat.icon, currentTheme)}</span>
-                                <ChevronRight className="h-4 w-4 shrink-0 text-slate-300 transition group-hover:translate-x-0.5 group-hover:text-slate-500" />
+                                <span className={"flex h-7 w-7 items-center justify-center rounded-full bg-slate-50 text-slate-400 transition-colors group-hover:bg-slate-100 " + currentTheme.text}>
+                                  <ChevronRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+                                </span>
                               </span>
                               <span className="mt-3 line-clamp-2 text-xs font-extrabold leading-snug text-slate-900">{title}</span>
                             </>
