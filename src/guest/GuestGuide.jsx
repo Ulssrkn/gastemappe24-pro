@@ -292,8 +292,8 @@ export default function GuestGuide({
             {Object.entries(groupedCategories).map(([groupName, groupItems]) => {
               const groupIcon = groupItems[0]?.mainCatObj?.icon || 'Compass';
               return (
-                <section key={groupName} className={"overflow-hidden rounded-[1.6rem] border " + currentTheme.border + " bg-gradient-to-b from-white to-stone-50/90 shadow-sm"}>
-                  <div className={"flex items-center gap-3 px-4 py-3.5 " + currentTheme.bgLight}>
+                <section key={groupName} className="overflow-hidden rounded-[1.6rem] border border-slate-200 bg-white shadow-sm">
+                  <div className="flex items-center gap-3 border-b border-slate-100 bg-white px-4 py-3.5">
                     <span className={"flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-white/90 " + currentTheme.text + " shadow-sm"}>{renderSafeIconByName(groupIcon, currentTheme)}</span>
                     <h2 className="min-w-0 flex-1 truncate text-sm font-black tracking-tight text-slate-900">{groupName}</h2>
                     <span className={"flex h-7 min-w-7 items-center justify-center rounded-full bg-white px-2 text-xs font-bold " + currentTheme.text}>{groupItems.length}</span>
