@@ -118,6 +118,12 @@ export const demoHotel = () => ({
   images: [],
 });
 
+export const normalizeHotel = (saved, name) => ({
+  ...emptyHotel(name),
+  ...(saved && typeof saved === 'object' && !Array.isArray(saved) ? saved : {}),
+  images: Array.isArray(saved?.images) ? saved.images : [],
+});
+
 export const demoCategories = [
   {
     id: 'demo-rooms',
