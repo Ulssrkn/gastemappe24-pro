@@ -47,7 +47,6 @@ export default function GuestGuide({
     guestSlug && supabase && guestPageStatus === 'ready' && activeTab === 'services' && !selectedCategory;
   const [currentSlide] = useState(0);
   const [copiedWifi, setCopiedWifi] = useState(false);
-  const [selectedQuickAccess, setSelectedQuickAccess] = useState(null);
   const copyWifiLabels = {
     de: { copy: 'Kopieren', copied: 'Kopiert' },
     en: { copy: 'Copy', copied: 'Copied' },
@@ -76,14 +75,75 @@ export default function GuestGuide({
     setCopiedWifi(true);
     setTimeout(() => setCopiedWifi(false), 2500);
   };
-  const quickAccessItems = [
-    hotel.showWifi && { id: 'wifi', icon: Wifi, title: getQuickCardText('wifi', 'title'), description: getQuickCardText('wifi', 'description') },
-    hotel.showParking && { id: 'parking', icon: Car, title: getQuickCardText('parking', 'title'), description: getQuickCardText('parking', 'description') },
-    hotel.showBreakfast && { id: 'breakfast', icon: Coffee, title: getQuickCardText('breakfast', 'title'), description: getQuickCardText('breakfast', 'description') },
-    hotel.showCheckInOut && { id: 'checkin', icon: Clock, title: getQuickCardText('checkin', 'title'), description: getQuickCardText('checkin', 'description') },
+  const activeQuickCards = [
+    hotel.showWifi && (
+      <div key="wifi" className="bg-white p-4 rounded-2xl shadow-sm border border-stone-200 space-y-2">
+        <div className={`flex items-center gap-2 ${currentTheme.text}`}>
+          <Wifi className="w-5 h-5" />
+          <span className="font-bold text-xs text-slate-900">{getQuickCardText('wifi', 'title')}</span>
+        </div>
+        <p className="text-[11px] text-slate-600">{getQuickCardText('wifi', 'description')}</p>
+        <div className="text-[11px] text-slate-500 font-mono bg-stone-50 p-2 rounded-lg border">
+          <div>
+            <b>{hotel.wifiSsid}</b>
+          </div>
+          <div className="flex flex-col items-start mt-2 gap-2 min-w-0">
+            <span className="block w-full min-w-0 whitespace-normal break-all leading-relaxed">
+              {hotel.wifiPass}
+            </span>
+            {hotel.wifiPass && (
+              <button
+                type="button"
+                onClick={copyWifiPassword}
+                aria-label={copyWifiLabel.copy}
+                title={copiedWifi ? copyWifiLabel.copied : copyWifiLabel.copy}
+                className={`${currentTheme.bgLight} ${currentTheme.text} px-2 py-1.5 rounded-lg cursor-pointer inline-flex items-center gap-1 shrink-0`}
+              >
+                {copiedWifi ? (
+                  <>
+                    <Check className="w-3.5 h-3.5 text-emerald-600" />
+                    <span className="text-[10px]">{copyWifiLabel.copied}</span>
+                  </>
+                ) : (
+                  <>
+                    <Copy className="w-3.5 h-3.5" />
+                    <span className="text-[10px]">{copyWifiLabel.copy}</span>
+                  </>
+                )}
+              </button>
+            )}
+          </div>
+        </div>
+      </div>
+    ),
+    hotel.showParking && (
+      <div key="parking" className="bg-white p-4 rounded-2xl shadow-sm border border-stone-200 space-y-2">
+        <div className={`flex items-center gap-2 ${currentTheme.text}`}>
+          <Car className="w-5 h-5" />
+          <span className="font-bold text-xs text-slate-900">{getQuickCardText('parking', 'title')}</span>
+        </div>
+        <p className="text-[11px] text-slate-600">{getQuickCardText('parking', 'description')}</p>
+      </div>
+    ),
+    hotel.showBreakfast && (
+      <div key="breakfast" className="bg-white p-4 rounded-2xl shadow-sm border border-stone-200 space-y-2">
+        <div className={`flex items-center gap-2 ${currentTheme.text}`}>
+          <Coffee className="w-5 h-5" />
+          <span className="font-bold text-xs text-slate-900">{getQuickCardText('breakfast', 'title')}</span>
+        </div>
+        <p className="text-[11px] text-slate-600">{getQuickCardText('breakfast', 'description')}</p>
+      </div>
+    ),
+    hotel.showCheckInOut && (
+      <div key="checkinout" className="bg-white p-4 rounded-2xl shadow-sm border border-stone-200 space-y-2">
+        <div className={`flex items-center gap-2 ${currentTheme.text}`}>
+          <Clock className="w-5 h-5" />
+          <span className="font-bold text-xs text-slate-900">{getQuickCardText('checkin', 'title')}</span>
+        </div>
+        <p className="text-[11px] text-slate-600">{getQuickCardText('checkin', 'description')}</p>
+      </div>
+    ),
   ].filter(Boolean);
-  const selectedQuickItem = quickAccessItems.find((item) => item.id === selectedQuickAccess) || quickAccessItems[0];
-
   const ac = analyticsCopy[lang] || analyticsCopy.en;
   if (showWelcomeScreen) {
     return (
@@ -260,30 +320,8 @@ export default function GuestGuide({
               </div>
             </div>
 
-            {quickAccessItems.length > 0 && (
-              <section className="overflow-hidden rounded-[1.7rem] border border-slate-200 bg-white p-4 shadow-sm">
-                <div className="mb-3 flex items-center justify-between gap-3">
-                  <h2 className="text-sm font-black tracking-tight text-slate-900">{quickAccessTitle}</h2>
-                  <span className={"h-1 w-10 rounded-full " + currentTheme.bg} />
-                </div>
-                <div className="grid grid-cols-2 gap-2">
-                  {quickAccessItems.map((item) => {
-                    const Icon = item.icon;
-                    const isSelected = selectedQuickItem?.id === item.id;
-                    return <button key={item.id} type="button" onClick={() => setSelectedQuickAccess(item.id)} aria-pressed={isSelected} className={"flex min-h-12 items-center gap-2.5 rounded-xl border px-3 py-2.5 text-left transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 " + (isSelected ? currentTheme.bgLight + " " + currentTheme.border : "border-slate-200 bg-white hover:bg-stone-50")}>
-                      <span className={"flex h-8 w-8 shrink-0 items-center justify-center rounded-lg " + currentTheme.bgLight + " " + currentTheme.text}><Icon className="h-4 w-4" /></span>
-                      <span className="line-clamp-2 text-[11px] font-bold leading-snug text-slate-800">{item.title}</span>
-                    </button>;
-                  })}
-                </div>
-                {selectedQuickItem && <div className="mt-3 rounded-2xl bg-stone-50 p-4">
-                  <div className="flex items-start justify-between gap-3">
-                    <div className="min-w-0"><h3 className="text-sm font-extrabold text-slate-900">{selectedQuickItem.title}</h3><p className="mt-1 text-xs leading-relaxed text-slate-600">{selectedQuickItem.description}</p></div>
-                    {selectedQuickItem.id === 'wifi' && hotel.wifiPass && <button type="button" onClick={copyWifiPassword} aria-label={copiedWifi ? copyWifiLabel.copied : copyWifiLabel.copy} className={"inline-flex shrink-0 items-center gap-1.5 rounded-xl px-3 py-2 text-[10px] font-bold " + currentTheme.bg + " text-white"}>{copiedWifi ? <Check className="h-3.5 w-3.5" /> : <Copy className="h-3.5 w-3.5" />}{copiedWifi ? copyWifiLabel.copied : copyWifiLabel.copy}</button>}
-                  </div>
-                  {selectedQuickItem.id === 'wifi' && (hotel.wifiSsid || hotel.wifiPass) && <div className="mt-3 flex flex-wrap gap-2">{hotel.wifiSsid && <span className="rounded-lg bg-white px-3 py-2 font-mono text-[11px] text-slate-700 ring-1 ring-slate-200">{hotel.wifiSsid}</span>}{hotel.wifiPass && <span className="rounded-lg bg-white px-3 py-2 font-mono text-[11px] text-slate-700 ring-1 ring-slate-200">{hotel.wifiPass}</span>}</div>}
-                </div>}
-              </section>
+            {activeQuickCards.length > 0 && (
+              <div className="grid grid-cols-2 gap-3 pt-2">{activeQuickCards}</div>
             )}
           </div>
         ) : (
