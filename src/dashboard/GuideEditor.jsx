@@ -1,5 +1,5 @@
 import React from 'react';
-import { Edit3, Plus, Trash2 } from 'lucide-react';
+import { Edit3, ImagePlus, Plus, Trash2 } from 'lucide-react';
 import AddressAutocomplete from '../guide/AddressAutocomplete.jsx';
 import QrPrintPanel from './QrPrintPanel.jsx';
 import { quickAccessDefaults, themeColors } from '../guide/guideContent.js';
@@ -110,6 +110,7 @@ export default function GuideEditor({
     },
   };
   const quickLabels = quickAccessLabels[lang] || quickAccessLabels.de;
+  const addPhotoLabel = { de: 'Foto hinzufügen', en: 'Add photo', tr: 'Fotoğraf ekle', fr: 'Ajouter une photo', es: 'Añadir foto', hr: 'Dodaj fotografiju', sq: 'Shto foto', sv: 'Lägg till foto', nb: 'Legg til bilde', it: 'Aggiungi foto' }[lang] || 'Add photo';
   return (
     <div id="editor" className={`${dashboardSection === 'editor' ? '' : 'hidden'} max-w-6xl mx-auto space-y-6`}>
       <div>
@@ -465,7 +466,10 @@ export default function GuideEditor({
       >
         <div className="flex items-center justify-between">
           <h3 className={`font-black text-xs ${currentTheme.text} uppercase tracking-wider`}>{t.sec4Title}</h3>
-          <p className="text-xs text-stone-500">{pilot.uploadPaused}</p>
+          <div className="flex items-center gap-3">
+            <p className="text-xs text-stone-500">{pilot.uploadPaused}</p>
+            {readOnlyDemo && <button type="button" disabled className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-xs font-bold text-slate-500 disabled:cursor-not-allowed"><ImagePlus className="h-4 w-4" />{addPhotoLabel}</button>}
+          </div>
         </div>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
           {(Array.isArray(hotel.images) ? hotel.images : []).map((img, idx) => (
