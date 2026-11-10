@@ -33,6 +33,7 @@ export default function GuideEditor({
   } = workspace;
   const ui = dashboardDemoCopy[lang] || dashboardDemoCopy.de;
   const addPhotoLabel = ui.addPhoto;
+  const quickCardLang = readOnlyDemo ? lang : quickEditLang;
   return (
     <div id="editor" className={`${dashboardSection === 'editor' ? '' : 'hidden'} max-w-6xl mx-auto space-y-6`}>
       <div>
@@ -230,7 +231,7 @@ export default function GuideEditor({
           </div>
           <select
             aria-label={ui.quickLanguage}
-            value={quickEditLang}
+            value={quickCardLang}
             onChange={(e) => setQuickEditLang(e.target.value)}
             className="bg-white border border-stone-200 text-xs rounded-xl px-3 py-2"
           >
@@ -270,8 +271,8 @@ export default function GuideEditor({
                 {ui.title}
                 <input
                   value={
-                    hotel.quickAccessContent?.[quickEditLang]?.[card.id]?.title ??
-                    quickAccessDefaults[quickEditLang][card.id].title
+                    hotel.quickAccessContent?.[quickCardLang]?.[card.id]?.title ??
+                    quickAccessDefaults[quickCardLang][card.id].title
                   }
                   onChange={(e) => updateQuickCardText(card.id, 'title', e.target.value)}
                   className="mt-1 w-full rounded-lg border border-stone-200 bg-white p-2.5 text-xs"
