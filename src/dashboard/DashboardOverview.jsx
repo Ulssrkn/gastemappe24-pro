@@ -1,6 +1,7 @@
 import React from 'react';
 import { ArrowRight, CheckCircle2, Settings, Sparkles } from 'lucide-react';
 import dashboardWorkspaceCopy from '../dashboardWorkspaceCopy.js';
+import dashboardDemoCopy from '../i18n/dashboardDemoCopy.js';
 
 export default function DashboardOverview({
   workspace,
@@ -8,11 +9,13 @@ export default function DashboardOverview({
   dashboardSection,
   dw,
   navigateDashboardSection,
+  lang = 'de',
   readOnlyDemo = false,
 }) {
   const { cloudDataStatus, hotel, hotelRecord, hotelRecords } = workspace;
   const { setupSteps, setupCompletedCount, setupProgress } = setup;
   const localHour = new Date().getHours();
+  const ui = dashboardDemoCopy[lang] || dashboardDemoCopy.de;
   const dashboardGreetingPeriod =
     localHour < 5 || localHour >= 22
       ? 'night'
@@ -49,7 +52,7 @@ export default function DashboardOverview({
                 className={`h-2 w-2 rounded-full ${cloudDataStatus === 'ready' ? 'bg-emerald-400' : cloudDataStatus === 'error' ? 'bg-rose-400' : 'bg-amber-300'}`}
               />
               {readOnlyDemo
-                ? 'DEMO · BEISPIELDATEN'
+                ? ui.sampleData
                 : cloudDataStatus === 'ready'
                 ? dw.hero.connected
                 : cloudDataStatus === 'error'
