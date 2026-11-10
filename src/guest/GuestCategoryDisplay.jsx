@@ -189,11 +189,6 @@ const GuestCategoryDisplay = ({ category, currentTheme, lang, t, onGuestEvent })
   const fieldValues = category.fieldValues || {};
   const copy = guestCardCopy[lang] || guestCardCopy.de;
   const roomDetailsCopy = roomDetailsCopyByLang[lang] || roomDetailsCopyByLang.en;
-  const typeDetails = { museum: copy.museum, nature: copy.nature, guided: copy.guided };
-  const selectedAttractionTypes =
-    presetObj?.id === 'UMG_001' && Array.isArray(fieldValues.attraction_types)
-      ? fieldValues.attraction_types.filter((type) => type in typeDetails)
-      : [];
   const contentCards = Array.isArray(fieldValues.contentCards)
     ? fieldValues.contentCards.filter((card) =>
         String(card.titleTranslations?.[lang] || card.titleTranslations?.de || card.title || '').trim()
@@ -227,32 +222,6 @@ const GuestCategoryDisplay = ({ category, currentTheme, lang, t, onGuestEvent })
 
   return (
     <div className="space-y-4">
-      {selectedAttractionTypes.length > 0 && (
-        <div className="grid grid-cols-1 gap-3">
-          {selectedAttractionTypes.map((type) => {
-            const field = presetObj.schema.find((item) => item.key === 'attraction_types');
-            const option = (field?.options || []).find((item) => optionId(item) === type);
-            return (
-              <article key={type} className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
-                <div className="flex items-start gap-3">
-                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-slate-100 text-slate-600">
-                    {renderSafeIconByName(
-                      type === 'museum' ? 'Building' : type === 'nature' ? 'MapPin' : 'Compass',
-                      currentTheme
-                    )}
-                  </span>
-                  <div>
-                    <h3 className="text-sm font-bold text-slate-900">
-                      {option ? optionLabel(option, lang) : type}
-                    </h3>
-                    <p className="mt-1 text-xs leading-relaxed text-slate-600">{typeDetails[type]}</p>
-                  </div>
-                </div>
-              </article>
-            );
-          })}
-        </div>
-      )}
       {isRoomPreset && contentCards.length > 0 && (
         <div className="space-y-3">
           {contentCards.map((card, index) => (
@@ -281,7 +250,7 @@ const GuestCategoryDisplay = ({ category, currentTheme, lang, t, onGuestEvent })
                 <div className="p-4">
                   <div className="flex items-start gap-3">
                     <span className={"flex h-10 w-10 shrink-0 items-center justify-center rounded-xl " + currentTheme.bgLight + " " + currentTheme.text}>
-                      {renderSafeIconByName(category.icon || presetObj?.icon || "MapPin", currentTheme)}
+                      {renderSafeIconByName(card.icon || category.icon || presetObj?.icon || "MapPin", currentTheme)}
                     </span>
                     <div className="min-w-0 flex-1">
                       <h3 className="text-sm font-bold leading-snug text-slate-900">{card.titleTranslations?.[lang] || card.titleTranslations?.de || card.title}</h3>
