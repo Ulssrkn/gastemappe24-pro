@@ -136,9 +136,9 @@ export default function GuestGuide({
                 {t.navHome}
                 <SolidIcon name="ArrowRight" className="w-4 h-4" />
               </a>
-              <a href={demoHref('admin', lang)} className="w-full rounded-2xl border border-white/60 bg-slate-950/75 px-3 py-3 text-center text-sm font-bold text-white">
+              <a href={demoHref('admin', lang)} className="flex w-full flex-col items-center justify-center gap-1 rounded-2xl border border-white/60 bg-slate-950/75 px-3 py-3 text-center text-sm font-bold text-white hover:bg-slate-900">
                 <span className="block">{t.adminTitle}</span>
-                <span className="block pt-1 text-xs font-medium text-slate-200">{demoCopy.demo}</span>
+                <span className="text-xs font-medium text-slate-200">{demoCopy.demo}</span>
               </a>
             </div>
           ) : <button
