@@ -52,7 +52,7 @@ const legacyCategoryPresets = [
   ]},
 
   // WELLNESS & SPA
-  { id: 'wellness_spa', categoryId: 'cat_wellness', icon: 'Waves', title: { de: 'Wellness & Sauna', en: 'Wellness & Sauna', tr: 'Wellness & Sauna', fr: 'Wellness & Sauna', hr: 'Wellness i sauna' }, schema: [
+  { id: 'wellness_spa', categoryId: 'cat_wellness', icon: 'Sparkles', title: { de: 'Wellness & Sauna', en: 'Wellness & Sauna', tr: 'Wellness & Sauna', fr: 'Wellness & Sauna', hr: 'Wellness i sauna' }, schema: [
     { key: 'spa_hours', type: 'text', label: { de: 'Öffnungszeiten Sauna', en: 'Sauna Hours', tr: 'Sauna Çalışma Saatleri', fr: 'Horaires sauna', hr: 'Radno vrijeme saune' }, default: '10:00 - 20:00 Uhr', primary: true },
     { key: 'bathrobe_service', type: 'boolean', label: { de: 'Bademantelservice auf Zimmer', en: 'Bathrobe Service', tr: 'Odalarda Bademantel Hizmeti', fr: 'Service de peignoir', hr: 'Usluga ogrtača' }, default: true, primary: true }
   ]},
