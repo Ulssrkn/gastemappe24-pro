@@ -2,6 +2,7 @@ import React from 'react';
 import { Copy, Printer, QrCode, Save } from 'lucide-react';
 import { QRCodeSVG } from 'qrcode.react';
 import createQrPdf from '../guide/createQrPdf.js';
+import dashboardDemoCopy from '../i18n/dashboardDemoCopy.js';
 
 export default function QrPrintPanel({
   currentTheme,
@@ -11,7 +12,9 @@ export default function QrPrintPanel({
   qrPrintFormat,
   setQrPrintFormat,
   t,
+  lang = 'de',
 }) {
+  const ui = dashboardDemoCopy[lang] || dashboardDemoCopy.de;
   return (
     <div
       id="editor-qr"
@@ -33,7 +36,7 @@ export default function QrPrintPanel({
             {[
               ['a4', 'A4'],
               ['a5', 'A5'],
-              ['card', 'Karte'],
+              ['card', ui.qrCard],
             ].map(([v, l]) => (
               <button
                 key={v}
@@ -48,9 +51,9 @@ export default function QrPrintPanel({
             <span className="text-[10px] uppercase tracking-[.24em] text-amber-300 font-bold">
               Gastemappe24 Pro
             </span>
-            <h4 className="text-lg font-black mt-2">Ein QR-Code. Alles für Ihre Gäste.</h4>
+            <h4 className="text-lg font-black mt-2">{ui.qrHeadline}</h4>
             <p className="text-xs text-slate-300 mt-2">
-              Scannen und direkt die digitale Gästemappe öffnen – ohne App und ohne Anmeldung.
+              {ui.qrDescription}
             </p>
           </div>
           <div className="flex flex-wrap gap-2">
@@ -65,7 +68,7 @@ export default function QrPrintPanel({
               onClick={async () => {
                 try {
                   const el = document.querySelector('#qr-print-area svg');
-                  if (!el) throw Error('QR fehlt');
+                  if (!el) throw Error(ui.qrError);
                   await createQrPdf({
                     svg: new XMLSerializer().serializeToString(el),
                     hotelName: hotel.name,
@@ -74,7 +77,7 @@ export default function QrPrintPanel({
                   });
                 } catch (e) {
                   console.error(e);
-                  alert('PDF konnte nicht erstellt werden. Bitte erneut versuchen.');
+                  alert(ui.pdfError);
                 }
               }}
               className="px-4 py-2.5 rounded-xl border border-emerald-700 text-emerald-800 bg-emerald-50 text-xs font-bold flex items-center gap-2"
@@ -92,7 +95,7 @@ export default function QrPrintPanel({
           </div>
           <p className="text-[10px] text-stone-400 break-all">{guestPageUrl}</p>
           <p className="text-[10px] text-emerald-700 font-semibold">
-            Kostenlos · Keine externe API · Keine laufenden Zusatzkosten
+            {ui.freeNote}
           </p>
         </div>
         <div className="rounded-[28px] bg-[#f4f1e9] p-4 sm:p-7 border border-stone-200">
@@ -102,7 +105,7 @@ export default function QrPrintPanel({
               {hotel.logoUrl ? (
                 <img
                   src={hotel.logoUrl}
-                  alt="Hotel Logo"
+                  alt={ui.logoAlt}
                   className="w-12 h-12 rounded-full object-cover mx-auto mb-4 border"
                 />
               ) : (
@@ -110,11 +113,11 @@ export default function QrPrintPanel({
                   {(hotel.name || 'H').slice(0, 1).toUpperCase()}
                 </div>
               )}
-              <p className="text-[9px] font-black tracking-[.28em] text-amber-700 uppercase mb-2">Willkommen</p>
+              <p className="text-[9px] font-black tracking-[.28em] text-amber-700 uppercase mb-2">{ui.welcome}</p>
               <h4 className="text-2xl font-black tracking-tight text-slate-900">
-                {hotel.name || 'Ihre Unterkunft'}
+                {hotel.name || ui.hotelFallback}
               </h4>
-              <p className="text-xs text-stone-500 mt-1">Ihre digitale Gästemappe</p>
+              <p className="text-xs text-stone-500 mt-1">{ui.guestGuide}</p>
               <div className="my-5 inline-flex p-3 rounded-2xl border border-stone-100">
                 <QRCodeSVG
                   value={guestPageUrl || 'https://example.com'}
@@ -123,15 +126,15 @@ export default function QrPrintPanel({
                   includeMargin
                 />
               </div>
-              <p className="text-sm font-extrabold text-slate-900">Scannen & entdecken</p>
-              <p className="text-[10px] text-stone-500 mt-1">WLAN · Services · Informationen · Umgebung</p>
+              <p className="text-sm font-extrabold text-slate-900">{ui.scan}</p>
+              <p className="text-[10px] text-stone-500 mt-1">{ui.included}</p>
             </div>
             <div className="bg-[#172b3a] text-white text-center py-3 text-[9px] font-bold tracking-[.2em]">
               GASTEMAPPE24 PRO
             </div>
           </div>
           <p className="text-center text-[10px] text-stone-500 mt-3">
-            Live-Vorschau · {qrPrintFormat.toUpperCase()}
+            {ui.livePreview} · {qrPrintFormat.toUpperCase()}
           </p>
         </div>
       </div>
@@ -139,12 +142,12 @@ export default function QrPrintPanel({
         <div className="qr-sheet">
           <div className="qr-frame">
             {hotel.logoUrl && <img src={hotel.logoUrl} alt="Logo" />}
-            <div>WILLKOMMEN</div>
+            <div>{ui.welcome.toUpperCase()}</div>
             <h1>{hotel.name || 'Ihre Unterkunft'}</h1>
-            <p>Ihre digitale Gästemappe</p>
+            <p>{ui.guestGuide}</p>
             <QRCodeSVG value={guestPageUrl || 'https://example.com'} size={320} level="H" includeMargin />
-            <strong>Scannen & entdecken</strong>
-            <span>WLAN · Services · Informationen · Umgebung</span>
+            <strong>{ui.scan}</strong>
+            <span>{ui.included}</span>
           </div>
           <footer>GASTEMAPPE24 PRO</footer>
         </div>

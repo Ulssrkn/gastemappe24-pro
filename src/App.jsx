@@ -13,18 +13,14 @@ import translations from './i18n/guideCopy.js';
 import { supabase } from './lib/supabaseClient.js';
 import useGuideNavigation from './navigation/useGuideNavigation.js';
 import pilotCopy from './pilotCopy.js';
+import DemoAdmin from './demo/DemoAdmin.jsx';
+import { getDemoRoute } from './demo/demoRoute.js';
 
 const Dashboard = lazy(() => import('./dashboard/Dashboard.jsx'));
 
-export default function App() {
-  const search = typeof window !== 'undefined' && window.location.pathname === '/'
-    ? window.location.search
-    : '';
-  const entry = new URLSearchParams(search);
-  const opensDashboard = entry.get('mode') === 'dashboard';
-  const requestedLanguage = opensDashboard ? entry.get('lang') : null;
-  const [lang, setLang] = useState(Object.hasOwn(translations, requestedLanguage) ? requestedLanguage : 'de');
-  const [appMode, setAppMode] = useState(opensDashboard ? 'dashboard' : 'guest');
+function AppShell({ demoView, initialLang, initialAppMode }) {
+  const [lang, setLang] = useState(initialLang);
+  const [appMode, setAppMode] = useState(initialAppMode);
   const guestSlug =
     typeof window !== 'undefined'
       ? window.location.pathname.match(/^\/g\/([a-z0-9-]+)\/?$/i)?.[1] || null
@@ -35,8 +31,8 @@ export default function App() {
   }, [lang]);
   const t = translations[lang] || translations.de;
   const pilot = pilotCopy[lang] || pilotCopy.de;
-  const auth = useAuthSession();
-  const navigation = useGuideNavigation();
+  const auth = useAuthSession(!demoView);
+  const navigation = useGuideNavigation(demoView !== 'home');
   const { setSelectedCategory, setShowWelcomeScreen } = navigation;
   const workspace = useGuideWorkspace({ ...auth, guestSlug, setSelectedCategory, pilot });
   const { hotel, categories, hotelRecord, setHotel, setCategories } = workspace;
@@ -115,6 +111,7 @@ export default function App() {
         groupedCategories={groupedCategories}
         currentTheme={currentTheme}
         guestSlug={guestSlug}
+        demoView={demoView}
         hotel={hotel}
         lang={lang}
         setLang={setLang}
@@ -125,3 +122,17 @@ export default function App() {
     </GuestStatus>
   );
 }
+
+function App() {
+  const { pathname, search } = typeof window === 'undefined' ? { pathname: '/', search: '' } : window.location;
+  const { view, language } = getDemoRoute(pathname, search);
+  const entry = new URLSearchParams(search);
+  const opensDashboard = !view && pathname === '/' && entry.get('mode') === 'dashboard';
+  const requestedLanguage = opensDashboard ? entry.get('lang') : language;
+  const initialLang = Object.hasOwn(translations, requestedLanguage) ? requestedLanguage : 'de';
+  return view === 'admin'
+    ? <DemoAdmin initialLang={initialLang} />
+    : <AppShell demoView={view} initialLang={initialLang} initialAppMode={opensDashboard ? 'dashboard' : 'guest'} />;
+}
+
+export default App;

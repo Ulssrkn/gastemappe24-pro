@@ -1,7 +1,7 @@
 import React from 'react';
 import { ChevronDown, CreditCard } from 'lucide-react';
 
-export default function MembershipSection({ workspace, dashboardSection, dw, lang }) {
+export default function MembershipSection({ workspace, dashboardSection, dw, lang, readOnlyDemo = false }) {
   const {
     accommodationLimit,
     accountRecord,
@@ -13,7 +13,7 @@ export default function MembershipSection({ workspace, dashboardSection, dw, lan
   return (
     <section
       id="membership"
-      className={`${dashboardSection === 'overview' ? '' : 'hidden'} w-full max-w-6xl mx-auto rounded-3xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6`}
+      className={`${dashboardSection === 'overview' || dashboardSection === 'membership' ? '' : 'hidden'} w-full max-w-6xl mx-auto rounded-3xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6`}
     >
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex items-start gap-3">
@@ -69,9 +69,9 @@ export default function MembershipSection({ workspace, dashboardSection, dw, lan
           </span>
         </div>
       </div>
-      <details className="group mt-4 border-t border-slate-100 pt-4">
+      <details key={dashboardSection} open={dashboardSection === 'membership' || undefined} className="group mt-4 border-t border-slate-100 pt-4">
         <summary className="flex cursor-pointer list-none items-center justify-between gap-3 text-xs font-bold text-slate-700 hover:text-slate-950">
-          <span>{dw.package.compare}</span>
+          <span>{readOnlyDemo ? dw.nav.package : dw.package.compare}</span>
           <ChevronDown className="h-4 w-4 text-slate-400 transition group-open:rotate-180" />
         </summary>
         <div className="mt-4 grid grid-cols-1 gap-3 md:grid-cols-3">
@@ -93,7 +93,7 @@ export default function MembershipSection({ workspace, dashboardSection, dw, lan
                 )}
               </div>
               <p className="mt-1 text-xs font-bold text-amber-800">{plan.capacity}</p>
-              <p className="mt-2 min-h-[32px] text-[10px] text-slate-500">{plan.desc}</p>
+              <p className="mt-2 min-h-[32px] text-[10px] text-slate-500">{plan.description}</p>
               <ul className="mt-3 space-y-1.5 text-[10px] text-slate-700">
                 {plan.features.map((feature) => (
                   <li key={feature} className="flex gap-2">
@@ -103,6 +103,7 @@ export default function MembershipSection({ workspace, dashboardSection, dw, lan
                 ))}
               </ul>
               <button
+                disabled={readOnlyDemo}
                 onClick={() => chooseRequestedPlan(plan.code)}
                 className={`mt-4 w-full rounded-xl px-3 py-2.5 text-[10px] font-bold transition ${requestedPlanCode === plan.code ? 'bg-amber-600 text-white' : 'border border-slate-200 bg-white text-slate-700 hover:border-slate-400'}`}
               >

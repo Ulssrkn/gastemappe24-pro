@@ -93,6 +93,22 @@ export default function AuthGate({ supabase, lang, recovery = false, onRecovered
             <button type="button" onClick={() => switchMode('reset')}>{copy.reset}</button>
           </> : <button type="button" onClick={() => switchMode('login')}>{copy.login}</button>}
         </div>}
+        {!recovery && (
+          <a href="/?demo=admin" className="block text-center text-xs font-bold text-indigo-900 underline underline-offset-4">
+            {({
+              de: 'Dashboard-Demo ansehen',
+              en: 'Explore the dashboard demo',
+              tr: 'Yönetim paneli demosunu incele',
+              fr: 'Découvrir la démo du tableau de bord',
+              es: 'Explorar la demo del panel',
+              hr: 'Pogledajte demo nadzorne ploče',
+              sq: 'Shiko demonstrimin e panelit',
+              sv: 'Utforska demo av kontrollpanelen',
+              nb: 'Utforsk demoen av dashbordet',
+              it: 'Esplora la demo del pannello',
+            })[lang] || 'Explore the dashboard demo'}
+          </a>
+        )}
       </section>
     </main>
   );

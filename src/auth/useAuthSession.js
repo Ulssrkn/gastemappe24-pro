@@ -1,14 +1,14 @@
 import { useEffect, useRef, useState } from 'react';
 import { supabase } from '../lib/supabaseClient.js';
 
-export default function useAuthSession() {
+export default function useAuthSession(enabled = true) {
   const [authSession, setAuthSession] = useState(null);
   const [authLoading, setAuthLoading] = useState(true);
   const [recoveringPassword, setRecoveringPassword] = useState(false);
   const ownerRef = useRef({ id: null });
 
   useEffect(() => {
-    if (!supabase) {
+    if (!enabled || !supabase) {
       setAuthLoading(false);
       return undefined;
     }
@@ -36,6 +36,6 @@ export default function useAuthSession() {
       mounted = false;
       subscription.unsubscribe();
     };
-  }, []);
+  }, [enabled]);
   return { authSession, authLoading, recoveringPassword, setRecoveringPassword, ownerRef };
 }

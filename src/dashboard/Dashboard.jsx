@@ -22,15 +22,16 @@ export default function Dashboard({
   t,
   onGuestPreview,
   onSignOut,
+  readOnlyDemo = false,
 }) {
   const dw = dashboardWorkspaceCopy[lang] || dashboardWorkspaceCopy.de;
   const { dashboardSection, navigateDashboardSection } = navigation;
   const setup = getGuideSetup(workspace.hotel, workspace.categories);
-  const section = { dashboardSection, dw };
+  const section = { dashboardSection, dw: { ...dw, language: lang } };
 
   return (
     <div className="min-h-screen w-full max-w-full overflow-x-clip box-border bg-[#f5f6f8] font-sans text-slate-800 p-3 sm:p-6 md:py-8 md:pr-10 md:pl-[18rem] space-y-6 sm:space-y-8 relative pb-28">
-      <DashboardNavigation {...section} navigateDashboardSection={navigateDashboardSection} />
+      <DashboardNavigation {...section} navigateDashboardSection={navigateDashboardSection} readOnlyDemo={readOnlyDemo} />
       <AccommodationDialogs workspace={workspace} currentTheme={currentTheme} lang={lang} pilot={pilot} t={t} />
       <DashboardHeader
         workspace={workspace}
@@ -40,15 +41,18 @@ export default function Dashboard({
         t={t}
         onGuestPreview={onGuestPreview}
         onSignOut={onSignOut}
+        readOnlyDemo={readOnlyDemo}
       />
       <DashboardOverview
         {...section}
         workspace={workspace}
         setup={setup}
         navigateDashboardSection={navigateDashboardSection}
+        lang={lang}
+        readOnlyDemo={readOnlyDemo}
       />
-      <AccommodationsSection {...section} workspace={workspace} />
-      <MembershipSection {...section} workspace={workspace} lang={lang} />
+      <AccommodationsSection {...section} workspace={workspace} readOnlyDemo={readOnlyDemo} />
+      <MembershipSection {...section} workspace={workspace} lang={lang} readOnlyDemo={readOnlyDemo} />
       <AnalyticsSection
         {...section}
         analytics={analytics}
@@ -66,6 +70,7 @@ export default function Dashboard({
         lang={lang}
         pilot={pilot}
         t={t}
+        readOnlyDemo={readOnlyDemo}
       />
     </div>
   );

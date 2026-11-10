@@ -111,5 +111,27 @@ const dashboardWorkspaceCopy = {
   }
 };
 
+
+// Croatian dashboard copy completes the ten selectable demo languages.
+dashboardWorkspaceCopy.hr = {
+  ...dashboardWorkspaceCopy.en,
+  greeting: { morning: 'Dobro jutro', day: 'Dobar dan', evening: 'Dobra večer', night: 'Dobro došli' },
+  nav: { overview: 'Pregled', accommodations: 'Smještaji', analytics: 'Analitika', editor: 'Uredi vodič za goste', package: 'Paket i probno razdoblje', start: 'Početna', edit: 'Uredi' },
+  editorSections: { profile: 'Profil', guestContent: 'Sadržaj za goste', quickAccess: 'Brzi pristup', theme: 'Izgled', logo: 'Logotip', photos: 'Fotografije', qr: 'QR kod' },
+  hero: { badge: 'RADNI PROSTOR DOMAĆINA', title: 'Sve za vaše goste. Na jednom mjestu.', description: 'Upravljajte digitalnim vodičima, pratite što gosti koriste i unaprijedite njihov boravak.', connected: 'Cloud povezan', error: 'Potrebna je provjera clouda', status: 'Status radnog prostora', one: 'smještaj', many: 'smještaja' },
+  setup: { label: 'POČETAK', ready: 'Vodič za goste je spreman', title: 'Pripremite vodič za goste', description: 'Pet korisnih koraka pokazuje mogu li gosti pronaći važne informacije.', of: 'od', steps: 'koraka', items: ['Dopunite profil smještaja', 'Dodajte logotip', 'Dodajte fotografiju smještaja', 'Postavite najmanje dvije kartice brzog pristupa', 'Dodajte informacije u najmanje pet odjeljaka za goste'] },
+  accommodations: { workspace: 'RADNI PROSTOR', title: 'Vaši smještaji', description: 'Odaberite smještaj za uređivanje njegova vodiča za goste.', add: 'Dodaj smještaj', copy: 'Dupliciraj', active: 'Trenutačno odabran', item: 'Smještaj', content: 'Sadržaj i QR poveznica', opened: 'Otvoren', open: 'Prikaži', cloud: 'Cloud pohrana', connected: 'Povezano', checking: 'Potrebna je provjera', loading: 'Učitavanje …', disconnected: 'Nije povezano', currentId: 'Trenutačni ID' },
+  package: {
+    label: 'RAČUN I PAKET', trial: 'Besplatno probno razdoblje', packageSuffix: 'paket', used: '{count} od {limit} smještaja iskorišteno', trialEnds: 'Probno razdoblje završava', paidUntil: 'Aktivno do', trialPeriod: 'Probno razdoblje', packageName: 'Paket', days: 'dana', active: 'Aktivno', compare: 'Usporedite pakete i neobvezujuće zabilježite odabir', popular: 'Popularno', choose: 'Spremi odabir', requested: 'Odabir je spremljen', disclaimer: 'Pregled paketa: cijene, konačne značajke i aktivacija bit će određeni nakon osnivanja tvrtke. Odabir nije obvezujući; nema plaćanja niti promjene pristupa.',
+    plans: {
+      single: { capacity: '1 smještaj', description: 'Za jednu kuću za odmor ili manjeg iznajmljivača', features: ['Jedan digitalni vodič za goste', 'Vlastiti QR kod', 'Osnovna statistika'] },
+      multi: { capacity: 'Do 3 smještaja', description: 'Za domaćine s više apartmana', features: ['Do 3 vodiča za goste', 'Odvojeni sadržaji i QR kodovi', 'Odvojena statistika'] },
+      business: { capacity: 'Do 10 smještaja', description: 'Za manje hotele i operatere', features: ['Do 10 vodiča za goste', 'Centralno upravljanje', 'Odvojena statistika'] },
+    },
+  },
+  stats: { views: 'Pregledi stranica', viewsNote: 'Zabilježeni posjeti i promjene stranica u digitalnom vodiču.', topPage: 'Najposjećenija stranica', recorded: 'pregleda u zabilježenim podacima', topEmpty: 'Najposjećenija stranica prikazat će se kada gosti počnu koristiti vodič.', loading: 'Učitavanje podataka o posjetiteljima.', cloudTitle: 'Cloud analitika aktivna', cloudNote: 'Posjeti se broje anonimno.', weekly: 'Interakcije gostiju · 7 dana', weeklyNote: 'Pregledi i promjene stranica u posljednjih sedam dana.', versus: 'u usporedbi s prethodnim tjednom', analyticsTitle: 'Analitika i aktivnost posjetitelja', analyticsIntro: 'Stvarni, anonimni zbrojevi za vodič za goste.', total: 'Ukupno pregleda', noData: 'Još nema pregleda. Otvorite vodič putem QR poveznice.', privacy: 'Pohranjuju se samo anonimni zbrojevi. IP adrese i osobni profili posjetitelja ne spremaju se.' },
+  detail: { back: 'Natrag', recommendations: 'Preporuke i napomene', route: 'Otvori upute za dolazak', website: 'Saznaj više', addRecommendation: 'Dodaj preporuku', recommendationName: 'Naziv mjesta', description: 'Što bi gosti trebali znati?', address: 'Adresa (neobavezno)', url: 'Web-stranica ili poveznica za ulaznice (neobavezno)', remove: 'Ukloni' },
+};
+
 export default dashboardWorkspaceCopy;
 

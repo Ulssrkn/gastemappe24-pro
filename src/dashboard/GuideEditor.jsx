@@ -1,9 +1,10 @@
 import React from 'react';
-import { Edit3, Plus, Trash2 } from 'lucide-react';
+import { Edit3, ImagePlus, Plus, Trash2 } from 'lucide-react';
 import AddressAutocomplete from '../guide/AddressAutocomplete.jsx';
 import QrPrintPanel from './QrPrintPanel.jsx';
 import { quickAccessDefaults, themeColors } from '../guide/guideContent.js';
 import renderSafeIconByName from '../guide/PresetIcon.jsx';
+import dashboardDemoCopy from '../i18n/dashboardDemoCopy.js';
 
 export default function GuideEditor({
   workspace,
@@ -14,6 +15,7 @@ export default function GuideEditor({
   lang,
   pilot,
   t,
+  readOnlyDemo = false,
 }) {
   const {
     guestPageUrl,
@@ -29,86 +31,9 @@ export default function GuideEditor({
     setQuickEditLang,
     updateQuickCardText,
   } = workspace;
-  const quickAccessLabels = {
-    de: {
-      title: 'Schnellzugriff anzeigen',
-      wifi: 'WLAN-Karte',
-      parking: 'Parkplatz-Karte',
-      breakfast: 'Frühstücks-Karte',
-      checkin: 'Check-in / Check-out-Karte',
-    },
-    en: {
-      title: 'Show quick access cards',
-      wifi: 'Wi-Fi card',
-      parking: 'Parking card',
-      breakfast: 'Breakfast card',
-      checkin: 'Check-in / Check-out card',
-    },
-    tr: {
-      title: 'Hızlı erişim kartlarını göster',
-      wifi: 'WLAN kartı',
-      parking: 'Otopark kartı',
-      breakfast: 'Kahvaltı kartı',
-      checkin: 'Giriş / Çıkış kartı',
-    },
-    fr: {
-      title: 'Afficher les accès rapides',
-      wifi: 'Carte Wi-Fi',
-      parking: 'Carte parking',
-      breakfast: 'Carte petit-déjeuner',
-      checkin: 'Carte arrivée / départ',
-    },
-    es: {
-      title: 'Mostrar accesos rápidos',
-      wifi: 'Tarjeta Wi-Fi',
-      parking: 'Tarjeta de aparcamiento',
-      breakfast: 'Tarjeta de desayuno',
-      checkin: 'Tarjeta entrada / salida',
-    },
-    cs: {
-      title: 'Zobrazit rychlý přístup',
-      wifi: 'Karta Wi-Fi',
-      parking: 'Karta parkování',
-      breakfast: 'Karta snídaně',
-      checkin: 'Karta příjezd / odjezd',
-    },
-    sq: {
-      title: 'Shfaq qasjet e shpejta',
-      wifi: 'Karta Wi-Fi',
-      parking: 'Karta e parkimit',
-      breakfast: 'Karta e mëngjesit',
-      checkin: 'Karta hyrje / dalje',
-    },
-    sv: {
-      title: 'Visa snabb åtkomst',
-      wifi: 'Wi-Fi-kort',
-      parking: 'Parkeringskort',
-      breakfast: 'Frukostkort',
-      checkin: 'In- och utcheckningskort',
-    },
-    nb: {
-      title: 'Vis hurtigtilgang',
-      wifi: 'Wi-Fi-kort',
-      parking: 'Parkeringskort',
-      breakfast: 'Frokostkort',
-      checkin: 'Inn- og utsjekkingskort',
-    },
-    it: {
-      title: 'Mostra accessi rapidi',
-      wifi: 'Scheda Wi-Fi',
-      parking: 'Scheda parcheggio',
-      breakfast: 'Scheda colazione',
-      checkin: 'Scheda check-in / check-out',
-    },
-    hr: {
-      title: 'Prikaži brzi pristup',
-      wifi: 'Wi-Fi kartica',
-      parking: 'Kartica parkirališta',
-      breakfast: 'Kartica doručka',
-      checkin: 'Kartica prijave / odjave',
-    },
-  };
-  const quickLabels = quickAccessLabels[lang] || quickAccessLabels.de;
+  const ui = dashboardDemoCopy[lang] || dashboardDemoCopy.de;
+  const addPhotoLabel = ui.addPhoto;
+  const quickCardLang = readOnlyDemo ? lang : quickEditLang;
   return (
     <div id="editor" className={`${dashboardSection === 'editor' ? '' : 'hidden'} max-w-6xl mx-auto space-y-6`}>
       <div>
@@ -145,6 +70,7 @@ export default function GuideEditor({
           ))}
         </div>
       </nav>
+      <fieldset disabled={readOnlyDemo} className="contents">
       {/* 1. HOTEL BİLGİLERİ */}
       <div
         id="editor-property-profile"
@@ -153,27 +79,18 @@ export default function GuideEditor({
         <h3 className={`font-black text-xs ${currentTheme.text} uppercase tracking-wider`}>{t.sec1Title}</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
           {[
-            { key: 'name', label: 'Hotelname / Unterkunftsname', type: 'text' },
-            { key: 'phone', label: 'Telefon', type: 'tel' },
-            { key: 'email', label: 'E-Mail', type: 'email' },
-            { key: 'website', label: 'Website', type: 'url' },
-            { key: 'address', label: 'Vollständige Adresse', type: 'text', autocomplete: true },
-            { key: 'reviewPlatform', label: 'Bewertungsplattform', type: 'select' },
+            { key: 'name', label: ui.profileFields.name, type: 'text' },
+            { key: 'phone', label: ui.profileFields.phone, type: 'tel' },
+            { key: 'email', label: ui.profileFields.email, type: 'email' },
+            { key: 'website', label: ui.profileFields.website, type: 'url' },
+            { key: 'address', label: ui.profileFields.address, type: 'text', autocomplete: true },
+            { key: 'reviewPlatform', label: ui.profileFields.reviewPlatform, type: 'select' },
             {
               key: 'googleReviewUrl',
-              label:
-                hotel.reviewPlatform === 'airbnb'
-                  ? 'Airbnb-Link (optional)'
-                  : hotel.reviewPlatform === 'booking'
-                    ? 'Booking.com-Bewertungslink'
-                    : hotel.reviewPlatform === 'tripadvisor'
-                      ? 'Tripadvisor-Bewertungslink'
-                      : hotel.reviewPlatform === 'custom'
-                        ? 'Bewertungslink'
-                        : 'Google-Bewertungslink',
+              label: ui.profileFields.googleReviewUrl,
               type: 'url',
             },
-            { key: 'locationTitle', label: 'Region / Standort', type: 'text' },
+            { key: 'locationTitle', label: ui.profileFields.locationTitle, type: 'text' },
           ].map((field) => (
             <div key={field.key} className="relative">
               <label className="block text-[10px] font-bold text-stone-500 uppercase mb-1">{field.label}</label>
@@ -187,7 +104,7 @@ export default function GuideEditor({
                   <option value="airbnb">Airbnb</option>
                   <option value="booking">Booking.com</option>
                   <option value="tripadvisor">Tripadvisor</option>
-                  <option value="custom">Andere Plattform</option>
+                  <option value="custom">{ui.reviewPlatforms.other}</option>
                 </select>
               ) : field.autocomplete ? (
                 <AddressAutocomplete
@@ -206,21 +123,19 @@ export default function GuideEditor({
               )}
               {field.key === 'reviewPlatform' && (
                 <p className="mt-1 text-[10px] text-stone-400">
-                  Airbnb: Gäste können ihre Unterkunft nur über eine tatsächliche Airbnb-Buchung bewerten. Ein
-                  allgemeiner Link führt zum Airbnb-Reisebereich.
+                  {ui.reviewHelp}
                 </p>
               )}
               {field.autocomplete && (
                 <p className="mt-1 text-[10px] text-stone-400">
-                  Tipp: Adresse möglichst mit Straße, PLZ und Ort eingeben. Die Wetterfunktion nutzt bei Bedarf
-                  den Region-/Standort-Eintrag.
+                  {ui.addressHelp}
                 </p>
               )}
             </div>
           ))}
         </div>
         <p className="text-[11px] text-stone-500">
-          Diese Angaben werden in der Gästemappe verwendet. Änderungen bitte oben rechts speichern.
+          {ui.saveHelp}
         </p>
       </div>
 
@@ -251,9 +166,10 @@ export default function GuideEditor({
                 {groupItems.map((cat) => {
                   const presetObj = cat.presetData;
                   const title =
+                    (readOnlyDemo && ui.categoryPresetTitles?.[cat.presetId]) ||
                     cat.customTitle ||
                     (presetObj && presetObj.title && (presetObj.title[lang] || presetObj.title.de)) ||
-                    'Kategorie';
+                    ui.categoryFallback;
 
                   return (
                     <div
@@ -299,15 +215,15 @@ export default function GuideEditor({
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div>
             <h4 className="text-xs font-black uppercase tracking-wider text-stone-700">
-              Schnellzugriff · Preset-Editor
+              {ui.quickTitle}
             </h4>
             <p className="text-[11px] text-stone-500 mt-1">
-              Kartentexte je Sprache bearbeiten. WLAN-Zugangsdaten gelten für alle Sprachen.
+              {ui.quickDescription}
             </p>
           </div>
           <select
-            aria-label="Sprache der Schnellzugriff-Presets"
-            value={quickEditLang}
+            aria-label={ui.quickLanguage}
+            value={quickCardLang}
             onChange={(e) => setQuickEditLang(e.target.value)}
             className="bg-white border border-stone-200 text-xs rounded-xl px-3 py-2"
           >
@@ -319,16 +235,16 @@ export default function GuideEditor({
             <option value="it">🇮🇹 Italiano</option>
             <option value="es">🇪🇸 Español</option>
             <option value="sv">🇸🇪 Svenska</option>
-            <option value="no">🇳🇴 Norsk</option>
+            <option value="nb">🇳🇴 Norsk</option>
             <option value="sq">🇦🇱 Shqip</option>
           </select>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           {[
-            { id: 'wifi', enabled: 'showWifi', label: 'WLAN' },
-            { id: 'parking', enabled: 'showParking', label: 'Parkplatz' },
-            { id: 'breakfast', enabled: 'showBreakfast', label: 'Frühstück' },
-            { id: 'checkin', enabled: 'showCheckInOut', label: 'Check-in / Check-out' },
+            { id: 'wifi', enabled: 'showWifi', label: ui.quickCards.wifi },
+            { id: 'parking', enabled: 'showParking', label: ui.quickCards.parking },
+            { id: 'breakfast', enabled: 'showBreakfast', label: ui.quickCards.breakfast },
+            { id: 'checkin', enabled: 'showCheckInOut', label: ui.quickCards.checkin },
           ].map((card) => (
             <div key={card.id} className="rounded-2xl border border-stone-200 bg-stone-50 p-3 space-y-3">
               <div className="flex items-center justify-between gap-2">
@@ -340,27 +256,27 @@ export default function GuideEditor({
                     onChange={(e) => setHotel((prev) => ({ ...prev, [card.enabled]: e.target.checked }))}
                     className="accent-emerald-700 w-4 h-4"
                   />
-                  Anzeigen
+                  {ui.show}
                 </label>
               </div>
               <label className="block text-[10px] font-bold uppercase text-stone-500">
-                Titel
+                {ui.title}
                 <input
                   value={
-                    hotel.quickAccessContent?.[quickEditLang]?.[card.id]?.title ??
-                    quickAccessDefaults[quickEditLang][card.id].title
+                    hotel.quickAccessContent?.[quickCardLang]?.[card.id]?.title ??
+                    quickAccessDefaults[quickCardLang][card.id].title
                   }
                   onChange={(e) => updateQuickCardText(card.id, 'title', e.target.value)}
                   className="mt-1 w-full rounded-lg border border-stone-200 bg-white p-2.5 text-xs"
                 />
               </label>
               <label className="block text-[10px] font-bold uppercase text-stone-500">
-                Beschreibung
+                {ui.description}
                 <textarea
                   rows="2"
                   value={
-                    hotel.quickAccessContent?.[quickEditLang]?.[card.id]?.description ??
-                    quickAccessDefaults[quickEditLang][card.id].description
+                    hotel.quickAccessContent?.[quickCardLang]?.[card.id]?.description ??
+                    quickAccessDefaults[quickCardLang][card.id].description
                   }
                   onChange={(e) => updateQuickCardText(card.id, 'description', e.target.value)}
                   className="mt-1 w-full rounded-lg border border-stone-200 bg-white p-2.5 text-xs resize-y"
@@ -370,10 +286,10 @@ export default function GuideEditor({
           ))}
         </div>
         <div className="rounded-2xl border border-sky-200 bg-sky-50/70 p-3 space-y-3">
-          <div className="text-xs font-bold text-slate-800">WLAN-Zugangsdaten · für alle Sprachen</div>
+          <div className="text-xs font-bold text-slate-800">{ui.wifiAccess}</div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <label className="block text-[10px] font-bold uppercase text-stone-500">
-              Netzwerkname (SSID)
+              {ui.network}
               <input
                 value={hotel.wifiSsid || ''}
                 onChange={(e) => setHotel((prev) => ({ ...prev, wifiSsid: e.target.value }))}
@@ -381,7 +297,7 @@ export default function GuideEditor({
               />
             </label>
             <label className="block text-[10px] font-bold uppercase text-stone-500">
-              WLAN-Passwort
+              {ui.password}
               <input
                 type="password"
                 value={hotel.wifiPass || ''}
@@ -463,7 +379,10 @@ export default function GuideEditor({
       >
         <div className="flex items-center justify-between">
           <h3 className={`font-black text-xs ${currentTheme.text} uppercase tracking-wider`}>{t.sec4Title}</h3>
-          <p className="text-xs text-stone-500">{pilot.uploadPaused}</p>
+          <div className="flex items-center gap-3">
+            <p className="text-xs text-stone-500">{pilot.uploadPaused}</p>
+            {readOnlyDemo && <button type="button" disabled className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-xs font-bold text-slate-500 disabled:cursor-not-allowed"><ImagePlus className="h-4 w-4" />{addPhotoLabel}</button>}
+          </div>
         </div>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
           {(Array.isArray(hotel.images) ? hotel.images : []).map((img, idx) => (
@@ -484,6 +403,7 @@ export default function GuideEditor({
         </div>
       </div>
 
+      </fieldset>
       <QrPrintPanel
         currentTheme={currentTheme}
         guestPageUrl={guestPageUrl}
@@ -492,6 +412,7 @@ export default function GuideEditor({
         qrPrintFormat={qrPrintFormat}
         setQrPrintFormat={setQrPrintFormat}
         t={t}
+        lang={lang}
       />
       {/* 6. DİNAMİK PRESET KATEGORİLER (3-ADIMLI MODAL SİSTEMİ) */}
     </div>

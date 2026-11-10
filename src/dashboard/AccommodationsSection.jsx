@@ -1,7 +1,9 @@
 import React from 'react';
 import { Trash2 } from 'lucide-react';
+import dashboardDemoCopy from '../i18n/dashboardDemoCopy.js';
 
-export default function AccommodationsSection({ workspace, dashboardSection, dw }) {
+export default function AccommodationsSection({ workspace, dashboardSection, dw, readOnlyDemo = false }) {
+  const ui = dashboardDemoCopy[dw.language] || dashboardDemoCopy.de;
   const {
     accommodationLimitReached,
     accountRecord,
@@ -38,14 +40,14 @@ export default function AccommodationsSection({ workspace, dashboardSection, dw 
               setNewAccommodationName('');
               setCreateAccommodationOpen(true);
             }}
-            disabled={trialExpired || !accountRecord || accommodationLimitReached}
+            disabled={readOnlyDemo || trialExpired || !accountRecord || accommodationLimitReached}
             className="rounded-xl bg-slate-900 text-white px-4 py-2.5 text-xs font-bold shadow-lg shadow-slate-900/10 disabled:opacity-40"
           >
             + {dw.accommodations.add}
           </button>
           <button
             onClick={() => setClonePreviewOpen(true)}
-            disabled={trialExpired || !hotelRecord || accommodationLimitReached}
+            disabled={readOnlyDemo || trialExpired || !hotelRecord || accommodationLimitReached}
             className="rounded-xl border border-stone-200 bg-white px-4 py-2.5 text-xs font-bold text-slate-700 hover:border-amber-300 disabled:opacity-40"
           >
             {dw.accommodations.copy}
@@ -61,14 +63,14 @@ export default function AccommodationsSection({ workspace, dashboardSection, dw 
               className={`relative overflow-hidden rounded-2xl border p-4 transition-all ${active ? 'border-amber-400 bg-white shadow-lg shadow-amber-900/5 ring-1 ring-amber-200' : 'border-stone-200 bg-white/80 hover:border-stone-300 hover:shadow-md'}`}
             >
               <div className="flex items-start justify-between gap-2">
-                <button onClick={() => selectAccommodation(item.id)} className="min-w-0 flex-1 text-left">
+                <button onClick={() => selectAccommodation(item.id)} disabled={readOnlyDemo} className="min-w-0 flex-1 text-left">
                   <span
                     className={`inline-flex items-center rounded-full px-2 py-1 text-[9px] font-black uppercase tracking-wider ${active ? 'bg-amber-100 text-amber-800' : 'bg-stone-100 text-stone-500'}`}
                   >
                     {active ? dw.accommodations.active : `${dw.accommodations.item} ${index + 1}`}
                   </span>
                   <h3 className="mt-3 truncate text-base font-black text-slate-900">
-                    {item.name || 'Unbenannte Unterkunft'}
+                    {item.name || ui.exampleProperty}
                   </h3>
                   <p className="mt-1 truncate text-[10px] text-stone-400">{item.slug}</p>
                 </button>
@@ -76,7 +78,7 @@ export default function AccommodationsSection({ workspace, dashboardSection, dw 
                   type="button"
                   aria-label={`Unterkunft ${item.name || ''} löschen`}
                   title="Unterkunft löschen"
-                  disabled={hotelRecords.length <= 1}
+                  disabled={readOnlyDemo || hotelRecords.length <= 1}
                   onClick={() => setDeleteAccommodationTarget(item)}
                   className="rounded-lg border border-stone-200 p-2 text-stone-400 hover:border-red-200 hover:bg-red-50 hover:text-red-600 disabled:opacity-20 disabled:cursor-not-allowed"
                 >
@@ -87,6 +89,7 @@ export default function AccommodationsSection({ workspace, dashboardSection, dw 
                 <span className="text-[10px] text-stone-500">{dw.accommodations.content}</span>
                 <button
                   onClick={() => selectAccommodation(item.id)}
+                  disabled={readOnlyDemo}
                   className={`rounded-lg px-3 py-2 text-[10px] font-bold ${active ? 'bg-amber-700 text-white' : 'bg-stone-100 text-slate-700 hover:bg-stone-200'}`}
                 >
                   {active ? dw.accommodations.opened : dw.accommodations.open}
@@ -98,7 +101,7 @@ export default function AccommodationsSection({ workspace, dashboardSection, dw 
       </div>
       <div className="rounded-xl border border-stone-200 bg-white/80 p-3 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
         <div className="text-xs">
-          <span className="font-bold text-stone-700">Cloud-Speicher: </span>
+          <span className="font-bold text-stone-700">{readOnlyDemo ? `${ui.workspace}: ` : `${dw.accommodations.cloud}: `}</span>
           <span
             className={
               cloudDataStatus === 'ready'
@@ -108,13 +111,15 @@ export default function AccommodationsSection({ workspace, dashboardSection, dw 
                   : 'text-stone-500'
             }
           >
-            {cloudDataStatus === 'ready'
-              ? 'Verbunden'
+            {readOnlyDemo
+              ? ui.exampleProperty
+              : cloudDataStatus === 'ready'
+              ? dw.accommodations.connected
               : cloudDataStatus === 'loading' || cloudDataStatus === 'saving'
-                ? 'Wird geladen …'
+                ? dw.accommodations.loading
                 : cloudDataStatus === 'error'
-                  ? 'Prüfung erforderlich'
-                  : 'Nicht verbunden'}
+                  ? dw.accommodations.checking
+                   : dw.accommodations.disconnected}
           </span>
           {hotelRecord?.slug && <span className="ml-3 text-stone-400">Aktuelle ID: {hotelRecord.slug}</span>}
         </div>
