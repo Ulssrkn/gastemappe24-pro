@@ -101,12 +101,21 @@ export default function GuestGuide({
         </div>
 
         <div className="relative z-10 flex min-w-0 items-center justify-between gap-3 p-6 text-white">
-          <span
-            title={hotel.name}
-            className="min-w-0 flex-1 line-clamp-2 break-words text-xs font-bold uppercase leading-tight"
-          >
-            {hotel.name}
-          </span>
+          <div className="flex min-w-0 flex-1 items-center gap-3">
+            {hotel.logoUrl && (
+              <img
+                src={hotel.logoUrl}
+                alt={`${hotel.name} logo`}
+                className="h-12 w-12 shrink-0 rounded-xl bg-white p-1 object-contain shadow-lg ring-1 ring-white/50"
+              />
+            )}
+            <span
+              title={hotel.name}
+              className="min-w-0 flex-1 line-clamp-2 break-words text-xs font-bold uppercase leading-tight"
+            >
+              {hotel.name}
+            </span>
+          </div>
           <LanguageSelect
             lang={lang}
             onChange={setLang}
@@ -135,10 +144,10 @@ export default function GuestGuide({
       <header className="p-5 pt-6 pb-2 bg-stone-50 sticky top-0 z-40 flex items-center justify-between gap-2">
         <div className="flex min-w-0 flex-1 items-center gap-2">
           {hotel.logoUrl ? (
-            <img src={hotel.logoUrl} alt="Logo" className="h-8 w-8 shrink-0 rounded-lg border object-cover" />
+            <img src={hotel.logoUrl} alt={`${hotel.name} logo`} className="h-10 w-10 shrink-0 rounded-xl border border-slate-200 bg-white p-0.5 object-contain shadow-sm" />
           ) : (
             <div
-              className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg ${currentTheme.bg} text-xs font-black text-white`}
+              className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl ${currentTheme.bg} text-sm font-black text-white`}
             >
               B
             </div>
