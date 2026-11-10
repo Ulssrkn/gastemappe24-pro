@@ -245,7 +245,7 @@ export const demoCategories = [
     id: 'demo-wellness',
     categoryId: 'cat_wellness',
     presetId: 'WEL_001',
-    icon: 'Waves',
+    icon: 'Sparkles',
     fieldValues: {
       wellness_hours: '10:00–20:00',
       wellness_facilities: ['sauna', 'steam'],
