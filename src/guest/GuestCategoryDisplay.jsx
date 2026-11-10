@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { Bed, Check, CheckCircle2, ChevronRight, ExternalLink, MapPin, Navigation, Phone, XCircle } from 'lucide-react';
+import { ChevronRight } from 'lucide-react';
 import { OTHER_CUSTOM, customTextLabels, optionId, optionLabel } from '../guide/presetOptions.js';
 import { categoryPresets } from '../guide/presetCatalog.js';
 import guestCardCopy from '../guestCardCopy.js';
 import renderSafeIconByName from '../guide/PresetIcon.jsx';
+import SolidIcon from '../guide/SolidIcon.jsx';
 
 const GuestCheckoutChecklist = ({ field, selected, customTask, lang }) => {
   const [completed, setCompleted] = useState([]);
@@ -141,7 +142,7 @@ const RoomTypeCard = ({ card, fields, lang, currentTheme, description }) => {
     <details className="group overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
       <summary className="flex cursor-pointer list-none items-center gap-3 p-4">
         <span className={"flex h-10 w-10 shrink-0 items-center justify-center rounded-xl " + currentTheme.bgLight + " " + currentTheme.text}>
-          <Bed className="h-5 w-5" />
+          <SolidIcon name="Bed" className="h-5 w-5" />
         </span>
         <span className="min-w-0 flex-1">
           <span className="block text-sm font-bold text-slate-900">{card.title}</span>
@@ -286,14 +287,14 @@ const GuestCategoryDisplay = ({ category, currentTheme, lang, t, onGuestEvent })
                       <h3 className="text-sm font-bold leading-snug text-slate-900">{card.titleTranslations?.[lang] || card.titleTranslations?.de || card.title}</h3>
                       {card.hours && <p className="mt-1 text-[10px] font-semibold uppercase tracking-wide text-slate-500">{card.hours}</p>}
                       {description && <p className="mt-2 text-xs leading-relaxed text-slate-600">{description}</p>}
-                      {card.address && <p className="mt-2 flex items-start gap-1.5 text-[11px] text-slate-500"><MapPin className="mt-0.5 h-3.5 w-3.5 shrink-0" />{card.address}</p>}
+                      {card.address && <p className="mt-2 flex items-start gap-1.5 text-[11px] text-slate-500"><SolidIcon name="MapPin" className="mt-0.5 h-3.5 w-3.5 shrink-0" />{card.address}</p>}
                     </div>
                   </div>
                 </div>
                 {(website || mapUrl || tel) && <div className={"flex flex-wrap gap-2 border-t border-slate-200 px-3 py-3 " + currentTheme.bgLight}>
-                  {mapUrl && <a href={mapUrl} onClick={() => onGuestEvent?.("action_route")} target="_blank" rel="noreferrer" className={"inline-flex items-center gap-1.5 rounded-xl px-3 py-2 text-[10px] font-bold text-white transition hover:opacity-90 " + currentTheme.bg}><Navigation className="h-3.5 w-3.5" />{copy.route}</a>}
-                  {website && <a href={website} onClick={() => onGuestEvent?.("action_website")} target="_blank" rel="noreferrer" className={"inline-flex items-center gap-1.5 rounded-xl bg-white px-3 py-2 text-[10px] font-bold ring-1 transition hover:brightness-95 " + currentTheme.text + " " + currentTheme.border}><ExternalLink className="h-3.5 w-3.5" />{copy.website}</a>}
-                  {tel && <a href={"tel:" + tel} onClick={() => onGuestEvent?.("action_call")} className={"inline-flex items-center gap-1.5 rounded-xl bg-white px-3 py-2 text-[10px] font-bold ring-1 transition hover:brightness-95 " + currentTheme.text + " " + currentTheme.border}><Phone className="h-3.5 w-3.5" />{copy.call}</a>}
+                  {mapUrl && <a href={mapUrl} onClick={() => onGuestEvent?.("action_route")} target="_blank" rel="noreferrer" className={"inline-flex items-center gap-1.5 rounded-xl px-3 py-2 text-[10px] font-bold text-white transition hover:opacity-90 " + currentTheme.bg}><SolidIcon name="Route" className="h-3.5 w-3.5" />{copy.route}</a>}
+                  {website && <a href={website} onClick={() => onGuestEvent?.("action_website")} target="_blank" rel="noreferrer" className={"inline-flex items-center gap-1.5 rounded-xl bg-white px-3 py-2 text-[10px] font-bold ring-1 transition hover:brightness-95 " + currentTheme.text + " " + currentTheme.border}><SolidIcon name="ExternalLink" className="h-3.5 w-3.5" />{copy.website}</a>}
+                  {tel && <a href={"tel:" + tel} onClick={() => onGuestEvent?.("action_call")} className={"inline-flex items-center gap-1.5 rounded-xl bg-white px-3 py-2 text-[10px] font-bold ring-1 transition hover:brightness-95 " + currentTheme.text + " " + currentTheme.border}><SolidIcon name="Phone" className="h-3.5 w-3.5" />{copy.call}</a>}
                 </div>}
               </article>
             );
@@ -330,11 +331,11 @@ const GuestCategoryDisplay = ({ category, currentTheme, lang, t, onGuestEvent })
                   <div className="flex items-center gap-1.5 text-xs font-bold pt-0.5">
                     {rawVal ? (
                       <span className="text-emerald-700 bg-emerald-50 px-3.5 py-2 rounded-2xl border border-emerald-200 flex items-center gap-2 shadow-xs">
-                        <CheckCircle2 className="w-4 h-4 text-emerald-600" /> {t.yesLabel}
+                        <SolidIcon name="Check" className="w-4 h-4 text-emerald-600" /> {t.yesLabel}
                       </span>
                     ) : (
                       <span className="text-stone-600 bg-stone-100 px-3.5 py-2 rounded-2xl border border-stone-200 flex items-center gap-2 shadow-xs">
-                        <XCircle className="w-4 h-4 text-stone-400" /> {t.noLabel}
+                        <SolidIcon name="Close" className="w-4 h-4 text-stone-400" /> {t.noLabel}
                       </span>
                     )}
                   </div>
@@ -350,7 +351,7 @@ const GuestCategoryDisplay = ({ category, currentTheme, lang, t, onGuestEvent })
                             className="flex items-center gap-2.5 rounded-xl border border-slate-100 bg-slate-50/70 px-3 py-2.5 text-xs font-semibold text-slate-700"
                           >
                             <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-white text-slate-500 ring-1 ring-slate-200">
-                              <Check className="h-3 w-3" />
+                              <SolidIcon name="Check" className="h-3 w-3" />
                             </span>
                             {option ? optionLabel(option, lang) : item}
                           </div>
