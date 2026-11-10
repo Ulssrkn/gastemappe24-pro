@@ -25,7 +25,7 @@ export default function DashboardNavigation({ dashboardSection, dw, navigateDash
           )}
         </button>
         <div className="mt-10 px-3 text-[10px] font-extrabold uppercase tracking-[.18em] text-slate-400">
-          Arbeitsbereich
+          {readOnlyDemo ? ui.workspaceSection : 'Arbeitsbereich'}
         </div>
         <nav className="mt-3 space-y-1.5">
           {[
@@ -47,7 +47,7 @@ export default function DashboardNavigation({ dashboardSection, dw, navigateDash
           ))}
         </nav>
         <div className="mt-8 px-3 text-[10px] font-extrabold uppercase tracking-[.18em] text-slate-400">
-          Konto
+          {readOnlyDemo ? ui.accountSection : 'Konto'}
         </div>
         <button
           type="button"
