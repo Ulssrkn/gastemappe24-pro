@@ -7,6 +7,7 @@ import analyticsCopy from '../analyticsCopy.js';
 import { quickAccessDefaults } from '../guide/guideContent.js';
 import renderSafeIconByName from '../guide/PresetIcon.jsx';
 import SolidIcon from '../guide/SolidIcon.jsx';
+import GastemappeMark from '../guide/GastemappeMark.jsx';
 import { supabase } from '../lib/supabaseClient.js';
 
 export default function GuestGuide({
@@ -364,7 +365,7 @@ export default function GuestGuide({
             }}
             className={`flex flex-col items-center gap-1 text-[10px] font-bold cursor-pointer ${activeTab === 'home' && !selectedCategory ? currentTheme.text : 'text-stone-400'}`}
           >
-            {renderSafeIconByName('Info', currentTheme)}
+            {renderSafeIconByName('Home', currentTheme)}
             <span>{t.navHome}</span>
           </button>
           <button
@@ -374,7 +375,7 @@ export default function GuestGuide({
             }}
             className={`flex flex-col items-center gap-1 text-[10px] font-bold cursor-pointer ${activeTab === 'services' || selectedCategory ? currentTheme.text : 'text-stone-400'}`}
           >
-            {renderSafeIconByName('Compass', currentTheme)}
+            <GastemappeMark className="h-6 w-6" />
             <span>{t.navGaestemappe}</span>
           </button>
           {((hotel.googleReviewUrl && /^https?:\/\//i.test(hotel.googleReviewUrl)) ||
@@ -402,7 +403,7 @@ export default function GuestGuide({
               rel="noreferrer"
               className={`flex flex-col items-center gap-1 text-[10px] font-bold cursor-pointer ${currentTheme.text} hover:opacity-80`}
             >
-              {renderSafeIconByName('Route', currentTheme)}
+              {renderSafeIconByName('MapPin', currentTheme)}
               <span>{t.navRoute}</span>
             </a>
           ) : (
@@ -411,7 +412,7 @@ export default function GuestGuide({
               title="Hoteladresse im Hotelprofil hinterlegen"
               className="flex flex-col items-center gap-1 text-[10px] font-bold text-stone-300 cursor-not-allowed"
             >
-              <Navigation className="w-5 h-5" />
+              <SolidIcon name="MapPin" className="w-5 h-5 text-stone-300" />
               <span>{t.navRoute}</span>
             </span>
           )}
