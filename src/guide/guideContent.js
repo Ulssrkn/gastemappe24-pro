@@ -55,7 +55,7 @@ export const demoHotel = () => ({
   showParking: true,
   showBreakfast: true,
   showCheckInOut: true,
-  themeColor: 'emerald',
+  themeColor: 'indigo',
   quickAccessContent: {
     de: {
       wifi: { title: 'WLAN', description: 'Demo-Zugang: Waldquell_Guest · Passwort WALDQUELL-DEMO.' },
