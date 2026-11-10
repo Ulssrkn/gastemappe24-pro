@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ArrowDownRight, ArrowUpRight, BedDouble, Building2, CalendarDays, ChartNoAxesCombined, Check, ChevronRight, CircleHelp, Clock3, ExternalLink, FileImage, Globe2, House, LayoutDashboard, MapPin, Palette, QrCode, Settings2, ShieldCheck, Sparkles, Users, Wifi, Utensils, CarFront } from 'lucide-react';
+import { ArrowDownRight, ArrowUpRight, BedDouble, Building2, BarChart3, Check, ChevronRight, HelpCircle, Clock3, ExternalLink, FileImage , Home, LayoutDashboard, MapPin, Palette, QrCode, Settings2, ShieldCheck, Sparkles, Wifi, Utensils, Car } from 'lucide-react';
 
 const languages = [
   ['de', '🇩🇪 DE'], ['en', '🇬🇧 EN'], ['tr', '🇹🇷 TR'], ['fr', '🇫🇷 FR'], ['es', '🇪🇸 ES'],
@@ -8,6 +8,7 @@ const languages = [
 
 const words = {
   de: {
+    dayUnit: 'Tage',
     nav: ['Start', 'Unterkünfte', 'Analytik', 'Bearbeiten'], demo: 'Demo-Ansicht · Beispieldaten · Änderungen werden nicht gespeichert',
     hello: 'Guten Morgen', area: 'Arbeitsbereich', property: 'Waldquell am Tegernsee', completion: 'Einrichtung', complete: 'abgeschlossen',
     steps: ['Unterkunftsprofil', 'Logo', 'Fotos', 'Schnellzugriffe', '5 Gästebereiche'], ready: 'Was deine Gäste wirklich nutzen',
@@ -24,10 +25,11 @@ const words = {
     demo: 'Demo', sampleProperty: 'Beispielunterkunft',
   },
   en: {
+    dayUnit: 'days',
     nav: ['Overview', 'Properties', 'Analytics', 'Edit guide'], demo: 'Demo view · Sample data · Changes are not saved',
     hello: 'Good morning', area: 'Workspace', property: 'Waldquell at Lake Tegernsee', completion: 'Setup', complete: 'complete',
     steps: ['Property profile', 'Logo', 'Photos', 'Quick access', '5 guest areas'], ready: 'What your guests really use',
-    guideViews: 'Guest guide views', actions: 'Useful actions', increase: 'vs. previous month', range: 'Last 30 days',
+    guideViews: 'Guest guide views', actions: 'Useful actions', increase: 'vs. previous month', range: 'Last 30 ${copy.dayUnit}',
     trend: 'Guest guide views over time', top: 'Most opened areas', views: 'Views', useful: 'Useful actions',
     properties: 'Your properties', propertiesSub: 'All properties in your workspace at a glance.',
     active: 'Active', content: 'Guest areas', rooms: 'Room types', edit: 'Edit guest guide',
@@ -40,6 +42,7 @@ const words = {
     demo: 'Demo', sampleProperty: 'Sample property',
   },
   tr: {
+    dayUnit: 'gün',
     nav: ['Başlangıç', 'Tesisler', 'Analitik', 'Düzenle'], demo: 'Demo görünümü · Örnek veriler · Değişiklikler kaydedilmez',
     hello: 'Günaydın', area: 'Çalışma alanı', property: 'Waldquell Tegernsee', completion: 'Kurulum', complete: 'tamamlandı',
     steps: ['Tesis profili', 'Logo', 'Fotoğraflar', 'Hızlı erişim', '5 misafir kategorisi'], ready: 'Misafirlerin neleri kullanıyor?',
@@ -56,6 +59,7 @@ const words = {
     demo: 'Demo', sampleProperty: 'Örnek tesis',
   },
   fr: {
+    dayUnit: 'jours',
     nav: ['Accueil', 'Hébergements', 'Analytique', 'Modifier'], demo: 'Démo · Données fictives · Aucune modification enregistrée',
     hello: 'Bonjour', area: 'Espace de travail', property: 'Waldquell au lac Tegernsee', completion: 'Configuration', complete: 'terminée',
     steps: ['Profil', 'Logo', 'Photos', 'Accès rapides', '5 espaces invités'], ready: 'Ce que vos clients utilisent vraiment',
@@ -72,6 +76,7 @@ const words = {
     demo: 'Démo', sampleProperty: 'Hébergement exemple',
   },
   es: {
+    dayUnit: 'días',
     nav: ['Inicio', 'Alojamientos', 'Analítica', 'Editar'], demo: 'Demo · Datos de ejemplo · No se guardan cambios',
     hello: 'Buenos días', area: 'Espacio de trabajo', property: 'Waldquell en el lago Tegernsee', completion: 'Configuración', complete: 'completada',
     steps: ['Perfil', 'Logotipo', 'Fotos', 'Accesos rápidos', '5 áreas para huéspedes'], ready: 'Lo que realmente usan tus huéspedes',
@@ -88,6 +93,7 @@ const words = {
     demo: 'Demo', sampleProperty: 'Alojamiento de ejemplo',
   },
   hr: {
+    dayUnit: 'dana',
     nav: ['Početna', 'Smještaji', 'Analitika', 'Uredi'], demo: 'Demo prikaz · Primjer podataka · Promjene se ne spremaju',
     hello: 'Dobro jutro', area: 'Radni prostor', property: 'Waldquell na jezeru Tegernsee', completion: 'Postavljanje', complete: 'dovršeno',
     steps: ['Profil smještaja', 'Logotip', 'Fotografije', 'Brzi pristup', '5 područja za goste'], ready: 'Što vaši gosti zaista koriste',
@@ -104,6 +110,7 @@ const words = {
     demo: 'Demo', sampleProperty: 'Primjer smještaja',
   },
   sq: {
+    dayUnit: 'ditë',
     nav: ['Kryefaqja', 'Akomodimet', 'Analitika', 'Redakto'], demo: 'Demo · Të dhëna shembull · Ndryshimet nuk ruhen',
     hello: 'Mirëmëngjes', area: 'Hapësira e punës', property: 'Waldquell pranë liqenit Tegernsee', completion: 'Konfigurimi', complete: 'i përfunduar',
     steps: ['Profili', 'Logoja', 'Fotot', 'Qasja e shpejtë', '5 kategori për mysafirët'], ready: 'Çfarë përdorin vërtet mysafirët',
@@ -120,6 +127,7 @@ const words = {
     demo: 'Demo', sampleProperty: 'Akomodim shembull',
   },
   sv: {
+    dayUnit: 'dagar',
     nav: ['Översikt', 'Boenden', 'Analys', 'Redigera'], demo: 'Demo · Exempeldata · Ändringar sparas inte',
     hello: 'God morgon', area: 'Arbetsyta', property: 'Waldquell vid Tegernsee', completion: 'Konfiguration', complete: 'klar',
     steps: ['Boendeprofil', 'Logotyp', 'Bilder', 'Snabbåtkomst', '5 gästområden'], ready: 'Vad dina gäster faktiskt använder',
@@ -136,6 +144,7 @@ const words = {
     demo: 'Demo', sampleProperty: 'Exempelboende',
   },
   nb: {
+    dayUnit: 'dager',
     nav: ['Oversikt', 'Overnatting', 'Analyse', 'Rediger'], demo: 'Demo · Eksempeldata · Endringer lagres ikke',
     hello: 'God morgen', area: 'Arbeidsområde', property: 'Waldquell ved Tegernsee', completion: 'Oppsett', complete: 'ferdig',
     steps: ['Overnattingsprofil', 'Logo', 'Bilder', 'Hurtigtilgang', '5 gjesteområder'], ready: 'Hva gjestene dine faktisk bruker',
@@ -152,6 +161,7 @@ const words = {
     demo: 'Demo', sampleProperty: 'Eksempelovernatting',
   },
   it: {
+    dayUnit: 'giorni',
     nav: ['Panoramica', 'Strutture', 'Analisi', 'Modifica'], demo: 'Demo · Dati di esempio · Le modifiche non vengono salvate',
     hello: 'Buongiorno', area: 'Area di lavoro', property: 'Waldquell sul lago Tegernsee', completion: 'Configurazione', complete: 'completata',
     steps: ['Profilo struttura', 'Logo', 'Foto', 'Accesso rapido', '5 aree ospiti'], ready: 'Cosa usano davvero i tuoi ospiti',
@@ -192,7 +202,7 @@ function Metric({ icon: Icon, label, value, note, positive }) {
 }
 
 function DemoNav({ active, onChange, copy, mobile = false }) {
-  const icons = [LayoutDashboard, Building2, ChartNoAxesCombined, Settings2];
+  const icons = [LayoutDashboard, Building2, BarChart3, Settings2];
   return (
     <nav aria-label={copy.area} className={mobile ? 'fixed inset-x-0 bottom-0 z-40 border-t border-slate-200 bg-white/95 px-2 pb-[max(env(safe-area-inset-bottom),0.5rem)] pt-2 shadow-[0_-8px_28px_rgba(15,23,42,0.06)] md:hidden' : 'fixed inset-y-0 left-0 z-30 hidden w-60 flex-col border-r border-slate-200 bg-white px-5 py-6 md:flex'}>
       {!mobile && <div className="mb-10 flex items-center gap-3 px-2"><span className="grid h-10 w-10 place-items-center rounded-xl bg-indigo-950 text-amber-300"><House className="h-5 w-5" /></span><div><div className="text-sm font-black">gastemappe<span className="text-amber-700">24</span></div><div className="mt-1 text-[10px] font-bold uppercase tracking-widest text-slate-400">{copy.demo}</div></div></div>}
@@ -242,7 +252,7 @@ export default function DemoAdmin() {
           {section === 'overview' && <>
             <section className="rounded-3xl bg-gradient-to-br from-[#17193f] via-[#28256d] to-[#43418b] p-6 text-white shadow-xl shadow-indigo-950/10 sm:p-8">
               <div className="flex flex-wrap items-start justify-between gap-5">
-                <div><p className="text-[11px] font-bold uppercase tracking-[.22em] text-indigo-200">{copy.area}</p><h1 className="mt-3 text-2xl font-black tracking-tight sm:text-3xl">{copy.hello}, Serkan</h1><p className="mt-2 max-w-xl text-sm text-indigo-100">{copy.setupText}</p></div>
+                <div><p className="text-[11px] font-bold uppercase tracking-[.22em] text-indigo-200">{copy.area}</p><h1 className="mt-3 text-2xl font-black tracking-tight sm:text-3xl">{copy.hello}, </h1><p className="mt-2 max-w-xl text-sm text-indigo-100">{copy.setupText}</p></div>
                 <div className="flex items-center gap-3 rounded-2xl border border-white/15 bg-white/10 px-4 py-3"><BedDouble className="h-5 w-5 text-amber-200" /><div><p className="text-[10px] font-semibold uppercase tracking-widest text-indigo-200">{copy.area}</p><p className="mt-1 text-sm font-bold">{copy.property}</p></div></div>
               </div>
               <div className="mt-8">
