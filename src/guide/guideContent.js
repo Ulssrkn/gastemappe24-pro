@@ -42,6 +42,7 @@ const demoCard = (title, description, options = {}) => ({
 
 export const demoHotel = () => ({
   ...emptyHotel('Waldquell am Tegernsee · DEMO'),
+  logoUrl: '/demo-waldquell-logo.svg',
   locationTitle: 'Tegernsee, Bayern, Deutschland',
   address: 'Tegernsee, Bayern, Deutschland',
   website: 'https://www.tegernsee.com/',
@@ -55,7 +56,7 @@ export const demoHotel = () => ({
   showParking: true,
   showBreakfast: true,
   showCheckInOut: true,
-  themeColor: 'emerald',
+  themeColor: 'indigo',
   quickAccessContent: {
     de: {
       wifi: { title: 'WLAN', description: 'Demo-Zugang: Waldquell_Guest · Passwort WALDQUELL-DEMO.' },
