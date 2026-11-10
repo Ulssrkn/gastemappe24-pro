@@ -13,10 +13,11 @@ import translations from './i18n/guideCopy.js';
 import { supabase } from './lib/supabaseClient.js';
 import useGuideNavigation from './navigation/useGuideNavigation.js';
 import pilotCopy from './pilotCopy.js';
+import DemoAdmin from './demo/DemoAdmin.jsx';
 
 const Dashboard = lazy(() => import('./dashboard/Dashboard.jsx'));
 
-export default function App() {
+function AppShell() {
   const [lang, setLang] = useState('de');
   const [appMode, setAppMode] = useState('guest');
   const guestSlug =
@@ -119,3 +120,12 @@ export default function App() {
     </GuestStatus>
   );
 }
+
+function App() {
+  const isPublicAdminDemo =
+    typeof window !== 'undefined' &&
+    new URLSearchParams(window.location.search).get('demo') === 'admin';
+  return isPublicAdminDemo ? <DemoAdmin /> : <AppShell />;
+}
+
+export default App;
