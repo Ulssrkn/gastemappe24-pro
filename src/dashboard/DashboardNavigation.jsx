@@ -1,7 +1,7 @@
 import React from 'react';
 import { BarChart3, Building2, CreditCard, LayoutDashboard, Settings } from 'lucide-react';
 
-export default function DashboardNavigation({ dashboardSection, dw, navigateDashboardSection }) {
+export default function DashboardNavigation({ dashboardSection, dw, navigateDashboardSection, readOnlyDemo = false }) {
   return (
     <>
       <aside className="fixed inset-y-0 left-0 z-40 hidden w-64 flex-col border-r border-slate-200/80 bg-white px-5 py-7 md:flex">
@@ -10,15 +10,17 @@ export default function DashboardNavigation({ dashboardSection, dw, navigateDash
           onClick={() => navigateDashboardSection('overview')}
           className="flex items-center gap-3 px-2 text-left"
         >
-          <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-900 text-lg font-black text-amber-300 shadow-sm">
-            G
-          </span>
-          <span className="text-[15px] font-extrabold tracking-tight text-slate-900">
-            gastemappe<span className="text-amber-700">24</span>
-            <span className="block pt-0.5 text-[9px] font-bold uppercase tracking-[.2em] text-slate-400">
-              Gastgeber-Workspace
-            </span>
-          </span>
+          {readOnlyDemo ? (
+            <img src="/gastemappe24-logo.svg" alt="Gastemappe24" className="h-10 w-auto max-w-[190px] object-contain object-left" />
+          ) : (
+            <>
+              <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-900 text-lg font-black text-amber-300 shadow-sm">G</span>
+              <span className="text-[15px] font-extrabold tracking-tight text-slate-900">
+                gastemappe<span className="text-amber-700">24</span>
+                <span className="block pt-0.5 text-[9px] font-bold uppercase tracking-[.2em] text-slate-400">Gastgeber-Workspace</span>
+              </span>
+            </>
+          )}
         </button>
         <div className="mt-10 px-3 text-[10px] font-extrabold uppercase tracking-[.18em] text-slate-400">
           Arbeitsbereich
