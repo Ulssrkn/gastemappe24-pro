@@ -10,8 +10,7 @@ export default function DashboardHeader({ workspace, lang, pilot, onGuestPreview
       className="w-full max-w-6xl mx-auto min-w-0 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 rounded-2xl border border-slate-200/80 bg-white px-5 py-4 shadow-sm sm:px-6"
     >
       <div className="flex items-center gap-2">
-        <span className="bg-slate-900 text-amber-300 font-black px-3 py-1.5 rounded-xl text-sm">G</span>
-        {readOnlyDemo ? <img src="/gastemappe24-logo.svg" alt="Gastemappe24" className="h-9 w-auto max-w-[180px] object-contain object-left" /> : <span className="font-extrabold text-lg tracking-tight">gastemappe<span className="text-amber-700">24</span></span>}
+        {readOnlyDemo ? <img src="/gastemappe24-logo.svg" alt="Gastemappe24" className="h-9 w-auto max-w-[180px] object-contain object-left" /> : <><span className="bg-slate-900 text-amber-300 font-black px-3 py-1.5 rounded-xl text-sm">G</span><span className="font-extrabold text-lg tracking-tight">gastemappe<span className="text-amber-700">24</span></span></>}
       </div>
       <div className="w-full sm:w-auto flex flex-wrap items-center gap-2 sm:gap-3">
         <LanguageSelect
