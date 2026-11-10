@@ -419,6 +419,7 @@ export default function GuideEditor({
         qrPrintFormat={qrPrintFormat}
         setQrPrintFormat={setQrPrintFormat}
         t={t}
+        lang={lang}
       />
       {/* 6. DİNAMİK PRESET KATEGORİLER (3-ADIMLI MODAL SİSTEMİ) */}
     </div>
