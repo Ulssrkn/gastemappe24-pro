@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import LanguageSelect from '../components/LanguageSelect.jsx';
-import { Check, ChevronRight, Copy, ArrowRight } from 'lucide-react';
+import { ChevronRight } from 'lucide-react';
 import GuestCategoryDisplay from './GuestCategoryDisplay.jsx';
 import LegalLinks from '../guide/LegalLinks.jsx';
 import analyticsCopy from '../analyticsCopy.js';
@@ -80,7 +80,7 @@ export default function GuestGuide({
         <div className="border-t border-slate-100 px-4 py-3">
           <p className="text-xs leading-relaxed text-slate-600">{item.description}</p>
           {item.id === 'wifi' && (hotel.wifiSsid || hotel.wifiPass) && <div className="mt-3 flex flex-wrap gap-2">{hotel.wifiSsid && <span className="rounded-lg bg-stone-50 px-3 py-2 font-mono text-[11px] text-slate-700">{hotel.wifiSsid}</span>}{hotel.wifiPass && <span className="rounded-lg bg-stone-50 px-3 py-2 font-mono text-[11px] text-slate-700">{hotel.wifiPass}</span>}</div>}
-          {item.id === 'wifi' && hotel.wifiPass && <button type="button" onClick={copyWifiPassword} aria-label={copiedWifi ? copyWifiLabel.copied : copyWifiLabel.copy} className={"mt-3 inline-flex items-center gap-1.5 rounded-xl px-3 py-2 text-[10px] font-bold " + currentTheme.bg + " text-white"}>{copiedWifi ? <SolidIcon name="Check" className="h-3.5 w-3.5" /> : <Copy className="h-3.5 w-3.5" />}{copiedWifi ? copyWifiLabel.copied : copyWifiLabel.copy}</button>}
+          {item.id === 'wifi' && hotel.wifiPass && <button type="button" onClick={copyWifiPassword} aria-label={copiedWifi ? copyWifiLabel.copied : copyWifiLabel.copy} className={"mt-3 inline-flex items-center gap-1.5 rounded-xl px-3 py-2 text-[10px] font-bold " + currentTheme.bg + " text-white"}>{copiedWifi ? <SolidIcon name="Check" className="h-3.5 w-3.5" /> : <SolidIcon name="Copy" className="h-3.5 w-3.5" />}{copiedWifi ? copyWifiLabel.copied : copyWifiLabel.copy}</button>}
           {hotel.address && (item.id === 'parking' || item.id === 'checkin') && <a href={"https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(hotel.address)} onClick={() => trackGuestEvent('action_route')} target="_blank" rel="noreferrer" className={"mt-3 inline-flex items-center gap-2 rounded-xl px-3 py-2 text-[10px] font-bold text-white transition hover:opacity-90 " + currentTheme.bg}><SolidIcon name="Route" className="h-3.5 w-3.5" />{t.navRoute}</a>}
         </div>
       </details>
