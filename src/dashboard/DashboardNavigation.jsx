@@ -52,6 +52,10 @@ export default function DashboardNavigation({ dashboardSection, dw, navigateDash
         <button
           type="button"
           onClick={() => {
+            if (readOnlyDemo) {
+              navigateDashboardSection('membership');
+              return;
+            }
             navigateDashboardSection('overview');
             setTimeout(
               () =>
@@ -59,7 +63,8 @@ export default function DashboardNavigation({ dashboardSection, dw, navigateDash
               60
             );
           }}
-          className="mt-3 flex w-full items-center gap-3 rounded-xl px-3 py-3 text-left text-[13px] font-semibold text-slate-600 transition hover:bg-slate-100 hover:text-slate-900"
+          aria-current={dashboardSection === 'membership' ? 'page' : undefined}
+          className={`mt-3 flex w-full items-center gap-3 rounded-xl px-3 py-3 text-left text-[13px] font-semibold transition ${dashboardSection === 'membership' ? 'bg-slate-100 text-slate-900' : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'}`}
         >
           <CreditCard className="h-[17px] w-[17px]" />
           {dw.nav.package}
@@ -72,12 +77,13 @@ export default function DashboardNavigation({ dashboardSection, dw, navigateDash
           <p className="mt-2 text-[11px] leading-relaxed text-slate-500">{readOnlyDemo ? ui.demoHint : dw.hero.description}</p>
         </div>
       </aside>
-      <nav className="fixed inset-x-3 bottom-3 z-40 grid grid-cols-4 rounded-2xl border border-slate-200 bg-white/95 p-1.5 shadow-xl backdrop-blur md:hidden">
+      <nav className={`fixed inset-x-3 bottom-3 z-40 grid ${readOnlyDemo ? 'grid-cols-5' : 'grid-cols-4'} rounded-2xl border border-slate-200 bg-white/95 p-1.5 shadow-xl backdrop-blur md:hidden`}>
         {[
           [LayoutDashboard, dw.nav.start, 'overview'],
           [Building2, dw.nav.accommodations, 'accommodations'],
           [BarChart3, dw.nav.analytics, 'analytics'],
           [Settings, dw.nav.edit, 'editor'],
+          ...(readOnlyDemo ? [[CreditCard, dw.package.packageName, 'membership']] : []),
         ].map(([Icon, label, section]) => (
           <button
             key={label}
@@ -94,3 +100,4 @@ export default function DashboardNavigation({ dashboardSection, dw, navigateDash
     </>
   );
 }
+

@@ -133,12 +133,12 @@ export default function GuestGuide({
           {demoView ? (
             <div className="space-y-2">
               <a href={demoHref('home', lang)} className={`w-full ${currentTheme.bg} text-white py-3 rounded-2xl font-bold text-sm shadow-2xl flex items-center justify-center gap-2`}>
-                {t.navHome}
+                {t.welcomeButton}
                 <SolidIcon name="ArrowRight" className="w-4 h-4" />
               </a>
-              <a href={demoHref('admin', lang)} className="flex w-full flex-col items-center justify-center gap-1 rounded-2xl border border-white/60 bg-slate-950/75 px-3 py-3 text-center text-sm font-bold text-white hover:bg-slate-900">
+              <a href={demoHref('admin', lang)} className={`flex w-full flex-col items-center justify-center gap-1 rounded-2xl px-3 py-3 text-center text-sm font-bold text-white ${currentTheme.bg}`}>
                 <span className="block">{t.adminTitle}</span>
-                <span className="text-xs font-medium text-slate-200">{demoCopy.demo}</span>
+                <span className="text-xs font-medium text-white/90">{demoCopy.demo}</span>
               </a>
             </div>
           ) : <button
@@ -451,3 +451,4 @@ export default function GuestGuide({
     </div>
   );
 }
+

@@ -1,21 +1,23 @@
 import { useEffect, useRef, useState } from 'react';
 
+const dashboardSections = ['overview', 'accommodations', 'analytics', 'editor', 'membership'];
+
+function dashboardSectionFromHash(hash) {
+  const section = hash.replace(/^#(?:dashboard-)?/, '');
+  return dashboardSections.includes(section) ? section : 'overview';
+}
+
 export default function useGuideNavigation(initialWelcome = true) {
   const [dashboardSection, setDashboardSection] = useState(() => {
     const hash = typeof window === 'undefined' ? '' : window.location.hash;
-    if (hash === '#accommodations' || hash === '#dashboard-accommodations') return 'accommodations';
-    if (hash === '#analytics' || hash === '#dashboard-analytics') return 'analytics';
-    if (hash === '#editor' || hash === '#dashboard-editor') return 'editor';
-    return 'overview';
+    return dashboardSectionFromHash(hash);
   });
 
   const [activeTab, setActiveTab] = useState('home');
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [showWelcomeScreen, setShowWelcomeScreen] = useState(initialWelcome);
   const navigateDashboardSection = (section) => {
-    const normalized = ['overview', 'accommodations', 'analytics', 'editor'].includes(section)
-      ? section
-      : 'overview';
+    const normalized = dashboardSections.includes(section) ? section : 'overview';
     const nextHash = `#dashboard-${normalized}`;
     if (typeof window !== 'undefined' && window.location.hash !== nextHash)
       window.history.pushState({ gm24Dashboard: true, dashboardSection: normalized }, '', nextHash);
@@ -44,14 +46,7 @@ export default function useGuideNavigation(initialWelcome = true) {
     const handlePopState = (event) => {
       if (isDashboard()) {
         const hash = window.location.hash;
-        const section = hash.includes('accommodations')
-          ? 'accommodations'
-          : hash.includes('analytics')
-            ? 'analytics'
-            : hash.includes('editor')
-              ? 'editor'
-              : 'overview';
-        setDashboardSection(section);
+        setDashboardSection(dashboardSectionFromHash(hash));
         if (!hash) window.location.hash = 'dashboard-overview';
         return;
       }
@@ -79,3 +74,4 @@ export default function useGuideNavigation(initialWelcome = true) {
     navigateGuest,
   };
 }
+
