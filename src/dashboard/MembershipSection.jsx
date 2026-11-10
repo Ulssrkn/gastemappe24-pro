@@ -1,7 +1,7 @@
 import React from 'react';
 import { ChevronDown, CreditCard } from 'lucide-react';
 
-export default function MembershipSection({ workspace, dashboardSection, dw, lang }) {
+export default function MembershipSection({ workspace, dashboardSection, dw, lang, readOnlyDemo = false }) {
   const {
     accommodationLimit,
     accountRecord,
@@ -103,6 +103,7 @@ export default function MembershipSection({ workspace, dashboardSection, dw, lan
                 ))}
               </ul>
               <button
+                disabled={readOnlyDemo}
                 onClick={() => chooseRequestedPlan(plan.code)}
                 className={`mt-4 w-full rounded-xl px-3 py-2.5 text-[10px] font-bold transition ${requestedPlanCode === plan.code ? 'bg-amber-600 text-white' : 'border border-slate-200 bg-white text-slate-700 hover:border-slate-400'}`}
               >
