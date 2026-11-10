@@ -17,8 +17,14 @@ import pilotCopy from './pilotCopy.js';
 const Dashboard = lazy(() => import('./dashboard/Dashboard.jsx'));
 
 export default function App() {
-  const [lang, setLang] = useState('de');
-  const [appMode, setAppMode] = useState('guest');
+  const search = typeof window !== 'undefined' && window.location.pathname === '/'
+    ? window.location.search
+    : '';
+  const entry = new URLSearchParams(search);
+  const opensDashboard = entry.get('mode') === 'dashboard';
+  const requestedLanguage = opensDashboard ? entry.get('lang') : null;
+  const [lang, setLang] = useState(Object.hasOwn(translations, requestedLanguage) ? requestedLanguage : 'de');
+  const [appMode, setAppMode] = useState(opensDashboard ? 'dashboard' : 'guest');
   const guestSlug =
     typeof window !== 'undefined'
       ? window.location.pathname.match(/^\/g\/([a-z0-9-]+)\/?$/i)?.[1] || null
