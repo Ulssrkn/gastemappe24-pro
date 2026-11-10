@@ -274,8 +274,8 @@ export default function GuideEditor({
                 <textarea
                   rows="2"
                   value={
-                    hotel.quickAccessContent?.[quickEditLang]?.[card.id]?.description ??
-                    quickAccessDefaults[quickEditLang][card.id].description
+                    hotel.quickAccessContent?.[quickCardLang]?.[card.id]?.description ??
+                    quickAccessDefaults[quickCardLang][card.id].description
                   }
                   onChange={(e) => updateQuickCardText(card.id, 'description', e.target.value)}
                   className="mt-1 w-full rounded-lg border border-stone-200 bg-white p-2.5 text-xs resize-y"
