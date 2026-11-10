@@ -30,11 +30,14 @@ export const emptyHotel = (name = '') => ({
 const demoLanguages = ['de', 'en', 'tr', 'fr', 'es', 'hr', 'sq', 'sv', 'nb', 'it'];
 const translated = (...values) => Object.fromEntries(demoLanguages.map((language, index) => [language, values[index]]));
 const demoCard = (title, description, options = {}) => ({
+  id: options.id || `demo-${String(title?.[0] || 'card').toLowerCase().normalize('NFKD').replace(/[\\u0300-\\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')}`,
   titleTranslations: translated(...title),
   descriptionTranslations: translated(...description),
+  ...(options.roomFeatures ? { roomFeatures: options.roomFeatures } : {}),
   ...(options.hours ? { hours: options.hours } : {}),
   ...(options.address ? { address: options.address } : {}),
   ...(options.url ? { url: options.url } : {}),
+  ...(options.icon ? { icon: options.icon } : {}),
 });
 
 export const demoHotel = () => ({
@@ -136,15 +139,55 @@ export const demoCategories = [
       contentCards: [
         demoCard(
           ['Classic Doppelzimmer', 'Classic Double Room', 'Classic çift kişilik oda', 'Chambre double classique', 'Habitación doble clásica', 'Klasična dvokrevetna soba', 'Dhomë dyshe klasike', 'Klassiskt dubbelrum', 'Klassisk dobbeltrom', 'Camera doppia classica'],
-          ['24 m² · Kingsize-Bett · Regendusche · Kaffee- und Teestation.', '24 m² · king-size bed · rainfall shower · coffee and tea station.', '24 m² · king size yatak · yağmur duşu · kahve ve çay köşesi.', '24 m² · lit king size · douche à effet pluie · plateau café et thé.', '24 m² · cama king · ducha efecto lluvia · rincón de café y té.', '24 m² · king size krevet · tuš s efektom kiše · kutak za kavu i čaj.', '24 m² · krevat king size · dush me shi · kënd kafeje dhe çaji.', '24 m² · king size-säng · regndusch · kaffe- och tehörna.', '24 m² · king-size-seng · regndusj · kaffe- og tekrok.', '24 m² · letto king size · doccia a pioggia · angolo caffè e tè.']
+          ['24 m² · Kingsize-Bett · Regendusche · Kaffee- und Teestation.', '24 m² · king-size bed · rainfall shower · coffee and tea station.', '24 m² · king size yatak · yağmur duşu · kahve ve çay köşesi.', '24 m² · lit king size · douche à effet pluie · plateau café et thé.', '24 m² · cama king · ducha efecto lluvia · rincón de café y té.', '24 m² · king size krevet · tuš s efektom kiše · kutak za kavu i čaj.', '24 m² · krevat king size · dush me shi · kënd kafeje dhe çaji.', '24 m² · king size-säng · regndusch · kaffe- och tehörna.', '24 m² · king-size-seng · regndusj · kaffe- og tekrok.', '24 m² · letto king size · doccia a pioggia · angolo caffè e tè.'],
+          {
+                      id: 'demo-room-classic',
+                      roomFeatures: {
+                        room_capacity: 24,
+                        room_max_guests: 2,
+                        room_floor_number: '1. OG',
+                        room_amenities: ['bed', 'roomSafe', 'air', 'heat', 'tv', 'coffee', 'kettle', 'hair'],
+                        bed_types: ['king'],
+                        bathroom_features: ['shower', 'rain', 'towels', 'toiletries'],
+                        room_technology: ['wifi', 'smart'],
+                        room_smoking_policy: 'noSmoke',
+                      },
+                    }
         ),
         demoCard(
           ['Panorama Junior Suite', 'Panorama Junior Suite', 'Panorama Junior Suite', 'Junior suite panoramique', 'Junior suite panorámica', 'Panorama Junior Suite', 'Junior Suite Panorama', 'Panorama Junior Suite', 'Panorama Junior Suite', 'Junior suite Panorama'],
-          ['38 m² · Südbalkon · freier Blick auf die Berge · Sitzecke.', '38 m² · south-facing balcony · open mountain views · lounge area.', '38 m² · güneye bakan balkon · açık dağ manzarası · oturma alanı.', '38 m² · balcon exposé sud · vue dégagée sur les montagnes · coin salon.', '38 m² · balcón orientado al sur · vistas abiertas a la montaña · zona de estar.', '38 m² · balkon okrenut prema jugu · pogled na planine · kutak za sjedenje.', '38 m² · ballkon nga jugu · pamje e hapur e maleve · kënd ndenjeje.', '38 m² · balkong i söderläge · fri utsikt över bergen · sittgrupp.', '38 m² · sørvendt balkong · fri fjellutsikt · sittegruppe.', '38 m² · balcone esposto a sud · vista aperta sulle montagne · area salotto.']
+          ['38 m² · Südbalkon · freier Blick auf die Berge · Sitzecke.', '38 m² · south-facing balcony · open mountain views · lounge area.', '38 m² · güneye bakan balkon · açık dağ manzarası · oturma alanı.', '38 m² · balcon exposé sud · vue dégagée sur les montagnes · coin salon.', '38 m² · balcón orientado al sur · vistas abiertas a la montaña · zona de estar.', '38 m² · balkon okrenut prema jugu · pogled na planine · kutak za sjedenje.', '38 m² · ballkon nga jugu · pamje e hapur e maleve · kënd ndenjeje.', '38 m² · balkong i söderläge · fri utsikt över bergen · sittgrupp.', '38 m² · sørvendt balkong · fri fjellutsikt · sittegruppe.', '38 m² · balcone esposto a sud · vista aperta sulle montagne · area salotto.'],
+          {
+                      id: 'demo-room-panorama',
+                      roomFeatures: {
+                        room_capacity: 38,
+                        room_max_guests: 3,
+                        room_floor_number: '2. OG',
+                        room_amenities: ['bed', 'roomSafe', 'air', 'heat', 'tv', 'smart', 'desk', 'coffee', 'kettle', 'hair'],
+                        bed_types: ['king', 'extra'],
+                        bathroom_features: ['shower', 'rain', 'robe', 'towels', 'toiletries'],
+                        room_technology: ['wifi', 'smart', 'stream'],
+                        room_outdoor_view: ['balcony', 'mountain', 'panorama'],
+                        room_smoking_policy: 'noSmoke',
+                      },
+                    }
         ),
         demoCard(
           ['Familiensuite', 'Family Suite', 'Aile süiti', 'Suite familiale', 'Suite familiar', 'Obiteljski apartman', 'Suitë familjare', 'Familjesvit', 'Familiesuite', 'Suite familiare'],
-          ['46 m² · separates Schlafzimmer · Schlafsofa · Babybett auf Anfrage.', '46 m² · separate bedroom · sofa bed · cot on request.', '46 m² · ayrı yatak odası · açılır kanepe · talep üzerine bebek yatağı.', '46 m² · chambre séparée · canapé-lit · lit bébé sur demande.', '46 m² · dormitorio separado · sofá cama · cuna bajo petición.', '46 m² · odvojena spavaća soba · kauč na razvlačenje · dječji krevetić na upit.', '46 m² · dhomë gjumi më vete · divan-krevat · krevat fëmije sipas kërkesës.', '46 m² · separat sovrum · bäddsoffa · barnsäng på begäran.', '46 m² · separat soverom · sovesofa · babyseng på forespørsel.', '46 m² · camera separata · divano letto · culla su richiesta.']
+          ['46 m² · separates Schlafzimmer · Schlafsofa · Babybett auf Anfrage.', '46 m² · separate bedroom · sofa bed · cot on request.', '46 m² · ayrı yatak odası · açılır kanepe · talep üzerine bebek yatağı.', '46 m² · chambre séparée · canapé-lit · lit bébé sur demande.', '46 m² · dormitorio separado · sofá cama · cuna bajo petición.', '46 m² · odvojena spavaća soba · kauč na razvlačenje · dječji krevetić na upit.', '46 m² · dhomë gjumi më vete · divan-krevat · krevat fëmije sipas kërkesës.', '46 m² · separat sovrum · bäddsoffa · barnsäng på begäran.', '46 m² · separat soverom · sovesofa · babyseng på forespørsel.', '46 m² · camera separata · divano letto · culla su richiesta.'],
+          {
+                      id: 'demo-room-family',
+                      roomFeatures: {
+                        room_capacity: 46,
+                        room_max_guests: 4,
+                        room_floor_number: 'Erdgeschoss',
+                        room_amenities: ['bed', 'roomSafe', 'air', 'heat', 'fridge', 'tv', 'coffee', 'kettle', 'hair'],
+                        bed_types: ['queen', 'sofa', 'baby'],
+                        bathroom_features: ['bathroom', 'shower', 'towels', 'slippers', 'toiletries'],
+                        room_technology: ['wifi', 'smart', 'phone'],
+                        room_smoking_policy: 'noSmoke',
+                      },
+                    }
         ),
       ],
     },
@@ -203,7 +246,7 @@ export const demoCategories = [
     id: 'demo-wellness',
     categoryId: 'cat_wellness',
     presetId: 'WEL_001',
-    icon: 'Waves',
+    icon: 'Sparkles',
     fieldValues: {
       wellness_hours: '10:00–20:00',
       wellness_facilities: ['sauna', 'steam'],
@@ -243,17 +286,17 @@ export const demoCategories = [
         demoCard(
           ['Museum Tegernseer Tal', 'Museum of the Tegernsee Valley', 'Tegernsee Vadisi Müzesi', 'Musée de la vallée du Tegernsee', 'Museo del valle de Tegernsee', 'Muzej doline Tegernsee', 'Muzeu i luginës Tegernsee', 'Tegernseedalens museum', 'Tegernsee-dalens museum', 'Museo della valle del Tegernsee'],
           ['Kulturgeschichte der Region in einem historischen Pfarrhof; ein schönes Ziel für einen ruhigen Vormittag.', 'Regional history in a historic parish house; a lovely stop for a relaxed morning.', 'Tarihi bir papaz evinde bölgenin kültür tarihi; sakin bir sabah için güzel bir durak.', 'Histoire régionale dans un ancien presbytère ; une belle visite pour une matinée tranquille.', 'Historia regional en una antigua casa parroquial; una visita ideal para una mañana tranquila.', 'Povijest regije u povijesnom župnom dvoru; lijep izlet za mirno jutro.', 'Histori e rajonit në një shtëpi historike famullie; vizitë e këndshme për një mëngjes të qetë.', 'Regional kulturhistoria i ett historiskt prästgårdshus; ett fint besök en lugn förmiddag.', 'Lokalhistorie i et historisk prestegårdshus; et fint besøk en rolig formiddag.', 'Storia locale in una storica casa parrocchiale; una bella visita per una mattinata tranquilla.'],
-          { address: 'Seestraße 17, 83684 Tegernsee', url: 'https://museumtegernseertal.de/' }
+          { address: 'Seestraße 17, 83684 Tegernsee', url: 'https://museumtegernseertal.de/', icon: 'Building' }
         ),
         demoCard(
           ['Schifffahrt Tegernsee', 'Tegernsee lake cruise', 'Tegernsee Göl Turu', 'Croisière sur le Tegernsee', 'Paseo en barco por el Tegernsee', 'Plovidba jezerom Tegernsee', 'Lundrim me varkë në liqenin Tegernsee', 'Båttur på Tegernsee', 'Båttur på Tegernsee', 'Giro in battello sul Tegernsee'],
           ['Entspannt zwischen den Uferorten fahren und See und Alpen aus einer neuen Perspektive erleben.', 'Cruise between lakeside villages and enjoy a fresh perspective on the lake and Alps.', 'Kıyı kasabaları arasında keyifli bir tur yapıp gölü ve Alpleri farklı bir açıdan görün.', 'Naviguez entre les villages et découvrez le lac et les Alpes sous un nouvel angle.', 'Navega entre pueblos ribereños y descubre el lago y los Alpes desde otra perspectiva.', 'Opušteno plovite između mjesta uz obalu i uživajte u novom pogledu na jezero i Alpe.', 'Lundroni mes fshatrave buzë liqenit dhe shijoni një pamje të re të liqenit dhe Alpeve.', 'Kryssa mellan byarna vid sjön och se sjön och Alperna från ett nytt perspektiv.', 'Cruise mellom landsbyene langs innsjøen og opplev innsjøen og Alpene fra en ny vinkel.', 'Naviga tra i borghi sul lago e scopri il lago e le Alpi da una prospettiva nuova.'],
-          { address: 'Rathaussteg, 83684 Tegernsee', url: 'https://www.seenschifffahrt.de/de/tegernsee' }
+          { address: 'Rathaussteg, 83684 Tegernsee', url: 'https://www.seenschifffahrt.de/de/tegernsee', icon: 'Ship' }
         ),
         demoCard(
           ['Wallbergbahn', 'Wallberg cable car', 'Wallberg teleferiği', 'Téléphérique du Wallberg', 'Teleférico de Wallberg', 'Žičara Wallberg', 'Teleferiku i Wallbergut', 'Wallbergs linbana', 'Wallberg-taubanen', 'Funivia del Wallberg'],
           ['Mit der Seilbahn hinauf zu weiten Ausblicken über den See und die bayerischen Voralpen.', 'Ride the cable car for wide views over the lake and the Bavarian Alps.', 'Teleferikle gölün ve Bavyera Alpleri’nin geniş manzarasına çıkın.', 'Prenez le téléphérique pour admirer le lac et les Préalpes bavaroises.', 'Sube en teleférico para disfrutar de amplias vistas del lago y los Alpes bávaros.', 'Žičarom do širokog pogleda na jezero i bavarske predalpe.', 'Ngjituni me teleferik për pamje të gjera mbi liqenin dhe Alpet bavareze.', 'Ta linbanan upp för vidsträckt utsikt över sjön och de bayerska alperna.', 'Ta taubanen opp for vidstrakt utsikt over innsjøen og de bayerske Alpene.', 'Sali in funivia per ammirare il lago e le Prealpi bavaresi.'],
-          { address: 'Wallbergstraße 26–28, 83700 Rottach-Egern', url: 'https://www.wallbergbahn.de/' }
+          { address: 'Wallbergstraße 26–28, 83700 Rottach-Egern', url: 'https://www.wallbergbahn.de/', icon: 'Mountain' }
         ),
       ],
     },

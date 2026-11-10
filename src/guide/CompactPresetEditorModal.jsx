@@ -12,7 +12,7 @@ import {
 import { categoryPresets, mainCategories } from './presetCatalog.js';
 import guestCardCopy from '../guestCardCopy.js';
 import pilotCopy from '../pilotCopy.js';
-import renderSafeIconByName from './PresetIcon.jsx';
+import renderSafeIconByName, { presetIconNames } from './PresetIcon.jsx';
 
 const PresetFieldEditor = ({
   field,
@@ -117,6 +117,7 @@ const CompactPresetEditorModal = ({ isOpen, onClose, onSave, currentTheme, lang,
   const [showMoreInfo, setShowMoreInfo] = useState(false);
 
   const [customTitle, setCustomTitle] = useState('');
+  const [selectedIcon, setSelectedIcon] = useState('Info');
   const [customText, setCustomText] = useState('');
   const [customTextTranslations, setCustomTextTranslations] = useState({});
   const [fieldValues, setFieldValues] = useState({});
@@ -124,6 +125,26 @@ const CompactPresetEditorModal = ({ isOpen, onClose, onSave, currentTheme, lang,
   const [expandedContentCardId, setExpandedContentCardId] = useState(null);
   const [contentCardError, setContentCardError] = useState('');
   const gc = guestCardCopy[lang] || guestCardCopy.de;
+  const roomEditorCopyByLang = {
+    de: { section: 'Zimmertypen', sectionHint: 'Lege Zimmer einzeln an und ordne jedem Typ seine eigene Ausstattung zu.', add: 'Zimmertyp hinzufügen', empty: 'Noch keine Zimmertypen hinzugefügt.', name: 'Name des Zimmertyps', example: 'z. B. Panorama-Junior-Suite', description: 'Kurzbeschreibung · {lang}', features: 'Ausstattung dieses Zimmers', featureHint: 'Wähle nur die Merkmale, die für diesen Zimmertyp gelten.', remove: 'Zimmertyp entfernen', importExisting: 'Bisherige allgemeine Angaben in dieses Zimmer kopieren', linkedNote: 'Zimmerausstattung wird direkt am jeweiligen Zimmertyp gepflegt. Vorhandene allgemeine Angaben bleiben erhalten und können pro Zimmer übernommen werden.', required: 'Bitte gib für jeden Zimmertyp einen Namen ein.' },
+    en: { section: 'Room types', sectionHint: 'Add each room type separately and set its own features.', add: 'Add room type', empty: 'No room types added yet.', name: 'Room type name', example: 'e.g. Panorama Junior Suite', description: 'Short description · {lang}', features: 'Features of this room', featureHint: 'Select only the features that apply to this room type.', remove: 'Remove room type', importExisting: 'Copy existing general details into this room', linkedNote: 'Room features are managed on each room type. Existing general details are kept and can be copied into rooms individually.', required: 'Add a name for each room type.' },
+    tr: { section: 'Oda tipleri', sectionHint: 'Her oda tipini ayrı ekle ve yalnızca o odaya ait özellikleri seç.', add: 'Oda tipi ekle', empty: 'Henüz oda tipi eklenmedi.', name: 'Oda tipi adı', example: 'Örn. Panoramik Junior Süit', description: 'Kısa açıklama · {lang}', features: 'Bu odanın özellikleri', featureHint: 'Yalnızca bu oda tipi için geçerli özellikleri seç.', remove: 'Oda tipini kaldır', importExisting: 'Önceden girilen genel bilgileri bu odaya kopyala', linkedNote: 'Oda özellikleri her oda tipinin altında yönetilir. Önceden girilen genel bilgiler korunur ve istenirse odalara tek tek kopyalanabilir.', required: 'Her oda tipi için bir ad gir.' },
+    fr: { section: 'Types de chambre', sectionHint: 'Ajoutez chaque type séparément et définissez ses propres équipements.', add: 'Ajouter un type de chambre', empty: 'Aucun type de chambre ajouté.', name: 'Nom du type de chambre', example: 'ex. Suite junior panoramique', description: 'Description courte · {lang}', features: 'Équipements de cette chambre', featureHint: 'Sélectionnez uniquement les équipements de ce type de chambre.', remove: 'Supprimer le type de chambre', importExisting: 'Copier les informations générales existantes dans cette chambre', linkedNote: 'Les équipements sont gérés pour chaque type de chambre. Les informations générales existantes sont conservées et peuvent être copiées individuellement.', required: 'Donnez un nom à chaque type de chambre.' },
+    es: { section: 'Tipos de habitación', sectionHint: 'Añade cada tipo por separado y configura sus propias características.', add: 'Añadir tipo de habitación', empty: 'Aún no hay tipos de habitación.', name: 'Nombre del tipo de habitación', example: 'p. ej., suite junior panorámica', description: 'Descripción breve · {lang}', features: 'Características de esta habitación', featureHint: 'Selecciona solo las características de este tipo de habitación.', remove: 'Eliminar tipo de habitación', importExisting: 'Copiar la información general existente a esta habitación', linkedNote: 'Las características se gestionan en cada tipo de habitación. La información general existente se conserva y se puede copiar por separado.', required: 'Añade un nombre a cada tipo de habitación.' },
+    hr: { section: 'Vrste soba', sectionHint: 'Dodajte svaku vrstu zasebno i odaberite njezine značajke.', add: 'Dodaj vrstu sobe', empty: 'Još nema dodanih vrsta soba.', name: 'Naziv vrste sobe', example: 'npr. panoramski junior suite', description: 'Kratki opis · {lang}', features: 'Značajke ove sobe', featureHint: 'Odaberite samo značajke koje vrijede za ovu vrstu sobe.', remove: 'Ukloni vrstu sobe', importExisting: 'Kopiraj postojeće opće podatke u ovu sobu', linkedNote: 'Značajke se uređuju zasebno za svaku vrstu sobe. Postojeći opći podaci ostaju sačuvani i mogu se kopirati pojedinačno.', required: 'Unesite naziv svake vrste sobe.' },
+    sq: { section: 'Llojet e dhomave', sectionHint: 'Shtoni çdo lloj veçmas dhe zgjidhni pajisjet e veta.', add: 'Shto lloj dhome', empty: 'Nuk është shtuar ende asnjë lloj dhome.', name: 'Emri i llojit të dhomës', example: 'p.sh. suitë junior panoramike', description: 'Përshkrim i shkurtër · {lang}', features: 'Pajisjet e kësaj dhome', featureHint: 'Zgjidhni vetëm pajisjet që i përkasin këtij lloji dhome.', remove: 'Hiq llojin e dhomës', importExisting: 'Kopjo të dhënat e përgjithshme ekzistuese në këtë dhomë', linkedNote: 'Pajisjet menaxhohen veçmas për çdo lloj dhome. Të dhënat e përgjithshme ekzistuese ruhen dhe mund të kopjohen veçmas.', required: 'Vendosni një emër për çdo lloj dhome.' },
+    sv: { section: 'Rumstyper', sectionHint: 'Lägg till varje rumstyp separat och välj dess egna funktioner.', add: 'Lägg till rumstyp', empty: 'Inga rumstyper har lagts till ännu.', name: 'Namn på rumstyp', example: 't.ex. panoramisk juniorsvit', description: 'Kort beskrivning · {lang}', features: 'Funktioner i detta rum', featureHint: 'Välj bara funktioner som gäller för denna rumstyp.', remove: 'Ta bort rumstyp', importExisting: 'Kopiera befintliga allmänna uppgifter till detta rum', linkedNote: 'Funktioner hanteras för varje rumstyp. Befintliga allmänna uppgifter sparas och kan kopieras till enskilda rum.', required: 'Ange ett namn för varje rumstyp.' },
+    nb: { section: 'Romtyper', sectionHint: 'Legg til hver romtype separat og velg dens egne fasiliteter.', add: 'Legg til romtype', empty: 'Ingen romtyper er lagt til ennå.', name: 'Navn på romtype', example: 'f.eks. panoramisk juniorsuite', description: 'Kort beskrivelse · {lang}', features: 'Fasiliteter på dette rommet', featureHint: 'Velg bare fasiliteter som gjelder for denne romtypen.', remove: 'Fjern romtype', importExisting: 'Kopier eksisterende generelle opplysninger til dette rommet', linkedNote: 'Fasiliteter administreres for hver romtype. Eksisterende generelle opplysninger beholdes og kan kopieres til enkeltrom.', required: 'Gi hver romtype et navn.' },
+    no: { section: 'Romtyper', sectionHint: 'Legg til hver romtype separat og velg dens egne fasiliteter.', add: 'Legg til romtype', empty: 'Ingen romtyper er lagt til ennå.', name: 'Navn på romtype', example: 'f.eks. panoramisk juniorsuite', description: 'Kort beskrivelse · {lang}', features: 'Fasiliteter på dette rommet', featureHint: 'Velg bare fasiliteter som gjelder for denne romtypen.', remove: 'Fjern romtype', importExisting: 'Kopier eksisterende generelle opplysninger til dette rommet', linkedNote: 'Fasiliteter administreres for hver romtype. Eksisterende generelle opplysninger beholdes og kan kopieres til enkeltrom.', required: 'Gi hver romtype et navn.' },
+    it: { section: 'Tipi di camera', sectionHint: 'Aggiungi ogni tipo separatamente e imposta le sue dotazioni.', add: 'Aggiungi tipo di camera', empty: 'Non è stato ancora aggiunto alcun tipo di camera.', name: 'Nome del tipo di camera', example: 'es. junior suite panoramica', description: 'Breve descrizione · {lang}', features: 'Dotazioni di questa camera', featureHint: 'Seleziona solo le dotazioni di questo tipo di camera.', remove: 'Rimuovi tipo di camera', importExisting: 'Copia le informazioni generali esistenti in questa camera', linkedNote: 'Le dotazioni sono gestite per ogni tipo di camera. Le informazioni generali esistenti sono conservate e possono essere copiate singolarmente.', required: 'Inserisci un nome per ogni tipo di camera.' },
+  };
+  const roomEditorCopy = roomEditorCopyByLang[lang] || roomEditorCopyByLang.en;
+  const roomFeatureKeys = new Set([
+    'room_amenities', 'bed_types', 'bathroom_features', 'room_technology',
+    'room_outdoor_view', 'room_capacity', 'room_max_guests', 'room_floor_number',
+    'room_smoking_policy', 'room_accessibility',
+  ]);
+  const iconPickerText = ({ de: { label: 'Symbol (optional)', reset: 'Preset-Symbol verwenden' }, en: { label: 'Icon (optional)', reset: 'Use preset icon' }, tr: { label: 'Simge (isteğe bağlı)', reset: 'Preset simgesini kullan' }, fr: { label: 'Icône (facultatif)', reset: 'Utiliser l’icône du preset' }, es: { label: 'Icono (opcional)', reset: 'Usar icono del preset' }, hr: { label: 'Ikona (neobavezno)', reset: 'Koristi zadanu ikonu' }, sq: { label: 'Ikonë (opsionale)', reset: 'Përdor ikonën e presetit' }, sv: { label: 'Ikon (valfritt)', reset: 'Använd preset-ikon' }, nb: { label: 'Ikon (valgfritt)', reset: 'Bruk preset-ikon' }, no: { label: 'Ikon (valgfritt)', reset: 'Bruk preset-ikon' }, it: { label: 'Icona (facoltativa)', reset: 'Usa l’icona del preset' } })[lang] || { label: 'Icon (optional)', reset: 'Use preset icon' };
   const titleRequiredCopy = {
     de: 'Bitte gib für jede Empfehlung einen Titel ein.',
     en: 'Add a title to each recommendation.',
@@ -192,6 +213,7 @@ const CompactPresetEditorModal = ({ isOpen, onClose, onSave, currentTheme, lang,
       const presetObj = categoryPresets.find((p) => p.id === editingCategory.presetId);
       setSelectedPreset(presetObj || null);
       setCustomTitle(editingCategory.customTitle || '');
+      setSelectedIcon(editingCategory.icon || presetObj?.icon || 'Info');
       setCustomText(editingCategory.customText || '');
       setCustomTextTranslations(editingCategory.customTextTranslations || {});
       setFieldValues(editingCategory.fieldValues || {});
@@ -205,6 +227,7 @@ const CompactPresetEditorModal = ({ isOpen, onClose, onSave, currentTheme, lang,
       setSelectedMainCat(null);
       setSelectedPreset(null);
       setCustomTitle('');
+      setSelectedIcon('Info');
       setCustomText('');
       setCustomTextTranslations({});
       setFieldValues({});
@@ -223,6 +246,7 @@ const CompactPresetEditorModal = ({ isOpen, onClose, onSave, currentTheme, lang,
 
   const handleSelectPreset = (preset) => {
     setSelectedPreset(preset);
+    setSelectedIcon(preset?.icon || 'Info');
     const initialVals = {};
     if (preset && preset.schema) {
       preset.schema.forEach((f) => {
@@ -263,7 +287,7 @@ const CompactPresetEditorModal = ({ isOpen, onClose, onSave, currentTheme, lang,
   const handleSave = () => {
     const invalidCard = contentCards.some((card) => !String(card.title || '').trim());
     if (invalidCard) {
-      setContentCardError(titleRequiredCopy || guestCardCopy.en.titleRequired);
+      setContentCardError(isRoomPreset ? roomEditorCopy.required : titleRequiredCopy || guestCardCopy.en.titleRequired);
       return;
     }
     setContentCardError('');
@@ -271,7 +295,7 @@ const CompactPresetEditorModal = ({ isOpen, onClose, onSave, currentTheme, lang,
       id: editingCategory ? editingCategory.id : Date.now().toString(),
       presetId: selectedPreset ? selectedPreset.id : 'custom',
       categoryId: selectedMainCat || 'cat_hotel',
-      icon: selectedPreset ? selectedPreset.icon : 'Info',
+      icon: selectedIcon || (selectedPreset ? selectedPreset.icon : 'Info'),
       customTitle: customTitle,
       fieldValues: { ...fieldValues, contentCards },
       customText: customText,
@@ -296,6 +320,14 @@ const CompactPresetEditorModal = ({ isOpen, onClose, onSave, currentTheme, lang,
 
   const primaryFields = selectedPreset?.schema?.filter((f) => f.primary) || [];
   const secondaryFields = selectedPreset?.schema?.filter((f) => !f.primary) || [];
+  const isRoomPreset = selectedPreset?.id === 'HOT_006' || selectedPreset?.id === 'room_info';
+  const roomFeatureFields = (selectedPreset?.schema || []).filter((field) => roomFeatureKeys.has(field.key));
+  const legacyRoomFeatureValues = Object.fromEntries(roomFeatureFields.flatMap((field) => {
+    const value = fieldValues[field.key];
+    const hasValue = Array.isArray(value) ? value.length > 0 : value !== undefined && value !== null && String(value).trim() !== '' && value !== field.default;
+    const customText = fieldValues[field.key + '__customText'];
+    return [ ...(hasValue ? [[field.key, value]] : []), ...(customText ? [[field.key + '__customText', customText]] : []) ];
+  }));
 
   return (
     <div className="fixed inset-0 bg-slate-950/70 backdrop-blur-sm z-[9999] flex items-center justify-center p-2 sm:p-6 animate-fade-in overflow-x-hidden">
@@ -428,16 +460,30 @@ const CompactPresetEditorModal = ({ isOpen, onClose, onSave, currentTheme, lang,
                   className="w-full p-2.5 text-xs font-bold border border-stone-200 rounded-xl bg-stone-50 focus:bg-white"
                 />
               </div>
+              <section className="space-y-2 rounded-2xl border border-stone-200 bg-stone-50/60 p-3">
+                <div className="flex items-center justify-between gap-3">
+                  <span className="text-[10px] font-black uppercase tracking-wider text-stone-600">{iconPickerText.label}</span>
+                  <button type="button" onClick={() => setSelectedIcon(selectedPreset?.icon || "Info")} className="text-[10px] font-semibold text-stone-500 underline-offset-2 hover:underline">{iconPickerText.reset}</button>
+                </div>
+                <div className="grid grid-cols-6 gap-2 sm:grid-cols-8">
+                  {presetIconNames.map((iconName) => {
+                    const selected = selectedIcon === iconName;
+                    return <button key={iconName} type="button" aria-label={iconPickerText.label + ": " + iconName} title={iconName} aria-pressed={selected} onClick={() => setSelectedIcon(iconName)} className={"flex h-10 items-center justify-center rounded-xl border transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 " + (selected ? currentTheme.bgLight + " " + currentTheme.border : "border-stone-200 bg-white hover:border-stone-300")}>
+                      {renderSafeIconByName(iconName, currentTheme)}
+                    </button>;
+                  })}
+                </div>
+              </section>
 
               {selectedPreset?.id !== 'REG_004' && (
                 <section className="space-y-3 rounded-2xl border border-slate-200 bg-slate-50/70 p-4">
                   <div className="flex items-center justify-between gap-3">
                     <div>
                       <h3 className="text-sm font-bold text-slate-900">
-                        {gc.section}
+                        {isRoomPreset ? roomEditorCopy.section : gc.section}
                         {contentCards.length ? ` · ${contentCards.length}` : ''}
                       </h3>
-                      <p className="mt-0.5 text-[10px] text-slate-500">{cardSectionHint}</p>
+                      <p className="mt-0.5 text-[10px] text-slate-500">{isRoomPreset ? roomEditorCopy.sectionHint : cardSectionHint}</p>
                     </div>
                     <button
                       type="button"
@@ -445,7 +491,7 @@ const CompactPresetEditorModal = ({ isOpen, onClose, onSave, currentTheme, lang,
                       className="inline-flex shrink-0 items-center gap-1.5 rounded-xl bg-slate-900 px-3 py-2 text-[10px] font-bold text-white hover:bg-slate-800"
                     >
                       <Plus className="h-3.5 w-3.5" />
-                      {gc.add}
+                      {isRoomPreset ? roomEditorCopy.add : gc.add}
                     </button>
                   </div>
                   {contentCardError && (
@@ -455,7 +501,7 @@ const CompactPresetEditorModal = ({ isOpen, onClose, onSave, currentTheme, lang,
                   )}
                   {contentCards.length === 0 && (
                     <p className="rounded-xl border border-dashed border-slate-300 bg-white px-3 py-3 text-xs text-slate-500">
-                      {emptyCardsLabel}
+                      {isRoomPreset ? roomEditorCopy.empty : emptyCardsLabel}
                     </p>
                   )}
                   {contentCards.map((card, index) => (
@@ -466,12 +512,12 @@ const CompactPresetEditorModal = ({ isOpen, onClose, onSave, currentTheme, lang,
                       <div className="flex items-start gap-2">
                         <label className="min-w-0 flex-1 space-y-1">
                           <span className="block text-[10px] font-bold uppercase tracking-wide text-slate-500">
-                            {gc.title} *
+                            {isRoomPreset ? roomEditorCopy.name : gc.title} *
                           </span>
                           <input
                             value={card.title || ''}
                             onChange={(event) => updateContentCard(card.id, 'title', event.target.value)}
-                            placeholder={lang === 'tr' ? 'Örn. Stadtmuseum' : 'e.g. Stadtmuseum'}
+                            placeholder={isRoomPreset ? roomEditorCopy.example : lang === 'tr' ? 'Örn. Stadtmuseum' : 'e.g. Stadtmuseum'}
                             className="w-full rounded-lg border border-slate-200 px-3 py-2.5 text-xs outline-none focus:border-slate-400"
                           />
                         </label>
@@ -481,7 +527,7 @@ const CompactPresetEditorModal = ({ isOpen, onClose, onSave, currentTheme, lang,
                             setContentCards((previous) => previous.filter((item) => item.id !== card.id));
                             if (expandedContentCardId === card.id) setExpandedContentCardId(null);
                           }}
-                          aria-label={lang === 'tr' ? 'Öneriyi kaldır' : 'Remove recommendation'}
+                          aria-label={isRoomPreset ? roomEditorCopy.remove : lang === 'tr' ? 'Öneriyi kaldır' : 'Remove recommendation'}
                           className="mt-5 rounded-lg p-2 text-slate-400 hover:bg-slate-100 hover:text-slate-700"
                         >
                           <Trash2 className="h-4 w-4" />
@@ -489,7 +535,7 @@ const CompactPresetEditorModal = ({ isOpen, onClose, onSave, currentTheme, lang,
                       </div>
                       <label className="block space-y-1">
                         <span className="block text-[10px] font-bold uppercase tracking-wide text-slate-500">
-                          {gc.description} · {lang.toUpperCase()}
+                          {isRoomPreset ? roomEditorCopy.description.replace('{lang}', lang.toUpperCase()) : gc.description + ' · ' + lang.toUpperCase()}
                         </span>
                         <textarea
                           rows={2}
@@ -509,9 +555,36 @@ const CompactPresetEditorModal = ({ isOpen, onClose, onSave, currentTheme, lang,
                         className="rounded-lg bg-slate-50 px-3 py-2"
                       >
                         <summary className="cursor-pointer list-none text-[10px] font-bold text-slate-600">
-                          {gc.more}
+                          {isRoomPreset ? roomEditorCopy.features : gc.more}
                         </summary>
-                        <div className="mt-3 grid grid-cols-1 gap-2 sm:grid-cols-2">
+                        {isRoomPreset ? (
+                          <div className="mt-3 space-y-3">
+                            <p className="text-[10px] leading-relaxed text-slate-500">{roomEditorCopy.featureHint}</p>
+                            <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+                              {roomFeatureFields.map((field) => (
+                                <PresetFieldEditor
+                                  key={field.key}
+                                  field={field}
+                                  value={card.roomFeatures?.[field.key] ?? (field.type === 'multiselect' ? [] : '')}
+                                  fieldValues={card.roomFeatures || {}}
+                                  lang={lang}
+                                  onChange={(value) => updateContentCard(card.id, 'roomFeatures', { ...(card.roomFeatures || {}), [field.key]: value })}
+                                  onCustomTextChange={(key, value) => updateContentCard(card.id, 'roomFeatures', { ...(card.roomFeatures || {}), [key]: value })}
+                                />
+                              ))}
+                            </div>
+                            {Object.keys(legacyRoomFeatureValues).length > 0 && (
+                              <button
+                                type="button"
+                                onClick={() => updateContentCard(card.id, 'roomFeatures', { ...legacyRoomFeatureValues, ...(card.roomFeatures || {}) })}
+                                className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-[10px] font-semibold text-slate-600 hover:bg-slate-100"
+                              >
+                                {roomEditorCopy.importExisting}
+                              </button>
+                            )}
+                          </div>
+                        ) : (
+                          <div className="mt-3 grid grid-cols-1 gap-2 sm:grid-cols-2">
                           <label className="space-y-1">
                             <span className="block text-[10px] font-semibold text-slate-500">{gc.address}</span>
                             <AddressAutocomplete
@@ -537,6 +610,7 @@ const CompactPresetEditorModal = ({ isOpen, onClose, onSave, currentTheme, lang,
                             </label>
                           ))}
                         </div>
+                        )}
                       </details>
                     </article>
                   ))}
@@ -544,168 +618,23 @@ const CompactPresetEditorModal = ({ isOpen, onClose, onSave, currentTheme, lang,
               )}
 
               <div className="space-y-3 bg-stone-50/60 p-4 rounded-2xl border border-stone-200/80">
-                {selectedPreset?.id === 'HOT_006' || selectedPreset?.id === 'room_info'
-                  ? (() => {
-                      const roomGroups = [
-                        {
-                          id: 'room_amenities',
-                          label: {
-                            de: 'Zimmerausstattung',
-                            en: 'Room amenities',
-                            tr: 'Oda donanımı',
-                            fr: 'Équipements de la chambre',
-                            hr: 'Oprema sobe',
-                            it: 'Dotazioni della camera',
-                            es: 'Equipamiento de la habitación',
-                            sv: 'Rumsutrustning',
-                            no: 'Romfasiliteter',
-                            sq: 'Pajisjet e dhomës',
-                          },
-                          keys: ['room_amenities', 'room_smoking_policy'],
-                        },
-                        {
-                          id: 'beds',
-                          label: {
-                            de: 'Betten & Schlafkomfort',
-                            en: 'Beds & sleep comfort',
-                            tr: 'Yataklar & uyku konforu',
-                            fr: 'Lits & confort',
-                            hr: 'Kreveti i udobnost',
-                            it: 'Letti e comfort',
-                            es: 'Camas y confort',
-                            sv: 'Sängar och komfort',
-                            no: 'Senger og komfort',
-                            sq: 'Krevatet dhe rehatia',
-                          },
-                          keys: ['bed_types'],
-                        },
-                        {
-                          id: 'bath',
-                          label: {
-                            de: 'Badezimmer',
-                            en: 'Bathroom',
-                            tr: 'Banyo',
-                            fr: 'Salle de bains',
-                            hr: 'Kupaonica',
-                            it: 'Bagno',
-                            es: 'Baño',
-                            sv: 'Badrum',
-                            no: 'Bad',
-                            sq: 'Banjo',
-                          },
-                          keys: ['bathroom_features'],
-                        },
-                        {
-                          id: 'tech',
-                          label: {
-                            de: 'Internet & Unterhaltung',
-                            en: 'Internet & entertainment',
-                            tr: 'İnternet & eğlence',
-                            fr: 'Internet & divertissement',
-                            hr: 'Internet i zabava',
-                            it: 'Internet e intrattenimento',
-                            es: 'Internet y entretenimiento',
-                            sv: 'Internet och underhållning',
-                            no: 'Internett og underholdning',
-                            sq: 'Internet dhe argëtim',
-                          },
-                          keys: ['room_technology'],
-                        },
-                        {
-                          id: 'view',
-                          label: {
-                            de: 'Balkon, Terrasse & Aussicht',
-                            en: 'Balcony, terrace & view',
-                            tr: 'Balkon, teras & manzara',
-                            fr: 'Balcon, terrasse & vue',
-                            hr: 'Balkon, terasa i pogled',
-                            it: 'Balcone, terrazza e vista',
-                            es: 'Balcón, terraza y vistas',
-                            sv: 'Balkong, terrass och utsikt',
-                            no: 'Balkong, terrasse og utsikt',
-                            sq: 'Ballkon, tarracë dhe pamje',
-                          },
-                          keys: ['room_outdoor_view'],
-                        },
-                        {
-                          id: 'capacity',
-                          label: {
-                            de: 'Größe & Kapazität',
-                            en: 'Size & capacity',
-                            tr: 'Boyut & kapasite',
-                            fr: 'Taille & capacité',
-                            hr: 'Veličina i kapacitet',
-                            it: 'Dimensioni e capienza',
-                            es: 'Tamaño y capacidad',
-                            sv: 'Storlek och kapacitet',
-                            no: 'Størrelse og kapasitet',
-                            sq: 'Madhësia dhe kapaciteti',
-                          },
-                          keys: ['room_capacity', 'room_max_guests', 'room_floor_number'],
-                        },
-                        {
-                          id: 'accessibility',
-                          label: {
-                            de: 'Barrierefreiheit',
-                            en: 'Accessibility',
-                            tr: 'Erişilebilirlik',
-                            fr: 'Accessibilité',
-                            hr: 'Pristupačnost',
-                            it: 'Accessibilità',
-                            es: 'Accesibilidad',
-                            sv: 'Tillgänglighet',
-                            no: 'Tilgjengelighet',
-                            sq: 'Aksesueshmëria',
-                          },
-                          keys: ['room_accessibility'],
-                        },
-                      ];
-                      return (
-                        <div className="space-y-2">
-                          {roomGroups.map((group, index) => (
-                            <details
-                              key={group.id}
-                              className="rounded-xl border border-stone-200 bg-white overflow-hidden"
-                            >
-                              <summary className="cursor-pointer list-none flex items-center justify-between px-3 py-3 text-xs font-bold text-slate-800 bg-stone-50">
-                                <span>{group.label[lang] || group.label.de}</span>
-                                <ChevronDown className="w-4 h-4 text-stone-400" />
-                              </summary>
-                              <div className="p-3 space-y-3">
-                                {group.keys.map((key) => {
-                                  const field = primaryFields.find((item) => item.key === key);
-                                  return field ? (
-                                    <PresetFieldEditor
-                                      key={field.key}
-                                      field={field}
-                                      value={fieldValues[field.key]}
-                                      fieldValues={fieldValues}
-                                      lang={lang}
-                                      hideLabel={true}
-                                      onChange={(value) => handleFieldValueChange(field.key, value)}
-                                      onCustomTextChange={handleFieldValueChange}
-                                    />
-                                  ) : null;
-                                })}
-                              </div>
-                            </details>
-                          ))}
-                        </div>
-                      );
-                    })()
-                  : primaryFields.map((field) => (
-                      <PresetFieldEditor
-                        key={field.key}
-                        field={field}
-                        value={fieldValues[field.key]}
-                        fieldValues={fieldValues}
-                        lang={lang}
-                        onChange={(value) => handleFieldValueChange(field.key, value)}
-                        onCustomTextChange={handleFieldValueChange}
-                      />
-                    ))}
+                {isRoomPreset ? (
+                  <p className="rounded-xl border border-slate-200 bg-white p-3 text-xs leading-relaxed text-slate-600">
+                    {roomEditorCopy.linkedNote}
+                  </p>
+                ) : primaryFields.map((field) => (
+                  <PresetFieldEditor
+                    key={field.key}
+                    field={field}
+                    value={fieldValues[field.key]}
+                    fieldValues={fieldValues}
+                    lang={lang}
+                    onChange={(value) => handleFieldValueChange(field.key, value)}
+                    onCustomTextChange={handleFieldValueChange}
+                  />
+                ))}
               </div>
-              {secondaryFields.length > 0 && (
+              {!isRoomPreset && secondaryFields.length > 0 && (
                 <div className="border border-stone-200 rounded-2xl overflow-hidden bg-white">
                   <button
                     type="button"

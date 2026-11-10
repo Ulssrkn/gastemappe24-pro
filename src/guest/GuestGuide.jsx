@@ -1,25 +1,13 @@
 import React, { useState } from 'react';
 import LanguageSelect from '../components/LanguageSelect.jsx';
-import {
-  ArrowRight,
-  Car,
-  Check,
-  ChevronRight,
-  Clock,
-  Coffee,
-  Compass,
-  Copy,
-  Info,
-  Navigation,
-  Star,
-  Sun,
-  Wifi,
-} from 'lucide-react';
+import { ChevronRight } from 'lucide-react';
 import GuestCategoryDisplay from './GuestCategoryDisplay.jsx';
 import LegalLinks from '../guide/LegalLinks.jsx';
 import analyticsCopy from '../analyticsCopy.js';
 import { quickAccessDefaults } from '../guide/guideContent.js';
 import renderSafeIconByName from '../guide/PresetIcon.jsx';
+import SolidIcon from '../guide/SolidIcon.jsx';
+import GastemappeMark from '../guide/GastemappeMark.jsx';
 import { supabase } from '../lib/supabaseClient.js';
 
 export default function GuestGuide({
@@ -75,75 +63,30 @@ export default function GuestGuide({
     setCopiedWifi(true);
     setTimeout(() => setCopiedWifi(false), 2500);
   };
-  const activeQuickCards = [
-    hotel.showWifi && (
-      <div key="wifi" className="bg-white p-4 rounded-2xl shadow-sm border border-stone-200 space-y-2">
-        <div className={`flex items-center gap-2 ${currentTheme.text}`}>
-          <Wifi className="w-5 h-5" />
-          <span className="font-bold text-xs text-slate-900">{getQuickCardText('wifi', 'title')}</span>
-        </div>
-        <p className="text-[11px] text-slate-600">{getQuickCardText('wifi', 'description')}</p>
-        <div className="text-[11px] text-slate-500 font-mono bg-stone-50 p-2 rounded-lg border">
-          <div>
-            <b>{hotel.wifiSsid}</b>
-          </div>
-          <div className="flex flex-col items-start mt-2 gap-2 min-w-0">
-            <span className="block w-full min-w-0 whitespace-normal break-all leading-relaxed">
-              {hotel.wifiPass}
-            </span>
-            {hotel.wifiPass && (
-              <button
-                type="button"
-                onClick={copyWifiPassword}
-                aria-label={copyWifiLabel.copy}
-                title={copiedWifi ? copyWifiLabel.copied : copyWifiLabel.copy}
-                className={`${currentTheme.bgLight} ${currentTheme.text} px-2 py-1.5 rounded-lg cursor-pointer inline-flex items-center gap-1 shrink-0`}
-              >
-                {copiedWifi ? (
-                  <>
-                    <Check className="w-3.5 h-3.5 text-emerald-600" />
-                    <span className="text-[10px]">{copyWifiLabel.copied}</span>
-                  </>
-                ) : (
-                  <>
-                    <Copy className="w-3.5 h-3.5" />
-                    <span className="text-[10px]">{copyWifiLabel.copy}</span>
-                  </>
-                )}
-              </button>
-            )}
-          </div>
-        </div>
-      </div>
-    ),
-    hotel.showParking && (
-      <div key="parking" className="bg-white p-4 rounded-2xl shadow-sm border border-stone-200 space-y-2">
-        <div className={`flex items-center gap-2 ${currentTheme.text}`}>
-          <Car className="w-5 h-5" />
-          <span className="font-bold text-xs text-slate-900">{getQuickCardText('parking', 'title')}</span>
-        </div>
-        <p className="text-[11px] text-slate-600">{getQuickCardText('parking', 'description')}</p>
-      </div>
-    ),
-    hotel.showBreakfast && (
-      <div key="breakfast" className="bg-white p-4 rounded-2xl shadow-sm border border-stone-200 space-y-2">
-        <div className={`flex items-center gap-2 ${currentTheme.text}`}>
-          <Coffee className="w-5 h-5" />
-          <span className="font-bold text-xs text-slate-900">{getQuickCardText('breakfast', 'title')}</span>
-        </div>
-        <p className="text-[11px] text-slate-600">{getQuickCardText('breakfast', 'description')}</p>
-      </div>
-    ),
-    hotel.showCheckInOut && (
-      <div key="checkinout" className="bg-white p-4 rounded-2xl shadow-sm border border-stone-200 space-y-2">
-        <div className={`flex items-center gap-2 ${currentTheme.text}`}>
-          <Clock className="w-5 h-5" />
-          <span className="font-bold text-xs text-slate-900">{getQuickCardText('checkin', 'title')}</span>
-        </div>
-        <p className="text-[11px] text-slate-600">{getQuickCardText('checkin', 'description')}</p>
-      </div>
-    ),
+  const quickAccessTitle = ({ de: 'Schnellzugriff', en: 'Quick access', tr: 'Hızlı erişim', fr: 'Accès rapide', es: 'Acceso rápido', hr: 'Brzi pristup', sq: 'Qasje e shpejtë', sv: 'Snabbåtkomst', nb: 'Hurtigtilgang', no: 'Hurtigtilgang', it: 'Accesso rapido' })[lang] || 'Quick access';
+  const quickCardConfig = [
+    hotel.showWifi && { id: 'wifi', icon: 'Wifi', title: getQuickCardText('wifi', 'title'), description: getQuickCardText('wifi', 'description') },
+    hotel.showParking && { id: 'parking', icon: 'Car', title: getQuickCardText('parking', 'title'), description: getQuickCardText('parking', 'description') },
+    hotel.showBreakfast && { id: 'breakfast', icon: 'Coffee', title: getQuickCardText('breakfast', 'title'), description: getQuickCardText('breakfast', 'description') },
+    hotel.showCheckInOut && { id: 'checkin', icon: 'Clock', title: getQuickCardText('checkin', 'title'), description: getQuickCardText('checkin', 'description') },
   ].filter(Boolean);
+  const activeQuickCards = quickCardConfig.map((item) => {
+    return (
+      <details key={item.id} className="group overflow-hidden rounded-2xl border border-slate-200 bg-white transition open:shadow-sm">
+        <summary className="flex cursor-pointer list-none items-center gap-3 px-3.5 py-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400">
+          <span className={"flex h-9 w-9 shrink-0 items-center justify-center rounded-xl " + currentTheme.bgLight + " " + currentTheme.text}>{renderSafeIconByName(item.icon, currentTheme)}</span>
+          <span className="min-w-0 flex-1 text-xs font-extrabold text-slate-900">{item.title}</span>
+          <ChevronRight className="h-4 w-4 shrink-0 text-slate-400 transition group-open:rotate-90" />
+        </summary>
+        <div className="border-t border-slate-100 px-4 py-3">
+          <p className="text-xs leading-relaxed text-slate-600">{item.description}</p>
+          {item.id === 'wifi' && (hotel.wifiSsid || hotel.wifiPass) && <div className="mt-3 flex flex-wrap gap-2">{hotel.wifiSsid && <span className="rounded-lg bg-stone-50 px-3 py-2 font-mono text-[11px] text-slate-700">{hotel.wifiSsid}</span>}{hotel.wifiPass && <span className="rounded-lg bg-stone-50 px-3 py-2 font-mono text-[11px] text-slate-700">{hotel.wifiPass}</span>}</div>}
+          {item.id === 'wifi' && hotel.wifiPass && <button type="button" onClick={copyWifiPassword} aria-label={copiedWifi ? copyWifiLabel.copied : copyWifiLabel.copy} className={"mt-3 inline-flex items-center gap-1.5 rounded-xl px-3 py-2 text-[10px] font-bold " + currentTheme.bg + " text-white"}>{copiedWifi ? <SolidIcon name="Check" className="h-3.5 w-3.5" /> : <SolidIcon name="Copy" className="h-3.5 w-3.5" />}{copiedWifi ? copyWifiLabel.copied : copyWifiLabel.copy}</button>}
+          {hotel.address && (item.id === 'parking' || item.id === 'checkin') && <a href={"https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(hotel.address)} onClick={() => trackGuestEvent('action_route')} target="_blank" rel="noreferrer" className={"mt-3 inline-flex items-center gap-2 rounded-xl px-3 py-2 text-[10px] font-bold text-white transition hover:opacity-90 " + currentTheme.bg}><SolidIcon name="Route" className="h-3.5 w-3.5" />{t.navRoute}</a>}
+        </div>
+      </details>
+    );
+  });
   const ac = analyticsCopy[lang] || analyticsCopy.en;
   if (showWelcomeScreen) {
     return (
@@ -179,7 +122,7 @@ export default function GuestGuide({
             className={`w-full ${currentTheme.bg} text-white py-4 rounded-2xl font-bold text-sm shadow-2xl flex items-center justify-center gap-2 cursor-pointer`}
           >
             <span>{t.welcomeButton}</span>
-            <ArrowRight className="w-4 h-4" />
+            <SolidIcon name="ArrowRight" className="w-4 h-4" />
           </button>
         </div>
         <LegalLinks copy={pilot} onCover />
@@ -290,7 +233,7 @@ export default function GuestGuide({
             <div className="bg-white p-4 rounded-2xl shadow-sm border border-stone-200 flex items-center justify-between gap-3">
               <div className="flex items-center gap-3 min-w-0">
                 <div className={`p-3 ${currentTheme.bgLight} rounded-xl ${currentTheme.text}`}>
-                  <Sun className="w-6 h-6" />
+                  {renderSafeIconByName('Sun', currentTheme)}
                 </div>
                 <div className="min-w-0">
                   <div className="text-xs font-extrabold text-slate-900 uppercase">
@@ -320,57 +263,67 @@ export default function GuestGuide({
               </div>
             </div>
 
-            {/* HIZLI ERİŞİM KARTLARI */}
             {activeQuickCards.length > 0 && (
-              <div className="grid grid-cols-2 gap-3 pt-2">{activeQuickCards}</div>
+              <section className="space-y-2.5 pt-2">
+                <h2 className="px-1 text-sm font-black tracking-tight text-slate-900">{quickAccessTitle}</h2>
+                <div className="space-y-2">{activeQuickCards}</div>
+              </section>
             )}
           </div>
         ) : (
           <div className="space-y-6 animate-fade-in">
-            <h3 className="text-xs font-bold text-stone-500 uppercase tracking-wider">{t.navGaestemappe}</h3>
-            {Object.entries(groupedCategories).map(([groupName, groupItems]) => (
-              <div key={groupName} className="space-y-2.5">
-                <h4 className={`text-xs font-black ${currentTheme.text} uppercase tracking-wider px-1`}>
-                  {groupName}
-                </h4>
-                <div className="grid grid-cols-1 gap-2.5">
-                  {(groupItems || []).map((cat) => {
-                    const presetObj = cat.presetData;
-                    const title =
-                      cat.customTitle ||
-                      (presetObj && presetObj.title && (presetObj.title[lang] || presetObj.title.de)) ||
-                      'Kategorie';
-
-                    return (
-                      <button
-                        key={cat.id}
-                        onClick={() => {
-                          const analyticsCategoryId = String(cat.id)
-                            .replace(/[^A-Za-z0-9_-]/g, '')
-                            .slice(0, 68);
-                          trackGuestPageView(`category_${analyticsCategoryId}`);
+            <div className="px-1">
+              <p className={"text-[10px] font-black uppercase tracking-[0.2em] " + currentTheme.text}>{t.welcomeBadge}</p>
+              <h1 className="mt-1 text-2xl font-black tracking-tight text-slate-950">{t.navGaestemappe}</h1>
+            </div>
+            {Object.entries(groupedCategories).map(([groupName, groupItems]) => {
+              const groupIcon = groupItems[0]?.mainCatObj?.icon || 'Compass';
+              return (
+                <section key={groupName} className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm">
+                  <div className="flex items-center gap-3 border-b border-slate-100 bg-gradient-to-r from-stone-50 to-white px-4 py-3.5">
+                    <span className={"flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl " + currentTheme.bgLight + " " + currentTheme.text}>
+                      {renderSafeIconByName(groupIcon, currentTheme)}
+                    </span>
+                    <h2 className="min-w-0 flex-1 text-sm font-black tracking-tight text-slate-900">{groupName}</h2>
+                    <span className={"flex h-7 min-w-7 items-center justify-center rounded-full px-2 text-xs font-bold " + currentTheme.bgLight + " " + currentTheme.text}>{groupItems.length}</span>
+                  </div>
+                  <div className={"grid gap-2.5 bg-slate-50/60 p-3 " + (groupItems.length === 1 ? "grid-cols-1" : "grid-cols-2")}>
+                    {(groupItems || []).map((cat) => {
+                      const presetObj = cat.presetData;
+                      const title = cat.customTitle || (presetObj && presetObj.title && (presetObj.title[lang] || presetObj.title.de)) || 'Kategorie';
+                      return (
+                        <button key={cat.id} onClick={() => {
+                          const analyticsCategoryId = String(cat.id).replace(/[^A-Za-z0-9_-]/g, "").slice(0, 68);
+                          trackGuestPageView('category_' + analyticsCategoryId);
                           navigateGuest('services', { ...cat, title, groupName });
-                        }}
-                        className={`w-full bg-white p-4 rounded-2xl border border-stone-200 shadow-sm flex items-center justify-between text-left cursor-pointer hover:${currentTheme.border} transition`}
-                      >
-                        <div className="flex items-center gap-3">
-                          <div
-                            className={`w-10 h-10 rounded-xl ${currentTheme.bgLight} flex items-center justify-center`}
-                          >
-                            {renderSafeIconByName(cat.icon, currentTheme)}
-                          </div>
-                          <div>
-                            <h5 className="text-sm font-extrabold text-slate-900">{title}</h5>
-                            <p className="text-[10px] text-stone-400">{groupName}</p>
-                          </div>
-                        </div>
-                        <ChevronRight className="w-4 h-4 text-slate-400" />
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
-            ))}
+                        }} className={"group relative flex w-full overflow-hidden rounded-2xl border border-slate-200/80 bg-white text-left transition duration-200 hover:border-slate-300 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 " + (groupItems.length === 1 ? "min-h-16 flex-row items-center gap-3 px-3.5 py-3" : "min-h-[112px] flex-col items-start justify-between p-3.5")}>
+                          <span className={"absolute inset-y-3 left-0 w-1 rounded-r-full " + currentTheme.bg + " opacity-0 transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100"} />
+                          {groupItems.length === 1 ? (
+                            <>
+                              <span className={"flex h-9 w-9 shrink-0 items-center justify-center rounded-xl " + currentTheme.bgLight + " " + currentTheme.text}>{renderSafeIconByName(cat.icon, currentTheme)}</span>
+                              <span className="min-w-0 flex-1 line-clamp-2 text-xs font-extrabold leading-snug text-slate-900">{title}</span>
+                              <span className={"flex h-7 w-7 shrink-0 items-center justify-center rounded-full " + currentTheme.bgLight + " " + currentTheme.text}>
+                                <ChevronRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+                              </span>
+                            </>
+                          ) : (
+                            <>
+                              <span className="flex w-full items-center justify-between gap-2">
+                                <span className={"flex h-9 w-9 items-center justify-center rounded-xl " + currentTheme.bgLight + " " + currentTheme.text}>{renderSafeIconByName(cat.icon, currentTheme)}</span>
+                                <span className={"flex h-7 w-7 items-center justify-center rounded-full bg-slate-50 text-slate-400 transition-colors group-hover:bg-slate-100 " + currentTheme.text}>
+                                  <ChevronRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+                                </span>
+                              </span>
+                              <span className="mt-3 line-clamp-2 text-xs font-extrabold leading-snug text-slate-900">{title}</span>
+                            </>
+                          )}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </section>
+              );
+            })}
           </div>
         )}
         {showGuideFeedback && (
@@ -412,7 +365,7 @@ export default function GuestGuide({
             }}
             className={`flex flex-col items-center gap-1 text-[10px] font-bold cursor-pointer ${activeTab === 'home' && !selectedCategory ? currentTheme.text : 'text-stone-400'}`}
           >
-            <Info className="w-5 h-5" />
+            {renderSafeIconByName('Home', currentTheme)}
             <span>{t.navHome}</span>
           </button>
           <button
@@ -422,7 +375,7 @@ export default function GuestGuide({
             }}
             className={`flex flex-col items-center gap-1 text-[10px] font-bold cursor-pointer ${activeTab === 'services' || selectedCategory ? currentTheme.text : 'text-stone-400'}`}
           >
-            <Compass className="w-5 h-5" />
+            <GastemappeMark className="h-6 w-6" currentTheme={currentTheme} />
             <span>{t.navGaestemappe}</span>
           </button>
           {((hotel.googleReviewUrl && /^https?:\/\//i.test(hotel.googleReviewUrl)) ||
@@ -438,7 +391,7 @@ export default function GuestGuide({
               rel="noreferrer"
               className={`flex flex-col items-center gap-1 text-[10px] font-bold cursor-pointer ${currentTheme.text} hover:opacity-80`}
             >
-              <Star className="w-5 h-5 fill-current" />
+              {renderSafeIconByName('Star', currentTheme)}
               <span>{t.navReview}</span>
             </a>
           )}
@@ -450,7 +403,7 @@ export default function GuestGuide({
               rel="noreferrer"
               className={`flex flex-col items-center gap-1 text-[10px] font-bold cursor-pointer ${currentTheme.text} hover:opacity-80`}
             >
-              <Navigation className="w-5 h-5" />
+              {renderSafeIconByName('MapPin', currentTheme)}
               <span>{t.navRoute}</span>
             </a>
           ) : (
@@ -459,7 +412,7 @@ export default function GuestGuide({
               title="Hoteladresse im Hotelprofil hinterlegen"
               className="flex flex-col items-center gap-1 text-[10px] font-bold text-stone-300 cursor-not-allowed"
             >
-              <Navigation className="w-5 h-5" />
+              <SolidIcon name="MapPin" className="w-5 h-5 text-stone-300" />
               <span>{t.navRoute}</span>
             </span>
           )}
