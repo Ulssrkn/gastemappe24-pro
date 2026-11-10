@@ -1,25 +1,12 @@
 import React, { useState } from 'react';
 import LanguageSelect from '../components/LanguageSelect.jsx';
-import {
-  ArrowRight,
-  Car,
-  Check,
-  ChevronRight,
-  Clock,
-  Coffee,
-  Compass,
-  Copy,
-  Info,
-  Navigation,
-  Star,
-  Sun,
-  Wifi,
-} from 'lucide-react';
+import { Check, ChevronRight, Copy, ArrowRight } from 'lucide-react';
 import GuestCategoryDisplay from './GuestCategoryDisplay.jsx';
 import LegalLinks from '../guide/LegalLinks.jsx';
 import analyticsCopy from '../analyticsCopy.js';
 import { quickAccessDefaults } from '../guide/guideContent.js';
 import renderSafeIconByName from '../guide/PresetIcon.jsx';
+import SolidIcon from '../guide/SolidIcon.jsx';
 import { supabase } from '../lib/supabaseClient.js';
 
 export default function GuestGuide({
@@ -77,25 +64,24 @@ export default function GuestGuide({
   };
   const quickAccessTitle = ({ de: 'Schnellzugriff', en: 'Quick access', tr: 'Hızlı erişim', fr: 'Accès rapide', es: 'Acceso rápido', hr: 'Brzi pristup', sq: 'Qasje e shpejtë', sv: 'Snabbåtkomst', nb: 'Hurtigtilgang', no: 'Hurtigtilgang', it: 'Accesso rapido' })[lang] || 'Quick access';
   const quickCardConfig = [
-    hotel.showWifi && { id: 'wifi', icon: Wifi, title: getQuickCardText('wifi', 'title'), description: getQuickCardText('wifi', 'description') },
-    hotel.showParking && { id: 'parking', icon: Car, title: getQuickCardText('parking', 'title'), description: getQuickCardText('parking', 'description') },
-    hotel.showBreakfast && { id: 'breakfast', icon: Coffee, title: getQuickCardText('breakfast', 'title'), description: getQuickCardText('breakfast', 'description') },
-    hotel.showCheckInOut && { id: 'checkin', icon: Clock, title: getQuickCardText('checkin', 'title'), description: getQuickCardText('checkin', 'description') },
+    hotel.showWifi && { id: 'wifi', icon: 'Wifi', title: getQuickCardText('wifi', 'title'), description: getQuickCardText('wifi', 'description') },
+    hotel.showParking && { id: 'parking', icon: 'Car', title: getQuickCardText('parking', 'title'), description: getQuickCardText('parking', 'description') },
+    hotel.showBreakfast && { id: 'breakfast', icon: 'Coffee', title: getQuickCardText('breakfast', 'title'), description: getQuickCardText('breakfast', 'description') },
+    hotel.showCheckInOut && { id: 'checkin', icon: 'Clock', title: getQuickCardText('checkin', 'title'), description: getQuickCardText('checkin', 'description') },
   ].filter(Boolean);
   const activeQuickCards = quickCardConfig.map((item) => {
-    const Icon = item.icon;
     return (
       <details key={item.id} className="group overflow-hidden rounded-2xl border border-slate-200 bg-white transition open:shadow-sm">
         <summary className="flex cursor-pointer list-none items-center gap-3 px-3.5 py-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400">
-          <span className={"flex h-9 w-9 shrink-0 items-center justify-center rounded-xl " + currentTheme.bgLight + " " + currentTheme.text}><Icon className="h-4 w-4" /></span>
+          <span className={"flex h-9 w-9 shrink-0 items-center justify-center rounded-xl " + currentTheme.bgLight + " " + currentTheme.text}>{renderSafeIconByName(item.icon, currentTheme)}</span>
           <span className="min-w-0 flex-1 text-xs font-extrabold text-slate-900">{item.title}</span>
           <ChevronRight className="h-4 w-4 shrink-0 text-slate-400 transition group-open:rotate-90" />
         </summary>
         <div className="border-t border-slate-100 px-4 py-3">
           <p className="text-xs leading-relaxed text-slate-600">{item.description}</p>
           {item.id === 'wifi' && (hotel.wifiSsid || hotel.wifiPass) && <div className="mt-3 flex flex-wrap gap-2">{hotel.wifiSsid && <span className="rounded-lg bg-stone-50 px-3 py-2 font-mono text-[11px] text-slate-700">{hotel.wifiSsid}</span>}{hotel.wifiPass && <span className="rounded-lg bg-stone-50 px-3 py-2 font-mono text-[11px] text-slate-700">{hotel.wifiPass}</span>}</div>}
-          {item.id === 'wifi' && hotel.wifiPass && <button type="button" onClick={copyWifiPassword} aria-label={copiedWifi ? copyWifiLabel.copied : copyWifiLabel.copy} className={"mt-3 inline-flex items-center gap-1.5 rounded-xl px-3 py-2 text-[10px] font-bold " + currentTheme.bg + " text-white"}>{copiedWifi ? <Check className="h-3.5 w-3.5" /> : <Copy className="h-3.5 w-3.5" />}{copiedWifi ? copyWifiLabel.copied : copyWifiLabel.copy}</button>}
-          {hotel.address && (item.id === 'parking' || item.id === 'checkin') && <a href={"https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(hotel.address)} onClick={() => trackGuestEvent('action_route')} target="_blank" rel="noreferrer" className={"mt-3 inline-flex items-center gap-2 rounded-xl px-3 py-2 text-[10px] font-bold text-white transition hover:opacity-90 " + currentTheme.bg}><Navigation className="h-3.5 w-3.5" />{t.navRoute}</a>}
+          {item.id === 'wifi' && hotel.wifiPass && <button type="button" onClick={copyWifiPassword} aria-label={copiedWifi ? copyWifiLabel.copied : copyWifiLabel.copy} className={"mt-3 inline-flex items-center gap-1.5 rounded-xl px-3 py-2 text-[10px] font-bold " + currentTheme.bg + " text-white"}>{copiedWifi ? <SolidIcon name="Check" className="h-3.5 w-3.5" /> : <Copy className="h-3.5 w-3.5" />}{copiedWifi ? copyWifiLabel.copied : copyWifiLabel.copy}</button>}
+          {hotel.address && (item.id === 'parking' || item.id === 'checkin') && <a href={"https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(hotel.address)} onClick={() => trackGuestEvent('action_route')} target="_blank" rel="noreferrer" className={"mt-3 inline-flex items-center gap-2 rounded-xl px-3 py-2 text-[10px] font-bold text-white transition hover:opacity-90 " + currentTheme.bg}><SolidIcon name="Route" className="h-3.5 w-3.5" />{t.navRoute}</a>}
         </div>
       </details>
     );
@@ -135,7 +121,7 @@ export default function GuestGuide({
             className={`w-full ${currentTheme.bg} text-white py-4 rounded-2xl font-bold text-sm shadow-2xl flex items-center justify-center gap-2 cursor-pointer`}
           >
             <span>{t.welcomeButton}</span>
-            <ArrowRight className="w-4 h-4" />
+            <SolidIcon name="ArrowRight" className="w-4 h-4" />
           </button>
         </div>
         <LegalLinks copy={pilot} onCover />
@@ -246,7 +232,7 @@ export default function GuestGuide({
             <div className="bg-white p-4 rounded-2xl shadow-sm border border-stone-200 flex items-center justify-between gap-3">
               <div className="flex items-center gap-3 min-w-0">
                 <div className={`p-3 ${currentTheme.bgLight} rounded-xl ${currentTheme.text}`}>
-                  <Sun className="w-6 h-6" />
+                  {renderSafeIconByName('Sun', currentTheme)}
                 </div>
                 <div className="min-w-0">
                   <div className="text-xs font-extrabold text-slate-900 uppercase">
@@ -378,7 +364,7 @@ export default function GuestGuide({
             }}
             className={`flex flex-col items-center gap-1 text-[10px] font-bold cursor-pointer ${activeTab === 'home' && !selectedCategory ? currentTheme.text : 'text-stone-400'}`}
           >
-            <Info className="w-5 h-5" />
+            {renderSafeIconByName('Info', currentTheme)}
             <span>{t.navHome}</span>
           </button>
           <button
@@ -388,7 +374,7 @@ export default function GuestGuide({
             }}
             className={`flex flex-col items-center gap-1 text-[10px] font-bold cursor-pointer ${activeTab === 'services' || selectedCategory ? currentTheme.text : 'text-stone-400'}`}
           >
-            <Compass className="w-5 h-5" />
+            {renderSafeIconByName('Compass', currentTheme)}
             <span>{t.navGaestemappe}</span>
           </button>
           {((hotel.googleReviewUrl && /^https?:\/\//i.test(hotel.googleReviewUrl)) ||
@@ -404,7 +390,7 @@ export default function GuestGuide({
               rel="noreferrer"
               className={`flex flex-col items-center gap-1 text-[10px] font-bold cursor-pointer ${currentTheme.text} hover:opacity-80`}
             >
-              <Star className="w-5 h-5 fill-current" />
+              {renderSafeIconByName('Star', currentTheme)}
               <span>{t.navReview}</span>
             </a>
           )}
@@ -416,7 +402,7 @@ export default function GuestGuide({
               rel="noreferrer"
               className={`flex flex-col items-center gap-1 text-[10px] font-bold cursor-pointer ${currentTheme.text} hover:opacity-80`}
             >
-              <Navigation className="w-5 h-5" />
+              {renderSafeIconByName('Route', currentTheme)}
               <span>{t.navRoute}</span>
             </a>
           ) : (
