@@ -14,6 +14,7 @@ export default function GuideEditor({
   lang,
   pilot,
   t,
+  readOnlyDemo = false,
 }) {
   const {
     guestPageUrl,
@@ -145,6 +146,7 @@ export default function GuideEditor({
           ))}
         </div>
       </nav>
+      <fieldset disabled={readOnlyDemo} className="contents">
       {/* 1. HOTEL BİLGİLERİ */}
       <div
         id="editor-property-profile"
@@ -484,6 +486,7 @@ export default function GuideEditor({
         </div>
       </div>
 
+      </fieldset>
       <QrPrintPanel
         currentTheme={currentTheme}
         guestPageUrl={guestPageUrl}
