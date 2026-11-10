@@ -87,16 +87,7 @@ export default function GuideEditor({
             { key: 'reviewPlatform', label: ui.profileFields.reviewPlatform, type: 'select' },
             {
               key: 'googleReviewUrl',
-              label:
-                hotel.reviewPlatform === 'airbnb'
-                  ? 'Airbnb link (optional)'
-                  : hotel.reviewPlatform === 'booking'
-                    ? 'Booking.com review link'
-                    : hotel.reviewPlatform === 'tripadvisor'
-                      ? 'Tripadvisor review link'
-                      : hotel.reviewPlatform === 'custom'
-                        ? ui.profileFields.googleReviewUrl
-                        : ui.profileFields.googleReviewUrl,
+              label: ui.profileFields.googleReviewUrl,
               type: 'url',
             },
             { key: 'locationTitle', label: ui.profileFields.locationTitle, type: 'text' },
@@ -177,7 +168,7 @@ export default function GuideEditor({
                   const title =
                     cat.customTitle ||
                     (presetObj && presetObj.title && (presetObj.title[lang] || presetObj.title.de)) ||
-                    t.categoryFallback || 'Category';
+                    ui.categoryFallback;
 
                   return (
                     <div
