@@ -375,7 +375,7 @@ export default function GuestGuide({
             }}
             className={`flex flex-col items-center gap-1 text-[10px] font-bold cursor-pointer ${activeTab === 'services' || selectedCategory ? currentTheme.text : 'text-stone-400'}`}
           >
-            <GastemappeMark className="h-6 w-6" />
+            <GastemappeMark className="h-6 w-6" currentTheme={currentTheme} />
             <span>{t.navGaestemappe}</span>
           </button>
           {((hotel.googleReviewUrl && /^https?:\/\//i.test(hotel.googleReviewUrl)) ||
