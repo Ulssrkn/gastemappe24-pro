@@ -8,6 +8,7 @@ const languages = [
 
 const words = {
   de: {
+    monthShort: 'März',
     profileFields: ['Hotelname', 'Adresse', 'E-Mail', 'Website'],
     dayUnit: 'Tage',
     nav: ['Start', 'Unterkünfte', 'Analytik', 'Bearbeiten'], demo: 'Demo-Ansicht · Beispieldaten · Änderungen werden nicht gespeichert',
@@ -26,6 +27,7 @@ const words = {
     demo: 'Demo', sampleProperty: 'Beispielunterkunft',
   },
   en: {
+    monthShort: 'Mar',
     profileFields: ['Property name', 'Address', 'Email', 'Website'],
     dayUnit: 'days',
     nav: ['Overview', 'Properties', 'Analytics', 'Edit guide'], demo: 'Demo view · Sample data · Changes are not saved',
@@ -44,6 +46,7 @@ const words = {
     demo: 'Demo', sampleProperty: 'Sample property',
   },
   tr: {
+    monthShort: 'Mar',
     profileFields: ['Tesis adı', 'Adres', 'E-posta', 'Website'],
     dayUnit: 'gün',
     nav: ['Başlangıç', 'Tesisler', 'Analitik', 'Düzenle'], demo: 'Demo görünümü · Örnek veriler · Değişiklikler kaydedilmez',
@@ -62,6 +65,7 @@ const words = {
     demo: 'Demo', sampleProperty: 'Örnek tesis',
   },
   fr: {
+    monthShort: 'mars',
     profileFields: ['Nom du logement', 'Adresse', 'E-mail', 'Site web'],
     dayUnit: 'jours',
     nav: ['Accueil', 'Hébergements', 'Analytique', 'Modifier'], demo: 'Démo · Données fictives · Aucune modification enregistrée',
@@ -80,6 +84,7 @@ const words = {
     demo: 'Démo', sampleProperty: 'Hébergement exemple',
   },
   es: {
+    monthShort: 'mar',
     profileFields: ['Nombre del alojamiento', 'Dirección', 'Correo electrónico', 'Sitio web'],
     dayUnit: 'días',
     nav: ['Inicio', 'Alojamientos', 'Analítica', 'Editar'], demo: 'Demo · Datos de ejemplo · No se guardan cambios',
@@ -98,6 +103,7 @@ const words = {
     demo: 'Demo', sampleProperty: 'Alojamiento de ejemplo',
   },
   hr: {
+    monthShort: 'ožu',
     profileFields: ['Naziv smještaja', 'Adresa', 'E-pošta', 'Web-stranica'],
     dayUnit: 'dana',
     nav: ['Početna', 'Smještaji', 'Analitika', 'Uredi'], demo: 'Demo prikaz · Primjer podataka · Promjene se ne spremaju',
@@ -116,6 +122,7 @@ const words = {
     demo: 'Demo', sampleProperty: 'Primjer smještaja',
   },
   sq: {
+    monthShort: 'mar',
     profileFields: ['Emri i akomodimit', 'Adresa', 'Email', 'Faqja e internetit'],
     dayUnit: 'ditë',
     nav: ['Kryefaqja', 'Akomodimet', 'Analitika', 'Redakto'], demo: 'Demo · Të dhëna shembull · Ndryshimet nuk ruhen',
@@ -134,6 +141,7 @@ const words = {
     demo: 'Demo', sampleProperty: 'Akomodim shembull',
   },
   sv: {
+    monthShort: 'mar',
     profileFields: ['Boendets namn', 'Adress', 'E-post', 'Webbplats'],
     dayUnit: 'dagar',
     nav: ['Översikt', 'Boenden', 'Analys', 'Redigera'], demo: 'Demo · Exempeldata · Ändringar sparas inte',
@@ -152,6 +160,7 @@ const words = {
     demo: 'Demo', sampleProperty: 'Exempelboende',
   },
   nb: {
+    monthShort: 'mar',
     profileFields: ['Navn på overnattingssted', 'Adresse', 'E-post', 'Nettsted'],
     dayUnit: 'dager',
     nav: ['Oversikt', 'Overnatting', 'Analyse', 'Rediger'], demo: 'Demo · Eksempeldata · Endringer lagres ikke',
@@ -170,6 +179,7 @@ const words = {
     demo: 'Demo', sampleProperty: 'Eksempelovernatting',
   },
   it: {
+    monthShort: 'mar',
     profileFields: ['Nome struttura', 'Indirizzo', 'E-mail', 'Sito web'],
     dayUnit: 'giorni',
     nav: ['Panoramica', 'Strutture', 'Analisi', 'Modifica'], demo: 'Demo · Dati di esempio · Le modifiche non vengono salvate',
@@ -279,7 +289,7 @@ export default function DemoAdmin() {
                 <Metric icon={ArrowDownRight} label={copy.actions} value={period === 7 ? 13 : period === 90 ? 127 : 46} note={copy.increase} />
               </div>
               <div className="mt-7 grid gap-8 lg:grid-cols-[1.15fr_.85fr]">
-                <div><div className="mb-4 flex items-center justify-between"><h3 className="font-extrabold">{copy.trend}</h3><span className="text-xs text-slate-500">{periodViews} {copy.views.toLowerCase()}</span></div><div className="flex h-44 items-end gap-1 border-b border-l border-slate-200 px-2 pb-0.5 pt-4 sm:gap-2">{visits.slice(0, period === 7 ? 7 : 30).map((value, index) => <div key={index} title={`${value} ${copy.views.toLowerCase()}`} className="flex-1 rounded-t-md bg-gradient-to-t from-indigo-900 to-indigo-500 opacity-90 transition hover:opacity-100" style={{ height: `${20 + value * 2.2}%` }} />)}</div><div className="mt-2 flex justify-between text-[10px] text-slate-400"><span>01. {lang === 'de' ? 'März' : 'Mar'}</span><span>30. {lang === 'tr' ? 'gün' : 'Mar'}</span></div></div>
+                <div><div className="mb-4 flex items-center justify-between"><h3 className="font-extrabold">{copy.trend}</h3><span className="text-xs text-slate-500">{periodViews} {copy.views.toLowerCase()}</span></div><div className="flex h-44 items-end gap-1 border-b border-l border-slate-200 px-2 pb-0.5 pt-4 sm:gap-2">{visits.slice(0, period === 7 ? 7 : 30).map((value, index) => <div key={index} title={`${value} ${copy.views.toLowerCase()}`} className="flex-1 rounded-t-md bg-gradient-to-t from-indigo-900 to-indigo-500 opacity-90 transition hover:opacity-100" style={{ height: `${20 + value * 2.2}%` }} />)}</div><div className="mt-2 flex justify-between text-[10px] text-slate-400"><span>01. {copy.monthShort}</span><span>30. {copy.monthShort}</span></div></div>
                 <div><div className="mb-4 flex items-center justify-between"><h3 className="font-extrabold">{copy.top}</h3><span className="text-xs text-slate-400">{copy.range}</span></div><div className="space-y-3">{copy.guestAreas.map((area, index) => <div key={area} className="grid grid-cols-[24px_minmax(0,1fr)_40px] items-center gap-2 text-xs"><span className="grid h-6 w-6 place-items-center rounded-full bg-indigo-50 font-black text-indigo-900">{index + 1}</span><div className="min-w-0"><div className="mb-1 flex justify-between gap-2"><span className="truncate font-semibold text-slate-700">{area}</span><span className="shrink-0 text-slate-500">{topValues[index]}</span></div><div className="h-1.5 overflow-hidden rounded-full bg-slate-100"><div className="h-full rounded-full bg-indigo-600" style={{ width: `${topValues[index]}%` }} /></div></div><span className="text-right text-[10px] text-slate-400">{copy.views}</span></div>)}</div></div>
               </div>
             </section>
