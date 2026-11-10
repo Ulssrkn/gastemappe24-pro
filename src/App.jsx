@@ -14,11 +14,12 @@ import { supabase } from './lib/supabaseClient.js';
 import useGuideNavigation from './navigation/useGuideNavigation.js';
 import pilotCopy from './pilotCopy.js';
 import DemoAdmin from './demo/DemoAdmin.jsx';
+import { getDemoRoute } from './demo/demoRoute.js';
 
 const Dashboard = lazy(() => import('./dashboard/Dashboard.jsx'));
 
-function AppShell() {
-  const [lang, setLang] = useState('de');
+function AppShell({ demoView, initialLang }) {
+  const [lang, setLang] = useState(initialLang);
   const [appMode, setAppMode] = useState('guest');
   const guestSlug =
     typeof window !== 'undefined'
@@ -30,8 +31,8 @@ function AppShell() {
   }, [lang]);
   const t = translations[lang] || translations.de;
   const pilot = pilotCopy[lang] || pilotCopy.de;
-  const auth = useAuthSession();
-  const navigation = useGuideNavigation();
+  const auth = useAuthSession(!demoView);
+  const navigation = useGuideNavigation(demoView !== 'home');
   const { setSelectedCategory, setShowWelcomeScreen } = navigation;
   const workspace = useGuideWorkspace({ ...auth, guestSlug, setSelectedCategory, pilot });
   const { hotel, categories, hotelRecord, setHotel, setCategories } = workspace;
@@ -110,6 +111,7 @@ function AppShell() {
         groupedCategories={groupedCategories}
         currentTheme={currentTheme}
         guestSlug={guestSlug}
+        demoView={demoView}
         hotel={hotel}
         lang={lang}
         setLang={setLang}
@@ -122,10 +124,11 @@ function AppShell() {
 }
 
 function App() {
-  const isPublicAdminDemo =
-    typeof window !== 'undefined' &&
-    new URLSearchParams(window.location.search).get('demo') === 'admin';
-  return isPublicAdminDemo ? <DemoAdmin /> : <AppShell />;
+  const { view, language } = getDemoRoute(window.location.pathname, window.location.search);
+  const initialLang = Object.hasOwn(translations, language) ? language : 'de';
+  return view === 'admin'
+    ? <DemoAdmin initialLang={initialLang} />
+    : <AppShell demoView={view} initialLang={initialLang} />;
 }
 
 export default App;

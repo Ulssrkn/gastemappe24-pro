@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 
-export default function useGuideNavigation() {
+export default function useGuideNavigation(initialWelcome = true) {
   const [dashboardSection, setDashboardSection] = useState(() => {
     const hash = typeof window === 'undefined' ? '' : window.location.hash;
     if (hash === '#accommodations' || hash === '#dashboard-accommodations') return 'accommodations';
@@ -11,7 +11,7 @@ export default function useGuideNavigation() {
 
   const [activeTab, setActiveTab] = useState('home');
   const [selectedCategory, setSelectedCategory] = useState(null);
-  const [showWelcomeScreen, setShowWelcomeScreen] = useState(true);
+  const [showWelcomeScreen, setShowWelcomeScreen] = useState(initialWelcome);
   const navigateDashboardSection = (section) => {
     const normalized = ['overview', 'accommodations', 'analytics', 'editor'].includes(section)
       ? section

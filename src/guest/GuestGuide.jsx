@@ -9,6 +9,8 @@ import renderSafeIconByName from '../guide/PresetIcon.jsx';
 import SolidIcon from '../guide/SolidIcon.jsx';
 import GastemappeMark from '../guide/GastemappeMark.jsx';
 import { supabase } from '../lib/supabaseClient.js';
+import { demoHref } from '../demo/demoRoute.js';
+import dashboardDemoCopy from '../i18n/dashboardDemoCopy.js';
 
 export default function GuestGuide({
   navigation,
@@ -17,6 +19,7 @@ export default function GuestGuide({
   groupedCategories,
   currentTheme,
   guestSlug,
+  demoView,
   hotel,
   lang,
   pilot,
@@ -88,9 +91,10 @@ export default function GuestGuide({
     );
   });
   const ac = analyticsCopy[lang] || analyticsCopy.en;
+  const demoCopy = dashboardDemoCopy[lang] || dashboardDemoCopy.en;
   if (showWelcomeScreen) {
     return (
-      <div className="h-[100dvh] min-h-[320px] bg-slate-950 max-w-md mx-auto shadow-2xl relative overflow-hidden flex flex-col justify-between font-sans">
+      <div className={`min-h-[100dvh] ${demoView ? '' : 'h-[100dvh]'} bg-slate-950 max-w-md mx-auto shadow-2xl relative overflow-hidden flex flex-col justify-between font-sans`}>
         <div className="absolute inset-0 z-0">
           <img
             src={hotel.images?.[0] || '/guide-cover.svg'}
@@ -126,13 +130,24 @@ export default function GuestGuide({
 
         <div className="relative z-10 px-6 pt-4 pb-[calc(env(safe-area-inset-bottom)+1.5rem)] space-y-4 text-white shrink-0">
           <h1 className="line-clamp-3 break-words text-3xl font-black leading-tight">{hotel.name}</h1>
-          <button
+          {demoView ? (
+            <div className="space-y-2">
+              <a href={demoHref('home', lang)} className={`w-full ${currentTheme.bg} text-white py-3 rounded-2xl font-bold text-sm shadow-2xl flex items-center justify-center gap-2`}>
+                {t.navHome}
+                <SolidIcon name="ArrowRight" className="w-4 h-4" />
+              </a>
+              <a href={demoHref('admin', lang)} className="w-full rounded-2xl border border-white/60 bg-slate-950/75 px-3 py-3 text-center text-sm font-bold text-white">
+                <span className="block">{t.adminTitle}</span>
+                <span className="block pt-1 text-xs font-medium text-slate-200">{demoCopy.demo}</span>
+              </a>
+            </div>
+          ) : <button
             onClick={() => setShowWelcomeScreen(false)}
             className={`w-full ${currentTheme.bg} text-white py-4 rounded-2xl font-bold text-sm shadow-2xl flex items-center justify-center gap-2 cursor-pointer`}
           >
             <span>{t.welcomeButton}</span>
             <SolidIcon name="ArrowRight" className="w-4 h-4" />
-          </button>
+          </button>}
         </div>
         <LegalLinks copy={pilot} onCover />
       </div>
@@ -166,7 +181,7 @@ export default function GuestGuide({
             label={pilot.language}
             className="bg-white border text-xs font-semibold rounded-xl px-2.5 py-1.5 cursor-pointer"
           />
-          {!guestSlug && (
+          {!demoView && !guestSlug && (
             <button
               onClick={() => setAppMode('dashboard')}
               className="text-stone-600 p-1 text-xs cursor-pointer"
@@ -178,6 +193,12 @@ export default function GuestGuide({
       </header>
 
       <main className="p-5 space-y-5">
+        {demoView && (
+          <a href={demoHref('admin', lang)} className="flex items-center justify-between gap-3 rounded-xl border border-indigo-200 bg-indigo-50 px-3 py-2.5 text-sm font-bold text-indigo-900">
+            <span>{t.adminTitle}<span className="block pt-0.5 text-[11px] font-medium">{demoCopy.demo}</span></span>
+            <ChevronRight className="h-4 w-4 shrink-0" aria-hidden="true" />
+          </a>
+        )}
         {selectedCategory ? (
           <div className="space-y-4 animate-fade-in">
             <button

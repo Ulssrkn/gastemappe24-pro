@@ -1,4 +1,4 @@
-import React, { useMemo, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import Dashboard from '../dashboard/Dashboard.jsx';
 import useDashboardAnalytics from '../dashboard/useDashboardAnalytics.js';
 import useGuideWorkspace from '../dashboard/useGuideWorkspace.js';
@@ -7,6 +7,7 @@ import { themeColors } from '../guide/guideContent.js';
 import translations from '../i18n/guideCopy.js';
 import pilotCopy from '../pilotCopy.js';
 import useGuideNavigation from '../navigation/useGuideNavigation.js';
+import { demoHref } from './demoRoute.js';
 
 function sampleAnalytics(categories) {
   const rows = [];
@@ -30,8 +31,12 @@ function sampleAnalytics(categories) {
   return rows;
 }
 
-export default function DemoAdmin() {
-  const [lang, setLang] = useState('de');
+export default function DemoAdmin({ initialLang = 'de' }) {
+  const [lang, setLang] = useState(initialLang);
+  const guestHome = demoHref('home', lang);
+  useEffect(() => {
+    document.documentElement.lang = lang;
+  }, [lang]);
   const navigation = useGuideNavigation();
   const ownerRef = useRef({ id: null });
   const pilot = pilotCopy[lang] || pilotCopy.de;
@@ -69,7 +74,7 @@ export default function DemoAdmin() {
     canManage: false,
     cloudDataStatus: 'ready',
     guidePublished: true,
-    guestPageUrl: typeof window !== 'undefined' ? `${window.location.origin}/` : '/',
+    guestPageUrl: new URL(guestHome, window.location.origin).href,
   };
   const analyticsBase = useDashboardAnalytics({
     hotelRecord: null,
@@ -95,7 +100,7 @@ export default function DemoAdmin() {
       t={t}
       readOnlyDemo
       onGuestPreview={() => {
-        if (typeof window !== 'undefined') window.location.assign('/');
+        window.location.assign(guestHome);
       }}
       onSignOut={() => {}}
     />
