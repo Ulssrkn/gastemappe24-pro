@@ -215,7 +215,7 @@ function DemoNav({ active, onChange, copy, mobile = false }) {
   const icons = [LayoutDashboard, Building2, BarChart3, Settings];
   return (
     <nav aria-label={copy.area} className={mobile ? 'fixed inset-x-0 bottom-0 z-40 border-t border-slate-200 bg-white/95 px-2 pb-[max(env(safe-area-inset-bottom),0.5rem)] pt-2 shadow-[0_-8px_28px_rgba(15,23,42,0.06)] md:hidden' : 'fixed inset-y-0 left-0 z-30 hidden w-60 flex-col border-r border-slate-200 bg-white px-5 py-6 md:flex'}>
-      {!mobile && <div className="mb-10 flex items-center gap-3 px-2"><span className="grid h-10 w-10 place-items-center rounded-xl bg-indigo-950 text-amber-300"><House className="h-5 w-5" /></span><div><div className="text-sm font-black">gastemappe<span className="text-amber-700">24</span></div><div className="mt-1 text-[10px] font-bold uppercase tracking-widest text-slate-400">{copy.demo}</div></div></div>}
+      {!mobile && <div className="mb-10 flex items-center gap-3 px-2"><span className="grid h-10 w-10 place-items-center rounded-xl bg-indigo-950 text-amber-300"><Home className="h-5 w-5" /></span><div><div className="text-sm font-black">gastemappe<span className="text-amber-700">24</span></div><div className="mt-1 text-[10px] font-bold uppercase tracking-widest text-slate-400">{copy.demo}</div></div></div>}
       <div className={mobile ? 'grid grid-cols-4 gap-1' : 'space-y-2'}>
         {sections.map((key, index) => {
           const Icon = icons[index];
