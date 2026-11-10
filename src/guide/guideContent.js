@@ -37,6 +37,7 @@ const demoCard = (title, description, options = {}) => ({
   ...(options.hours ? { hours: options.hours } : {}),
   ...(options.address ? { address: options.address } : {}),
   ...(options.url ? { url: options.url } : {}),
+  ...(options.icon ? { icon: options.icon } : {}),
 });
 
 export const demoHotel = () => ({
@@ -285,17 +286,17 @@ export const demoCategories = [
         demoCard(
           ['Museum Tegernseer Tal', 'Museum of the Tegernsee Valley', 'Tegernsee Vadisi Müzesi', 'Musée de la vallée du Tegernsee', 'Museo del valle de Tegernsee', 'Muzej doline Tegernsee', 'Muzeu i luginës Tegernsee', 'Tegernseedalens museum', 'Tegernsee-dalens museum', 'Museo della valle del Tegernsee'],
           ['Kulturgeschichte der Region in einem historischen Pfarrhof; ein schönes Ziel für einen ruhigen Vormittag.', 'Regional history in a historic parish house; a lovely stop for a relaxed morning.', 'Tarihi bir papaz evinde bölgenin kültür tarihi; sakin bir sabah için güzel bir durak.', 'Histoire régionale dans un ancien presbytère ; une belle visite pour une matinée tranquille.', 'Historia regional en una antigua casa parroquial; una visita ideal para una mañana tranquila.', 'Povijest regije u povijesnom župnom dvoru; lijep izlet za mirno jutro.', 'Histori e rajonit në një shtëpi historike famullie; vizitë e këndshme për një mëngjes të qetë.', 'Regional kulturhistoria i ett historiskt prästgårdshus; ett fint besök en lugn förmiddag.', 'Lokalhistorie i et historisk prestegårdshus; et fint besøk en rolig formiddag.', 'Storia locale in una storica casa parrocchiale; una bella visita per una mattinata tranquilla.'],
-          { address: 'Seestraße 17, 83684 Tegernsee', url: 'https://museumtegernseertal.de/' }
+          { address: 'Seestraße 17, 83684 Tegernsee', url: 'https://museumtegernseertal.de/', icon: 'Building' }
         ),
         demoCard(
           ['Schifffahrt Tegernsee', 'Tegernsee lake cruise', 'Tegernsee Göl Turu', 'Croisière sur le Tegernsee', 'Paseo en barco por el Tegernsee', 'Plovidba jezerom Tegernsee', 'Lundrim me varkë në liqenin Tegernsee', 'Båttur på Tegernsee', 'Båttur på Tegernsee', 'Giro in battello sul Tegernsee'],
           ['Entspannt zwischen den Uferorten fahren und See und Alpen aus einer neuen Perspektive erleben.', 'Cruise between lakeside villages and enjoy a fresh perspective on the lake and Alps.', 'Kıyı kasabaları arasında keyifli bir tur yapıp gölü ve Alpleri farklı bir açıdan görün.', 'Naviguez entre les villages et découvrez le lac et les Alpes sous un nouvel angle.', 'Navega entre pueblos ribereños y descubre el lago y los Alpes desde otra perspectiva.', 'Opušteno plovite između mjesta uz obalu i uživajte u novom pogledu na jezero i Alpe.', 'Lundroni mes fshatrave buzë liqenit dhe shijoni një pamje të re të liqenit dhe Alpeve.', 'Kryssa mellan byarna vid sjön och se sjön och Alperna från ett nytt perspektiv.', 'Cruise mellom landsbyene langs innsjøen og opplev innsjøen og Alpene fra en ny vinkel.', 'Naviga tra i borghi sul lago e scopri il lago e le Alpi da una prospettiva nuova.'],
-          { address: 'Rathaussteg, 83684 Tegernsee', url: 'https://www.seenschifffahrt.de/de/tegernsee' }
+          { address: 'Rathaussteg, 83684 Tegernsee', url: 'https://www.seenschifffahrt.de/de/tegernsee', icon: 'Ship' }
         ),
         demoCard(
           ['Wallbergbahn', 'Wallberg cable car', 'Wallberg teleferiği', 'Téléphérique du Wallberg', 'Teleférico de Wallberg', 'Žičara Wallberg', 'Teleferiku i Wallbergut', 'Wallbergs linbana', 'Wallberg-taubanen', 'Funivia del Wallberg'],
           ['Mit der Seilbahn hinauf zu weiten Ausblicken über den See und die bayerischen Voralpen.', 'Ride the cable car for wide views over the lake and the Bavarian Alps.', 'Teleferikle gölün ve Bavyera Alpleri’nin geniş manzarasına çıkın.', 'Prenez le téléphérique pour admirer le lac et les Préalpes bavaroises.', 'Sube en teleférico para disfrutar de amplias vistas del lago y los Alpes bávaros.', 'Žičarom do širokog pogleda na jezero i bavarske predalpe.', 'Ngjituni me teleferik për pamje të gjera mbi liqenin dhe Alpet bavareze.', 'Ta linbanan upp för vidsträckt utsikt över sjön och de bayerska alperna.', 'Ta taubanen opp for vidstrakt utsikt over innsjøen og de bayerske Alpene.', 'Sali in funivia per ammirare il lago e le Prealpi bavaresi.'],
-          { address: 'Wallbergstraße 26–28, 83700 Rottach-Egern', url: 'https://www.wallbergbahn.de/' }
+          { address: 'Wallbergstraße 26–28, 83700 Rottach-Egern', url: 'https://www.wallbergbahn.de/', icon: 'Mountain' }
         ),
       ],
     },
