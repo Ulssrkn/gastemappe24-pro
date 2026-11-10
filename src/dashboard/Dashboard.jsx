@@ -27,7 +27,7 @@ export default function Dashboard({
   const dw = dashboardWorkspaceCopy[lang] || dashboardWorkspaceCopy.de;
   const { dashboardSection, navigateDashboardSection } = navigation;
   const setup = getGuideSetup(workspace.hotel, workspace.categories);
-  const section = { dashboardSection, dw };
+  const section = { dashboardSection, dw: { ...dw, language: lang } };
 
   return (
     <div className="min-h-screen w-full max-w-full overflow-x-clip box-border bg-[#f5f6f8] font-sans text-slate-800 p-3 sm:p-6 md:py-8 md:pr-10 md:pl-[18rem] space-y-6 sm:space-y-8 relative pb-28">
