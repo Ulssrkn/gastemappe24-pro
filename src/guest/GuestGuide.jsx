@@ -101,12 +101,21 @@ export default function GuestGuide({
         </div>
 
         <div className="relative z-10 flex min-w-0 items-center justify-between gap-3 p-6 text-white">
-          <span
-            title={hotel.name}
-            className="min-w-0 flex-1 line-clamp-2 break-words text-xs font-bold uppercase leading-tight"
-          >
-            {hotel.name}
-          </span>
+          <div className="flex min-w-0 flex-1 items-center gap-3">
+            {hotel.logoUrl ? (
+              <img
+                src={hotel.logoUrl}
+                alt=""
+                className="h-12 w-12 shrink-0 rounded-2xl border border-white/25 bg-white p-1 object-contain shadow-lg"
+              />
+            ) : null}
+            <span
+              title={hotel.name}
+              className="min-w-0 flex-1 line-clamp-2 break-words text-xs font-bold uppercase leading-tight"
+            >
+              {hotel.name}
+            </span>
+          </div>
           <LanguageSelect
             lang={lang}
             onChange={setLang}
