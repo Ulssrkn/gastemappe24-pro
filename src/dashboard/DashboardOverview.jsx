@@ -8,6 +8,7 @@ export default function DashboardOverview({
   dashboardSection,
   dw,
   navigateDashboardSection,
+  readOnlyDemo = false,
 }) {
   const { cloudDataStatus, hotel, hotelRecord, hotelRecords } = workspace;
   const { setupSteps, setupCompletedCount, setupProgress } = setup;
@@ -47,7 +48,9 @@ export default function DashboardOverview({
               <span
                 className={`h-2 w-2 rounded-full ${cloudDataStatus === 'ready' ? 'bg-emerald-400' : cloudDataStatus === 'error' ? 'bg-rose-400' : 'bg-amber-300'}`}
               />
-              {cloudDataStatus === 'ready'
+              {readOnlyDemo
+                ? 'DEMO · BEISPIELDATEN'
+                : cloudDataStatus === 'ready'
                 ? dw.hero.connected
                 : cloudDataStatus === 'error'
                   ? dw.hero.error
