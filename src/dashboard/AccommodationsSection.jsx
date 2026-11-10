@@ -1,7 +1,9 @@
 import React from 'react';
 import { Trash2 } from 'lucide-react';
+import dashboardDemoCopy from '../i18n/dashboardDemoCopy.js';
 
 export default function AccommodationsSection({ workspace, dashboardSection, dw, readOnlyDemo = false }) {
+  const ui = dashboardDemoCopy[dw.language] || dashboardDemoCopy.de;
   const {
     accommodationLimitReached,
     accountRecord,
@@ -68,7 +70,7 @@ export default function AccommodationsSection({ workspace, dashboardSection, dw,
                     {active ? dw.accommodations.active : `${dw.accommodations.item} ${index + 1}`}
                   </span>
                   <h3 className="mt-3 truncate text-base font-black text-slate-900">
-                    {item.name || 'Unbenannte Unterkunft'}
+                    {item.name || ui.exampleProperty}
                   </h3>
                   <p className="mt-1 truncate text-[10px] text-stone-400">{item.slug}</p>
                 </button>
@@ -99,7 +101,7 @@ export default function AccommodationsSection({ workspace, dashboardSection, dw,
       </div>
       <div className="rounded-xl border border-stone-200 bg-white/80 p-3 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
         <div className="text-xs">
-          <span className="font-bold text-stone-700">{readOnlyDemo ? 'Demo-Daten: ' : 'Cloud-Speicher: '}</span>
+          <span className="font-bold text-stone-700">{readOnlyDemo ? `${ui.workspace}: ` : `${dw.accommodations.cloud}: `}</span>
           <span
             className={
               cloudDataStatus === 'ready'
@@ -110,14 +112,14 @@ export default function AccommodationsSection({ workspace, dashboardSection, dw,
             }
           >
             {readOnlyDemo
-              ? 'Beispiel-Unterkunft'
+              ? ui.exampleProperty
               : cloudDataStatus === 'ready'
-              ? 'Verbunden'
+              ? dw.accommodations.connected
               : cloudDataStatus === 'loading' || cloudDataStatus === 'saving'
-                ? 'Wird geladen …'
+                ? dw.accommodations.loading
                 : cloudDataStatus === 'error'
-                  ? 'Prüfung erforderlich'
-                  : 'Nicht verbunden'}
+                  ? dw.accommodations.checking
+                   : dw.accommodations.disconnected}
           </span>
           {hotelRecord?.slug && <span className="ml-3 text-stone-400">Aktuelle ID: {hotelRecord.slug}</span>}
         </div>
