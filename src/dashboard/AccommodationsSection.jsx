@@ -99,7 +99,7 @@ export default function AccommodationsSection({ workspace, dashboardSection, dw,
       </div>
       <div className="rounded-xl border border-stone-200 bg-white/80 p-3 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
         <div className="text-xs">
-          <span className="font-bold text-stone-700">Cloud-Speicher: </span>
+          <span className="font-bold text-stone-700">{readOnlyDemo ? 'Demo-Daten: ' : 'Cloud-Speicher: '}</span>
           <span
             className={
               cloudDataStatus === 'ready'
@@ -109,7 +109,9 @@ export default function AccommodationsSection({ workspace, dashboardSection, dw,
                   : 'text-stone-500'
             }
           >
-            {cloudDataStatus === 'ready'
+            {readOnlyDemo
+              ? 'Beispiel-Unterkunft'
+              : cloudDataStatus === 'ready'
               ? 'Verbunden'
               : cloudDataStatus === 'loading' || cloudDataStatus === 'saving'
                 ? 'Wird geladen …'
