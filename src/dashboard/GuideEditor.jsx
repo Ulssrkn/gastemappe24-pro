@@ -166,6 +166,7 @@ export default function GuideEditor({
                 {groupItems.map((cat) => {
                   const presetObj = cat.presetData;
                   const title =
+                    (readOnlyDemo && ui.categoryPresetTitles?.[cat.presetId]) ||
                     cat.customTitle ||
                     (presetObj && presetObj.title && (presetObj.title[lang] || presetObj.title.de)) ||
                     ui.categoryFallback;
