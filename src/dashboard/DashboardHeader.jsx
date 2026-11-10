@@ -1,9 +1,11 @@
 import React from 'react';
 import LanguageSelect from '../components/LanguageSelect.jsx';
 import { LogOut, Save } from 'lucide-react';
+import dashboardDemoCopy from '../i18n/dashboardDemoCopy.js';
 
 export default function DashboardHeader({ workspace, lang, pilot, onGuestPreview, onSignOut, setLang, t, readOnlyDemo = false }) {
   const { cloudDataStatus, guidePublished, handleSaveData, isSaved, trialExpired } = workspace;
+  const ui = dashboardDemoCopy[lang] || dashboardDemoCopy.de;
   return (
     <div
       id="dashboard-home"
@@ -38,7 +40,7 @@ export default function DashboardHeader({ workspace, lang, pilot, onGuestPreview
           {guidePublished ? pilot.published : pilot.unpublished}
         </span>
         </>}
-        {readOnlyDemo && <span className="rounded-xl bg-indigo-50 px-3 py-2 text-[11px] font-bold text-indigo-800">Demo · Nur ansehen</span>}
+        {readOnlyDemo && <span className="rounded-xl bg-indigo-50 px-3 py-2 text-[11px] font-bold text-indigo-800">{ui.demo}</span>}
         <button
           onClick={onGuestPreview}
           className="border border-slate-200 bg-white text-slate-700 px-4 py-2 rounded-xl text-xs font-bold hover:bg-slate-50 transition cursor-pointer"
