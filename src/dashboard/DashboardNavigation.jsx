@@ -1,7 +1,9 @@
 import React from 'react';
 import { BarChart3, Building2, CreditCard, LayoutDashboard, Settings } from 'lucide-react';
+import dashboardDemoCopy from '../i18n/dashboardDemoCopy.js';
 
 export default function DashboardNavigation({ dashboardSection, dw, navigateDashboardSection, readOnlyDemo = false }) {
+  const ui = dashboardDemoCopy[dw.language] || dashboardDemoCopy.de;
   return (
     <>
       <aside className="fixed inset-y-0 left-0 z-40 hidden w-64 flex-col border-r border-slate-200/80 bg-white px-5 py-7 md:flex">
@@ -65,9 +67,9 @@ export default function DashboardNavigation({ dashboardSection, dw, navigateDash
         <div className="mt-auto rounded-2xl border border-slate-200 bg-slate-50 p-4">
           <div className="flex items-center gap-2 text-xs font-bold text-slate-800">
             <span className="h-2 w-2 rounded-full bg-emerald-500" />
-            {dw.hero.status}
+            {readOnlyDemo ? ui.demo : dw.hero.status}
           </div>
-          <p className="mt-2 text-[11px] leading-relaxed text-slate-500">{dw.hero.description}</p>
+          <p className="mt-2 text-[11px] leading-relaxed text-slate-500">{readOnlyDemo ? ui.demoHint : dw.hero.description}</p>
         </div>
       </aside>
       <nav className="fixed inset-x-3 bottom-3 z-40 grid grid-cols-4 rounded-2xl border border-slate-200 bg-white/95 p-1.5 shadow-xl backdrop-blur md:hidden">
