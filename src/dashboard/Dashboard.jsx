@@ -48,6 +48,7 @@ export default function Dashboard({
         workspace={workspace}
         setup={setup}
         navigateDashboardSection={navigateDashboardSection}
+        lang={lang}
         readOnlyDemo={readOnlyDemo}
       />
       <AccommodationsSection {...section} workspace={workspace} readOnlyDemo={readOnlyDemo} />
